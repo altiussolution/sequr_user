@@ -1,0 +1,108 @@
+ul.dropdown-menu.side_bar li {
+    padding: 3px;
+    text-align: left;
+}
+
+.dropdown.side_bar {
+    margin-right: 0px;
+    margin-left: 12px;
+}
+
+ul.dropdown-menu.side_bar {
+    background: #fff;
+    width: 230px;
+    box-shadow: rgb(0 0 0 / 10%) 0px 5px 14px -3px, rgb(0 0 0 / 35%) 0px 3px 8px -2px;
+    transform: translate(0px, -60%) !important;
+    border: 1px solid #ddd;
+    margin-left: 95px;
+    padding: 15px
+}
+
+ul.dropdown-menu.side_bar li:hover {
+    background:#ddd !important;
+}
+
+.container-fluid.db .sidebar ul li{
+    padding: 33px 0;
+    text-align: center;
+
+}
+
+.container-fluid.db .sidebar ul li:hover {
+    border-left: 7px solid #71B7EB;
+    /* transition:ease-in 0.2s; */
+    position: relative;
+   
+}
+
+ul.dropdown-menu.side_bar li {
+    padding: 5px !important;
+    text-align: left !important;
+}
+
+ul.dropdown-menu.side_bar li:hover {
+    border: none !important;
+    background: #CDC7C5 !important;
+}
+
+
+.container-fluid.db .sidebar ul li:hover ul.dropdown-menu.side_bar {
+   
+    margin-left: 100px;
+}
+
+
+ul {
+    
+    list-style: none;
+    margin: 0;
+    padding-left: 0;
+}
+
+li {
+    color: #fff;
+    display: block;
+    float: left;
+    padding: 1rem;
+    position: relative;
+    text-decoration: none;
+ 
+}
+  
+li a {
+  color: #fff;
+}
+
+li:hover {
+    
+    cursor: pointer;
+}
+
+ul li ul {
+    
+    visibility: hidden;
+  opacity: 0;
+  min-width: 5rem;
+    position: absolute;
+  transition: all 0.5s ease;
+  margin-top: 1rem;
+    left: 0;
+  display: none;
+}
+
+ul li:hover > ul,
+ul li ul:hover {
+  visibility: visible;
+  opacity: 1;
+  display: block;
+}
+
+ul li ul li {
+    clear: both;
+  width: 100%;
+}
+
+nav ul {
+    display: flex;
+    flex-direction: column;
+}
