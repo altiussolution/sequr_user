@@ -9,7 +9,8 @@ const routes: Routes = [
   { path: 'pages', loadChildren: () => import('./components/page/page.module').then(m => m.PageModule) },
   { path: 'home', loadChildren: () => import('./components/home/home.module').then(m => m.HomeModule) },
   { path: 'products', loadChildren: () => import('./components/products/products.module').then(m => m.ProductsModule) },
-  { path: 'productslist', loadChildren: () => import('./components/productslist/productslist.module').then(m => m.ProductslistModule) }
+  { path: 'productslist', loadChildren: () => import('./components/productslist/productslist.module').then(m => m.ProductslistModule) },
+  { path: 'details', loadChildren: () => import('./components/details/details.module').then(m => m.DetailsModule) }
 ];
 
 @NgModule({
