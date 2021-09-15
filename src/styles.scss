@@ -7,10 +7,27 @@ body {
   font-family: 'Red Hat Text', sans-serif;
   font-size: 18px;
   // height: 100vh;
+  color: #717171;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: 'Red Hat Text', sans-serif !important;
 }
 
 .as-mt-main {
-  margin-top: 70px;
+  // margin-top: 70px;
+  margin-top: 90px;
+  width: 84%;
+  margin-left: 210px;
 }
 
 .login {
@@ -30,21 +47,36 @@ body {
   // background-image: url(img/SEQUR-RX_logo.png);
   background-image: url(assets/img/SEQUR-RX_logo.png);
   background-size: contain;
-  background-position: center;
+  background-position: 31%;
   height: 50px;
   background-repeat: no-repeat;
   position: absolute;
-  top: 75px;
+  top: 90px;
   width: 100%;
 }
 
 .login-heading {
-  font-weight: 300;
+  font-weight: 400;
+  font-size: 18px;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px white inset !important;
+}
+
+input:-webkit-autofill {
+  -webkit-text-fill-color: #717171 !important;
 }
 
 .btn-login {
-  font-size: 0.9rem;
-  letter-spacing: 0.05rem;
+  // font-size: 0.9rem; 
+  letter-spacing: 0.03rem;
+  border-radius: 14px;
+  font-weight: 500;
+  padding: 8px 26px;
 
 }
 
@@ -135,7 +167,8 @@ body {
     position: fixed;
     top: 56px;
     flex-direction: column !important;
-    left: -220px;
+    // left: -220px;
+    left: 0;
     width: 200px;
     overflow-y: auto;
     bottom: 0;
@@ -164,7 +197,7 @@ body {
 
 .shop-count {
   position: absolute;
-  top: 9px;
+  top: 8px;
   font-size: 8px;
   width: 10px;
   height: 10px;
@@ -174,6 +207,7 @@ body {
   border-radius: 100%;
   font-weight: 800;
   right: 5px;
+  line-height: 1;
 }
 
 .relative {
@@ -183,7 +217,8 @@ body {
 .as-card {
   width: 22%;
   /* max-width: 25%; */
-  max-width: 17%;
+  // max-width: 17%;
+  max-width: 21.3%;
   /* border: 1px solid lightgray; */
   box-shadow: 0px 0px 8px 1px #e0dfdf;
   margin: 20px;
@@ -213,28 +248,46 @@ body {
 .as-color-1 {
   color: #868484;
 }
-.as-color-2{
+
+.as-color-2 {
   color: #6e9dbf;
 }
+
+.as-color-3 {
+  color: #717171
+}
+.as-color-4{
+  color: #545252;
+}
+.as-bold{
+  font-weight: 500;
+}
+
 .as-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin: 16px 0px 6px 0;
+  padding-left: 15px;
+  padding-right: 15px;
 }
 
-.as-light-bg, .btn-light{
+.as-light-bg,
+.btn-light {
   background-color: #efefef;
 }
 
-.btn-round{
+.btn-round {
   border-radius: 25px;
 }
-.as-product-img{
+
+.as-product-img {
   height: 120px;
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
 }
+
 .as-productlst-img {
   height: 110px;
   background-size: contain;
@@ -243,32 +296,81 @@ body {
   width: 100px;
   margin: 0 40px 0 14px;
 }
-.as-font-18{
-font-size: 18px;
+
+.as-font-18 {
+  font-size: 18px;
 }
-.as-font-14{
+
+.as-font-14 {
   font-size: 14px;
 }
-.as-font-24{
+.as-font-16 {
+  font-size: 16px;
+}
+
+.as-font-24 {
   font-size: 24px;
 }
-.as-text-flex{
+
+.as-text-flex {
   align-items: center;
   flex-wrap: nowrap;
   box-shadow: 0 0 8px 1px lightgrey;
   border: 1px solid #dbebf1;
 }
-.as-px-15{
+
+.as-px-15 {
   padding-right: 15px;
   padding-left: 15px;
 }
-.btn-outline-info{
+
+.btn-outline-info {
   border-color: #abc1d5;
   color: black;
 }
+
 .as-item-box {
   background: #f7f7f7;
   padding: 10px 15px;
   border: 1px solid #adc2d6;
   margin-bottom: 2rem;
+}
+
+.search-icon {
+  background-image: url(assets/img/search_icon.svg);
+  height: 25px;
+  width: 25px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 27px;
+}
+
+.user-icon {
+  background-image: url(assets/img/profile_user_icon.svg);
+  height: 25px;
+  width: 25px;
+  background-repeat: no-repeat;
+  background-size: 22px;
+}
+
+.addtocart-icon {
+  background-image: url(assets/img/addtocarticon.svg);
+  height: 25px;
+  width: 25px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 24px;
+}
+
+.logout-icon {
+  background-image: url(assets/img/power-button.svg);
+  height: 25px;
+  width: 25px;
+  background-repeat: no-repeat;
+  background-size: 21px;
+}
+
+.navbar-expand-lg .navbar-nav .nav-link {
+  padding-right: .25rem;
+  padding-left: .25rem;
 }
