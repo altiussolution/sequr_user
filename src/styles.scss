@@ -3,9 +3,9 @@
 // html, body { height: 100%; }
 // body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
-body {
+body, .mat-body, .mat-body-1, .mat-typography {
   font-family: 'Red Hat Text', sans-serif;
-  font-size: 18px;
+  font-size: 18px ;
   // height: 100vh;
   color: #717171;
 }
@@ -259,6 +259,9 @@ input:-webkit-autofill {
 .as-color-4{
   color: #545252;
 }
+.as-color-5{
+  color: #1e1e1e
+}
 .as-bold{
   font-weight: 500;
 }
@@ -311,7 +314,9 @@ input:-webkit-autofill {
 .as-font-24 {
   font-size: 24px;
 }
-
+.as-font-20 {
+font-size: 20px;
+}
 .as-text-flex {
   align-items: center;
   flex-wrap: nowrap;
@@ -373,4 +378,43 @@ input:-webkit-autofill {
 .navbar-expand-lg .navbar-nav .nav-link {
   padding-right: .25rem;
   padding-left: .25rem;
+}
+.as-details-title{
+  font-size: 36px;
+  line-height: 1;
+  font-weight: 400;
+  color: #1e1e1e;
+}
+.as-details-txt {
+  margin: 16px 40px 16px 10px;
+  border-right: 2px solid #d6d6d6;
+  padding-right: 16px;
+  color: #1e1e1e;
+}
+.as-details-txt:nth-child(3){
+   
+  border:none;
+}
+.as-details-border{
+  border-bottom: 1px solid #d6d6d6;
+  padding-bottom: 20px;
+  padding-top: 20px;
+}
+
+.as-check {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.as-history {
+  display: flex;
+  margin: 0 15px;
+  background: white;
+  padding: 10px 15px;
+  border-radius: 25px;
+}
+.as-history1 {
+  display: flex;
+ 
 }
