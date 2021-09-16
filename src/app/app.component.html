@@ -44,11 +44,52 @@
                 </li>
                 <li class="nav-item">
                     <!-- <a class="nav-link" href="#"><i class="fa fa-power-off" aria-hidden="true"></i></a> -->
-                    <a class="nav-link" href="#"><div class="logout-icon" ></div></a>
+                    <a class="nav-link" href="#" data-toggle="modal" data-target="#myModal2"><div class="logout-icon" ></div></a>
                 </li>
             </ul>
         </div>
     </nav>
+    <!-- POPUP DESIGN Logout -->
+    <div class="modal" id="myModal2">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body text-center">
+              <div class="logout-popup"></div>
+              <div class="as-font-24 as-color-5 my-3">Are you sure you want to logout?</div>
+              
+              <div class="d-grid mb-3 as-mt-2">
+                <button class="btn btn-lg btn-primary btn-login  fw-bold mb-2 mr-2" type="button" data-toggle="modal" data-target="#myModal1" >Yes</button>
+                <button class="btn btn-lg btn-secondary btn-login  fw-bold mb-2 ml-2" type="button" >No</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- POPUP DESIGN locker-open -->
+      <div class="modal" id="myModal1">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body text-center">
+              <div class="locker-popup"></div>
+              <div class="as-font-24 as-color-5 my-3">It seems like one of the locker is open,
+                please close before you logout..</div>
+              
+              <div class="d-grid mb-3 as-mt-2">
+                <button class="btn btn-lg btn-primary btn-login  fw-bold mb-2 " type="button" >Close Now</button>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 </div>  
 <router-outlet></router-outlet>
    <footer class="main-footer ng-scope" >

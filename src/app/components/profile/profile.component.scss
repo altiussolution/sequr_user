@@ -18,16 +18,30 @@
     background-repeat: no-repeat;
     background-size: contain;
     width: 100px;
-    margin: 48px auto;
+    margin: 35px auto;
 }
 .as-user-bg{
     width: 80%;
     position: absolute;
-    top: 34%;
-    left: 20%;
+    top: 22%;
+    left: 15%;
 }
 .asbg-1{
-    width: 30%;
+    width: 35%;
     background: white;
-    border-radius: 8px;
+    border-radius: 12px;
+    height: 48vh;
+}
+.asbg-2{
+    width: 50%;
+    background: white;
+    border-radius: 12px;
+    
+    margin-left: 3rem;
+    padding: 30px;
+}
+
+.as-mt-main {
+   
+    height: 84vh;
 }
