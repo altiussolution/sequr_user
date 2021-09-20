@@ -80,11 +80,10 @@
     margin-right: 25px;
 }
 .as-mr-or{
-    margin: 11px 25px 0 0;
+    margin: 11px 20px 0 0;
 }
 .as-details-btn .btn{
-    padding-left: 25px;
-    padding-right: 25px;
+  padding: 10px 35px;
 }
 
 .addtocart-btn{
@@ -94,7 +93,7 @@
   .as-addtocart-pos{
     position: absolute;
     top: 42%;
-    right: 21%;
+    right: 14%;
   }
   
 
@@ -109,4 +108,13 @@
 }
 .as-card:hover .as-addtocart-pos{
 display: flex;
+}
+.as-mr-det .form-control{
+  border: 1px solid #c3c1c1;
+  height: 46px;
+}
+
+.as-card {
+  width: 20%;
+    max-width: 228px;
 }
