@@ -1,34 +1,107 @@
-<div class="main_content">
-    <div class="header">
-        <div class="row dbb">
-            <div class="col-lg-4 col-md-12 col-sm-12">
-                <a href="#"><img class="img-fluid" src="../../../assets/images/logo.png" alt="" width="278px"></a>
+<div id="navbar">
+    <nav class="navbar header-top fixed-top navbar-expand-lg  navbar-light bg-white">
+      <span class="navbar-toggler-icon leftmenutrigger" (click)="toggleSidebar()" id="sidebarCollapse"></span>
+      <div class="navbar-brand logo-img "></div>
+      <!-- 
+          <div class="dropdown mx-3">
+              <div type="button" class=" dropdown-toggle" data-toggle="dropdown">
+                  Category
+              </div>
+              <div class="dropdown-menu">
+                  <a class="dropdown-item" href="#">Link 1</a>
+                  <a class="dropdown-item" href="#">Link 2</a>
+                  <a class="dropdown-item" href="#">Link 3</a>
+              </div>
+          </div> -->
+      <a class="nav-link dropdown-toggle" href="#" id="categoryDropdown" role="button" data-toggle="dropdown"
+        aria-haspopup="true" aria-expanded="false">Category</a>
+      <div class="dropdown-menu " aria-labelledby="categoryDropdown">
+  
+  
+        <div class="d-md-flex align-items-start justify-content-start">
+          <div class="as-bg-1">
+            <div class="dropdown-header">General(40)</div>
+            <div class="dropdown-item">Gage(14)</div>
+            <div class="dropdown-item">Kitting(32)</div>
+            <div class="dropdown-item">Assembly(21)</div>
+            <div class="dropdown-item">Key(15)</div>
+            <div class="dropdown-item">General(20)</div>
+            <div class="dropdown-item">Gage(21)</div>
+            <div class="dropdown-item">Kit(29)</div>
+          </div>
+          <div class="as-drop-head">
+  
+            <div class="dropdown-item"><i class="fa fa-chevron-right mr-3 as-color-7"></i>Abrassives(20)</div>
+            <div class="dropdown-item"><i class="fa fa-chevron-right mr-3 as-color-7"></i>Spot Drills(20)</div>
+            <div class="dropdown-item"><i class="fa fa-chevron-right mr-3 as-color-7"></i>Carbide Drills(20)</div>
+            <div class="dropdown-item"><i class="fa fa-chevron-right mr-3 as-color-7"></i>Had Tools(20)</div>
+            <div class="dropdown-item"><i class="fa fa-chevron-right mr-3 as-color-7"></i>Drills Body(20)</div>
+            <div class="dropdown-item"><i class="fa fa-chevron-right mr-3 as-color-7"></i>Drills Head(20)</div>
+            <div class="dropdown-item"><i class="fa fa-chevron-right mr-3 as-color-7"></i>Hand Tools(20)</div>
+            <div class="dropdown-item"><i class="fa fa-chevron-right mr-3 as-color-7"></i>Drills Body(20)</div>
+            <div class="dropdown-item"><i class="fa fa-chevron-right mr-3 as-color-7"></i>Drills Head(20)</div>
+          </div>
+          <div class="as-drop-head">
+  
+            <div class="dropdown-item"><i class="fa fa-chevron-right mr-3 as-color-7"></i>Abrassives(20)</div>
+            <div class="dropdown-item"><i class="fa fa-chevron-right mr-3 as-color-7"></i>Spot Drills(20)</div>
+            <div class="dropdown-item"><i class="fa fa-chevron-right mr-3 as-color-7"></i>Carbide Drills(20)</div>
+            <div class="dropdown-item"><i class="fa fa-chevron-right mr-3 as-color-7"></i>Had Tools(20)</div>
+            <div class="dropdown-item"><i class="fa fa-chevron-right mr-3 as-color-7"></i>Drills Body(20)</div>
+            <div class="dropdown-item"><i class="fa fa-chevron-right mr-3 as-color-7"></i>Drills Head(20)</div>
+            <div class="dropdown-item"><i class="fa fa-chevron-right mr-3 as-color-7"></i>Hand Tools(20)</div>
+            <div class="dropdown-item"><i class="fa fa-chevron-right mr-3 as-color-7"></i>Drills Body(20)</div>
+            <div class="dropdown-item"><i class="fa fa-chevron-right mr-3 as-color-7"></i>Drills Head(20)</div>
+          </div>
+          <div class="as-drop-head">
+            <div class="as-drop-img">
             </div>
-            <div class="col-lg-8 col-md-12 col-sm-12">
-                <div class="contents">
-                    <img  src="../../../assets/images/not.png" alt="" width="25px" height="25px">
-                    <a href="#"> <span class="badge not">5</span></a>
-                    <div class="horizontal-line"></div>
-
-                    <div class="dropdown">
-                        <div class="dropdown-toggle" data-toggle="dropdown">Pages dropdown
-                        <span class="caret"></span></div>
-                        <ul class="dropdown-menu">
-                          <li><a [routerLink]="'/pages/dashboard'" >Dashboard</a></li>
-                          <li><a [routerLink]="'/pages/profile'" >My profile</a></li>
-                          <li><a [routerLink]="'/pages/analytics'" >Analytics</a></li>
-                          <li><a [routerLink]="'/pages/maintenance'" >Maintenance</a></li>
-                          <li><a [routerLink]="'/pages/report'" >Report</a></li>
-                          <li><a [routerLink]="'/pages/purchase-order'" >Purchase Order</a></li>
-                          <li><a [routerLink]="'/pages/logs'" >Logs</a></li>
-                          <li><a (click)="logout()">Signout</a></li>
-                        </ul>
-                      </div>
-
-                      <img [routerLink]="'/pages/profile'" src="../../../assets/images/Avatar.png" alt="">
-                </div>
-            </div>
-
-    </div>
-</div>
-</div>
+          </div>
+        </div>
+      </div>
+      <div>Item History</div>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
+        aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <ul class="navbar-nav ml-md-auto d-md-flex">
+        <li class="nav-item">
+          <a class="nav-link" href="#">
+            <div class="search-icon"></div>
+    
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">
+            <div class="user-icon"></div>
+          </a>
+        </li>
+        <li class="nav-item relative">
+          <a class="nav-link" href="#">
+            <div class="addtocart-icon"></div>
+          </a>
+          <div class="shop-count">1</div>
+        </li>
+        <li class="nav-item">
+        
+          <a class="nav-link" href="#" data-toggle="modal" data-target="#myModal2">
+            <div class="logout-icon"></div>
+          </a>
+        </li>
+      </ul>
+     
+<div class=" " id="navbarText"> <!-- collapse navbar-collapse -->
+    <ul class="navbar-nav animate side-nav sidenav">
+  
+      <li class="nav-item">
+        <a class="nav-link" href="#">Category</a>
+  
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Item History</a>
+      </li>
+    </ul>
+  
+  </div>
+      </nav>
+      </div>

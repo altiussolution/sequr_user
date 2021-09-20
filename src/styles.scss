@@ -151,7 +151,7 @@ input:-webkit-autofill {
     padding: 90px 15px 15px 15px;
   }
 
-  .navbar-nav.side-nav.open {
+  .navbar-nav.side-nav {
     left: 0;
   }
 
@@ -166,7 +166,7 @@ input:-webkit-autofill {
     display: none
   }
 
-  .blocker.open {
+  .blocker {
     display: block
   }
 
@@ -498,7 +498,7 @@ font-size: 20px;
 }
 
 // Nave Bar expand
-.navbar-nav.side-nav.sidenav.sidebar-hidden.open{
+.navbar-nav.side-nav.sidenav.sidebar-hidden{
   display: none;
 }
 
