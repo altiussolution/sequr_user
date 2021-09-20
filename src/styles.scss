@@ -227,7 +227,8 @@ input:-webkit-autofill {
   width: 22%;
   /* max-width: 25%; */
   // max-width: 17%;
-  max-width: 21.3%;
+  // max-width: 21.3%;
+  max-width: 241px;
   /* border: 1px solid lightgray; */
   box-shadow: 0px 0px 8px 1px #e0dfdf;
   margin: 20px;
@@ -237,7 +238,9 @@ input:-webkit-autofill {
   padding-left: 15px;
   border: 1px solid #daebf1;
 }
-
+.activemenu .as-card{
+  max-width: 228px;
+}
 .as-crd-title {
   background: #666666b8;
   color: white;
@@ -275,6 +278,9 @@ input:-webkit-autofill {
 }
 .as-color-6{
   color:#404040
+}
+.as-color-7{
+  color: #949494
 }
 .as-bold{
   font-weight: 500;
@@ -489,4 +495,46 @@ font-size: 20px;
 }
 .as-mt-2{
   margin-top: 2rem!important;
+}
+
+// Nave Bar expand
+.navbar-nav.side-nav.sidenav.sidebar-hidden.open{
+  display: none;
+}
+
+.activemenu .as-mt-main{
+  margin-left: 0px;
+  width: 100%;
+}
+.as-bg-1{
+  background-color:#f7f7f7 ;
+  padding: 25px 0px 25px 12px;
+}
+.dropdown-header{
+  background-color: white;
+  font-size: 1rem;
+}
+.dropdown-menu.show{
+  padding: 0;
+  margin: 0;
+    border-top: 3px solid blue
+}
+.as-drop-head{
+ 
+  padding: 25px 0px 25px 12px;
+}
+.as-drop-img{
+  background-image: url(assets/img/dropdown.png);
+  height: 45vh;
+  width: 14rem;
+  background-size: 94%;
+  background-repeat: no-repeat;
+}
+.navbar a{
+  color: #717171;
+}
+
+.navbar .dropdown-menu {
+ 
+  left: 100px;
 }
