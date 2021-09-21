@@ -1,7 +1,7 @@
 <div id="navbar">
   <nav class="navbar header-top fixed-top navbar-expand-lg  navbar-light bg-white">
    
-    <div class="navbar-brand logo-img "></div>
+    <div class="navbar-brand logo-img " [routerLink]="'/pages/home'"></div>
     <span class="navbar-toggler-icon leftmenutrigger" (click)="toggleSidebar()" id="sidebarCollapse"></span>
   
         <div class="as-menu-as-drophover-header">
@@ -258,7 +258,7 @@
               
             <span class="as-dropdown-toggle"></span></li>
             <li class="as-menu-mega-blog">
-              <a href="#">Item History</a>
+              <a [routerLink]="'/pages/itemhistory'">Item History</a>
             </li>
           </ul>
         </div>
@@ -302,25 +302,25 @@
             </a>
         </div> -->
 
-          <a class="nav-link" href="#">
+          <a class="nav-link">
             <div class="search-icon"></div>
 
           </a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">
-            <div class="user-icon"></div>
+        <li class="nav-item" [routerLink]="'/pages/profile'">
+          <a class="nav-link" >
+            <div class="user-icon" ></div>
           </a>
         </li>
-        <li class="nav-item relative">
-          <a class="nav-link" href="#">
+        <li class="nav-item relative" [routerLink]="'/pages/mycart'">
+          <a class="nav-link" >
             <div class="addtocart-icon"></div>
           </a>
           <div class="shop-count">1</div>
         </li>
         <li class="nav-item">
           <!-- <a class="nav-link" href="#"><i class="fa fa-power-off" aria-hidden="true"></i></a> -->
-          <a class="nav-link" href="#" data-toggle="modal" data-target="#myModal2">
+          <a class="nav-link" data-toggle="modal" data-target="#myModal2">
             <div class="logout-icon"></div>
           </a>
         </li>

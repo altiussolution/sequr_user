@@ -11,13 +11,13 @@
               <div class="login-heading mb-4 as-color-3 "> Sign in with Email</div>
 
              
-              <form>
+              <form [formGroup]="loginForm" autocomplete="off">
                 <div class="form-floating mb-3">
-                  <input type="email" class="form-control" id="floatingInput" placeholder="Username">
+                  <input type="email" class="form-control" id="floatingInput" placeholder="Username" formControlName="username">
                  
                 </div>
                 <div class="form-floating mb-4 relative ">
-                  <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
+                  <input type="password" class="form-control" id="floatingPassword" placeholder="Password" formControlName="password">
                   <i class="fa fa-eye-slash as-eye"></i>
                 </div>
                 <div class="text-right ">
@@ -25,7 +25,7 @@
                 </div>
                
                 <div class="d-grid text-center mt-5">
-                  <button class="btn btn-primary btn-login  fw-bold mb-2" type="button" >Sign In</button>
+                  <button class="btn btn-primary btn-login  fw-bold mb-2" (click)="signin()" type="button" >Sign In</button>
                  
                 </div>
 
