@@ -30,7 +30,7 @@ ul.dropdown-menu.side_bar li:hover {
 
 .container-fluid.db .sidebar ul li:hover {
     border-left: 7px solid #71B7EB;
-    /* transition:ease-in 0.2s; */
+    
     position: relative;
    
 }
