@@ -751,3 +751,45 @@ button:focus{
 .flex-wrap-nowrap{
   flex-wrap: nowrap;
 }
+
+.pointer{
+  cursor: pointer;
+}
+.as-g-active.view-active i{
+  color: #1a73e9;
+}
+.as-l-active.view-active i{
+  color: #1a73e9;
+}
+.as-list .as-card{
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: space-around;
+}
+.as-list .as-product-img{
+  height: 125px;
+  width: 150px;
+}
+.as-list .as-crd-title {
+  width: 98%;
+  text-align: center;
+}
+.as-list .as-productlst-img {
+  height: 140px;
+  
+  width: 158px;
+  margin: 12px 14px 0 0px;
+}
+
+.as-list  .as-text-flex {
+ 
+  flex-direction: column;
+}
+
+.product-li .as-list .as-color-2{
+text-align: center;;
+}
