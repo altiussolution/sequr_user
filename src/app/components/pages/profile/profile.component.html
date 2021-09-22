@@ -26,27 +26,32 @@
       <div class="row mt-4">
         <div class="col-md-6 ">
           <div class="form-floating mb-3">
-            <input type="email" class="form-control" id="floatingInput" placeholder="Username">
+            <!-- <input type="email" class="form-control" id="floatingInput" placeholder="Username" > -->
+         <label>Username:{{profile?.first_name + profile?.last_name}}</label>
           </div>
         </div>
         <div class="col-md-6 ">
           <div class="form-floating mb-3">
-            <input type="email" class="form-control" id="floatingInput" placeholder="Employee ID">
+            <!-- <input type="email" class="form-control" id="floatingInput" placeholder="Employee ID"> -->
+            <label>Employee ID:{{profile?.employee_id}}</label>
           </div>
         </div>
         <div class="col-md-6">
           <div class="form-floating mb-3">
-            <input type="email" class="form-control" id="floatingInput" placeholder="Language">
+            <label>Language:------</label>
+            <!-- <input type="email" class="form-control" id="floatingInput" placeholder="Language"> -->
           </div>
         </div>
         <div class="col-md-6">
           <div class="form-floating mb-3">
-            <input type="email" class="form-control" id="floatingInput" placeholder="DOB">
+            <label>DOB:{{profile?.date_of_birth| date: 'dd/MM/yyyy'}}</label>
+            <!-- <input type="email" class="form-control" id="floatingInput" placeholder="DOB"> -->
           </div>
         </div>
         <div class="col-md-6">
           <div class="form-floating mb-3">
-            <input type="email" class="form-control" id="floatingInput" placeholder="Gender">
+            <label>Gender:-----</label>
+            <!-- <input type="email" class="form-control" id="floatingInput" placeholder="Gender"> -->
           </div>
         </div>
       </div>

@@ -33,6 +33,7 @@ export class LoginComponent implements OnInit {
   console.log(data)
     this.authendication.post(appModels.LOGIN,data).pipe(untilDestroyed(this)).subscribe((res:any) => {
       console.log(res)
+      localStorage.setItem("personal",JSON.stringify(res))
      localStorage.setItem("JWTokens",res['token'])
      this.toast.success("Logged in Successfully")
     this.router.navigate(['/pages/home'])
