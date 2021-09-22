@@ -1,5 +1,5 @@
 enum appModels {
-   
+    LOGIN='employee/login',
 }
 
 
