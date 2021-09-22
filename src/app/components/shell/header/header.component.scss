@@ -7,7 +7,7 @@ ul li{
     position: relative;
     left: 0;
     top: 0;
-    width: 100%;
+     width: 100%;
     height: auto;
     padding: 0;
     margin: 0;
@@ -1062,4 +1062,25 @@ span.as-c-content {
         font-stretch: condensed;
         color: #666
     }
+}
+.as-menu-w{
+    width: 52rem !important;
+}
+
+input.searchInput {
+    border: 1px solid #e9e9e9;
+    border-radius: 8px;
+    padding: 10px 15px;
+}
+
+.as-search:hover .searchInput{
+    visibility: visible
+}
+.searchInput{
+   visibility: hidden
+}
+
+a.nav-link.active {
+    color: #2e2e2e;
+    font-weight: 600;
 }
