@@ -10,7 +10,8 @@ body,
   font-family: 'Red Hat Text', sans-serif;
   font-size: 18px;
   // height: 100vh;
-  color: #717171;
+  // color: #717171;
+  color: #3b3b3b;
 }
 
 h1,
@@ -25,12 +26,35 @@ select,
 textarea {
   font-family: 'Red Hat Text', sans-serif !important;
 }
+::-webkit-scrollbar {
+  width: 10px;
+}
 
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+ 
+
+::-webkit-scrollbar-thumb {
+  background: #888; 
+}
+
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
 .as-mt-main {
   // margin-top: 70px;
+  // margin-top: 90px;
+  // width: 80%;
+  // margin-left: 236px;
   margin-top: 90px;
   width: 80%;
-  margin-left: 236px;
+
+  float: right;
+  padding-right: 50px;
+  padding-left: 50px;
 }
 
 .login {
@@ -153,6 +177,8 @@ input:-webkit-autofill {
     display: block;
     margin: 7px 20px 4px 0;
     cursor: pointer;
+    
+    background-size: 30px
   }
 
   #wrapper {
@@ -182,15 +208,16 @@ input:-webkit-autofill {
     /* background: #585f66; */
     box-shadow: 2px 1px 2px rgba(0, 0, 0, .1);
     position: fixed;
-    top: 72px;
+    top: 94px;
     flex-direction: column !important;
     // left: -220px;
     left: 0;
-    width: 200px;
+    width: 274px;
     overflow-y: auto;
     bottom: 0;
     overflow-x: hidden;
-    padding-bottom: 40px
+    padding-bottom: 40px;
+    background: white;
   }
 }
 
@@ -208,7 +235,7 @@ input:-webkit-autofill {
   background-image: url(assets/img/SEQUR-RX_logo.png);
   height: 44px;
   background-repeat: no-repeat;
-  width: 20%;
+  width: 30%;
   background-size: 100%;
   background-position: center;
 }
@@ -240,19 +267,20 @@ input:-webkit-autofill {
   // max-width: 241px;
   /* border: 1px solid lightgray; */
   width: 33%;
-    max-width: 313px;
+    max-width: 290px;
   box-shadow: 0px 0px 8px 1px #e0dfdf;
+  border: 1px solid #daebf1;
   margin: 20px;
   text-align: center;
   position: relative;
   padding-right: 15px;
   padding-left: 15px;
-  border: 1px solid #daebf1;
+  
 }
 
 .activemenu .as-card {
   // max-width: 228px;
-  max-width: 283px;
+  max-width: 275px;
 }
 
 .as-crd-title {
@@ -271,8 +299,9 @@ input:-webkit-autofill {
 
 .as-title {
   font-size: 30px;
-  /* color: #797979; */
-  color: #868484;
+  /* color: #797979; 
+  color: #868484;*/
+  color: #6a6969;
 }
 
 .as-color-1 {
@@ -356,7 +385,8 @@ input:-webkit-autofill {
   background-repeat: no-repeat;
   background-position: center;
   width: 100px;
-  margin: 0 40px 0 14px;
+  // margin: 0 40px 0 14px;
+  margin: 0 14px 0 0px;
 }
 
 .as-font-18 {
@@ -378,7 +408,15 @@ input:-webkit-autofill {
 .as-font-20 {
   font-size: 20px;
 }
-
+.as-font-36 {
+  font-size: 36px;
+}
+.as-font-12 {
+  font-size: 12px;
+}
+.as-m12{
+  margin: 12px;
+}
 .as-text-flex {
   align-items: center;
   flex-wrap: nowrap;
@@ -451,7 +489,7 @@ input:-webkit-autofill {
 }
 
 .as-details-txt {
-  margin: 16px 40px 16px 10px;
+  margin: 16px 30px 16px 10px;
   border-right: 2px solid #d6d6d6;
   padding-right: 16px;
   color: #1e1e1e;
@@ -552,7 +590,7 @@ input:-webkit-autofill {
 .activemenu .as-mt-main {
   margin-left: 0px;
   width: 100%;
-  padding:0 2rem;
+  padding: 0 50px;
 }
 
 .as-bg-1 {
@@ -645,16 +683,19 @@ input:-webkit-autofill::first-line {
   width: 100%;
   padding: 0rem 3rem;
 }
+.mycart .as-card {
+  max-width: 286px;
+}
 .activemenu .mycart .as-card {
-  max-width: 278px;
+  max-width: 273px;
 }
 
 .i-history .as-card {
   /* max-width: 25%; */
   /* border: 1px solid lightgray; */
   width: 33%;
-  max-width: 319px;
-
+  max-width: 286px;
+  padding: 1.5rem;
 }
 .activemenu .as-mt-main.i-history  {
  
@@ -663,8 +704,11 @@ input:-webkit-autofill::first-line {
 .activemenu .i-history .as-card {
  
   width: 33%;
-  max-width: 272px;
+  max-width: 265px;
 }
+
+
+
 
 
 button:focus{
@@ -680,4 +724,30 @@ button:focus{
   
   color: #2d2d2d;
   font-weight: 500;
+}
+
+// Serch box
+
+
+
+
+.main-footer a {
+  color: #6a6969;
+}
+
+.as-li-h-14{
+  line-height: 1.4;
+}
+
+.as-similar-img {
+  height: 70px;
+  width: 70px;
+  background-repeat: no-repeat;
+  background-position: center;
+  box-shadow: 0px 0px 8px 1px #e0dfdf;
+  border: 1px solid #daebf1;
+  margin: 12px;
+}
+.flex-wrap-nowrap{
+  flex-wrap: nowrap;
 }
