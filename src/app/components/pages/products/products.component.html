@@ -8,18 +8,34 @@
             <div class="mr-3 as-font-14">
                 Items 1-20 of 40
             </div>
-            <div class="mr-3">
-                <i class="fa fa-th" aria-hidden="true"></i>
+            <div class="mr-3 pointer  as-g-active view-active" (click)="gridview()">
+                <i class="fa fa-th " aria-hidden="true"></i>
             </div>
-            <div class="mr-3">
+            <div class="mr-3 pointer  as-l-active " (click)="listview()">
                 <i class="fa fa-list" aria-hidden="true"></i>
             </div>
         </div>
     </div>
-    <div class="row ml-0">
-        <div class="as-card py-3">
+    <div class="row ml-0 as-grid">
+        <div class="as-card py-3" *ngFor="let item of items">
             <div class="">
                 <!-- <img src="../../../assets/img/tools.png"> -->
+                <div class="as-product-img" style="background-image: url({{item?.image_path}});"></div>
+            </div>
+            
+            <div class="mb-3 text-left as-bold as-color-4">{{item?.item_name}}</div>
+                <div class="row align-items-center mx-0">
+                    <div class="mr-3">
+                        <button type="button" class="btn btn-round btn-light" (click)="select(item?._id)">Take Now</button>
+                    </div>
+                    <div class="">
+                        
+                        <button type="button" class="btn btn-round btn-light addtocart-icon addtocart-btn"></button>
+                    </div>
+                </div>
+                
+        </div>
+<!--      
                 <div class="as-product-img" style="background-image: url(../../../assets/img/tools.png);"></div>
             </div>
             
@@ -38,7 +54,7 @@
         </div>
         <div class="as-card py-3">
             <div class="">
-                <!-- <img src="../../../assets/img/tools.png"> -->
+            
                 <div class="as-product-img" style="background-image: url(../../../assets/img/tools.png);"></div>
             </div>
             
@@ -57,7 +73,7 @@
         </div>
         <div class="as-card py-3">
             <div class="">
-                <!-- <img src="../../../assets/img/tools.png"> -->
+              
                 <div class="as-product-img" style="background-image: url(../../../assets/img/tools.png);"></div>
             </div>
             
@@ -76,7 +92,7 @@
         </div>
         <div class="as-card py-3">
             <div class="">
-                <!-- <img src="../../../assets/img/tools.png"> -->
+        
                 <div class="as-product-img" style="background-image: url(../../../assets/img/tools.png);"></div>
             </div>
             
@@ -95,7 +111,7 @@
         </div>
         <div class="as-card py-3">
             <div class="">
-                <!-- <img src="../../../assets/img/tools.png"> -->
+              
                 <div class="as-product-img" style="background-image: url(../../../assets/img/tools.png);"></div>
             </div>
             
@@ -114,7 +130,7 @@
         </div>
         <div class="as-card py-3">
             <div class="">
-                <!-- <img src="../../../assets/img/tools.png"> -->
+            
                 <div class="as-product-img" style="background-image: url(../../../assets/img/tools.png);"></div>
             </div>
             
@@ -133,26 +149,7 @@
         </div>
         <div class="as-card py-3">
             <div class="">
-                <!-- <img src="../../../assets/img/tools.png"> -->
-                <div class="as-product-img" style="background-image: url(../../../assets/img/tools.png);"></div>
-            </div>
-            
-            <div class="mb-3 text-left as-bold as-color-4">Multi Function Wrench 
-                Spanner Tool (9mm to 32 mm)</div>
-                <div class="row align-items-center mx-0">
-                    <div class="mr-3">
-                        <button type="button" class="btn btn-round btn-light"  [routerLink]="'/pages/details'">Take Now</button>
-                    </div>
-                    <div class="">
-                        
-                        <button type="button" class="btn btn-round btn-light addtocart-icon addtocart-btn"></button>
-                    </div>
-                </div>
-                
-        </div>
-        <div class="as-card py-3">
-            <div class="">
-                <!-- <img src="../../../assets/img/tools.png"> -->
+  
                 <div class="as-product-img" style="background-image: url(../../../assets/img/tools.png);"></div>
             </div>
             
@@ -168,7 +165,7 @@
                     </div>
                 </div>
                 
-        </div>
+        </div>  -->
     </div>
     <div class="text-center mb-5 mt-3">
         <button type="button" class="btn btn-round btn-outline-info as-more-btn">Load More..</button>
@@ -176,3 +173,7 @@
 </div>
 
 
+     <!-- <div class="as-card py-3">
+            <div class="">
+              <img src="../../../assets/img/tools.png"> -->
+                <!-- <img src="../../../assets/img/tools.png"> -->

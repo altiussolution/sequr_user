@@ -24,8 +24,9 @@ this.crud.CurrentMessage.subscribe(message=>this.message=message)
   this.crud.get(appModels.CATEGORYLIST).pipe(untilDestroyed(this)).subscribe((res:any) => {
     console.log(res)
    this.category=res['data']
+   this.crud.changemessage(this.category[0]?.category?._id)
   })
-this.crud.changemessage("hi")
+
   }
 setval(val){
   this.router.navigate(['pages/home'])
