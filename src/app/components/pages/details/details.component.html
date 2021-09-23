@@ -16,19 +16,19 @@
                   </a>
                 </aside>
               
-                <main class="primary" style="background-image: url('../../../../assets/img/details-img.png');">
+               <!--   <main class="primary" style="background-image: url('../../../../assets/img/details-img.png');">-->
+                  <img src='{{items.image_path}}' class="primary" >
                 <div class="as-avaliable">
                     <div class="as-avaliable-btn"></div>
                     <div class="as-font-18 as-z-index-1">Available</div>
-                    <div class="as-font-24">10</div>
+                    <div class="as-font-24">{{machine.quantity}}</div>
                 </div>
                    
-                </main>
+               <!-- </main>-->
               </div>
         </div>
         <div class="col-md-6 pr-0">
-            <div class="as-details-title">Multi Function Wrench 
-Spanner Tool (9mm to 32 mm)
+            <div class="as-details-title">{{items.item_name}}
             </div>
             <div class="row mx-0 as-details-border">
                 <div class="as-details-txt">
@@ -36,7 +36,7 @@ Spanner Tool (9mm to 32 mm)
                         Machine Name
                     </div>
                     <div>
-                        Machine 01
+                        {{cube.cube_name}}
                     </div>
                 </div>
                 <div class="as-details-txt">
@@ -44,7 +44,7 @@ Spanner Tool (9mm to 32 mm)
                         Column ID
                     </div>
                     <div>
-                        15
+                        {{bin.bin_id}}
                     </div>
                 </div>
                 <div class="as-details-txt">
@@ -52,13 +52,15 @@ Spanner Tool (9mm to 32 mm)
                         Rack ID
                     </div>
                     <div>
-                        001
+                        {{compartment.compartment_id}}
                     </div>
                 </div>
             </div>
             <div class="row mx-0 as-details-border as-details-btn">
                 <div class="as-w20 as-mr-det">
-                    <input type="number" id="quantity" class="form-control" placeholder="Qty" name="quantity" min="1" max="5">
+                    <form [formGroup]="qtyform">
+                    <input type="number"  formControlName="qty" value="" (change)="changing(qtyform.value)" placeholder="Qty" name="quantity" min="1" max="{{machine.quantity}}">
+                    </form>
                 </div>
                 <div class="as-mr-det">
                     <button class="btn  btn-primary fw-bold mb-2" type="button" >Take Now</button>
@@ -67,7 +69,7 @@ Spanner Tool (9mm to 32 mm)
                     or
                 </div>
                 <div class="as-mr-det">
-                    <button class="btn  btn-secondary   fw-bold mb-2" type="button" >Add to cart</button>
+                    <button class="btn  btn-secondary   fw-bold mb-2" type="button" (click)="addtocart(it,qty)">Add to cart</button>
                 </div>
             </div>
 
@@ -76,20 +78,8 @@ Spanner Tool (9mm to 32 mm)
                     Technical Specification
                 </div>
                 <p>
-                    Made from fine grained high carbon steel
+                    {{machine.description}}
                 </p>
-                <p>
-                    The claw hammer is designed with humanized handle, which covered with TPR plastic material and shaped in finger holding grooves.
-                </p>
-                <p>
-                    The claw hammer handle owns good shock-proof ability, comfortable holding feeling and wonderful anti-slipping effect.
-                </p>
-               <p>
-                The head part of the handle has been strengthened to solid the connection.
-               </p>
-               <p>
-                Durable The claw hammer adopts high quality high carbon steel, which is wear resistant, hardness, anti-rust and durable.
-               </p>
             </div>
         </div>
     </div>
