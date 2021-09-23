@@ -6,26 +6,26 @@
 
     <div class="as-menu-as-drophover-header">
       <ul class="as-menu">
-        <li class="as-menu-mega-blog"><a href="#">Category</a>
+        <li class="as-menu-mega-blog"><a>Category</a>
           <div class="d-flex as-menu-w">
             <ul class="as-menu-mega-blog-nav as-drop-head">
 
-              <li class="as-active-menu-item"><a href="#">General(40)</a>
+              <li class="as-active-menu-item" *ngFor="let Categories of category"><a >{{Categories.category.category_name}}({{Categories?.sub_category?.length==''?'0':Categories?.sub_category?.length}})</a>
                 <div class="as-grid as-grid-lined">
                   <div class="row">
                     <div class="as-drop-head">
 
-                      <div class="as-item"><i class="fa fa-chevron-right mr-3 as-color-7"></i>Abrassives(20)</div>
-                      <div class="as-item"><i class="fa fa-chevron-right mr-3 as-color-7"></i>Spot Drills(20)</div>
+                      <div class="as-item" *ngFor="let subcategory of Categories?.sub_category"><i (click)="selectcategory(subcategory?._id)" class="fa fa-chevron-right mr-3 as-color-7"></i>{{subcategory?.sub_category_name}}</div>
+                      <!-- <div class="as-item"><i class="fa fa-chevron-right mr-3 as-color-7"></i>Spot Drills(20)</div>
                       <div class="as-item"><i class="fa fa-chevron-right mr-3 as-color-7"></i>Carbide Drills(20)</div>
                       <div class="as-item"><i class="fa fa-chevron-right mr-3 as-color-7"></i>Had Tools(20)</div>
                       <div class="as-item"><i class="fa fa-chevron-right mr-3 as-color-7"></i>Drills Body(20)</div>
                       <div class="as-item"><i class="fa fa-chevron-right mr-3 as-color-7"></i>Drills Head(20)</div>
                       <div class="as-item"><i class="fa fa-chevron-right mr-3 as-color-7"></i>Hand Tools(20)</div>
                       <div class="as-item"><i class="fa fa-chevron-right mr-3 as-color-7"></i>Drills Body(20)</div>
-                      <div class="as-item"><i class="fa fa-chevron-right mr-3 as-color-7"></i>Drills Head(20)</div>
+                      <div class="as-item"><i class="fa fa-chevron-right mr-3 as-color-7"></i>Drills Head(20)</div> -->
                     </div>
-                    <div class="as-drop-head">
+                    <!-- <div class="as-drop-head">
 
                       <div class="as-item"><i class="fa fa-chevron-right mr-3 as-color-7"></i>Abrassives(20)</div>
                       <div class="as-item"><i class="fa fa-chevron-right mr-3 as-color-7"></i>Spot Drills(20)</div>
@@ -36,13 +36,13 @@
                       <div class="as-item"><i class="fa fa-chevron-right mr-3 as-color-7"></i>Hand Tools(20)</div>
                       <div class="as-item"><i class="fa fa-chevron-right mr-3 as-color-7"></i>Drills Body(20)</div>
                       <div class="as-item"><i class="fa fa-chevron-right mr-3 as-color-7"></i>Drills Head(20)</div>
-                    </div>
+                    </div> -->
                   </div>
                 </div>
                 <span class="as-dropdown-toggle"></span>
               </li>
 
-              <li class="hidden-md"><a href="#">Gage(14)</a>
+              <!-- <li class="hidden-md"><a href="#">Gage(14)</a>
                 <div class="as-grid as-grid-lined">
                   <div class="row">
                     <div class="as-drop-head">
@@ -254,7 +254,7 @@
                   </div>
                 </div>
                 <span class="as-dropdown-toggle"></span>
-              </li>
+              </li> -->
 
 
             </ul>
@@ -284,14 +284,14 @@
         <li class="nav-item">
           <div class="nav-link nav-title as-bold as-color-8">Category </div>
           <hr>
-          <a class="nav-link active">General(40)</a>
-          <a class="nav-link">Gage(14)</a>
+          <a *ngFor="let Categories of category"class="nav-link active" (click)="setval(Categories?.category?._id)">{{Categories.category.category_name}}({{Categories?.sub_category?.length==''?'0':Categories?.sub_category?.length}})</a>
+          <!-- <a class="nav-link">Gage(14)</a>
           <a class="nav-link">Kitting(32)</a>
           <a class="nav-link">Assembly(21)</a>
           <a class="nav-link">Key(15)</a>
           <a class="nav-link">General(20)</a>
           <a class="nav-link">Gage(21)</a>
-          <a class="nav-link">Kit(29)</a>
+          <a class="nav-link">Kit(29)</a> -->
         </li>
         <li class="nav-item">
           <div class="nav-link nav-title as-bold as-color-8" href="#">Item History</div>

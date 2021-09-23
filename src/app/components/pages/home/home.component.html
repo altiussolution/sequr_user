@@ -3,65 +3,29 @@
 <div class="container-fluid as-mt-main">
     <div class="as-header">
         <div class="as-title">
-            General
+            General 
         </div>
         <div class="row as-color-1">
             <div class="mr-3 as-font-14">
                 Items 1-20 of 40
             </div>
-            <div class="mr-3">
+            <div class="mr-3 pointer  as-g-active view-active" (click)="gridview()">
                 <i class="fa fa-th" aria-hidden="true"></i>
             </div>
-            <div class="mr-3">
+            <div class="mr-3 pointer  as-l-active" (click)="listview()">
                 <i class="fa fa-list" aria-hidden="true"></i>
             </div>
         </div>
     </div>
-    <div class="row ml-0">
-        <div class="as-card">
-     <img src="../../../assets/img/hamer.png"  class="as-height"  [routerLink]="'/pages/products'">
-            <a class="as-crd-title" [routerLink]="'/pages/products'">Abrasives</a>
+   
+        
+        <!-- <div  *ngFor="let category of subcategories">
+     <img class="as-card" src="{{category?.image_path}}"  class="as-height"  [routerLink]="'/pages/products'">
+            <a class="as-crd-title" [routerLink]="'/pages/products'">{{category?.sub_category_name}}</a> -->
+    <div class="row ml-0 as-grid">
+        <div class="as-card" *ngFor="let category of subcategories">
+     <img src="{{category?.image_path}}"  class="as-height"  (click)="selectcategory(category)">
+            <a class="as-crd-title" (click)="selectcategory(category)">{{category?.sub_category_name}}</a>
         </div>
-        <div class="as-card">
-     <img src="../../../assets/img/hamer.png"  class="as-height"  [routerLink]="'/pages/products'">
-            <a class="as-crd-title" [routerLink]="'/pages/products'">Abrasives</a>
-        </div>
-        <div class="as-card">
-     <img src="../../../assets/img/hamer.png"  class="as-height"  [routerLink]="'/pages/products'">
-            <a class="as-crd-title" [routerLink]="'/pages/products'">Abrasives</a>
-        </div>
-        <div class="as-card">
-     <img src="../../../assets/img/hamer.png"  class="as-height"  [routerLink]="'/pages/products'">
-            <a class="as-crd-title" [routerLink]="'/pages/products'">Abrasives</a>
-        </div>
-        <div class="as-card">
-     <img src="../../../assets/img/hamer.png"  class="as-height"  [routerLink]="'/pages/products'">
-            <a class="as-crd-title" [routerLink]="'/pages/products'">Abrasives</a>
-        </div>
-        <div class="as-card">
-     <img src="../../../assets/img/hamer.png"  class="as-height"  [routerLink]="'/pages/products'">
-            <a class="as-crd-title" [routerLink]="'/pages/products'">Abrasives</a>
-        </div>
-        <div class="as-card">
-     <img src="../../../assets/img/hamer.png"  class="as-height"  [routerLink]="'/pages/products'">
-            <a class="as-crd-title" [routerLink]="'/pages/products'">Abrasives</a>
-        </div>
-        <div class="as-card">
-     <img src="../../../assets/img/hamer.png"  class="as-height"  [routerLink]="'/pages/products'">
-            <a class="as-crd-title" [routerLink]="'/pages/products'">Abrasives</a>
-        </div>
-        <div class="as-card">
-     <img src="../../../assets/img/hamer.png"  class="as-height"  [routerLink]="'/pages/products'">
-            <a class="as-crd-title" [routerLink]="'/pages/products'">Abrasives</a>
-        </div>
-        <div class="as-card">
-     <img src="../../../assets/img/hamer.png"  class="as-height"  [routerLink]="'/pages/products'">
-            <a class="as-crd-title" [routerLink]="'/pages/products'">Abrasives</a>
-        </div>
-        <div class="as-card">
-     <img src="../../../assets/img/hamer.png"  class="as-height"  [routerLink]="'/pages/products'">
-            <a class="as-crd-title" [routerLink]="'/pages/products'">Abrasives</a>
-        </div>
-
-    </div>
+      
 </div>
