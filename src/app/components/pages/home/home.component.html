@@ -3,7 +3,7 @@
 <div class="container-fluid as-mt-main">
     <div class="as-header">
         <div class="as-title">
-            General
+            General 
         </div>
         <div class="row as-color-1">
             <div class="mr-3 as-font-14">
@@ -18,7 +18,12 @@
         </div>
     </div>
     <div class="row ml-0">
-        <div class="as-card">
+        
+        <div class="as-card" *ngFor="let category of subcategories">
+     <img src="{{category?.image_path}}"  class="as-height"  [routerLink]="'/pages/products'">
+            <a class="as-crd-title" [routerLink]="'/pages/products'">{{category?.sub_category_name}}</a>
+        </div>
+        <!-- <div class="as-card">
      <img src="../../../assets/img/hamer.png"  class="as-height"  [routerLink]="'/pages/products'">
             <a class="as-crd-title" [routerLink]="'/pages/products'">Abrasives</a>
         </div>
@@ -57,11 +62,7 @@
         <div class="as-card">
      <img src="../../../assets/img/hamer.png"  class="as-height"  [routerLink]="'/pages/products'">
             <a class="as-crd-title" [routerLink]="'/pages/products'">Abrasives</a>
-        </div>
-        <div class="as-card">
-     <img src="../../../assets/img/hamer.png"  class="as-height"  [routerLink]="'/pages/products'">
-            <a class="as-crd-title" [routerLink]="'/pages/products'">Abrasives</a>
-        </div>
+        </div> -->
 
     </div>
 </div>

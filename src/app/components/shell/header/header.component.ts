@@ -1,6 +1,9 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Input } from '@angular/core';
 import { Router } from '@angular/router';
+import { untilDestroyed } from 'ngx-take-until-destroy';
+import { CrudService } from 'src/app/services/crud.service';
+import { appModels } from 'src/app/services/shared/enum/enum.util';
 
 
 @Component({
@@ -11,10 +14,24 @@ import { Router } from '@angular/router';
 export class HeaderComponent implements OnInit {
   opened: boolean;
   public sidebarToggled = false;
- constructor(public router: Router) {}
+  category:any=[]
+  myTextVal:any=[];
+  message:any;
+
+ constructor(public router: Router,public crud:CrudService) {}
  ngOnInit(): void {
-    
+this.crud.CurrentMessage.subscribe(message=>this.message=message)
+  this.crud.get(appModels.CATEGORYLIST).pipe(untilDestroyed(this)).subscribe((res:any) => {
+    console.log(res)
+   this.category=res['data']
+  })
+this.crud.changemessage("hi")
   }
+setval(val){
+  this.router.navigate(['pages/home'])
+  this.crud.changemessage(val)
+}
+
   logout(){
     if (confirm(`Are you sure, you want to logout?`)) {
     // localStorage.clear();
@@ -59,5 +76,11 @@ else {
   assidebar.classList.add('sidebar');
 }
 }  
+}
+selectcategory(id:any){
+
+}
+ngOnDestroy(){
+
 }
 }

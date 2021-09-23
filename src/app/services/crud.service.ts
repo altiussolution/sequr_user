@@ -1,15 +1,21 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import {  Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from "@angular/common/http";
+
+import {  BehaviorSubject } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
 export class CrudService {
 
-
+private messagesource= new BehaviorSubject<any>("");
+CurrentMessage= this.messagesource.asObservable();
   constructor(private http: HttpClient) { }
 
+changemessage(message:any){
+  this.messagesource.next(message)
+}
 
   get(model: string): Observable<any> {
     return this.http.get(model);
@@ -38,7 +44,9 @@ export class CrudService {
     console.log(model, id)
     return this.http.put(`${model}?id=${id}`, body);
   }
-  
+ 
+
+
 }
 
 
