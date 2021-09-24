@@ -22,23 +22,25 @@ export class HomeComponent implements OnInit {
 
       if(message !=""){
         this.message=JSON.parse(message)
-         this.method();
+        this.categoryName=this.message?.category?.category_name
+        this.crud.get(appModels.SUBCATEGORY+this.message?.category?._id).pipe(untilDestroyed(this)).subscribe((res:any) => {
+          console.log(res)
+          this.subcategories=res['data']
+        })
       }
      
     })
   }
-  method(){
-    this.categoryName=this.message?.category?.category_name
-    this.crud.get(appModels.SUBCATEGORY+this.message?.category?._id).pipe(untilDestroyed(this)).subscribe((res:any) => {
-      console.log(res)
-      this.subcategories=res['data']
-    })
-  }
+
 selectcategory(val:any){
   this.subcategories1=val
+  let data1={
+    "category_id": this.subcategories1?.category_id?._id,
+    "_id":this.subcategories1._id
+  }
   let data=this.categoryName+">"+this.subcategories1?.sub_category_name
   this.crud.changemessage2(data)
-  this.crud.changemessage1(JSON.stringify(val))
+  this.crud.changemessage1(JSON.stringify(data1))
   this.router.navigate(['/pages/products'])
 }
 ngOnDestroy(){
