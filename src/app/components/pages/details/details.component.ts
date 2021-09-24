@@ -20,6 +20,7 @@ export class DetailsComponent implements OnInit {
   it: any;
   qty: any;
   qtyform!: FormGroup;
+  id: any;
 
   constructor(  public router: Router,private toast: ToastrService, private fb: FormBuilder,public crud:CrudService) { 
       this.qtyform = this.fb.group({
@@ -28,7 +29,8 @@ export class DetailsComponent implements OnInit {
     }
 
   ngOnInit(): void {
-    this.crud.get1(appModels.DETAILS,localStorage.getItem("id")).pipe(untilDestroyed(this)).subscribe((res:any) => {
+  console.log(localStorage.getItem("id"))
+    this.crud.get(appModels.DETAILS +localStorage.getItem("id")).pipe(untilDestroyed(this)).subscribe((res:any) => {
       console.log(res)
       this.items=res.items
       this.machine=res.machine
@@ -48,11 +50,9 @@ changing(value: any) {
 
   addtocart(it: any, qty: any) {
     let cart = {
-      
         "item" : it,
         "total_quantity" : this.qty,
-        "cart_status" : 1
-    
+        "cart_status" : 1    
     }
     this.crud.post(appModels.ADDTOCART,cart).subscribe(res => {
       console.log(res)

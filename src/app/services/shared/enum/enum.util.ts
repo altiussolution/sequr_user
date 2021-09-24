@@ -1,6 +1,6 @@
 enum appModels {
     LOGIN='employee/login',
-    DETAILS='item/getItemById',
+    DETAILS='item/getItemById/',
     ADDTOCART='card/add',
     USERPROFILE='employee/userProfile/',
     CATEGORYLIST='category/getCategorylist',

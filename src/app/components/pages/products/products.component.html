@@ -20,7 +20,7 @@
         <div class="as-card py-3" *ngFor="let item of items">
             <div class="">
                 <!-- <img src="../../../assets/img/tools.png"> -->
-                <div class="as-product-img" style="background-image: url({{item?.image_path}});"></div>
+                <div class="as-product-img" style="background-image: url({{item?.image_path}});"(click)="select(item?._id)"></div>
             </div>
             
             <div class="mb-3 text-left as-bold as-color-4">{{item?.item_name}}</div>

@@ -44,7 +44,7 @@ export class ProductsComponent implements OnInit {
     asgridl.classList.remove('view-active')
   }
   select(id:any){
-    localStorage.setItem("id",id)
+    localStorage.setItem("_id",id)
     this.router.navigate(['pages/details'])
   }
 
