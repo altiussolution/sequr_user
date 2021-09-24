@@ -15,12 +15,11 @@ export class HomeComponent implements OnInit {
   message: any;
   categoryName: any;
   subcategories1: any=[];
-  constructor(public crud:CrudService,public router:Router) { }
-
-  ngOnInit(): void {
+  constructor(public crud:CrudService,public router:Router) { 
     this.crud.CurrentMessage.subscribe(message=>{
 
-      if(message !=""){
+      if(message !="" && !localStorage.getItem("allow")){
+        localStorage.setItem("allow","data")
         this.message=JSON.parse(message)
         this.categoryName=this.message?.category?.category_name
         this.crud.get(appModels.SUBCATEGORY+this.message?.category?._id).pipe(untilDestroyed(this)).subscribe((res:any) => {
@@ -30,6 +29,10 @@ export class HomeComponent implements OnInit {
       }
      
     })
+  }
+
+  ngOnInit(): void {
+   
   }
 
 selectcategory(val:any){

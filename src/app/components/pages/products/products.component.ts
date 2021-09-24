@@ -17,27 +17,28 @@ export class ProductsComponent implements OnInit {
   message: any=[];
   routername: any;
 
-  constructor(public crud:CrudService,public router:Router,private toast: ToastrService) { }
-
-  ngOnInit(): void {
+  constructor(public crud:CrudService,public router:Router,private toast: ToastrService) {
     this.crud.CurrentMessage2.subscribe(message=>{
       if(message !=""){
         this.routername=message
       
       }})
    this.crud.CurrentMessage1.subscribe(message=>{
-    if(message !=""){
+    if(message !="" && !localStorage.getItem("allow1")){
+      localStorage.setItem("allow1","data")
         this.product=JSON.parse(message)
         console.log(this.product)
-       this.method();
+        this.crud.get('item/getItemByCategory/'+this.product?.category_id+'/'+this.product?._id).pipe(untilDestroyed(this)).subscribe((res:any) => {
+          console.log(res)
+         this.items=res['data']
+        })
       }})
+   }
+
+  ngOnInit(): void {
+  
   }
-  method(){
-    this.crud.get('item/getItemByCategory/'+this.product?.category_id+'/'+this.product?._id).pipe(untilDestroyed(this)).subscribe((res:any) => {
-      console.log(res)
-     this.items=res['data']
-    })
-  }
+
   listview(){
     
     let asgrid = document.querySelector('.as-mt-main >.as-grid');

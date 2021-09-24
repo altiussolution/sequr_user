@@ -27,11 +27,13 @@ this.crud.CurrentMessage.subscribe(message=>this.message=message)
   this.crud.get(appModels.CATEGORYLIST).pipe(untilDestroyed(this)).subscribe((res:any) => {
     console.log(res)
    this.category=res['data']
+   localStorage.removeItem("allow") 
    this.crud.changemessage(JSON.stringify(this.category[0]))
   })
 
   }
 setval(val:any){
+  localStorage.removeItem("allow") 
   this.crud.changemessage(JSON.stringify(val))
   this.router.navigate(['pages/home'])
  
@@ -116,6 +118,7 @@ else {
 }  
 }
 selectcategory(val:any,category:any){
+    localStorage.removeItem("allow1") 
     this.category1=category
     this.subcategory=val
     let data=this.category1.category.category_name+">"+this.subcategory?.sub_category_name

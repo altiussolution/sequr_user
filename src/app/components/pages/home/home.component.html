@@ -18,23 +18,9 @@
         </div>
     </div>
    
-        
-        <!-- <div  *ngFor="let category of subcategories">
-     <img class="as-card" src="{{category?.image_path}}"  class="as-height"  [routerLink]="'/pages/products'">
-            <a class="as-crd-title" [routerLink]="'/pages/products'">{{category?.sub_category_name}}</a> -->
-    <div class="row ml-0 as-grid">
-        <!-- <div class="as-card" *ngFor="let category of subcategories">
-     <img src="{{category?.image_path}}"  class="as-height"  (click)="selectcategory(category)">
-            <a class="as-crd-title" (click)="selectcategory(category)">{{category?.sub_category_name}}</a>
-        </div> -->
-        <!-- <div class="as-card" *ngFor="let category of subcategories">
-            <div class="as-home-img" style="background: url({{category?.image_path}});"  (click)="selectcategory(category)"></div>
-                   <a class="as-crd-title" (click)="selectcategory(category)">{{category?.sub_category_name}}</a>
-               </div> -->
-
-               <div class="as-card" *ngFor="let category of subcategories">
-                <div class="as-home-img" style="background: url(../../../../assets/img/addtocarticon.svg);"  (click)="selectcategory(category)"></div>
-                       <a class="as-crd-title" (click)="selectcategory(category)">{{category?.sub_category_name}}</a>
-                   </div>
-      
+<div class="row ml-0 as-grid">
+    <div class="as-card" *ngFor="let category of subcategories">
+        <div class="as-home-img" style="background: url({{category?.image_path}});"  (click)="selectcategory(category)"></div>
+        <a class="as-crd-title" (click)="selectcategory(category)">{{category?.sub_category_name}}</a>
+    </div>
 </div>
