@@ -78,7 +78,13 @@ else {
 }
 }  
 }
-selectcategory(id:any){
+selectcategory(val:any){
+  // localStorage.setItem("category",JSON.stringify(val))
+
+    
+    this.crud.changemessage1(JSON.stringify(val))
+  
+  this.router.navigate(['/pages/products'])
 
 }
 ngOnDestroy(){

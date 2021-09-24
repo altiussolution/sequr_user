@@ -10,13 +10,17 @@ import {  BehaviorSubject } from 'rxjs';
 export class CrudService {
 
 private messagesource= new BehaviorSubject<any>("");
+private messagesource1= new BehaviorSubject<any>("");
 CurrentMessage= this.messagesource.asObservable();
+CurrentMessage1= this.messagesource1.asObservable();
   constructor(private http: HttpClient) { }
 
 changemessage(message:any){
   this.messagesource.next(message)
 }
-
+changemessage1(message:any){
+  this.messagesource1.next(message)
+}
   get(model: string): Observable<any> {
     return this.http.get(model);
   }
