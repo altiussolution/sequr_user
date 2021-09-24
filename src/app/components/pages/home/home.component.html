@@ -3,7 +3,7 @@
 <div class="container-fluid as-mt-main">
     <div class="as-header">
         <div class="as-title">
-            General
+            {{categoryName}} 
         </div>
         <div class="row as-color-1">
             <div class="mr-3 as-font-14">
@@ -17,51 +17,24 @@
             </div>
         </div>
     </div>
+   
+        
+        <!-- <div  *ngFor="let category of subcategories">
+     <img class="as-card" src="{{category?.image_path}}"  class="as-height"  [routerLink]="'/pages/products'">
+            <a class="as-crd-title" [routerLink]="'/pages/products'">{{category?.sub_category_name}}</a> -->
     <div class="row ml-0 as-grid">
-        <div class="as-card">
-     <div class="as-home-img" style="background: url(../../../assets/img/hamer.png);"  [routerLink]="'/pages/products'"></div>
-            <a class="as-crd-title" [routerLink]="'/pages/products'">Abrasives</a>
-        </div>
-        <div class="as-card">
-    <div class="as-home-img" style="background: url(../../../assets/img/hamer.png);"  [routerLink]="'/pages/products'"></div>
-            <a class="as-crd-title" [routerLink]="'/pages/products'">Abrasives</a>
-        </div>
-        <div class="as-card">
-    <div class="as-home-img" style="background: url(../../../assets/img/hamer.png);"  [routerLink]="'/pages/products'"></div>
-            <a class="as-crd-title" [routerLink]="'/pages/products'">Abrasives</a>
-        </div>
-        <div class="as-card">
-    <div class="as-home-img" style="background: url(../../../assets/img/hamer.png);"  [routerLink]="'/pages/products'"></div>
-            <a class="as-crd-title" [routerLink]="'/pages/products'">Abrasives</a>
-        </div>
-        <div class="as-card">
-    <div class="as-home-img" style="background: url(../../../assets/img/hamer.png);"  [routerLink]="'/pages/products'"></div>
-            <a class="as-crd-title" [routerLink]="'/pages/products'">Abrasives</a>
-        </div>
-        <div class="as-card">
-    <div class="as-home-img" style="background: url(../../../assets/img/hamer.png);"  [routerLink]="'/pages/products'"></div>
-            <a class="as-crd-title" [routerLink]="'/pages/products'">Abrasives</a>
-        </div>
-        <div class="as-card">
-    <div class="as-home-img" style="background: url(../../../assets/img/hamer.png);"  [routerLink]="'/pages/products'"></div>
-            <a class="as-crd-title" [routerLink]="'/pages/products'">Abrasives</a>
-        </div>
-        <div class="as-card">
-    <div class="as-home-img" style="background: url(../../../assets/img/hamer.png);"  [routerLink]="'/pages/products'"></div>
-            <a class="as-crd-title" [routerLink]="'/pages/products'">Abrasives</a>
-        </div>
-        <div class="as-card">
-    <div class="as-home-img" style="background: url(../../../assets/img/hamer.png);"  [routerLink]="'/pages/products'"></div>
-            <a class="as-crd-title" [routerLink]="'/pages/products'">Abrasives</a>
-        </div>
-        <div class="as-card">
-    <div class="as-home-img" style="background: url(../../../assets/img/hamer.png);"  [routerLink]="'/pages/products'"></div>
-            <a class="as-crd-title" [routerLink]="'/pages/products'">Abrasives</a>
-        </div>
-        <div class="as-card">
-    <div class="as-home-img" style="background: url(../../../assets/img/hamer.png);"  [routerLink]="'/pages/products'"></div>
-            <a class="as-crd-title" [routerLink]="'/pages/products'">Abrasives</a>
-        </div>
+        <!-- <div class="as-card" *ngFor="let category of subcategories">
+     <img src="{{category?.image_path}}"  class="as-height"  (click)="selectcategory(category)">
+            <a class="as-crd-title" (click)="selectcategory(category)">{{category?.sub_category_name}}</a>
+        </div> -->
+        <!-- <div class="as-card" *ngFor="let category of subcategories">
+            <div class="as-home-img" style="background: url({{category?.image_path}});"  (click)="selectcategory(category)"></div>
+                   <a class="as-crd-title" (click)="selectcategory(category)">{{category?.sub_category_name}}</a>
+               </div> -->
 
-    </div>
+               <div class="as-card" *ngFor="let category of subcategories">
+                <div class="as-home-img" style="background: url(../../../../assets/img/addtocarticon.svg);"  (click)="selectcategory(category)"></div>
+                       <a class="as-crd-title" (click)="selectcategory(category)">{{category?.sub_category_name}}</a>
+                   </div>
+      
 </div>

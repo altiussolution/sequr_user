@@ -1,16 +1,31 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import {  Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from "@angular/common/http";
+
+import {  BehaviorSubject } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
 export class CrudService {
 
-
+private messagesource= new BehaviorSubject<any>("");
+private messagesource1= new BehaviorSubject<any>("");
+private messagesource2= new BehaviorSubject<any>("");
+CurrentMessage= this.messagesource.asObservable();
+CurrentMessage1= this.messagesource1.asObservable();
+CurrentMessage2= this.messagesource2.asObservable();
   constructor(private http: HttpClient) { }
 
-
+changemessage(message:any){
+  this.messagesource.next(message)
+}
+changemessage1(message:any){
+  this.messagesource1.next(message)
+}
+changemessage2(message:any){
+  this.messagesource2.next(message)
+}
   get(model: string): Observable<any> {
     return this.http.get(model);
   }
@@ -38,7 +53,9 @@ export class CrudService {
     console.log(model, id)
     return this.http.put(`${model}?id=${id}`, body);
   }
-  
+ 
+
+
 }
 
 
