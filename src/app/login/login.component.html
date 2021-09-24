@@ -17,8 +17,8 @@
                  
                 </div>
                 <div class="form-floating mb-4 relative ">
-                  <input type="password" class="form-control" id="floatingPassword" placeholder="Password" formControlName="password">
-                  <i class="fa fa-eye-slash as-eye"></i>
+                  <input type="password" class="form-control" #password1  id="floatingPassword" placeholder="Password" formControlName="password">
+                  <i (click)="changeType(password1)" class="as-eye " [ngClass]="toggle1 ? 'fa fa-eye' : 'fa fa-eye-slash'"></i>
                 </div>
                 <div class="text-right ">
                   <a class="as-color-1 " href="#" data-toggle="modal" data-target="#myModal">Forgot password?</a>

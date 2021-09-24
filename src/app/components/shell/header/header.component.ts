@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, ViewChild, ElementRef, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 
 
@@ -11,10 +11,10 @@ import { Router } from '@angular/router';
 export class HeaderComponent implements OnInit {
   opened: boolean;
   public sidebarToggled = false;
+  searchIcon = 'search-icon';
+
  constructor(public router: Router) {}
- ngOnInit(): void {
-    
-  }
+ 
   logout(){
     if (confirm(`Are you sure, you want to logout?`)) {
     // localStorage.clear();
@@ -22,7 +22,40 @@ export class HeaderComponent implements OnInit {
     // this.toast.success("Logout Successfully")
     }
 }
+@ViewChild('searchInput', { read: ElementRef })
+private searchInput: ElementRef;
 
+  interactedWithSearch = false;
+  @Output()
+  searchEvent = new EventEmitter<{ query?: string, action: 'SEARCH' | 'CLEAR' }>();
+
+  toggleSearch() {
+    const searchContainer = document.getElementById('search-container');
+    this.toggleClass(searchContainer, 'open');
+   
+    if (!this.hasClass(searchContainer, 'open') && this.interactedWithSearch) {
+      this.searchEvent.emit({ action: 'CLEAR' });
+      this.interactedWithSearch = false;
+      this.searchInput.nativeElement.value = '';
+    }
+  }
+
+  private toggleClass(elem, className) {
+    this.hasClass(elem, className) ? elem.classList.remove(className) : elem.classList.add(className);
+  }
+
+  private hasClass(elem, className): boolean {
+    return elem.classList.contains(className);
+  }
+
+  search() {
+    const searchTerm = this.searchInput.nativeElement.value;
+    this.searchEvent.emit({ query: searchTerm, action: 'SEARCH' });
+    this.interactedWithSearch = true;
+  }
+ ngOnInit(): void {
+    
+  }
 toggleSidebar() {
   let assidebar = document.querySelector('.sidenav');
   let body = document.querySelector('body');

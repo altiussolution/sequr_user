@@ -12,7 +12,16 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
+  toggle1: boolean = false;
 
+  changeType(input_field_password){
+    if(input_field_password.type=="password")
+    {input_field_password.type = "text";}
+  else
+    {input_field_password.type = "password";}
+
+    this.toggle1 = !this.toggle1;
+  }
   constructor(
     public router: Router,
     private fb: FormBuilder,

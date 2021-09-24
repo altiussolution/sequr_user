@@ -7,11 +7,12 @@ ul li{
     position: relative;
     left: 0;
     top: 0;
-     width: 100%;
+    //  width: 100%;
     height: auto;
     padding: 0;
     margin: 0;
-    z-index: 99999
+    z-index: 99999;
+    // width: 38%;
 }
 
 
@@ -1083,4 +1084,58 @@ input.searchInput {
 a.nav-link.active {
     color: #2e2e2e;
     font-weight: 600;
+}
+
+#search-container {
+    width: 40px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    transition: width 0.5s ease;
+}
+
+#search-container .search-fields {
+        display: flex;
+        align-items: center;
+        flex-direction: row;
+        padding: 0px 50px;
+}
+
+#search-container .toggleBtn {
+        position:absolute;
+        right: 0;
+}
+
+#search-container.open {
+        width: 300px;
+}
+button.toggleBtn {
+    background-color: transparent;
+    border: 0;
+}
+
+.search-fields input {
+    border: 0;
+    border-bottom: 1px solid gray;
+}
+.search-fields input{
+    opacity: 0;
+}
+.open .search-fields input{
+    opacity: 1;
+}
+@media only screen and (min-width : 768px)  
+and (orientation : landscape)
+and (-webkit-min-device-pixel-ratio: 2){
+ul.as-menu > li.as-menu-mega > div, ul.as-menu > li.as-menu-mega-blog > div, ul.as-menu > li.as-menu-mega-shop > div {
+    left: -200px;
+}
+#search-container.open {
+    width: 227px;
+}
+#search-container .search-fields {
+    padding: 0px 0px;
+}
 }
