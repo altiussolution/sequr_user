@@ -26,24 +26,30 @@ select,
 textarea {
   font-family: 'Red Hat Text', sans-serif !important;
 }
+
+.fa {
+  font-family: FontAwesome !important;
+}
+
 ::-webkit-scrollbar {
   width: 10px;
 }
 
 
 ::-webkit-scrollbar-track {
-  background: #f1f1f1; 
+  background: #f1f1f1;
 }
- 
+
 
 ::-webkit-scrollbar-thumb {
-  background: #888; 
+  background: #888;
 }
 
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #555; 
+  background: #555;
 }
+
 .as-mt-main {
   // margin-top: 70px;
   // margin-top: 90px;
@@ -177,7 +183,7 @@ input:-webkit-autofill {
     display: block;
     margin: 7px 20px 4px 0;
     cursor: pointer;
-    
+
     background-size: 30px
   }
 
@@ -235,7 +241,7 @@ input:-webkit-autofill {
   background-image: url(assets/img/SEQUR-RX_logo.png);
   height: 44px;
   background-repeat: no-repeat;
-  width: 30%;
+  width: 18%;
   background-size: 100%;
   background-position: center;
 }
@@ -267,7 +273,7 @@ input:-webkit-autofill {
   // max-width: 241px;
   /* border: 1px solid lightgray; */
   width: 33%;
-    max-width: 290px;
+  max-width: 290px;
   box-shadow: 0px 0px 8px 1px #e0dfdf;
   border: 1px solid #daebf1;
   margin: 20px;
@@ -275,7 +281,7 @@ input:-webkit-autofill {
   position: relative;
   padding-right: 15px;
   padding-left: 15px;
-  
+
 }
 
 .activemenu .as-card {
@@ -331,8 +337,9 @@ input:-webkit-autofill {
 .as-color-7 {
   color: #949494
 }
+
 .as-color-8 {
-  color:#494949;
+  color: #494949;
 }
 
 .as-bold {
@@ -363,12 +370,14 @@ input:-webkit-autofill {
 
 .as-product-img {
   // height: 120px;
-  height: 260px;
+  height: 185px;
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
 }
-
+input {
+  outline: -webkit-focus-ring-color auto 0px;
+}
 .as-product-img-pop {
   height: 80px;
   background-size: 78%;
@@ -408,15 +417,19 @@ input:-webkit-autofill {
 .as-font-20 {
   font-size: 20px;
 }
+
 .as-font-36 {
   font-size: 36px;
 }
+
 .as-font-12 {
   font-size: 12px;
 }
-.as-m12{
+
+.as-m12 {
   margin: 12px;
 }
+
 .as-text-flex {
   align-items: center;
   flex-wrap: nowrap;
@@ -644,13 +657,16 @@ input:-webkit-autofill::first-line {
   font-size: 18px;
   font-weight: 400 !important;
 }
-.as-card a:hover{
+
+.as-card a:hover {
   color: white;
 }
+
 .nav-title {
   border-bottom: 1px solid #dadada;
 }
-.side-nav{
+
+.side-nav {
   padding: 20px;
 }
 
@@ -660,21 +676,23 @@ input:-webkit-autofill::first-line {
   padding-left: 0rem;
 }
 
-.side-nav hr{
+.side-nav hr {
   margin: 0;
-    background: blue;
-    border-top: 3px solid #10a1d1;
-    width: 35px;
-    margin-top: -3px;
+  background: blue;
+  border-top: 3px solid #10a1d1;
+  width: 35px;
+  margin-top: -3px;
 }
 
-.navbar-expand-lg .navbar-nav.side-nav .nav-link:nth-child(3){
+.navbar-expand-lg .navbar-nav.side-nav .nav-link:nth-child(3) {
   margin-top: 1rem;
 }
-.as-height{
+
+.as-height {
   height: 44vh;
 }
-.line-height-13{
+
+.line-height-13 {
   line-height: 1.3;
 }
 
@@ -683,9 +701,11 @@ input:-webkit-autofill::first-line {
   width: 100%;
   padding: 0rem 3rem;
 }
+
 .mycart .as-card {
   max-width: 286px;
 }
+
 .activemenu .mycart .as-card {
   max-width: 273px;
 }
@@ -697,12 +717,14 @@ input:-webkit-autofill::first-line {
   max-width: 286px;
   padding: 1.5rem;
 }
-.activemenu .as-mt-main.i-history  {
- 
+
+.activemenu .as-mt-main.i-history {
+
   padding: 0 4rem;
 }
+
 .activemenu .i-history .as-card {
- 
+
   width: 33%;
   max-width: 265px;
 }
@@ -711,17 +733,17 @@ input:-webkit-autofill::first-line {
 
 
 
-button:focus{
+button:focus {
   outline: -webkit-focus-ring-color auto 0px;
 }
 
-.side-nav .nav-item a{
+.side-nav .nav-item a {
   font-size: 16px;
   color: #6a6969 !important;
 }
 
 .navbar a {
-  
+
   color: #2d2d2d;
   font-weight: 500;
 }
@@ -735,7 +757,7 @@ button:focus{
   color: #6a6969;
 }
 
-.as-li-h-14{
+.as-li-h-14 {
   line-height: 1.4;
 }
 
@@ -748,20 +770,24 @@ button:focus{
   border: 1px solid #daebf1;
   margin: 12px;
 }
-.flex-wrap-nowrap{
+
+.flex-wrap-nowrap {
   flex-wrap: nowrap;
 }
 
-.pointer{
+.pointer {
   cursor: pointer;
 }
-.as-g-active.view-active i{
+
+.as-g-active.view-active i {
   color: #1a73e9;
 }
-.as-l-active.view-active i{
+
+.as-l-active.view-active i {
   color: #1a73e9;
 }
-.as-list .as-card{
+
+.as-list .as-card {
   width: 100%;
   max-width: 100%;
   display: flex;
@@ -770,33 +796,195 @@ button:focus{
   align-items: center;
   justify-content: space-around;
 }
-.as-list .as-product-img{
+
+.as-list .as-product-img {
   height: 125px;
   width: 150px;
 }
+
 .as-list .as-crd-title {
   width: 98%;
   text-align: center;
 }
+
 .as-list .as-productlst-img {
   height: 140px;
-  
+
   width: 158px;
   margin: 12px 14px 0 0px;
 }
 
-.as-list  .as-text-flex {
- 
+.as-list .as-text-flex {
+
   flex-direction: column;
 }
 
-.product-li .as-list .as-color-2{
-text-align: center;;
+.product-li .as-list .as-color-2 {
+  text-align: center;
+  ;
 }
-.as-home-img{
+.as-list .as-card.py-3{
+  padding-bottom:0 !important;
+  padding-top: .7rem !important;
+}
+.as-list .as-card {
+ 
+  margin: 10px;
+}
+.as-home-img {
   height: 39vh;
   background-position: -14px 2px !important;
   background-repeat: no-repeat !important;
   background-size: contain !important;
   width: 19vw;
+}
+
+.as-pro-py {
+  padding-left: .5rem;
+  padding-right: .5rem;
+}
+
+// Tab Design
+@media (min-width:768px) and (max-width:1024px) {
+  .as-mt-main {
+    width: 100%;
+  }
+
+  .as-height {
+    height: 24vh;
+  }
+
+  .as-card {
+    max-width: 184px;
+  }
+  .mycart .as-card {
+    max-width: 182px;
+}
+.as-grid div div:nth-child(3){
+  flex-wrap: nowrap;
+
+}
+}
+
+
+
+@media only screen and (min-width : 768px) and (orientation : landscape) and (-webkit-min-device-pixel-ratio: 2) {
+  .as-mt-main {
+    width: 80%;
+  }
+
+  .as-home-img {
+    height: 33vh;
+
+    width: 18vw;
+  }
+
+  .as-height {
+    height: 31vh;
+  }
+
+  .as-card {
+    width: 33%;
+    max-width: 218px;
+  }
+
+  .navbar-nav.side-nav {
+
+    width: 215px;
+  }
+
+  .as-product-img {
+    height: 128px;
+    background-size: 70%;
+  }
+
+  .activemenu .as-product-img {
+    height: 184px;
+    background-size: 83%;
+  }
+
+  .activemenu .as-card {
+    max-width: 270px;
+  }
+
+  .i-history .as-card {
+    max-width: 199px;
+    padding: 5px;
+  }
+
+  .activemenu .i-history .as-card {
+    max-width: 258px;
+    padding: 1.5rem;
+  }
+
+  .mycart .as-card {
+    // max-width: 199px;
+    max-width: 216px
+  }
+
+  .activemenu .mycart .as-card {
+    max-width: 269px;
+  }
+
+  .as-mt-main {
+
+    padding-right: 25px;
+    padding-left: 25px;
+  }
+
+  .as-home-img {
+    height: 32vh;
+    background-position: inherit !important;
+    background-repeat: no-repeat !important;
+    background-size: contain !important;
+    width: 18vw;
+  }
+
+  .logo-img {
+    width: 25%;
+  }
+  .as-list .as-card {
+    width: 100%;
+    max-width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: space-around;
+  }
+  .as-list .as-card.py-3{
+    padding-bottom:0 !important;
+    padding-top: .7rem !important;
+  }
+  .as-list > div div:nth-child(2){
+    margin-right: 8px;
+
+}
+.as-list > div div:nth-child(3){
+  flex-wrap: nowrap;
+
+}
+.as-list > div div:nth-child(3) button{
+  white-space: nowrap;
+
+}
+}
+
+@media only screen and (min-width: 320px) and (max-width: 576px) {
+  .as-mt-main {
+   
+    width: 100%;
+   
+    padding-right: 20px;
+    padding-left: 20px;
+}
+.as-text-flex {
+  flex-wrap: wrap;
+}
+.pr-list-w-100{
+  width: 100%;
+}
+.as-productlst-img{
+  width: 100%;
+}
 }
