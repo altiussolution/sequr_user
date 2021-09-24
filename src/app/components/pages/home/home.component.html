@@ -27,9 +27,14 @@
      <img src="{{category?.image_path}}"  class="as-height"  (click)="selectcategory(category)">
             <a class="as-crd-title" (click)="selectcategory(category)">{{category?.sub_category_name}}</a>
         </div> -->
-        <div class="as-card" *ngFor="let category of subcategories">
+        <!-- <div class="as-card" *ngFor="let category of subcategories">
             <div class="as-home-img" style="background: url({{category?.image_path}});"  (click)="selectcategory(category)"></div>
                    <a class="as-crd-title" (click)="selectcategory(category)">{{category?.sub_category_name}}</a>
-               </div>
+               </div> -->
+
+               <div class="as-card" *ngFor="let category of subcategories">
+                <div class="as-home-img" style="background: url(../../../../assets/img/addtocarticon.svg);"  (click)="selectcategory(category)"></div>
+                       <a class="as-crd-title" (click)="selectcategory(category)">{{category?.sub_category_name}}</a>
+                   </div>
       
 </div>
