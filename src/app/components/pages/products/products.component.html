@@ -20,13 +20,13 @@
         <div class="as-card py-3" *ngFor="let item of items">
             <div class="">
                 <!-- <img src="../../../assets/img/tools.png"> -->
-                <div class="as-product-img" style="background-image: url({{item?.image_path}});"></div>
+                <div class="as-product-img" style="background-image: url({{item?.image_path}});" (click)="select(item?._id)"></div>
             </div>
             
-            <div class="mb-3 text-left as-bold as-color-4">{{item?.item_name}}</div>
+            <div class="mb-3 text-left as-bold as-color-4" (click)="select(item?._id)">{{item?.item_name}}</div>
                 <div class="row align-items-center mx-0">
                     <div class="mr-3">
-                        <button type="button" class="btn btn-round btn-light" (click)="select(item?._id)">Take Now</button>
+                        <button type="button" class="btn btn-round btn-light" >Take Now</button>
                     </div>
                     <div class="">
                         

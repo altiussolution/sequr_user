@@ -17,11 +17,13 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.crud.CurrentMessage.subscribe(message=>{
       this.message=message
-      if(this.message !="")
-      this.crud.get(appModels.SUBCATEGORY+this.message).pipe(untilDestroyed(this)).subscribe((res:any) => {
-        console.log(res)
-        this.subcategories=res['data']
-      })
+      if(this.message !=""){
+        this.crud.get(appModels.SUBCATEGORY+this.message).pipe(untilDestroyed(this)).subscribe((res:any) => {
+          console.log(res)
+          this.subcategories=res['data']
+        })
+      }
+     
     })
    
 }

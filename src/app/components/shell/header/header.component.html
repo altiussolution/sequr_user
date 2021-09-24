@@ -15,7 +15,7 @@
                   <div class="row">
                     <div class="as-drop-head">
 
-                      <div class="as-item" *ngFor="let subcategory of Categories?.sub_category"><i (click)="selectcategory(subcategory?._id)" class="fa fa-chevron-right mr-3 as-color-7"></i>{{subcategory?.sub_category_name}}</div>
+                      <div class="as-item" *ngFor="let subcategory of Categories?.sub_category"><i  class="fa fa-chevron-right mr-3 as-color-7" (click)="selectcategory(subcategory)">{{subcategory?.sub_category_name}}</i></div>
                       <!-- <div class="as-item"><i class="fa fa-chevron-right mr-3 as-color-7"></i>Spot Drills(20)</div>
                       <div class="as-item"><i class="fa fa-chevron-right mr-3 as-color-7"></i>Carbide Drills(20)</div>
                       <div class="as-item"><i class="fa fa-chevron-right mr-3 as-color-7"></i>Had Tools(20)</div>
