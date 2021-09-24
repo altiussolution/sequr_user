@@ -15,7 +15,7 @@
                   <div class="row">
                     <div class="as-drop-head">
 
-                      <div class="as-item" *ngFor="let subcategory of Categories?.sub_category"><i  class="fa fa-chevron-right mr-3 as-color-7" (click)="selectcategory(subcategory)">{{subcategory?.sub_category_name}}</i></div>
+                      <div class="as-item" *ngFor="let subcategory of Categories?.sub_category"><i  class="fa fa-chevron-right mr-3 as-color-7" (click)="selectcategory(subcategory,Categories)">{{subcategory?.sub_category_name}}</i></div>
                       <!-- <div class="as-item"><i class="fa fa-chevron-right mr-3 as-color-7"></i>Spot Drills(20)</div>
                       <div class="as-item"><i class="fa fa-chevron-right mr-3 as-color-7"></i>Carbide Drills(20)</div>
                       <div class="as-item"><i class="fa fa-chevron-right mr-3 as-color-7"></i>Had Tools(20)</div>
@@ -284,7 +284,7 @@
         <li class="nav-item">
           <div class="nav-link nav-title as-bold as-color-8">Category </div>
           <hr>
-          <a *ngFor="let Categories of category"class="nav-link active" (click)="setval(Categories?.category?._id)">{{Categories.category.category_name}}({{Categories?.sub_category?.length==''?'0':Categories?.sub_category?.length}})</a>
+          <a *ngFor="let Categories of category"class="nav-link active" (click)="setval(Categories)">{{Categories.category.category_name}}({{Categories?.sub_category?.length==''?'0':Categories?.sub_category?.length}})</a>
           <!-- <a class="nav-link">Gage(14)</a>
           <a class="nav-link">Kitting(32)</a>
           <a class="nav-link">Assembly(21)</a>

@@ -13,22 +13,28 @@ export class ProductsComponent implements OnInit {
   product: any=[];
   items: any=[];
   message: any=[];
+  routername: any;
  
   constructor(public crud:CrudService,public router:Router) { }
 
   ngOnInit(): void {
+    this.crud.CurrentMessage2.subscribe(message=>{
+      if(message !=""){
+        this.routername=message
+      
+      }})
    this.crud.CurrentMessage1.subscribe(message=>{
     if(message !=""){
         this.product=JSON.parse(message)
         console.log(this.product)
-       
-      this.crud.get('item/getItemByCategory/'+this.product.category_id+'/'+this.product._id).pipe(untilDestroyed(this)).subscribe((res:any) => {
-        console.log(res)
-       this.items=res['data']
-      })
-      }
-
-  })
+       this.method();
+      }})
+  }
+  method(){
+    this.crud.get('item/getItemByCategory/'+this.product.category_id+'/'+this.product._id).pipe(untilDestroyed(this)).subscribe((res:any) => {
+      console.log(res)
+     this.items=res['data']
+    })
   }
   listview(){
     

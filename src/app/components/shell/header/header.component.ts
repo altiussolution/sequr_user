@@ -17,6 +17,8 @@ export class HeaderComponent implements OnInit {
   category:any=[]
   myTextVal:any=[];
   message:any;
+  category1: any=[];
+  subcategory: any=[];
 
  constructor(public router: Router,public crud:CrudService) {}
  ngOnInit(): void {
@@ -24,13 +26,13 @@ this.crud.CurrentMessage.subscribe(message=>this.message=message)
   this.crud.get(appModels.CATEGORYLIST).pipe(untilDestroyed(this)).subscribe((res:any) => {
     console.log(res)
    this.category=res['data']
-   this.crud.changemessage(this.category[0]?.category?._id)
+   this.crud.changemessage(JSON.stringify(this.category[0]))
   })
 
   }
-setval(val){
+setval(val:any){
   this.router.navigate(['pages/home'])
-  this.crud.changemessage(val)
+  this.crud.changemessage(JSON.stringify(val))
 }
 
   logout(){
@@ -78,10 +80,11 @@ else {
 }
 }  
 }
-selectcategory(val:any){
-  // localStorage.setItem("category",JSON.stringify(val))
-
-    
+selectcategory(val:any,category:any){
+    this.category1=category
+    this.subcategory=val
+    let data=this.category1.category.category_name+">"+this.subcategory?.sub_category_name
+    this.crud.changemessage2(data)
     this.crud.changemessage1(JSON.stringify(val))
   
   this.router.navigate(['/pages/products'])
