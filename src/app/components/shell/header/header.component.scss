@@ -464,9 +464,9 @@ ul.as-menu > li.as-menu-mega-blog > div > ul.as-menu-mega-blog-nav {
     background: #efefef
 }
 
-ul.as-menu > li.as-menu-mega-blog > div > ul.as-menu-mega-blog-nav > li {
-    font-size: 14px
-}
+// ul.as-menu > li.as-menu-mega-blog > div > ul.as-menu-mega-blog-nav > li {
+//     font-size: 14px
+// }
 
 ul.as-menu > li.as-menu-mega-blog > div > ul.as-menu-mega-blog-nav > li > a {
     display: block;
@@ -493,7 +493,7 @@ ul.as-menu > li.as-menu-mega-blog > div > ul.as-menu-mega-blog-nav > li > div {
 }
 
 ul.as-menu > li.as-menu-mega-blog > div > ul.as-menu-mega-blog-nav > li:hover > a {
-    background: #ddd;
+    background: #ffffff;
     font-weight: 500;
 }
 
@@ -728,7 +728,8 @@ span.as-c-content {
         text-decoration: none;
         content: '\f107';
         position: absolute;
-        margin-left: 5px
+        margin-left: 5px;
+        margin-top: 1px;
     }
 
     ul.as-menu > li:hover > a:after {
@@ -1081,7 +1082,7 @@ input.searchInput {
    visibility: hidden
 }
 
-a.nav-link.active {
+a.nav-link.active, .sidenav a.nav-link:hover{
     color: #2e2e2e;
     font-weight: 600;
 }

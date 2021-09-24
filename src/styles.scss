@@ -885,7 +885,7 @@ button:focus {
 
   .as-card {
     width: 33%;
-    max-width: 218px;
+    max-width: 211px;
   }
 
   .navbar-nav.side-nav {
@@ -904,7 +904,7 @@ button:focus {
   }
 
   .activemenu .as-card {
-    max-width: 270px;
+    max-width: 260px;
   }
 
   .i-history .as-card {
@@ -919,11 +919,12 @@ button:focus {
 
   .mycart .as-card {
     // max-width: 199px;
-    max-width: 216px
+    // max-width: 216px
+    max-width: 208px;
   }
 
   .activemenu .mycart .as-card {
-    max-width: 269px;
+    max-width: 258px;
   }
 
   .as-mt-main {
@@ -967,6 +968,20 @@ button:focus {
 .as-list > div div:nth-child(3) button{
   white-space: nowrap;
 
+}
+.as-details-txt {
+  margin: 16px 6px 16px -3px;
+  padding-right: 6px;
+}
+.activemenu .as-details-txt {
+  margin: 16px 18px 16px 10px;
+}
+
+.activemenu .as-details-btn .btn {
+  padding: 10px 19px !important;
+}
+.activemenu .as-mr-det {
+  margin-right: 20px !important;
 }
 }
 
