@@ -15,7 +15,7 @@
                   <div class="row">
                     <div class="as-drop-head">
 
-                      <div class="as-item" *ngFor="let subcategory of Categories?.sub_category"><i  class="fa fa-chevron-right mr-3 as-color-7" (click)="selectcategory(subcategory,Categories)"></i>{{subcategory?.sub_category_name}}</div>
+                      <div class="as-item pointer" *ngFor="let subcategory of Categories?.sub_category" (click)="selectcategory(subcategory,Categories)"><i  class="fa fa-chevron-right mr-3 as-color-7" ></i>{{subcategory?.sub_category_name}}</div>
                       <!-- <div class="as-item"><i class="fa fa-chevron-right mr-3 as-color-7"></i>Spot Drills(20)</div>
                       <div class="as-item"><i class="fa fa-chevron-right mr-3 as-color-7"></i>Carbide Drills(20)</div>
                       <div class="as-item"><i class="fa fa-chevron-right mr-3 as-color-7"></i>Had Tools(20)</div>
@@ -300,10 +300,10 @@
           <a class="nav-link">Item Kit 02 (3)</a>
           <a class="nav-link">Item Kit 03 (3)</a>
         </li>
-        <li class="nav-item mt-3">
-          <div class="nav-link nav-title as-bold as-color-8" href="#">Similar Products</div>
+        <li class="nav-item mt-3 as-sp">
+          <div class="nav-link nav-title as-bold as-color-8 " href="#">Similar Products</div>
           <hr>
-          <div class="row flex-wrap-nowrap">
+          <div class="row flex-wrap-nowrap ">
             <div>
               <div class="as-similar-img" style="background-image: url(../../../../assets/img/Similar.png);"></div>
             </div>
