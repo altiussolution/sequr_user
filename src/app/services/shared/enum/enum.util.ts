@@ -1,7 +1,7 @@
 enum appModels {
     LOGIN='employee/login',
     DETAILS='item/getItemById/',
-    ADDTOCART='card/add',
+    ADDTOCART='cart/add',
     USERPROFILE='employee/userProfile/',
     CATEGORYLIST='category/getCategorylist',
     SUBCATEGORY='subCategory/get?category_id=',

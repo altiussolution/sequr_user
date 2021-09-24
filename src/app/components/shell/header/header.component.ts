@@ -31,8 +31,9 @@ this.crud.CurrentMessage.subscribe(message=>this.message=message)
 
   }
 setval(val:any){
-  this.router.navigate(['pages/home'])
   this.crud.changemessage(JSON.stringify(val))
+  this.router.navigate(['pages/home'])
+ 
 }
 
   logout(){

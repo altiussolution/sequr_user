@@ -2,6 +2,7 @@
 import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { untilDestroyed } from 'ngx-take-until-destroy';
+import { BehaviorSubject } from 'rxjs';
 import { CrudService } from 'src/app/services/crud.service';
 import { appModels } from 'src/app/services/shared/enum/enum.util';
 @Component({
@@ -13,7 +14,7 @@ export class HomeComponent implements OnInit {
   subcategories: any=[];
   message: any;
   categoryName: any;
-  subcategories1: any;
+  subcategories1: any=[];
   constructor(public crud:CrudService,public router:Router) { }
 
   ngOnInit(): void {
@@ -36,13 +37,13 @@ export class HomeComponent implements OnInit {
 selectcategory(val:any){
   this.subcategories1=val
   let data=this.categoryName+">"+this.subcategories1?.sub_category_name
-  console.log(data)
   this.crud.changemessage2(data)
-  localStorage.setItem("category",JSON.stringify(val))
+  this.crud.changemessage1(JSON.stringify(val))
   this.router.navigate(['/pages/products'])
+}
+ngOnDestroy(){
 
 }
-ngOnDestroy(){}
   
   listview(){
     

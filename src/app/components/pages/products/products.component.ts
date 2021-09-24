@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { untilDestroyed } from 'ngx-take-until-destroy';
+import { ToastrService } from 'ngx-toastr';
+import { BehaviorSubject } from 'rxjs';
 import { CrudService } from 'src/app/services/crud.service';
 import { appModels } from 'src/app/services/shared/enum/enum.util';
 
@@ -14,8 +16,8 @@ export class ProductsComponent implements OnInit {
   items: any=[];
   message: any=[];
   routername: any;
- 
-  constructor(public crud:CrudService,public router:Router) { }
+
+  constructor(public crud:CrudService,public router:Router,private toast: ToastrService) { }
 
   ngOnInit(): void {
     this.crud.CurrentMessage2.subscribe(message=>{
@@ -31,7 +33,7 @@ export class ProductsComponent implements OnInit {
       }})
   }
   method(){
-    this.crud.get('item/getItemByCategory/'+this.product.category_id+'/'+this.product._id).pipe(untilDestroyed(this)).subscribe((res:any) => {
+    this.crud.get('item/getItemByCategory/'+this.product?.category_id+'/'+this.product?._id).pipe(untilDestroyed(this)).subscribe((res:any) => {
       console.log(res)
      this.items=res['data']
     })
@@ -60,6 +62,24 @@ export class ProductsComponent implements OnInit {
     localStorage.setItem("_id",id)
     this.router.navigate(['pages/details'])
   }
-
-  ngOnDestroy(){}
+  addtocart(it: any, qty: any) {
+    let cart = {
+        "item" : it,
+        "total_quantity" : qty,
+        "cart_status" : 1    
+    }
+    this.crud.post(appModels.ADDTOCART,cart).pipe(untilDestroyed(this)).subscribe((res:any) => {
+      console.log(res)
+      if (res != "") {
+        if(res['message']=="Successfully added into cart!"){
+          this.toast.success("cart added successfully")
+        }
+       }
+    },error=>{
+      this.toast.error("cart added Unsuccessfully")
+    })
+  }
+  ngOnDestroy(){
+ 
+  }
 }
