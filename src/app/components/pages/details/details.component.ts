@@ -65,5 +65,7 @@ changing(value: any) {
  // this.router.navigate(['/pages/mycart']);
 
 //}
-ngOnDestroy(){}
+ngOnDestroy(){
+  localStorage.removeItem("allow1")
+}
 }
