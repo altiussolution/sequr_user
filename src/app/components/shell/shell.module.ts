@@ -15,6 +15,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
+import { MatCardModule } from '@angular/material/card';
 /** Custom Material Module */
 /** Shell Module */
 
@@ -34,7 +35,8 @@ import { MatSortModule } from '@angular/material/sort';
     MatDialogModule,
     MatSelectModule,
     MatPaginatorModule,
-    MatTableModule
+    MatTableModule,
+    MatCardModule,
     ],
   exports: [HeaderComponent,FooterComponent,MenuComponent,ShellComponent,
     RouterModule,
@@ -44,7 +46,8 @@ import { MatSortModule } from '@angular/material/sort';
     MatSelectModule,
     MatPaginatorModule,
     MatTableModule,
-    MatSortModule
+    MatSortModule,
+    MatCardModule,
     
   ],
 })

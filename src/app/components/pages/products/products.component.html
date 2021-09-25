@@ -6,7 +6,14 @@
         </div>
         <div class="row as-color-1">
             <div class="mr-3 as-font-14">
-                Items 1-20 of 40
+                <div class="mr-3 as-font-14">
+                    <mat-paginator [length]="items.length"
+                    [pageSize]="size"
+                    [pageIndex]="page"
+                    [pageSizeOptions]="[4, 8, 12]"
+                    (page)="getData($event)">
+                    </mat-paginator>
+                </div>
             </div>
             <div class="mr-3 pointer  as-g-active view-active" (click)="gridview()">
                 <i class="fa fa-th " aria-hidden="true"></i>
@@ -17,9 +24,8 @@
         </div>
     </div>
     <div class="row ml-0 as-grid">
-        <div class="as-card py-3" *ngFor="let item of items">
+        <div class="as-card py-3" *ngFor="let item of data">
             <div class="">
-                <!-- <img src="../../../assets/img/tools.png"> -->
                 <div class="as-product-img" style="background-image: url({{item?.image_path}});" (click)="select(item?._id)"></div>
             </div>
             
@@ -35,137 +41,7 @@
                 </div>
                 
         </div>
-<!--      
-                <div class="as-product-img" style="background-image: url(../../../assets/img/tools.png);"></div>
-            </div>
-            
-            <div class="mb-3 text-left as-bold as-color-4">Multi Function Wrench 
-                Spanner Tool (9mm to 32 mm)</div>
-                <div class="row align-items-center mx-0">
-                    <div class="mr-3">
-                        <button type="button" class="btn btn-round btn-light"  [routerLink]="'/pages/details'">Take Now</button>
-                    </div>
-                    <div class="">
-                        
-                        <button type="button" class="btn btn-round btn-light addtocart-icon addtocart-btn"></button>
-                    </div>
-                </div>
-                
-        </div>
-        <div class="as-card py-3">
-            <div class="">
-            
-                <div class="as-product-img" style="background-image: url(../../../assets/img/tools.png);"></div>
-            </div>
-            
-            <div class="mb-3 text-left as-bold as-color-4">Multi Function Wrench 
-                Spanner Tool (9mm to 32 mm)</div>
-                <div class="row align-items-center mx-0">
-                    <div class="mr-3">
-                        <button type="button" class="btn btn-round btn-light"  [routerLink]="'/pages/details'">Take Now</button>
-                    </div>
-                    <div class="">
-                        
-                        <button type="button" class="btn btn-round btn-light addtocart-icon addtocart-btn"></button>
-                    </div>
-                </div>
-                
-        </div>
-        <div class="as-card py-3">
-            <div class="">
-              
-                <div class="as-product-img" style="background-image: url(../../../assets/img/tools.png);"></div>
-            </div>
-            
-            <div class="mb-3 text-left as-bold as-color-4">Multi Function Wrench 
-                Spanner Tool (9mm to 32 mm)</div>
-                <div class="row align-items-center mx-0">
-                    <div class="mr-3">
-                        <button type="button" class="btn btn-round btn-light"  [routerLink]="'/pages/details'">Take Now</button>
-                    </div>
-                    <div class="">
-                        
-                        <button type="button" class="btn btn-round btn-light addtocart-icon addtocart-btn"></button>
-                    </div>
-                </div>
-                
-        </div>
-        <div class="as-card py-3">
-            <div class="">
-        
-                <div class="as-product-img" style="background-image: url(../../../assets/img/tools.png);"></div>
-            </div>
-            
-            <div class="mb-3 text-left as-bold as-color-4">Multi Function Wrench 
-                Spanner Tool (9mm to 32 mm)</div>
-                <div class="row align-items-center mx-0">
-                    <div class="mr-3">
-                        <button type="button" class="btn btn-round btn-light"  [routerLink]="'/pages/details'">Take Now</button>
-                    </div>
-                    <div class="">
-                        
-                        <button type="button" class="btn btn-round btn-light addtocart-icon addtocart-btn"></button>
-                    </div>
-                </div>
-                
-        </div>
-        <div class="as-card py-3">
-            <div class="">
-              
-                <div class="as-product-img" style="background-image: url(../../../assets/img/tools.png);"></div>
-            </div>
-            
-            <div class="mb-3 text-left as-bold as-color-4">Multi Function Wrench 
-                Spanner Tool (9mm to 32 mm)</div>
-                <div class="row align-items-center mx-0">
-                    <div class="mr-3">
-                        <button type="button" class="btn btn-round btn-light"  [routerLink]="'/pages/details'">Take Now</button>
-                    </div>
-                    <div class="">
-                        
-                        <button type="button" class="btn btn-round btn-light addtocart-icon addtocart-btn"></button>
-                    </div>
-                </div>
-                
-        </div>
-        <div class="as-card py-3">
-            <div class="">
-            
-                <div class="as-product-img" style="background-image: url(../../../assets/img/tools.png);"></div>
-            </div>
-            
-            <div class="mb-3 text-left as-bold as-color-4">Multi Function Wrench 
-                Spanner Tool (9mm to 32 mm)</div>
-                <div class="row align-items-center mx-0">
-                    <div class="mr-3">
-                        <button type="button" class="btn btn-round btn-light"  [routerLink]="'/pages/details'">Take Now</button>
-                    </div>
-                    <div class="">
-                        
-                        <button type="button" class="btn btn-round btn-light addtocart-icon addtocart-btn"></button>
-                    </div>
-                </div>
-                
-        </div>
-        <div class="as-card py-3">
-            <div class="">
-  
-                <div class="as-product-img" style="background-image: url(../../../assets/img/tools.png);"></div>
-            </div>
-            
-            <div class="mb-3 text-left as-bold as-color-4">Multi Function Wrench 
-                Spanner Tool (9mm to 32 mm)</div>
-                <div class="row align-items-center mx-0">
-                    <div class="mr-3">
-                        <button type="button" class="btn btn-round btn-light"  [routerLink]="'/pages/details'">Take Now</button>
-                    </div>
-                    <div class="">
-                       
-                        <button type="button" class="btn btn-round btn-light addtocart-icon addtocart-btn"></button>
-                    </div>
-                </div>
-                
-        </div>  -->
+
     </div>
     <div class="text-center mb-5 mt-3">
         <button type="button" class="btn btn-round btn-outline-info as-more-btn">Load More..</button>
@@ -173,7 +49,4 @@
 </div>
 
 
-     <!-- <div class="as-card py-3">
-            <div class="">
-              <img src="../../../assets/img/tools.png"> -->
-                <!-- <img src="../../../assets/img/tools.png"> -->
+   

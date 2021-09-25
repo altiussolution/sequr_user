@@ -12,14 +12,13 @@
     </div>
   </div>
   <div class="row mx-0">
-    <div class="as-card py-3">
+    <div class="as-card py-3" *ngFor="let cart of itemhistorycart">
       <div class="">
         <!-- <img src="../../../assets/img/tools.png"> -->
-        <div class="as-product-img" style="background-image: url(../../../assets/img/tools.png);"></div>
+        <div class="as-product-img" style="background-image: url({{cart?.cart[0]?.item?.image_path}});"></div>
       </div>
 
-      <div class="mb-3 text-left as-bold as-color-4">Multi Function Wrench
-        Spanner Tool (9mm to 32 mm)</div>
+      <div class="mb-3 text-left as-bold as-color-4">{{cart?.cart[0]?.item?.item_name}}</div>
       <div class="row  mx-0">
         <div class="as-history1">
           <div class="mr-2"><i class="fa fa-calendar"></i> <span class="as-color-2 mt-3 as-font-16">
@@ -35,74 +34,7 @@
       </div>
     </div>
 
-    <div class="as-card py-3">
-      <div class="">
-        <!-- <img src="../../../assets/img/tools.png"> -->
-        <div class="as-product-img" style="background-image: url(../../../assets/img/tools.png);"></div>
-      </div>
 
-      <div class="mb-3 text-left as-bold as-color-4">Multi Function Wrench
-        Spanner Tool (9mm to 32 mm)</div>
-      <div class="row  mx-0">
-        <div class="as-history1">
-          <div class="mr-2"><i class="fa fa-calendar"></i> <span class="as-color-2 mt-3 as-font-16">
-              15 Sep 2021
-            </span> </div>
-          <div><i class="fa fa-clock-o"></i> <span class="as-color-2 mt-3 as-font-16">
-              7:30PM
-            </span> </div>
-        </div>
-      </div>
-      <div class="form-group form-check as-check">
-        <input type="checkbox" class="form-check-input" id="Check1">
-      </div>
-    </div>
-
-    <div class="as-card py-3">
-      <div class="">
-        <!-- <img src="../../../assets/img/tools.png"> -->
-        <div class="as-product-img" style="background-image: url(../../../assets/img/tools.png);"></div>
-      </div>
-
-      <div class="mb-3 text-left as-bold as-color-4">Multi Function Wrench
-        Spanner Tool (9mm to 32 mm)</div>
-      <div class="row  mx-0">
-        <div class="as-history1">
-          <div class="mr-2"><i class="fa fa-calendar"></i> <span class="as-color-2 mt-3 as-font-16">
-              15 Sep 2021
-            </span> </div>
-          <div><i class="fa fa-clock-o"></i> <span class="as-color-2 mt-3 as-font-16">
-              7:30PM
-            </span> </div>
-        </div>
-      </div>
-      <div class="form-group form-check as-check">
-        <input type="checkbox" class="form-check-input" id="Check1">
-      </div>
-    </div>
-
-    <div class="as-card py-3">
-      <div class="">
-        <!-- <img src="../../../assets/img/tools.png"> -->
-        <div class="as-product-img" style="background-image: url(../../../assets/img/tools.png);"></div>
-      </div>
-
-      <div class="mb-3 text-left as-bold as-color-4">Multi Function Wrench
-        Spanner Tool (9mm to 32 mm)</div>
-      <div class="row  mx-0">
-        <div class="as-history1">
-          <div class="mr-2"><i class="fa fa-calendar"></i> <span class="as-color-2 mt-3 as-font-16">
-              15 Sep 2021
-            </span> </div>
-          <div><i class="fa fa-clock-o"></i> <span class="as-color-2 mt-3 as-font-16">
-              7:30PM
-            </span> </div>
-        </div>
-      </div>
-      <div class="form-group form-check as-check">
-        <input type="checkbox" class="form-check-input" id="Check1">
-      </div>
-    </div>
   </div>
   <div class="as-header mb-4">
     <div class="as-font-18 as-bold">
