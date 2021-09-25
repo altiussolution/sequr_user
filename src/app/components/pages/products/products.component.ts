@@ -16,7 +16,9 @@ export class ProductsComponent implements OnInit {
   items: any=[];
   message: any=[];
   routername: any;
-
+  data: any=[];
+  page = 0;
+  size = 4;
   constructor(public crud:CrudService,public router:Router,private toast: ToastrService) {
     
    }
@@ -28,18 +30,28 @@ export class ProductsComponent implements OnInit {
       
       }})
    this.crud.CurrentMessage1.subscribe(message=>{
+     console.log(message)
     if(message !="" && !localStorage.getItem("allow1")){
-   
-        this.product=JSON.parse(message)
-        console.log(this.product)
-        this.crud.get('item/getItemByCategory/'+this.product?.category_id+'/'+this.product?._id).pipe(untilDestroyed(this)).subscribe((res:any) => {
+          this.product=JSON.parse(message)
+          console.log(this.product)
+          this.crud.get('item/getItemByCategory/'+this.product?.category_id+'/'+this.product?._id).pipe(untilDestroyed(this)).subscribe((res:any) => {
+          localStorage.setItem("allow1","data")
           console.log(res)
-         this.items=res['data']
-         localStorage.setItem("allow1","data")
-        })
+          this.items=res['data']
+          this.getData({pageIndex: this.page, pageSize: this.size});
+          })
       }})
   }
+  getData(obj) {
+    let index=0,
+        startingIndex=obj.pageIndex * obj.pageSize,
+        endingIndex=startingIndex + obj.pageSize;
 
+        this.data = this.items.filter(() => {
+        index++;
+        return (index > startingIndex && index <= endingIndex) ? true : false;
+        });
+  }
   listview(){
     
     let asgrid = document.querySelector('.as-mt-main >.as-grid');
@@ -82,6 +94,6 @@ export class ProductsComponent implements OnInit {
     })
   }
   ngOnDestroy(){
- 
+    localStorage.removeItem("allow")
   }
 }

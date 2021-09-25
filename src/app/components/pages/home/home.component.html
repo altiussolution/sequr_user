@@ -7,7 +7,12 @@
         </div>
         <div class="row as-color-1">
             <div class="mr-3 as-font-14">
-                Items 1-20 of 40
+                <mat-paginator [length]="subcategories.length"
+                [pageSize]="size"
+                [pageIndex]="page"
+                [pageSizeOptions]="[4, 8, 12]"
+                (page)="getData($event)">
+                </mat-paginator>
             </div>
             <div class="mr-3 pointer  as-g-active view-active" (click)="gridview()">
                 <i class="fa fa-th" aria-hidden="true"></i>
@@ -18,9 +23,12 @@
         </div>
     </div>
    
-<div class="row ml-0 as-grid">
-    <div class="as-card" *ngFor="let category of subcategories">
+<div >
+   
+    <div class="row ml-0 as-grid">
+      <div class="as-card" *ngFor="let category of data ">
         <div class="as-home-img" style="background: url({{category?.image_path}});"  (click)="selectcategory(category)"></div>
-        <a class="as-crd-title" (click)="selectcategory(category)">{{category?.sub_category_name}}</a>
+        <a class="as-crd-title" (click)="selectcategory(category)">{{category?.sub_category_name}}</a>  
     </div>
-</div>
+    </div>
+  </div>
