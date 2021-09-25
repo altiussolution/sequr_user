@@ -18,6 +18,10 @@ export class ProductsComponent implements OnInit {
   routername: any;
 
   constructor(public crud:CrudService,public router:Router,private toast: ToastrService) {
+    
+   }
+
+  ngOnInit(): void {
     this.crud.CurrentMessage2.subscribe(message=>{
       if(message !=""){
         this.routername=message
@@ -25,18 +29,15 @@ export class ProductsComponent implements OnInit {
       }})
    this.crud.CurrentMessage1.subscribe(message=>{
     if(message !="" && !localStorage.getItem("allow1")){
-      localStorage.setItem("allow1","data")
+   
         this.product=JSON.parse(message)
         console.log(this.product)
         this.crud.get('item/getItemByCategory/'+this.product?.category_id+'/'+this.product?._id).pipe(untilDestroyed(this)).subscribe((res:any) => {
           console.log(res)
          this.items=res['data']
+         localStorage.setItem("allow1","data")
         })
       }})
-   }
-
-  ngOnInit(): void {
-  
   }
 
   listview(){

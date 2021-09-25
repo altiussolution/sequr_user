@@ -12,27 +12,28 @@ import { appModels } from 'src/app/services/shared/enum/enum.util';
 })
 export class HomeComponent implements OnInit {
   subcategories: any=[];
-  message: any;
+  message: any=[];
   categoryName: any;
   subcategories1: any=[];
   constructor(public crud:CrudService,public router:Router) { 
+  
+  }
+
+  ngOnInit(): void {
     this.crud.CurrentMessage.subscribe(message=>{
 
       if(message !="" && !localStorage.getItem("allow")){
-        localStorage.setItem("allow","data")
+      
         this.message=JSON.parse(message)
         this.categoryName=this.message?.category?.category_name
         this.crud.get(appModels.SUBCATEGORY+this.message?.category?._id).pipe(untilDestroyed(this)).subscribe((res:any) => {
           console.log(res)
           this.subcategories=res['data']
+          localStorage.setItem("allow","data")
         })
       }
      
     })
-  }
-
-  ngOnInit(): void {
-   
   }
 
 selectcategory(val:any){
