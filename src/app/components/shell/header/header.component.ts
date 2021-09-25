@@ -20,6 +20,7 @@ export class HeaderComponent implements OnInit {
   category1: any=[];
   subcategory: any=[];
   searchIcon = 'search-icon';
+  itemhistorykit: any=[];
 
  constructor(public router: Router,public crud:CrudService) {}
  ngOnInit(): void {
@@ -30,7 +31,10 @@ this.crud.CurrentMessage.subscribe(message=>this.message=message)
    localStorage.removeItem("allow") 
    this.crud.changemessage(JSON.stringify(this.category[0]))
   })
-
+  this.crud.get(appModels.ITEMLIST).pipe(untilDestroyed(this)).subscribe((res:any) => {
+    console.log(res)
+    this.itemhistorykit=res['Kits'][0]["kitting"]
+  })
   }
 setval(val:any){
   localStorage.removeItem("allow") 
@@ -39,12 +43,9 @@ setval(val:any){
  
 }
 
-  logout(){
-    if (confirm(`Are you sure, you want to logout?`)) {
-    // localStorage.clear();
+  logout(){ 
+    localStorage.clear();
     this.router.navigate(['./login']);
-    // this.toast.success("Logout Successfully")
-    }
 }
 @ViewChild('searchInput', { read: ElementRef })
 private searchInput: ElementRef;
@@ -128,6 +129,7 @@ selectcategory(val:any,category:any){
   this.router.navigate(['/pages/products'])
 
 }
+
 ngOnDestroy(){
 
 }
