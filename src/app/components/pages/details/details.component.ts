@@ -56,9 +56,8 @@ changing(value: any) {
     }
     this.crud.post(appModels.ADDTOCART,cart).subscribe(res => {
       console.log(res)
-      if (res != "") {
         this.toast.success("cart added successfully")
-      }
+      
     })
   }
 //addtocard(){
