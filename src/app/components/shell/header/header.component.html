@@ -15,7 +15,7 @@
                   <div class="row">
                     <div class="as-drop-head">
 
-                      <div class="as-item" *ngFor="let subcategory of Categories?.sub_category"><i  class="fa fa-chevron-right mr-3 as-color-7" (click)="selectcategory(subcategory)">{{subcategory?.sub_category_name}}</i></div>
+                      <div class="as-item" *ngFor="let subcategory of Categories?.sub_category"><i  class="fa fa-chevron-right mr-3 as-color-7" (click)="selectcategory(subcategory,Categories)">{{subcategory?.sub_category_name}}</i></div>
                       <!-- <div class="as-item"><i class="fa fa-chevron-right mr-3 as-color-7"></i>Spot Drills(20)</div>
                       <div class="as-item"><i class="fa fa-chevron-right mr-3 as-color-7"></i>Carbide Drills(20)</div>
                       <div class="as-item"><i class="fa fa-chevron-right mr-3 as-color-7"></i>Had Tools(20)</div>
@@ -269,6 +269,9 @@
         <li class="as-menu-mega-blog">
           <a [routerLink]="'/pages/itemhistory'">Item History</a>
         </li>
+        <li class="as-menu-mega-blog">
+          <a [routerLink]="'/pages/productslist'">Kitting</a>
+        </li>
       </ul>
     </div>
 
@@ -284,7 +287,7 @@
         <li class="nav-item">
           <div class="nav-link nav-title as-bold as-color-8">Category </div>
           <hr>
-          <a *ngFor="let Categories of category"class="nav-link active" (click)="setval(Categories?.category?._id)">{{Categories.category.category_name}}({{Categories?.sub_category?.length==''?'0':Categories?.sub_category?.length}})</a>
+          <a *ngFor="let Categories of category"class="nav-link active" (click)="setval(Categories)">{{Categories.category.category_name}}({{Categories?.sub_category?.length==''?'0':Categories?.sub_category?.length}})</a>
           <!-- <a class="nav-link">Gage(14)</a>
           <a class="nav-link">Kitting(32)</a>
           <a class="nav-link">Assembly(21)</a>
@@ -293,14 +296,14 @@
           <a class="nav-link">Gage(21)</a>
           <a class="nav-link">Kit(29)</a> -->
         </li>
-        <li class="nav-item">
+        <li class="nav-item mt-3">
           <div class="nav-link nav-title as-bold as-color-8" href="#">Item History</div>
           <hr>
           <a class="nav-link">Item Kit 01 (3)</a>
           <a class="nav-link">Item Kit 02 (3)</a>
           <a class="nav-link">Item Kit 03 (3)</a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item mt-3">
           <div class="nav-link nav-title as-bold as-color-8" href="#">Similar Products</div>
           <hr>
           <div class="row flex-wrap-nowrap">
@@ -342,28 +345,23 @@
         </li>
       </ul>
       <ul class="navbar-nav ml-md-auto d-md-flex">
-        <li class="nav-item">
+        <li class="nav-item d-flex">
 
-          <!-- <div class="Hotbg">
-            <input type="text" name="" class="Hotbg-txt" placeholder="Search >>>">
-            <a href="#" class="Hotbg-btn">
-                <i  class="search-icon"></i>
-            </a>
-        </div> -->
-          <!-- <div class="searchBox">
-
-            <input class="searchInput" type="text" name="" placeholder="Search">
-            <button class="searchButton" href="#">
-              <i class="search-icon">
-              </i>
+           <div id="search-container">
+            <div class="search-fields">
+              <div>
+                <input matInput #searchInput placeholder="Search..." (keyup.enter)="search()" autocomplete="off">
+              </div>
+              <!-- <button mat-icon-button class="submitButton " (click)="search()">
+                 GO
+              </button> -->
+            </div>
+            <button type="button" mat-icon-button class="toggleBtn {{searchIcon}}" (click)="toggleSearch()">
+              <!-- <mat-icon>{{searchIcon}}</mat-icon> -->
+              <!-- <i class="search-icon"></i> -->
             </button>
-          </div> -->
-
-          <div class="nav-link d-flex as-search" >
-            <input class="searchInput" type="text" name="" placeholder="Search">
-            <div class="search-icon"></div>
-
           </div>
+
         </li>
         <li class="nav-item" [routerLink]="'/pages/profile'">
           <a class="nav-link" >

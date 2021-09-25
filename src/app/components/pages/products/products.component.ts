@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { untilDestroyed } from 'ngx-take-until-destroy';
+import { ToastrService } from 'ngx-toastr';
+import { BehaviorSubject } from 'rxjs';
 import { CrudService } from 'src/app/services/crud.service';
 import { appModels } from 'src/app/services/shared/enum/enum.util';
 
@@ -13,23 +15,31 @@ export class ProductsComponent implements OnInit {
   product: any=[];
   items: any=[];
   message: any=[];
- 
-  constructor(public crud:CrudService,public router:Router) { }
+  routername: any;
+
+  constructor(public crud:CrudService,public router:Router,private toast: ToastrService) {
+    
+   }
 
   ngOnInit(): void {
+    this.crud.CurrentMessage2.subscribe(message=>{
+      if(message !=""){
+        this.routername=message
+      
+      }})
    this.crud.CurrentMessage1.subscribe(message=>{
-    if(message !=""){
+    if(message !="" && !localStorage.getItem("allow1")){
+   
         this.product=JSON.parse(message)
         console.log(this.product)
-       
-      this.crud.get('item/getItemByCategory/'+this.product.category_id+'/'+this.product._id).pipe(untilDestroyed(this)).subscribe((res:any) => {
-        console.log(res)
-       this.items=res['data']
-      })
-      }
-
-  })
+        this.crud.get('item/getItemByCategory/'+this.product?.category_id+'/'+this.product?._id).pipe(untilDestroyed(this)).subscribe((res:any) => {
+          console.log(res)
+         this.items=res['data']
+         localStorage.setItem("allow1","data")
+        })
+      }})
   }
+
   listview(){
     
     let asgrid = document.querySelector('.as-mt-main >.as-grid');
@@ -54,6 +64,24 @@ export class ProductsComponent implements OnInit {
     localStorage.setItem("_id",id)
     this.router.navigate(['pages/details'])
   }
-
-  ngOnDestroy(){}
+  addtocart(it: any, qty: any) {
+    let cart = {
+        "item" : it,
+        "total_quantity" : qty,
+        "cart_status" : 1    
+    }
+    this.crud.post(appModels.ADDTOCART,cart).pipe(untilDestroyed(this)).subscribe((res:any) => {
+      console.log(res)
+      if (res != "") {
+        if(res['message']=="Successfully added into cart!"){
+          this.toast.success("cart added successfully")
+        }
+       }
+    },error=>{
+      this.toast.error("cart added Unsuccessfully")
+    })
+  }
+  ngOnDestroy(){
+ 
+  }
 }

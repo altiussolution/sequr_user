@@ -2,7 +2,7 @@
 <div class="container-fluid as-mt-main" >
     <div class="as-header">
         <div class="as-title">
-            General > Hand Tools
+          {{routername}}
         </div>
         <div class="row as-color-1">
             <div class="mr-3 as-font-14">
@@ -30,7 +30,7 @@
                     </div>
                     <div class="">
                         
-                        <button type="button" class="btn btn-round btn-light addtocart-icon addtocart-btn"></button>
+                        <button type="button" class="btn btn-round btn-light addtocart-icon addtocart-btn" (click)="addtocart(item?._id,'1')"></button>
                     </div>
                 </div>
                 

@@ -18,7 +18,7 @@ export class Shell {
       path: '',
       component: ShellComponent,
       children: routes,
-      canActivate: [],
+      canActivate: [AuthGuard],
       // Reuse ShellComponent instance when navigating between child views
       data: { reuse: true }
     };

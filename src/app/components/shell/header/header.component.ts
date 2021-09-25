@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit,Input } from '@angular/core';
+import { Component, OnInit,Input , Output, EventEmitter, ViewChild, ElementRef, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { CrudService } from 'src/app/services/crud.service';
@@ -17,6 +17,9 @@ export class HeaderComponent implements OnInit {
   category:any=[]
   myTextVal:any=[];
   message:any;
+  category1: any=[];
+  subcategory: any=[];
+  searchIcon = 'search-icon';
 
  constructor(public router: Router,public crud:CrudService) {}
  ngOnInit(): void {
@@ -24,13 +27,16 @@ this.crud.CurrentMessage.subscribe(message=>this.message=message)
   this.crud.get(appModels.CATEGORYLIST).pipe(untilDestroyed(this)).subscribe((res:any) => {
     console.log(res)
    this.category=res['data']
-   this.crud.changemessage(this.category[0]?.category?._id)
+   localStorage.removeItem("allow") 
+   this.crud.changemessage(JSON.stringify(this.category[0]))
   })
 
   }
-setval(val){
+setval(val:any){
+  localStorage.removeItem("allow") 
+  this.crud.changemessage(JSON.stringify(val))
   this.router.navigate(['pages/home'])
-  this.crud.changemessage(val)
+ 
 }
 
   logout(){
@@ -40,7 +46,40 @@ setval(val){
     // this.toast.success("Logout Successfully")
     }
 }
+@ViewChild('searchInput', { read: ElementRef })
+private searchInput: ElementRef;
 
+  interactedWithSearch = false;
+  @Output()
+  searchEvent = new EventEmitter<{ query?: string, action: 'SEARCH' | 'CLEAR' }>();
+
+  toggleSearch() {
+    const searchContainer = document.getElementById('search-container');
+    this.toggleClass(searchContainer, 'open');
+   
+    if (!this.hasClass(searchContainer, 'open') && this.interactedWithSearch) {
+      this.searchEvent.emit({ action: 'CLEAR' });
+      this.interactedWithSearch = false;
+      this.searchInput.nativeElement.value = '';
+    }
+  }
+
+  private toggleClass(elem, className) {
+    this.hasClass(elem, className) ? elem.classList.remove(className) : elem.classList.add(className);
+  }
+
+  private hasClass(elem, className): boolean {
+    return elem.classList.contains(className);
+  }
+
+  search() {
+    const searchTerm = this.searchInput.nativeElement.value;
+    this.searchEvent.emit({ query: searchTerm, action: 'SEARCH' });
+    this.interactedWithSearch = true;
+  }
+//  ngOnInit(): void {
+    
+//   }
 toggleSidebar() {
   let assidebar = document.querySelector('.sidenav');
   let body = document.querySelector('body');
@@ -78,10 +117,12 @@ else {
 }
 }  
 }
-selectcategory(val:any){
-  // localStorage.setItem("category",JSON.stringify(val))
-
-    
+selectcategory(val:any,category:any){
+    localStorage.removeItem("allow1") 
+    this.category1=category
+    this.subcategory=val
+    let data=this.category1.category.category_name+">"+this.subcategory?.sub_category_name
+    this.crud.changemessage2(data)
     this.crud.changemessage1(JSON.stringify(val))
   
   this.router.navigate(['/pages/products'])

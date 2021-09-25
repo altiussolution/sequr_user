@@ -55,3 +55,15 @@
 .fw-bold{
     padding: 0.8rem 1.5rem;
 }
+
+@media only screen and (min-width : 768px)  
+and (orientation : landscape)
+and (-webkit-min-device-pixel-ratio: 2){
+    .as-user-bg{
+        left: 10%;
+      }
+      .asbg-1 {
+        width: 43%;
+        height: 42vh;
+      }
+}

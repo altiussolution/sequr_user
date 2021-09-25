@@ -2,6 +2,7 @@
 import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { untilDestroyed } from 'ngx-take-until-destroy';
+import { BehaviorSubject } from 'rxjs';
 import { CrudService } from 'src/app/services/crud.service';
 import { appModels } from 'src/app/services/shared/enum/enum.util';
 @Component({
@@ -11,28 +12,44 @@ import { appModels } from 'src/app/services/shared/enum/enum.util';
 })
 export class HomeComponent implements OnInit {
   subcategories: any=[];
-  message: any;
-  constructor(public crud:CrudService,public router:Router) { }
+  message: any=[];
+  categoryName: any;
+  subcategories1: any=[];
+  constructor(public crud:CrudService,public router:Router) { 
+  
+  }
 
   ngOnInit(): void {
     this.crud.CurrentMessage.subscribe(message=>{
-      this.message=message
-      if(this.message !=""){
-        this.crud.get(appModels.SUBCATEGORY+this.message).pipe(untilDestroyed(this)).subscribe((res:any) => {
+
+      if(message !="" && !localStorage.getItem("allow")){
+      
+        this.message=JSON.parse(message)
+        this.categoryName=this.message?.category?.category_name
+        this.crud.get(appModels.SUBCATEGORY+this.message?.category?._id).pipe(untilDestroyed(this)).subscribe((res:any) => {
           console.log(res)
           this.subcategories=res['data']
+          localStorage.setItem("allow","data")
         })
       }
      
     })
-   
-}
+  }
+
 selectcategory(val:any){
-  localStorage.setItem("category",JSON.stringify(val))
+  this.subcategories1=val
+  let data1={
+    "category_id": this.subcategories1?.category_id?._id,
+    "_id":this.subcategories1._id
+  }
+  let data=this.categoryName+">"+this.subcategories1?.sub_category_name
+  this.crud.changemessage2(data)
+  this.crud.changemessage1(JSON.stringify(data1))
   this.router.navigate(['/pages/products'])
+}
+ngOnDestroy(){
 
 }
-ngOnDestroy(){}
   
   listview(){
     

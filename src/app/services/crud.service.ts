@@ -11,8 +11,10 @@ export class CrudService {
 
 private messagesource= new BehaviorSubject<any>("");
 private messagesource1= new BehaviorSubject<any>("");
+private messagesource2= new BehaviorSubject<any>("");
 CurrentMessage= this.messagesource.asObservable();
 CurrentMessage1= this.messagesource1.asObservable();
+CurrentMessage2= this.messagesource2.asObservable();
   constructor(private http: HttpClient) { }
 
 changemessage(message:any){
@@ -20,6 +22,9 @@ changemessage(message:any){
 }
 changemessage1(message:any){
   this.messagesource1.next(message)
+}
+changemessage2(message:any){
+  this.messagesource2.next(message)
 }
   get(model: string): Observable<any> {
     return this.http.get(model);
