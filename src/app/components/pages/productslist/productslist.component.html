@@ -5,184 +5,63 @@
     </div>
     <div class="row as-color-1">
       <div class="mr-3 as-font-14">
-        Items 1-20 of 40
+          <mat-paginator [length]="kit.length"
+          [pageSize]="size"
+          [pageIndex]="page"
+          [pageSizeOptions]="[4, 8, 12]"
+          (page)="getData($event)">
+          </mat-paginator>
       </div>
-      <div class="mr-3 pointer as-g-active view-active d-none"  (click)="gridview()">
-        <i class="fa fa-th" aria-hidden="true"></i>
+      <div class="mr-3 pointer  as-g-active view-active" (click)="gridview()">
+          <i class="fa fa-th" aria-hidden="true"></i>
       </div>
-      <div class="mr-3 pointer as-l-active d-none"  (click)="listview()">
-        <i class="fa fa-list" aria-hidden="true"></i>
+      <div class="mr-3 pointer  as-l-active" (click)="listview()">
+          <i class="fa fa-list" aria-hidden="true"></i>
       </div>
-    </div>
+  </div>
   </div>
   <div class="col-md-12 as-mt-2 as-grid">
     <div class="row ">
       <div class="col-md-6 ">
-        <div class="as-item-box">
+        <div class="as-item-box" *ngFor="let data of kit">
           <div class="d-flex justify-content-between align-items-center">
-            <div class="as-font-24">Item Kit01</div>
+            <div class="as-font-24">{{data.kit_name}}</div>
             <div class="row align-items-center mx-0">
               <div class="mr-3">
                 <button type="button" class="btn bg-white btn-round btn-light">Take Now</button>
               </div>
               <div class="">
 
-                <button type="button" class="btn bg-white btn-round btn-light addtocart-icon addtocart-btn"></button>
+                <button type="button" class="btn bg-white btn-round btn-light addtocart-icon addtocart-btn" (click)="addkitcart(data._id)"></button>
               </div>
             </div>
           </div>
-          <div class="bg-white mx-1 my-3 row as-text-flex as-pro-py">
+          <div class="bg-white mx-1 my-3 row as-text-flex as-pro-py" *ngFor="let kitdataa of kitdata">
             <div class="pr-list-w-100">
               <div class="as-productlst-img" style="background-image: url(../../../assets/img/tools.png);"></div>
             </div>
             <div>
               <div class="as-font-18 as-bold as-color-4 line-height-13">
-                Multi Function Wrench Spanner Tool (9mm to 32 mm)
+                {{kitdataa.item.item_name}}
               </div>
               <div class="as-color-2 mt-3 as-font-16">
                 <span>
-                  Machine: 01
+                  Machine: {{kitdataa.cube.cube_name}}
                 </span>
                 <span>
-                  Column ID: 01 
+                  Column ID: {{kitdataa.bin.bin_id}}
                 </span>
                 <span>
-                  Rack: 02
+                  Rack: {{kitdataa.compartment.compartment_id}}
                 </span>
               </div>
             </div>
           </div>
 
-          <div class="bg-white mx-1 my-3 row as-text-flex as-pro-py">
-            <div class="pr-list-w-100">
-              <div class="as-productlst-img" style="background-image: url(../../../assets/img/tools.png);"></div>
-            </div>
-            <div>
-              <div class="as-font-18 as-bold as-color-4 line-height-13">
-                Multi Function Wrench Spanner Tool (9mm to 32 mm)
-              </div>
-              <div class="as-color-2 mt-3 as-font-16">
-                
-                <span>
-                  Machine: 01
-                </span>
-                <span>
-                  Column ID: 01 
-                </span>
-                <span>
-                  Rack: 02
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <div class="bg-white mx-1 my-3 row as-text-flex as-pro-py">
-            <div class="pr-list-w-100">
-              <div class="as-productlst-img" style="background-image: url(../../../assets/img/tools.png);"></div>
-            </div>
-            <div>
-              <div class="as-font-18 as-bold as-color-4 line-height-13">
-                Multi Function Wrench Spanner Tool (9mm to 32 mm)
-              </div>
-              <div class="as-color-2 mt-3 as-font-16">
-                <span>
-                  Machine: 01
-                </span>
-                <span>
-                  Column ID: 01 
-                </span>
-                <span>
-                  Rack: 02
-                </span>
-              </div>
-            </div>
-          </div>
         </div>
 
       </div>
-      <div class="col-md-6 ">
-        <div class="as-item-box">
-          <div class="d-flex justify-content-between align-items-center">
-            <div class="as-font-24">Item Kit01</div>
-            <div class="row align-items-center mx-0">
-              <div class="mr-3">
-                <button type="button" class="btn bg-white btn-round btn-light">Take Now</button>
-              </div>
-              <div class="">
-
-                <button type="button" class="btn bg-white btn-round btn-light addtocart-icon addtocart-btn"></button>
-              </div>
-            </div>
-          </div>
-          <div class="bg-white mx-1 my-3 row as-text-flex as-pro-py">
-            <div class="pr-list-w-100">
-              <div class="as-productlst-img" style="background-image: url(../../../assets/img/tools.png);"></div>
-            </div>
-            <div>
-              <div class="as-font-18 as-bold as-color-4 line-height-13">
-                Multi Function Wrench Spanner Tool (9mm to 32 mm)
-              </div>
-              <div class="as-color-2 mt-3 as-font-16">
-                <span>
-                  Machine: 01
-                </span>
-                <span>
-                  Column ID: 01 
-                </span>
-                <span>
-                  Rack: 02
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <div class="bg-white mx-1 my-3 row as-text-flex as-pro-py">
-            <div class="pr-list-w-100">
-              <div class="as-productlst-img" style="background-image: url(../../../assets/img/tools.png);"></div>
-            </div>
-            <div>
-              <div class="as-font-18 as-bold as-color-4 line-height-13">
-                Multi Function Wrench Spanner Tool (9mm to 32 mm)
-              </div>
-              <div class="as-color-2 mt-3 as-font-16">
-                <span>
-                  Machine: 01
-                </span>
-                <span>
-                  Column ID: 01 
-                </span>
-                <span>
-                  Rack: 02
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <div class="bg-white mx-1 my-3 row as-text-flex as-pro-py">
-            <div class="pr-list-w-100">
-              <div class="as-productlst-img" style="background-image: url(../../../assets/img/tools.png);"></div>
-            </div>
-            <div>
-              <div class="as-font-18 as-bold as-color-4 line-height-13">
-                Multi Function Wrench Spanner Tool (9mm to 32 mm)
-              </div>
-              <div class="as-color-2 mt-3 as-font-16">
-                <span>
-                  Machine: 01
-                </span>
-                <span>
-                  Column ID: 01 
-                </span>
-                <span>
-                  Rack: 02
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-      <div class="col-md-6 ">
+   <!--   <div class="col-md-6 ">
         <div class="as-item-box">
           <div class="d-flex justify-content-between align-items-center">
             <div class="as-font-24">Item Kit01</div>
@@ -346,8 +225,90 @@
         </div>
 
       </div>
+      <div class="col-md-6 ">
+        <div class="as-item-box">
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="as-font-24">Item Kit01</div>
+            <div class="row align-items-center mx-0">
+              <div class="mr-3">
+                <button type="button" class="btn bg-white btn-round btn-light">Take Now</button>
+              </div>
+              <div class="">
 
-    </div>
+                <button type="button" class="btn bg-white btn-round btn-light addtocart-icon addtocart-btn"></button>
+              </div>
+            </div>
+          </div>
+          <div class="bg-white mx-1 my-3 row as-text-flex as-pro-py">
+            <div class="pr-list-w-100">
+              <div class="as-productlst-img" style="background-image: url(../../../assets/img/tools.png);"></div>
+            </div>
+            <div>
+              <div class="as-font-18 as-bold as-color-4 line-height-13">
+                Multi Function Wrench Spanner Tool (9mm to 32 mm)
+              </div>
+              <div class="as-color-2 mt-3 as-font-16">
+                <span>
+                  Machine: 01
+                </span>
+                <span>
+                  Column ID: 01 
+                </span>
+                <span>
+                  Rack: 02
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white mx-1 my-3 row as-text-flex as-pro-py">
+            <div class="pr-list-w-100">
+              <div class="as-productlst-img" style="background-image: url(../../../assets/img/tools.png);"></div>
+            </div>
+            <div>
+              <div class="as-font-18 as-bold as-color-4 line-height-13">
+                Multi Function Wrench Spanner Tool (9mm to 32 mm)
+              </div>
+              <div class="as-color-2 mt-3 as-font-16">
+                <span>
+                  Machine: 01
+                </span>
+                <span>
+                  Column ID: 01 
+                </span>
+                <span>
+                  Rack: 02
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white mx-1 my-3 row as-text-flex as-pro-py">
+            <div class="pr-list-w-100">
+              <div class="as-productlst-img" style="background-image: url(../../../assets/img/tools.png);"></div>
+            </div>
+            <div>
+              <div class="as-font-18 as-bold as-color-4 line-height-13">
+                Multi Function Wrench Spanner Tool (9mm to 32 mm)
+              </div>
+              <div class="as-color-2 mt-3 as-font-16">
+                <span>
+                  Machine: 01
+                </span>
+                <span>
+                  Column ID: 01 
+                </span>
+                <span>
+                  Rack: 02
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>-->
   </div>
 
 </div>
