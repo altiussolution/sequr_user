@@ -369,10 +369,10 @@
           </a>
         </li>
         <li class="nav-item relative" [routerLink]="'/pages/mycart'">
-          <a class="nav-link" >
+          <a class="nav-link" (click)="getCartTotal()">
             <div class="addtocart-icon"></div>
           </a>
-          <div class="shop-count">1</div>
+          <div class="shop-count">{{cartDetails?.total_quantity}}</div>
         </li>
         <li class="nav-item">
           <!-- <a class="nav-link" href="#"><i class="fa fa-power-off" aria-hidden="true"></i></a> -->

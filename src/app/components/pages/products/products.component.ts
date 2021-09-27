@@ -82,6 +82,7 @@ export class ProductsComponent implements OnInit {
         "total_quantity" : qty,
         "cart_status" : 1    
     }
+    console.log(cart)
     this.crud.post(appModels.ADDTOCART,cart).pipe(untilDestroyed(this)).subscribe((res:any) => {
       console.log(res)
       if (res != "") {

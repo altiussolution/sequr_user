@@ -20,9 +20,11 @@ export class HeaderComponent implements OnInit {
   category1: any=[];
   subcategory: any=[];
   searchIcon = 'search-icon';
+  cartDetails: any;
 
  constructor(public router: Router,public crud:CrudService) {}
  ngOnInit(): void {
+   this.getCartTotal();
 this.crud.CurrentMessage.subscribe(message=>this.message=message)
   this.crud.get(appModels.CATEGORYLIST).pipe(untilDestroyed(this)).subscribe((res:any) => {
     console.log(res)
@@ -127,6 +129,13 @@ selectcategory(val:any,category:any){
   
   this.router.navigate(['/pages/products'])
 
+}
+
+getCartTotal() {
+  this.crud.get(appModels.listCart).pipe(untilDestroyed(this)).subscribe(res => {
+    console.log(res)
+    this.cartDetails = res[0];
+  })
 }
 ngOnDestroy(){
 
