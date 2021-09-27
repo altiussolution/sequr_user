@@ -29,8 +29,8 @@ export class DetailsComponent implements OnInit {
     }
 
   ngOnInit(): void {
-  console.log(localStorage.getItem("id"))
-    this.crud.get(appModels.DETAILS +localStorage.getItem("id")).pipe(untilDestroyed(this)).subscribe((res:any) => {
+  console.log(localStorage.getItem("_id"))
+    this.crud.get(appModels.DETAILS +localStorage.getItem("_id")).pipe(untilDestroyed(this)).subscribe((res:any) => {
       console.log(res)
       this.items=res.items
       this.machine=res.machine

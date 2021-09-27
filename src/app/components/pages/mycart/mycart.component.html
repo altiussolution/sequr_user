@@ -23,7 +23,7 @@
     </div>
   </div>
   <div class="row mx-0 as-grid">
-    <div class="as-card py-3" *ngFor="let cart of cartDetails">
+    <div class="as-card py-3" *ngFor="let cart of cartList">
       <div class="">
         <img class="as-product-img" [src]="cart?.item?.image_path" onError="this.src='../../../assets/img/tools.png'">
         <!-- <div class="as-product-img" style="background-image: url(../../../assets/img/tools.png);"></div> -->
@@ -33,7 +33,7 @@
       <div class="row align-items-center mx-0">
         <div class="dropdown mr-3">
           <!-- <div type="button" class=" dropdown-toggle btn btn-round btn-light" data-toggle="dropdown"> -->
-          <input style="width: 50px;" type="number" min="1" [value]="cart?.item?.qty">
+          <input style="width: 50px;" type="number" min="1" [value]="cart?.qty" #qty>
           <!-- </div> -->
           <!-- <div class="dropdown-menu">
                   <a class="dropdown-item" href="#">1</a>
@@ -42,7 +42,7 @@
               </div> -->
         </div>
         <div>
-          <button type="button" class="btn as-btn btn-primary mr-3">Update</button>
+          <button type="button" class="btn as-btn btn-primary mr-3" (click)="updateCart(cart, qty.value)">Update</button>
         </div>
         <div class="">
           <button type="button" class="btn btn-round btn-light "><i class="fa fa-trash-o as-font-20"
