@@ -35,7 +35,7 @@ this.crud.CurrentMessage.subscribe(message=>this.message=message)
   })
   this.crud.get(appModels.ITEMLIST).pipe(untilDestroyed(this)).subscribe((res:any) => {
     console.log(res)
-    this.itemhistorykit=res['Kits'][0]["kitting"]
+    this.itemhistorykit=res['Kits']
   })
   }
 setval(val:any){

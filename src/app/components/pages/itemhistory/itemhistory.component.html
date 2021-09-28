@@ -12,7 +12,7 @@
     </div>
   </div>
   <div class="row mx-0">
-    <div class="as-card py-3" *ngFor="let cart of itemhistorycart">
+    <div class="as-card py-3" *ngFor="let cart of itemhistorycart;let i=index">
       <div class="">
         <!-- <img src="../../../assets/img/tools.png"> -->
         <div class="as-product-img" style="background-image: url({{cart?.item?.image_path}});"></div>
@@ -43,7 +43,7 @@
     <div class="row  as-color-1">
 
       <div class="text-center">
-        <button type="button" class="btn btn-round btn-outline-info">Return Kits</button>
+        <button type="button" class="btn btn-round btn-outline-info" (click)="returnkits()">Return Kits</button>
       </div>
     </div>
   </div>
@@ -51,34 +51,34 @@
     <div class="col-md-6 " *ngFor="let kitting of itemhistorykit">
       <div class="as-item-box">
         <div class="d-flex justify-content-between align-items-center">
-          <div class="as-font-24">{{kitting?.kit_id?.kit_name}}</div>
+          <div class="as-font-24">{{kitting?.kit_name}}</div>
           <div class="row align-items-center mx-0">
             <div class="as-history">
               <div class="mr-2"><i class="fa fa-calendar"></i> <span class="as-color-2 mt-3 as-font-16">
-                {{kitting?.kit_id.updated_at| date:'MMMM d, y'}}
+                {{kitting?.updated_at| date:'MMMM d, y'}}
                 </span> </div>
               <div><i class="fa fa-clock-o"></i> <span class="as-color-2 mt-3 as-font-16">
-                 {{kitting?.kit_id?.updated_at| date:"hh:mm a"}}
+                 {{kitting?.updated_at| date:"hh:mm a"}}
                 </span> </div>
             </div>
             <div class="form-group form-check ">
-              <input type="checkbox" class="form-check-input" id="Check1">
+              <input type="checkbox" class="form-check-input" id="Check1" (change)="passParams1($event,kitting)">
             </div>
 
 
           </div>
         </div>
-        <div class="bg-white mx-1 my-3 row as-text-flex px-3" *ngFor="let item of kitting?.kit_id?.kit_data">
+        <div class="bg-white mx-1 my-3 row as-text-flex px-3" *ngFor="let item of kitting?.kit_data">
           <div class="">
             <!-- <div class="as-productlst-img" style="background-image: url({{item?.item_id?.image_path}});"></div> -->
-            <img class="as-productlst-img" [src]="item?.item_id?.image_path" />
+            <img class="as-productlst-img" [src]="item?.item?.image_path" />
           </div>
           <div>
             <div class="as-font-18 as-bold as-color-4">
-              {{item?.item_id?.item_name}}
+              {{item?.item?.item_name}}
             </div>
             <div class="as-color-2 mt-3 as-font-16">
-              Machine: 01 Column ID: 01 Rack: 02
+              Machine: {{item?.cube?.cube_name}} Column ID: {{item?.bin?.bin_id}} Rack: {{item?.compartment?.compartment_id}}
             </div>
           </div>
         </div>
@@ -186,7 +186,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <div class="as-bold as-color-4 as-font-24">Return</div>
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <button type="button" class="close" #closebutton data-dismiss="modal" (click)="close()">&times;</button>
         </div>
         <hr class="as-width-93">
         <div class="modal-body text-center">
@@ -239,7 +239,7 @@
         <div class="modal-footer">
           <div class="d-flex mb-3">
             <div class="as-color-4 as-font-24 line-h-12">Are you sure, do you want to return the item?</div>
-            <button class="btn btn-lg btn-primary btn-login  fw-bold mb-2" type="button">Confirm</button>
+            <button class="btn btn-lg btn-primary btn-login  fw-bold mb-2" type="button" (click)="returnproduct()">Confirm</button>
           </div>
         </div>
 

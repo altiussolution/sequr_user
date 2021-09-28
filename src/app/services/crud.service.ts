@@ -53,7 +53,9 @@ changemessage2(message:any){
     console.log(model, id)
     return this.http.put(`${model}?id=${id}`, body);
   }
- 
+  update2(model: string, params?: any): Observable<any> {
+    return this.http.put(model, params);
+  }
 
 
 }
