@@ -24,7 +24,7 @@ import { MycartComponent } from './mycart/mycart.component';
 import { ProductsComponent } from './products/products.component';
 import { ProductslistComponent } from './productslist/productslist.component';
 import { ProfileComponent } from './profile/profile.component';
-
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 
 
@@ -51,7 +51,7 @@ import { ProfileComponent } from './profile/profile.component';
    
     ReactiveFormsModule, MatDatepickerModule, MatInputModule, MatNativeDateModule,
     MatRippleModule, MatIconModule, MatSidenavModule, MatSlideToggleModule, MatListModule,
-
+    MatCheckboxModule
   ]
 })
 export class PageModule { }

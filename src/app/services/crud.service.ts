@@ -15,6 +15,10 @@ private messagesource2= new BehaviorSubject<any>("");
 CurrentMessage= this.messagesource.asObservable();
 CurrentMessage1= this.messagesource1.asObservable();
 CurrentMessage2= this.messagesource2.asObservable();
+
+private cartTotal = new BehaviorSubject<any>("");
+currentTotal = this.cartTotal.asObservable();
+
   constructor(private http: HttpClient) { }
 
 changemessage(message:any){
@@ -25,6 +29,9 @@ changemessage1(message:any){
 }
 changemessage2(message:any){
   this.messagesource2.next(message)
+}
+getCartTotal(total: any) {
+  this.cartTotal.next(total);
 }
   get(model: string): Observable<any> {
     return this.http.get(model);
@@ -53,8 +60,9 @@ changemessage2(message:any){
     console.log(model, id)
     return this.http.put(`${model}?id=${id}`, body);
   }
- 
-
+  update2(model: string, body: any): Observable<any> {
+    return this.http.put(`${model}`, body);
+  }
 
 }
 

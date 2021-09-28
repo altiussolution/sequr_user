@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { ToastrService } from 'ngx-toastr';
 import { CrudService } from 'src/app/services/crud.service';
@@ -13,7 +14,10 @@ export class MycartComponent implements OnInit {
 
   cartDetails: any[] = [];
   cartList: any[] = [];
-
+  cartIds: any[] = [];
+  selected3: any[] = [];
+  page = 0;
+  size = 4;
 
   constructor(private crudService: CrudService, private toast: ToastrService) { }
 
@@ -25,6 +29,7 @@ export class MycartComponent implements OnInit {
       console.log(res)
       this.cartDetails = res[0];
       this.cartList = res[0].cart;
+      this.crudService.getCartTotal(this.cartDetails)
     }, error => {
       this.toast.error(error.message);
     })
@@ -35,17 +40,93 @@ export class MycartComponent implements OnInit {
     let data = {
       "item": cart.item._id,
       "allocation": cart.allocation,
-      qty: qty
+      "qty": qty,
+      "id": [this.cartDetails['_id']]
     }
-    this.crudService.update(appModels.updateCart, data, this.cartDetails['_id']).pipe(untilDestroyed(this)).subscribe(res => {
+    this.crudService.update2(appModels.updateCart, data).pipe(untilDestroyed(this)).subscribe(res => {
       console.log(res)
       this.toast.success(res.message);
+      this.getCartItems();
     }, error => {
       this.toast.error(error.message);
     })
   }
 
+  deleteCart(cart) {
+    if (confirm(`Are you sure, you want to Delete?`)) {
+      let data = {
+        "cart_id": this.cartDetails['_id'],
+        "item_id": [cart.item._id],
+      }
+      this.crudService.update2('cart/deleteItemFromCart', data).pipe(untilDestroyed(this)).subscribe(res => {
+        console.log(res)
+        this.toast.success(res.message);
+        this.getCartItems();
+      }, error => {
+        this.toast.error(error.message);
+      })
+    }
+  }
+
+
+  deleteMultiple() {
+    if (this.selected3.length === 0) {
+      this.toast.warning('Please select a product')
+    } else {
+      if (confirm(`Are you sure, you want to Delete?`)) {
+        let data = {
+          "cart_id": this.cartDetails['_id'],
+          "item_id": this.selected3,
+        }
+        this.crudService.update2('cart/deleteItemFromCart', data).pipe(untilDestroyed(this)).subscribe(res => {
+          console.log(res)
+          this.toast.success(res.message);
+          this.getCartItems();
+          this.selected3 = [];
+        }, error => {
+          this.toast.error(error.message);
+        })
+      }
+    }
+  }
+
   ngOnDestroy() { }
+  
+
+  toggle(cart, event: MatCheckboxChange) {
+    if (event.checked) {
+      this.selected3.push(cart.item._id);
+    } else {
+      const index = this.selected3.indexOf(cart.item._id);
+      if (index >= 0) {
+        this.selected3.splice(index, 1);
+      }
+    }
+    console.log(cart.item._id , event.checked);
+  }
+
+  exists(cart) {
+    return this.selected3.indexOf(cart.item._id) > -1;
+  };
+
+  isIndeterminate() {
+    return (this.selected3.length > 0 && !this.isChecked());
+  };
+
+  isChecked() {
+    return this.selected3.length === this.cartList.length;
+  };
+
+
+  toggleAll(event: MatCheckboxChange) {
+    if (event.checked) {
+      this.cartList.forEach(cart => {
+        this.selected3.push(cart.item._id)
+      });
+    } else {
+      this.selected3.length = 0;
+    }
+  }
 
   listview() {
 
