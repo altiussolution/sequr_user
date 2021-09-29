@@ -21,6 +21,7 @@ export class DetailsComponent implements OnInit {
   qty: any;
   qtyform!: FormGroup;
   id: any;
+  qut: any=[];
 
   constructor(  public router: Router,private toast: ToastrService, private fb: FormBuilder,public crud:CrudService) { 
       this.qtyform = this.fb.group({
@@ -42,24 +43,37 @@ export class DetailsComponent implements OnInit {
       this.compartment=this.machine.compartment
   })
 }
-changing(value: any) {
-  console.log(value)
-  this.qty = this.qtyform.get(['qty'])?.value
-
+changing(event) {
+ 
+  console.log(event.target.value)
+  if(this.qty>=event.target.value){
+    this.qut=event.target.value
+  }else{
+   (<HTMLInputElement>document.getElementById(event.target.id)).value="";
+   this.qut=0
+  }
 }
 
-  addtocart(it: any, qty: any) {
-    let cart = {
-        "item" : it,
-        "total_quantity" : this.qty,
+  addtocart() {
+    if(this.qut?.length !=0 && this.qut>0){
+      let cart = {
+        "item" : this.machine.item,
+        "total_quantity" : this.qut,
         "cart_status" : 1    
     }
+  
     this.crud.post(appModels.ADDTOCART,cart).subscribe(res => {
       console.log(res)
         this.toast.success("cart added successfully")
       
-    })
-  }
+    })  
+    }else{
+      this.toast.error("please Enter QTY")
+    }
+   
+  
+  
+}
 //addtocard(){
  // this.router.navigate(['/pages/mycart']);
 

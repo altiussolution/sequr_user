@@ -9,7 +9,10 @@ enum appModels {
     KITTINGLIST='kitting/get',
     ADDKITCART='kitting/addKitToCart/',
     updateCart = 'cart/update',
-    listCart = 'cart/myCart'
+    listCart = 'cart/myCart',
+    LAN='region/language',
+    SHIFTTIME='shift/get',
+    CHANGEPWD='employee/changePassword/id'
 }
 //614993f607f4ce431244b852
 //6149b8ec74e1d5ef4317a9b1

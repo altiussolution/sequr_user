@@ -4,7 +4,7 @@
     <div class="row mx-0">
         <div class="col-md-6 pl-0">
             <div class="image-gallery">
-                <aside class="thumbnails">
+                <!--<aside class="thumbnails">
                   <a href="#" class="selected thumbnail" data-big="../../../../assets/img/details-1.png">
                     <div class="thumbnail-image" style="background-image: url(../../../../assets/img/details-1.png)"></div>
                   </a>
@@ -14,21 +14,21 @@
                   <a href="#" class="thumbnail" data-big="../../../../assets/img/details-3.png">
                     <div class="thumbnail-image" style="background-image: url(../../../../assets/img/details-3.png)"></div>
                   </a>
-                </aside>
+                </aside>-->
               
                <main class="primary" style="background-image: url({{items?.image_path}});">
    
                 <div class="as-avaliable">
                     <div class="as-avaliable-btn"></div>
                     <div class="as-font-18 as-z-index-1">Available</div>
-                    <div class="as-font-24">{{machine.quantity}}</div>
+                    <div class="as-font-24">{{machine?.quantity}}</div>
                 </div>
                    
          </main>
               </div>
         </div>
         <div class="col-md-6 pr-0">
-            <div class="as-details-title">{{items.item_name}}
+            <div class="as-details-title">{{items?.item_name}}
             </div>
             <div class="row mx-0 as-details-border">
                 <div class="as-details-txt">
@@ -36,7 +36,7 @@
                         Machine Name
                     </div>
                     <div>
-                        {{cube.cube_name}}
+                        {{cube?.cube_name}}
                     </div>
                 </div>
                 <div class="as-details-txt">
@@ -44,7 +44,7 @@
                         Column ID
                     </div>
                     <div>
-                        {{bin.bin_id}}
+                        {{bin?.bin_id}}
                     </div>
                 </div>
                 <div class="as-details-txt">
@@ -52,15 +52,15 @@
                         Rack ID
                     </div>
                     <div>
-                        {{compartment.compartment_id}}
+                        {{compartment?.compartment_id}}
                     </div>
                 </div>
             </div>
             <div class="row mx-0 as-details-border as-details-btn">
                 <div class="as-w20 as-mr-det">
-                    <form [formGroup]="qtyform">
-                    <input type="number"  formControlName="qty" value="" (change)="changing(qtyform.value)" placeholder="Qty" name="quantity" min="1" max="{{machine.quantity}}">
-                    </form>
+                   
+                    <input type="mobile" value="" id="quantity" (keyup)="changing($event)" placeholder="Qty" name="quantity" min="1" max="{{machine.quantity}}">  
+               
                 </div>
                 <div class="as-mr-det">
                     <button class="btn  btn-primary fw-bold mb-2" type="button" >Take Now</button>
@@ -69,7 +69,7 @@
                     or
                 </div>
                 <div class="as-mr-det">
-                    <button class="btn  btn-secondary   fw-bold mb-2" type="button" (click)="addtocart(it,qty)">Add to cart</button>
+                    <button class="btn  btn-secondary   fw-bold mb-2" type="button" (click)="addtocart()">Add to cart</button>
                 </div>
             </div>
 
@@ -78,7 +78,7 @@
                     Technical Specification
                 </div>
                 <p>
-                    {{machine.description}}
+                    {{machine?.description}}
                 </p>
             </div>
         </div>

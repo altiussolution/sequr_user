@@ -1,22 +1,25 @@
+<!--<ngx-spinner  size="default" type="ball-spin-clockwise">  
+  <p style="color: white">Please Wait. </p>  
+  </ngx-spinner> --> 
 <div class="container-fluid as-mt-main profile">
   <div class="as-bg" style="background-image: url(../../../assets/img/bg1.png);">
   </div>
   <div class="m-auto d-flex as-user-bg">
     <div class="as-shadow asbg-1">
-      <div class="as-user" style="background-image: url(../../../assets/img/user.png);">
+      <div class="as-user" style="background-image: url({{profile.profile_pic}});">
       </div>
       <div class="mx-auto text-center mb-4">
-        <label class="as-font-36 ">Robin Danials</label>
+        <label class="as-font-36 ">{{profile?.employee_id}}</label>
       </div>
       <div class="row justify-content-center">
         <div><i class="fa fa-clock-o"></i> <span class="as-color-2 mt-3 as-font-16  mr-2 ml-1">
-            7:30PM
+         {{profiledetails?.created_at| date:'shortTime'}}
           </span> </div>
         <div><i class="fa fa-map-marker"></i> <span class="as-color-2 mt-3 as-font-16  mr-2 ml-1">
             Coimbatore
           </span> </div>
         <div class="mr-2"><i class="fa fa-calendar"></i> <span class="as-color-2 mt-3 as-font-16  mr-2 ml-1">
-            Joined 2021
+            Joined {{profiledetails?.created_at| date:'yyyy'}}
           </span> </div>
 
       </div>
@@ -38,7 +41,7 @@
         </div>
         <div class="col-md-6">
           <div class="form-floating mb-3">
-            <label>Language:------</label>
+            <label>Language:{{lan?.language}}</label>
             <!-- <input type="email" class="form-control" id="floatingInput" placeholder="Language"> -->
           </div>
         </div>
@@ -48,30 +51,34 @@
             <!-- <input type="email" class="form-control" id="floatingInput" placeholder="DOB"> -->
           </div>
         </div>
-        <div class="col-md-6">
+        <!-- <div class="col-md-6">
           <div class="form-floating mb-3">
             <label>Gender:-----</label>
-            <!-- <input type="email" class="form-control" id="floatingInput" placeholder="Gender"> -->
+            <input type="email" class="form-control" id="floatingInput" placeholder="Gender"> 
           </div>
-        </div>
+        </div>-->
       </div>
 
       <div class="as-border-bottom mt-4"> <label class="as-font-24 mb-3"> Change Password </label></div>
-      <div class="row mt-4">
+      <div class="row mt-4" [formGroup]="cpForm">
         <div class="col-md-6 ">
           <div class="form-floating mb-3">
-            <input type="email" class="form-control" id="floatingInput" placeholder="Old Password">
+            <input type="email" class="form-control" id="floatingInput" placeholder="Old Password" formControlName="oldpassword">
+           <!-- <mat-error *ngIf="cpForm.controls['oldpassword'].errors?.required"><small>Enter Old Password.</small>
+            </mat-error>-->
           </div>
         </div>
         <div class="col-md-6 ">
           <div class="form-floating mb-3">
-            <input type="email" class="form-control" id="floatingInput" placeholder="New Password">
+            <input type="email" class="form-control" id="floatingInput" placeholder="New Password" formControlName="newpassword">
+           <!-- <mat-error *ngIf="cpForm.controls['newpassword'].errors?.required"><small> Enter New Password.</small>
+            </mat-error>-->
           </div>
         </div>
 
       </div>
       <div class="d-grid text-right mt-3">
-        <button class="btn btn-primary fw-bold" type="button">Change Password </button>
+        <button class="btn btn-primary fw-bold" type="button" (click)="changepwd()" [disabled]="!cpForm.valid" >Change Password </button>
 
       </div>
     </div>
