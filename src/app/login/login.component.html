@@ -42,14 +42,14 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <button type="button" class="close"  #closebutton  data-dismiss="modal">&times;</button>
       </div>
       <div class="modal-body text-center">
         <div class="login-popup"></div>
         <div class="as-font-24 as-color-5 my-3">Forgot Password?</div>
         <div class="mb-3">Please contact admin to get your password</div>
         <div class="d-grid mb-3">
-          <button class="btn btn-lg btn-primary btn-login  fw-bold mb-2" type="button" >Okay</button>
+          <button class="btn btn-lg btn-primary btn-login  fw-bold mb-2" type="button" (click)="okay()" >Okay</button>
         </div>
       </div>
     </div>

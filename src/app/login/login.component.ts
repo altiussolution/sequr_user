@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../services/authentication/authentication.service';
@@ -13,7 +13,7 @@ import { ToastrService } from 'ngx-toastr';
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   toggle1: boolean = false;
-
+  @ViewChild('closebutton') closebutton;
   changeType(input_field_password){
     if(input_field_password.type=="password")
     {input_field_password.type = "text";}
@@ -49,8 +49,9 @@ export class LoginComponent implements OnInit {
     },error=>{
       
     })
-  
-    
+  }
+  okay(){
+    this.closebutton.nativeElement.click();
   }
   ngOnDestroy() { }
 }

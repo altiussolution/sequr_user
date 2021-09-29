@@ -109,6 +109,8 @@ export class ItemhistoryComponent implements OnInit {
        this.toast.success("Kit Returned Successfully")
        this.ngOnInit();
       })
+    }else{
+      this.ngOnInit();
     }
     }else{
       this.toast.error("Please choose any kit from list")
