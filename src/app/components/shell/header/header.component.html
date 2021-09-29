@@ -10,12 +10,12 @@
           <div class="d-flex as-menu-w">
             <ul class="as-menu-mega-blog-nav as-drop-head">
 
-              <li class="as-active-menu-item" *ngFor="let Categories of category"><a >{{Categories.category.category_name}}({{Categories?.sub_category?.length==''?'0':Categories?.sub_category?.length}})</a>
+              <li class="as-active-menu-item1" *ngFor="let Categories of category"><a >{{Categories.category.category_name}}({{Categories?.sub_category?.length==''?'0':Categories?.sub_category?.length}})</a>
                 <div class="as-grid as-grid-lined">
                   <div class="row">
                     <div class="as-drop-head">
 
-                      <div class="as-item" *ngFor="let subcategory of Categories?.sub_category"><i  class="fa fa-chevron-right mr-3 as-color-7" (click)="selectcategory(subcategory,Categories)">{{subcategory?.sub_category_name}}</i></div>
+                      <div class="as-item pointer" *ngFor="let subcategory of Categories?.sub_category" (click)="selectcategory(subcategory,Categories)"><i  class="fa fa-chevron-right mr-3 as-color-7" ></i>{{subcategory?.sub_category_name}}</div>
                       <!-- <div class="as-item"><i class="fa fa-chevron-right mr-3 as-color-7"></i>Spot Drills(20)</div>
                       <div class="as-item"><i class="fa fa-chevron-right mr-3 as-color-7"></i>Carbide Drills(20)</div>
                       <div class="as-item"><i class="fa fa-chevron-right mr-3 as-color-7"></i>Had Tools(20)</div>
@@ -74,7 +74,14 @@
         <li class="nav-item">
           <div class="nav-link nav-title as-bold as-color-8">Category </div>
           <hr>
-          <a *ngFor="let Categories of category"class="nav-link active" (click)="setval(Categories)">{{Categories.category.category_name}}({{Categories?.sub_category?.length==''?'0':Categories?.sub_category?.length}})</a>
+          <a *ngFor="let Categories of category"class="nav-link " (click)="setval(Categories)">{{Categories.category.category_name}}({{Categories?.sub_category?.length==''?'0':Categories?.sub_category?.length}})</a>
+          <!-- <a class="nav-link">Gage(14)</a>
+          <a class="nav-link">Kitting(32)</a>
+          <a class="nav-link">Assembly(21)</a>
+          <a class="nav-link">Key(15)</a>
+          <a class="nav-link">General(20)</a>
+          <a class="nav-link">Gage(21)</a>
+          <a class="nav-link">Kit(29)</a> -->
         </li>
         <li class="nav-item mt-3">
           <div class="nav-link nav-title as-bold as-color-8" [routerLink]="'itemhistory'">Item History</div>
@@ -84,7 +91,7 @@
         <!-- <li class="nav-item mt-3">
           <div class="nav-link nav-title as-bold as-color-8" href="#">Similar Products</div>
           <hr>
-          <div class="row flex-wrap-nowrap">
+          <div class="row flex-wrap-nowrap ">
             <div>
               <div class="as-similar-img" style="background-image: url(../../../../assets/img/Similar.png);"></div>
             </div>

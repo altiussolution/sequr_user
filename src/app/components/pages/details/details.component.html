@@ -1,5 +1,5 @@
 
-<div class="container-fluid as-mt-main pt-5" >
+<div class="container-fluid as-mt-main pt-5 details" >
 <div class="col-md-12 p-0">
     <div class="row mx-0">
         <div class="col-md-6 pl-0">
@@ -58,9 +58,15 @@
             </div>
             <div class="row mx-0 as-details-border as-details-btn">
                 <div class="as-w20 as-mr-det">
+<<<<<<< HEAD
                    
                     <input type="mobile" value="" id="quantity" (keyup)="changing($event)" placeholder="Qty" name="quantity" min="1" max="{{machine.quantity}}">  
                
+=======
+                    <form [formGroup]="qtyform">
+                    <input type="number"  class="form-control" formControlName="qty" value="" (change)="changing(qtyform.value)" placeholder="Qty" name="quantity" min="1" max="{{machine.quantity}}">
+                    </form>
+>>>>>>> 704b76f180f992db8bb44f524a33c8612b38991c
                 </div>
                 <div class="as-mr-det">
                     <button class="btn  btn-primary fw-bold mb-2" type="button" >Take Now</button>
