@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { untilDestroyed } from 'ngx-take-until-destroy';
+import { ToastrService } from 'ngx-toastr';
 import { CrudService } from 'src/app/services/crud.service';
 import { appModels } from 'src/app/services/shared/enum/enum.util';
+
 
 @Component({
   selector: 'app-profile',
@@ -9,19 +13,60 @@ import { appModels } from 'src/app/services/shared/enum/enum.util';
   styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent implements OnInit {
+  cpForm: FormGroup;
 
-  profiledetails: any=[];
-  profile: any=[];
+  profiledetails: any = [];
+  profile: any = [];
+  language: any = [];
+  lan: any;
 
-  constructor(public crud:CrudService) { }
-
-  ngOnInit(): void {
-   this.profiledetails=JSON.parse( localStorage.getItem('personal'))
-    this.crud.get(appModels.USERPROFILE+this.profiledetails._id).pipe(untilDestroyed(this)).subscribe((res:any) => {
-      console.log(res)
-      this.profile=res['data']
+  constructor(public crud: CrudService, public router: Router,
+    private fb: FormBuilder,
+    private toast: ToastrService,
+  ) {
+    this.cpForm = this.fb.group({
+      oldpassword: ['', Validators.required],
+      newpassword: ['', Validators.required]
     })
   }
-ngOnDestroy(){}
+
+  ngOnInit(): void {
+    this.profiledetails = JSON.parse(localStorage.getItem('personal'))
+    console.log(this.profiledetails)
+    this.crud.get(appModels.USERPROFILE + this.profiledetails._id).pipe(untilDestroyed(this)).subscribe((res: any) => {
+      console.log(res)
+      this.profile = res['data']
+    })
+    this.crud.get(appModels.LAN).pipe(untilDestroyed(this)).subscribe((res: any) => {
+      console.log(res)
+      this.language = res['list']
+      for (let i = 0; i < this.language.length; i++) {
+        if (this.language[i]?._id == this.profile.language_prefered) {
+          this.lan = this.language[i]
+        }
+      }
+    })
+
+  }
+  changepwd() {
+    let data = {
+      "oldpassword": this.cpForm.value.oldpassword,
+      "newpassword": this.cpForm.value.newpassword
+    }
+    console.log(data)
+    if (this.cpForm.valid) {
+    this.crud.post(appModels.CHANGEPWD, data).subscribe(res => {
+      console.log(res)
+      if(res['message']=="Password changed successfully"){
+        this.toast.success("Password Change successfully")
+      }else{
+        this.toast.success("Please Enter vaild Password")
+      
+      }
+    })
+  }
+
+  }
+  ngOnDestroy() { }
 
 }

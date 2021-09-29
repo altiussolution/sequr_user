@@ -25,16 +25,6 @@ export class ProductslistComponent implements OnInit {
     this.crud.get(appModels.KITTINGLIST).pipe(untilDestroyed(this)).subscribe((res:any) => {
       console.log(res)
       this.kit =res.data
-       for(let i=0;i<this.kit.length;i++){
-        this.kitdata=this.kit[i]?.kit_data
-
-     }
-     for(let i=0;i<this.kitdata.length;i++){
-      this.item=this.kitdata[i]?.item
-      this.bin=this.kitdata[i]?.bin
-      this.compartment=this.kitdata[i]?.compartment
-      this.cube=this.kitdata[i]?.bin
-     }
     })
   }
   addkitcart(_id:any) {
@@ -42,11 +32,11 @@ export class ProductslistComponent implements OnInit {
       console.log(res)
       if (res != "") {
         if(res['message']=="Successfully added into cart!"){
-          this.toast.success("cart added successfully")
+          this.toast.success("Kitting cart added successfully")
         }
        }
     },error=>{
-      this.toast.error("cart added Unsuccessfully")
+      this.toast.error("Kitting cart added Unsuccessfully")
     })
   }
   getData(obj) {

@@ -10,6 +10,8 @@ enum appModels {
     ADDKITCART='kitting/addKitToCart/',
     updateCart = 'cart/update',
     listCart = 'cart/myCart',
+    LAN='region/language',
+    CHANGEPWD='employee/changePassword/id',
     RETURNCART='cart/return',
     RETURNKIT='kits/return'
 }
