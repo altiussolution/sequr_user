@@ -26,6 +26,7 @@ export class HeaderComponent implements OnInit {
  constructor(public router: Router,public crud:CrudService) {}
  ngOnInit(): void {
    this.getCartTotal();
+   this.crud.currentTotal.subscribe(cart => this.cartDetails = cart)
 this.crud.CurrentMessage.subscribe(message=>this.message=message)
   this.crud.get(appModels.CATEGORYLIST).pipe(untilDestroyed(this)).subscribe((res:any) => {
     console.log(res)
@@ -35,7 +36,7 @@ this.crud.CurrentMessage.subscribe(message=>this.message=message)
   })
   this.crud.get(appModels.ITEMLIST).pipe(untilDestroyed(this)).subscribe((res:any) => {
     console.log(res)
-    this.itemhistorykit=res['Kits'][0]["kitting"]
+    this.itemhistorykit=res['Kits']
   })
   }
 setval(val:any){

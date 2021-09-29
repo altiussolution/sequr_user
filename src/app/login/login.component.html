@@ -25,7 +25,7 @@
                 </div>
                
                 <div class="d-grid text-center mt-5">
-                  <button class="btn btn-primary btn-login  fw-bold mb-2" (click)="signin()" type="button" >Sign In</button>
+                  <button [disabled]="!loginForm.valid" class="btn btn-primary btn-login  fw-bold mb-2" (click)="signin()" type="button" >Sign In</button>
                  
                 </div>
 
