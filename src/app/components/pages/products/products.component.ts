@@ -76,11 +76,11 @@ export class ProductsComponent implements OnInit {
     localStorage.setItem("_id",id)
     this.router.navigate(['pages/details'])
   }
-  addtocart(it: any, qty: any) {
+  addtocart(it: any, qty: number) {
     let cart = {
         "item" : it,
         "total_quantity" : qty,
-        "cart_status" : 1    
+        
     }
     console.log(cart)
     this.crud.post(appModels.ADDTOCART,cart).pipe(untilDestroyed(this)).subscribe((res:any) => {

@@ -28,7 +28,7 @@ export class MycartComponent implements OnInit {
     this.crudService.get(appModels.listCart).pipe(untilDestroyed(this)).subscribe(res => {
       console.log(res)
       this.cartDetails = res[0];
-      this.cartList = res[0].cart;
+      this.cartList = res[0]?.cart;
       this.crudService.getCartTotal(this.cartDetails)
     }, error => {
       this.toast.error(error.message);
@@ -36,12 +36,16 @@ export class MycartComponent implements OnInit {
   }
 
   updateCart(cart, qty) {
+//     "cart_id" : "61545519f7654233891d3da4",
+// "qty" : 19,
+// "item" : "614adb1a7ba6c0c391f71cbc",
+// "allocation":"614adbdf7ba6c0c391f71cc5"
     console.log(qty)
     let data = {
       "item": cart.item._id,
       "allocation": cart.allocation,
       "qty": qty,
-      "id": [this.cartDetails['_id']]
+      "cart_id": [this.cartDetails['_id']]
     }
     this.crudService.update2(appModels.updateCart, data).pipe(untilDestroyed(this)).subscribe(res => {
       console.log(res)
@@ -114,7 +118,7 @@ export class MycartComponent implements OnInit {
   };
 
   isChecked() {
-    return this.selected3.length === this.cartList.length;
+    return this.selected3.length === this.cartList?.length;
   };
 
 
@@ -149,3 +153,5 @@ export class MycartComponent implements OnInit {
     asgridl.classList.remove('view-active')
   }
 }
+
+

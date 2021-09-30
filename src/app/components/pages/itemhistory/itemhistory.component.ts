@@ -67,8 +67,9 @@ export class ItemhistoryComponent implements OnInit {
     var result = this.arrayvalue.map(function(a) {return a?.item?._id;});
     console.log(result)
     let data={
-      "_id" : result,
-      "cart_status" : 3 ,
+      "cart_id":this.itemhistorycart["_id"],
+      "update_item" : result,
+      "cart_status" : 4 ,
      
     }
   this.crud.update2(appModels.RETURNCART,data).pipe(untilDestroyed(this)).subscribe((res:any) => {
@@ -101,8 +102,9 @@ export class ItemhistoryComponent implements OnInit {
           var kitids = this.arrayvalue1.map(function(a) {return a?.kit_id;});
           console.log(kitids)
           let data={
-          "_id" : kitids,
-          "kit_status" : 3 ,
+            "cart_id":this.itemhistorycart["_id"],
+          "update_item" : kitids,
+          "kit_status" : 4 ,
           }
     this.crud.update2(appModels.RETURNCART,data).pipe(untilDestroyed(this)).subscribe((res:any) => {
        this.closebutton.nativeElement.click();
