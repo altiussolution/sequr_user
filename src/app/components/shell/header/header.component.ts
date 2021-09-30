@@ -25,6 +25,7 @@ export class HeaderComponent implements OnInit {
 
  constructor(public router: Router,public crud:CrudService) {}
  ngOnInit(): void {
+  
    this.getCartTotal();
    this.crud.currentTotal.subscribe(cart => this.cartDetails = cart)
 this.crud.CurrentMessage.subscribe(message=>this.message=message)
@@ -38,6 +39,8 @@ this.crud.CurrentMessage.subscribe(message=>this.message=message)
     console.log(res)
     this.itemhistorykit=res['Kits']
   })
+  
+  
   }
 setval(val:any){
   localStorage.removeItem("allow") 
