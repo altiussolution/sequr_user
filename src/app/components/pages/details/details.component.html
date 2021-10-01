@@ -4,17 +4,17 @@
     <div class="row mx-0">
         <div class="col-md-6 pl-0">
             <div class="image-gallery">
-                <!--<aside class="thumbnails">
-                  <a href="#" class="selected thumbnail" data-big="../../../../assets/img/details-1.png">
-                    <div class="thumbnail-image" style="background-image: url(../../../../assets/img/details-1.png)"></div>
+                <aside class="thumbnails">
+                  <a href="#" class="selected thumbnail" >
+                    <div class="thumbnail-image" style="background-image: url({{items?.image_path}});"></div>
                   </a>
-                  <a href="#" class="thumbnail" data-big="../../../../assets/img/details-2.png">
-                    <div class="thumbnail-image" style="background-image: url(../../../../assets/img/details-2.png)"></div>
+                  <a href="#" class="thumbnail" >
+                    <div class="thumbnail-image" style="background-image: url({{items?.image_path}});"></div>
                   </a>
-                  <a href="#" class="thumbnail" data-big="../../../../assets/img/details-3.png">
-                    <div class="thumbnail-image" style="background-image: url(../../../../assets/img/details-3.png)"></div>
+                  <a href="#" class="thumbnail" >
+                    <div class="thumbnail-image" style="background-image: url({{items?.image_path}});"></div>
                   </a>
-                </aside>-->
+                </aside>
               
                <main class="primary" style="background-image: url({{items?.image_path}});">
    
@@ -59,7 +59,7 @@
             <div class="row mx-0 as-details-border as-details-btn">
                 <div class="as-w20 as-mr-det">
                    
-                    <input type="mobile" value="" id="quantity" (keyup)="changing($event)" placeholder="Qty" name="quantity" min="1" max="{{machine.quantity}}">  
+                    <input type="mobile" value="" id="quantity" class="form-control" (keyup)="changing($event)" placeholder="Qty" name="quantity" min="1" max="{{machine.quantity}}">  
                
                 </div>
                 <div class="as-mr-det">

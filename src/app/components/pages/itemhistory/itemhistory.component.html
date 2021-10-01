@@ -22,7 +22,7 @@
       <div class="row  mx-0">
         <div class="as-history1">
           <div class="mr-2"><i class="fa fa-calendar"></i> <span class="as-color-2 mt-3 as-font-16">
-            {{date | date:'MMMM d, y'}}
+            {{date | date:'MMM d, y'}}
             </span> </div>
           <div><i class="fa fa-clock-o"></i> <span class="as-color-2 mt-3 as-font-16">
             {{date | date:"hh:mm a"}}
@@ -40,14 +40,14 @@
     <div class="as-font-18 as-bold">
       Kitting Sets
     </div>
-    <div class="row  as-color-1">
+    <div class=" as-color-1">
 
       <div class="text-center">
         <button type="button" class="btn btn-round btn-outline-info" (click)="returnkits()">Return Kits</button>
       </div>
     </div>
   </div>
-  <div class="row">
+  <div class="row mx-0">
     <div class="col-md-6 " *ngFor="let kitting of itemhistorykit">
       <div class="as-item-box">
         <div class="d-flex justify-content-between align-items-center">
@@ -55,7 +55,7 @@
           <div class="row align-items-center mx-0">
             <div class="as-history">
               <div class="mr-2"><i class="fa fa-calendar"></i> <span class="as-color-2 mt-3 as-font-16">
-                {{kitting?.updated_at| date:'MMMM d, y'}}
+                {{kitting?.updated_at| date:'MMM d, y'}}
                 </span> </div>
               <div><i class="fa fa-clock-o"></i> <span class="as-color-2 mt-3 as-font-16">
                  {{kitting?.updated_at| date:"hh:mm a"}}

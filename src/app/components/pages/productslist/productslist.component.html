@@ -4,7 +4,7 @@
       Kitting
     </div>
     <div class="row as-color-1">
-      <div class="mr-3 as-font-14">
+      <div class=" as-font-14">
           <mat-paginator [length]="kit.length"
           [pageSize]="size"
           [pageIndex]="page"
@@ -12,10 +12,10 @@
           (page)="getData($event)">
           </mat-paginator>
       </div>
-      <div class="mr-3 pointer  as-g-active view-active" (click)="gridview()">
+      <div class="mr-3 pointer  as-g-active view-active d-none" (click)="gridview()">
           <i class="fa fa-th" aria-hidden="true"></i>
       </div>
-      <div class="mr-3 pointer  as-l-active" (click)="listview()">
+      <div class="mr-3 pointer  as-l-active d-none" (click)="listview()">
           <i class="fa fa-list" aria-hidden="true"></i>
       </div>
   </div>
@@ -23,7 +23,7 @@
   <div class="col-md-12 as-mt-2 px-0 as-grid">
     <div class="row ">
       <div class="col-md-6" *ngFor="let data of kit">
-        <div class="as-item-box">
+        <div class="as-item-box" >
           <div class="d-flex justify-content-between align-items-center">
             <div class="as-font-24">{{data?.kit_name}}</div>
             <div class="row align-items-center mx-0">

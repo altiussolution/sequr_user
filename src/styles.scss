@@ -26,7 +26,10 @@ select,
 textarea {
   font-family: 'Red Hat Text', sans-serif !important;
 }
-
+.mat-paginator, .mat-paginator-page-size .mat-select-trigger{
+  font-family: 'Red Hat Text', sans-serif !important;
+  font-size: 14px ;
+}
 .fa {
   font-family: FontAwesome !important;
 }
@@ -431,6 +434,7 @@ input {
 .as-m12 {
   margin: 12px;
 }
+
 
 .as-text-flex {
   align-items: center;
@@ -847,18 +851,32 @@ button:focus {
   margin: 10px;
 }
 .as-home-img {
-  height: 39vh;
-  background-position: -14px 2px !important;
+  // height: 39vh;
+  // background-position: -14px 2px !important;
+  // background-repeat: no-repeat !important;
+  // background-size: contain !important;
+  // width: 19vw;
+  // height: 28vh;
+  background-position: bottom !important;
   background-repeat: no-repeat !important;
-  background-size: contain !important;
-  width: 19vw;
+  background-size: cover !important;
+  width: 100%;
 }
 
 .as-pro-py {
   padding-left: .5rem;
   padding-right: .5rem;
 }
+.mat-checkbox-indeterminate.mat-accent .mat-checkbox-background, .mat-checkbox-checked.mat-accent .mat-checkbox-background {
+  background-color: #1a73e9;
+}
+.as-width-60{
+  width: 60px;
+}
 
+.as-card-width1, .as-card-width2, .as-card-width3{
+  width: auto;
+}
 // Tab Design
 @media (min-width:768px) and (max-width:1024px) {
   .as-mt-main {
@@ -884,10 +902,35 @@ button:focus {
 
 
 @media only screen and (min-width : 768px) and (orientation : landscape) and (-webkit-min-device-pixel-ratio: 2) {
+  // .as-home-img {
+    
+  //   height: 28vh;
+  //   background-position: bottom !important;
+  //   background-repeat: no-repeat !important;
+  //   background-size: cover !important;
+  //   width: 100%;
+  // }
+  .as-header{
+   align-items: inherit;
+  }
+  .mat-paginator {
+    margin-top: -25px;
+}
   .as-mt-main {
     width: 80%;
   }
-
+  .mat-paginator-range-label {
+    margin: 0 16px 0 24px !important;
+}
+.mat-paginator-container {
+  padding: 0 0px 0 8px !important;
+}
+.shop-count {
+  top: 10px;
+  width: 16px;
+  height: 16px;
+  line-height: 1.2;
+}
   .as-home-img {
     height: 33vh;
 
@@ -908,23 +951,34 @@ button:focus {
     width: 215px;
   }
 
+  // .as-product-img {
+  //   // height: 128px;
+  //   height: 165px;
+  //   background-size: contain;
+  //   width: 100%;
+  // }
   .as-product-img {
-    height: 128px;
-    background-size: 70%;
-    margin-left: -16px;
-  }
+    height: 164px;
+    background-size: contain;
+    width: 100%;
+}
 
   .activemenu .as-product-img {
     height: 184px;
     background-size: 83%;
   }
+  .as-list .as-card.py-3 {
+    padding-bottom: 0.7rem !important;
+    padding-top: 0.7rem !important;
+}
 
   .activemenu .as-card {
-    max-width: 260px;
+    // max-width: 260px;
+    max-width: 187px;
   }
 
   .i-history .as-card {
-    max-width: 199px;
+    max-width: 208px;
     padding: 5px;
   }
 
@@ -940,7 +994,7 @@ button:focus {
   }
 
   .activemenu .mycart .as-card {
-    max-width: 258px;
+    max-width: 184px;
   }
 
   .as-mt-main {
@@ -950,29 +1004,67 @@ button:focus {
   }
 
   .as-home-img {
-    height: 32vh;
-    background-position: inherit !important;
+    // height: 32vh;
+    // height: 26vh;
+    // background-position: center 16px !important;
+    // background-repeat: no-repeat !important;
+    // background-size: contain !important;
+    // width: 18vw;
+    height: 26vh;
+    background-position: center bottom !important;
     background-repeat: no-repeat !important;
-    background-size: contain !important;
-    width: 18vw;
+    background-size: cover !important;
+    width: 100%;
   }
-
+ .activemenu .as-home-img {
+    width: 15vw;
+  }
   .logo-img {
     width: 25%;
   }
   .as-list .as-card {
     width: 100%;
-    max-width: 100%;
+    max-width: 95%;
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-between;
   }
-  .as-list .as-card.py-3{
+ .activemenu .product .as-list .as-card {
+  width: 100%;
+  max-width: 95%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    // justify-content: space-around;
+    justify-content: space-between;
+}
+.activemenu .mycart .as-list .as-card, .mycart .as-list .as-card  {
+  max-width: 100%;
+}
+
+.activemenu .as-product-img {
+  height: 211px;
+    background-size: contain;
+   
+}
+.activemenu .as-list .as-product-img {
+  height: 110px;
+}
+.as-list .as-product-img {
+ 
+  width: 111px;
+}
+  .as-list .as-list .as-card.py-3{
     padding-bottom:0 !important;
     padding-top: .7rem !important;
   }
+  .as-list .as-list .as-product-img {
+    height: 125px;
+    width: 150px;
+}
   .as-list > div div:nth-child(2){
     margin-right: 8px;
 
@@ -1002,6 +1094,39 @@ button:focus {
 .activemenu .product .as-card {
   width: 33%;
   max-width: 260px;
+}
+.as-crd-title {
+  width: 92%;
+  padding: 11px 4px 11px 16px;
+}
+.navbar a {
+  font-weight: 400;
+}
+.activemenu .details .as-card {
+  width: 29%;
+  max-width: 202px;
+}
+
+
+.as-card-width1, .as-card-width2, .as-card-width3{
+  width: auto;
+}
+.as-list .as-card-width1 {
+  width: 25%;
+  margin-right: 14px;
+}
+.as-list .as-card-width2{
+  width: 55%;
+}
+.as-list .as-card-width3{
+  width: 25%;
+}
+.activemenu .as-list .as-card-width1 {
+  width: 20%;
+  margin-right: 14px;
+}
+.activemenu .as-list .as-card-width2{
+  width: 70%;
 }
 }
 

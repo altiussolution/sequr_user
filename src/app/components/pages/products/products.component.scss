@@ -9,4 +9,9 @@
     padding: 6px 22px;
   }
 
-  
+  @media only screen and (min-width: 768px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2)
+{.as-list .as-card-width1 {
+    width: 25%;
+    margin-right: 14px;
+    margin-left: -23px;
+}}

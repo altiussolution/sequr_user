@@ -24,16 +24,18 @@
   </div>
   <div class="row mx-0 as-grid">
     <div class="as-card py-3" *ngFor="let cart of cartList">
-      <div class="">
-        <img class="as-product-img" [src]="cart?.item?.image_path" onError="this.src='../../../assets/img/tools.png'">
-        <!-- <div class="as-product-img" style="background-image: url(../../../assets/img/tools.png);"></div> -->
+      <div class="as-card-width1">
+        <!-- <img class="as-product-img" [src]="cart?.item?.image_path" onError="this.src='../../../assets/img/tools.png'"> -->
+        <div class="as-product-img" style="background-image: url({{cart?.item?.image_path}});" onError="this.src='../../../assets/img/tools.png'"></div>
       </div>
 
-      <div class="mb-3 text-left as-bold as-color-4">{{cart?.item?.item_name}}</div>
-      <div class="row align-items-center mx-0">
-        <div class="dropdown mr-3">
+      <div class="my-2 text-left as-bold as-color-4 as-card-width2">{{cart?.item?.item_name}}</div>
+      <div class="row align-items-center mx-0 as-card-width3">
+        <div class="dropdown1 as-width-60 mr-3">
           <!-- <div type="button" class=" dropdown-toggle btn btn-round btn-light" data-toggle="dropdown"> -->
-          <input style="width: 50px;" type="number" min="1" [value]="cart?.qty" #qty>
+          <!-- <input style="width: 50px;" type="number" min="1" [value]="cart?.qty" #qty> -->
+          <input type="number" class="as-width-60" id="quantity" class="form-control" placeholder="Qty" min="1"
+            [value]="cart?.qty" name="quantity" #qty>
           <!-- </div> -->
           <!-- <div class="dropdown-menu">
                   <a class="dropdown-item" href="#">1</a>
@@ -42,8 +44,8 @@
               </div> -->
         </div>
         <div>
-          <button type="button" class="btn as-btn btn-primary mr-3"
-            (click)="updateCart(cart, qty.value)">Update</button>
+          <button type="button" class="btn qty as-btn btn-primary mr-3" (click)="updateCart(cart, qty.value)"><i
+              class="fa fa-plus"></i></button>
         </div>
         <div class="">
           <button type="button" class="btn btn-round btn-light " (click)="deleteCart(cart)"><i
@@ -51,13 +53,13 @@
         </div>
       </div>
       <div class="form-group form-check as-check">
-        <mat-checkbox class="example-margin" (change)="$event ? toggle(cart, $event) : null"
-          [checked]="exists(cart)"></mat-checkbox>
+        <mat-checkbox class="example-margin" (change)="$event ? toggle(cart, $event) : null" [checked]="exists(cart)">
+        </mat-checkbox>
         <!-- <input type="checkbox" class="form-check-input" id="Check1"> -->
       </div>
     </div>
   </div>
-  <div class="text-right mb-5 mt-3">
+  <div class="text-right mb-5 mt-3  ">
     <button type="button" class="btn as-btn btn-primary mr-3" [routerLink]="'/pages/home'">Add More</button>
     <button type="button" class="btn as-btn btn-secondary ">Take Now</button>
   </div>

@@ -8,7 +8,7 @@
     <div class="as-shadow asbg-1">
       <div class="as-user" style="background-image: url({{profile.profile_pic}});">
       </div>
-      <div class="mx-auto text-center mb-4">
+      <div class="mx-auto text-center pt-3 mb-4">
         <label class="as-font-36 ">{{profile?.employee_id}}</label>
       </div>
       <div class="row justify-content-center">
@@ -30,24 +30,49 @@
         <div class="col-md-6 ">
           <div class="form-floating mb-3">
             <!-- <input type="email" class="form-control" id="floatingInput" placeholder="Username" > -->
-         <label>Username:{{profile?.first_name + profile?.last_name}}</label>
+            <div class="as-font-16 as-bold ">
+              <label>Username</label>
+            </div>
+            <div class="as-font-16">
+              <label>{{profile?.first_name + profile?.last_name}}</label>
+            </div>
+         
+        
           </div>
         </div>
         <div class="col-md-6 ">
           <div class="form-floating mb-3">
             <!-- <input type="email" class="form-control" id="floatingInput" placeholder="Employee ID"> -->
-            <label>Employee ID:{{profile?.employee_id}}</label>
+            <div class="as-font-16 as-bold ">
+              <label>Employee ID</label>
+            </div>
+           <div  class="as-font-16">
+            <label>{{profile?.employee_id}}</label>
+           </div>
+           
           </div>
         </div>
-        <div class="col-md-6">
-          <div class="form-floating mb-3">
-            <label>Language:{{lan?.language}}</label>
+        <div class="col-md-6 mb-3">
+          <div class="form-floating">
+            <div class="as-font-16 as-bold ">
+              <label>Language</label>
+            </div>
+           <div class="as-font-16">
+            <label>{{lan?.language}}</label>
+           </div>
+           
             <!-- <input type="email" class="form-control" id="floatingInput" placeholder="Language"> -->
           </div>
         </div>
-        <div class="col-md-6">
-          <div class="form-floating mb-3">
-            <label>DOB:{{profile?.date_of_birth| date: 'dd/MM/yyyy'}}</label>
+        <div class="col-md-6 ">
+          <div class="form-floating ">
+            <div class="as-font-16 as-bold ">
+              <label >DOB</label>
+            </div>
+            <div class="as-font-16">
+              <label>{{profile?.date_of_birth| date: 'dd/MM/yyyy'}}</label>
+            </div>
+           
             <!-- <input type="email" class="form-control" id="floatingInput" placeholder="DOB"> -->
           </div>
         </div>
