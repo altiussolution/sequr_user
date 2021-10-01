@@ -28,6 +28,7 @@
     <div class="row ml-0 as-grid">
       <div class="as-card " *ngFor="let category of data ">
         <div class="as-home-img" style="background: url({{category?.image_path}});"  (click)="selectcategory(category)"></div>
+        <!-- <img class="as-home-img" src="{{category?.image_path}}"> -->
         <a class="as-crd-title" (click)="selectcategory(category)">{{category?.sub_category_name}}</a>  
     </div>
     </div>
