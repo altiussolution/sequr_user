@@ -12,14 +12,13 @@ export class CrudService {
 private messagesource= new BehaviorSubject<any>("");
 private messagesource1= new BehaviorSubject<any>("");
 private messagesource2= new BehaviorSubject<any>("");
+private cartTotal = new BehaviorSubject<any>("");
 CurrentMessage= this.messagesource.asObservable();
 CurrentMessage1= this.messagesource1.asObservable();
 CurrentMessage2= this.messagesource2.asObservable();
-
-private cartTotal = new BehaviorSubject<any>("");
 currentTotal = this.cartTotal.asObservable();
 
-  constructor(private http: HttpClient) { }
+ constructor(private http: HttpClient) { }
 
 changemessage(message:any){
   this.messagesource.next(message)
@@ -30,8 +29,8 @@ changemessage1(message:any){
 changemessage2(message:any){
   this.messagesource2.next(message)
 }
-getCartTotal(total: any) {
-  this.cartTotal.next(total);
+getcarttotal(cart:any) {
+  this.cartTotal.next(cart);
 }
   get(model: string): Observable<any> {
     return this.http.get(model);

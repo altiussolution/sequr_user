@@ -65,7 +65,15 @@ changing(event) {
     this.crud.post(appModels.ADDTOCART,cart).subscribe(res => {
       console.log(res)
         this.toast.success("cart added successfully")
-      
+        this.crud.get(appModels.listCart).pipe(untilDestroyed(this)).subscribe(res => {
+          console.log(res)
+          if(res){
+            this.crud.getcarttotal(res[0])
+          }
+        
+        }, error => {
+          this.toast.error(error.message);
+        })
     })  
     }else{
       this.toast.error("please Enter QTY")

@@ -13,11 +13,12 @@ import { appModels } from 'src/app/services/shared/enum/enum.util';
 export class MycartComponent implements OnInit {
 
   cartDetails: any[] = [];
-  cartList: any[] = [];
+  cartList: any=[];
   cartIds: any[] = [];
   selected3: any[] = [];
   page = 0;
   size = 4;
+  cartdata: any=[];
 
   constructor(private crudService: CrudService, private toast: ToastrService) { }
 
@@ -27,9 +28,14 @@ export class MycartComponent implements OnInit {
   getCartItems() {
     this.crudService.get(appModels.listCart).pipe(untilDestroyed(this)).subscribe(res => {
       console.log(res)
+      this.cartdata=res[0]
+    for(let i=0;i< this.cartdata?.cart?.length;i++){
+        if( this.cartdata?.cart[i]['cart_status']==1 || this.cartdata?.cart[i]['cart_status']==2){
+        this.cartList.push(this.cartdata?.cart[i])
+        }
+    }
       this.cartDetails = res[0];
-      this.cartList = res[0]?.cart;
-      this.crudService.getCartTotal(this.cartDetails)
+      this.crudService.getcarttotal(this.cartDetails)
     }, error => {
       this.toast.error(error.message);
     })
