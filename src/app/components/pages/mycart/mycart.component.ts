@@ -19,6 +19,8 @@ export class MycartComponent implements OnInit {
   page = 0;
   size = 4;
   cartdata: any=[];
+  machinedetails: any=[];
+  val: any=[];
 
   constructor(private crudService: CrudService, private toast: ToastrService) { }
 
@@ -158,6 +160,38 @@ export class MycartComponent implements OnInit {
     asgridg.classList.add('view-active')
     asgridl.classList.remove('view-active')
   }
+
+  take(){
+    this.machinedetails=[];
+    this.val=[];
+    console.log(this.cartList)
+    if(this.machinedetails.length==0){
+      for(let i=0;i<this.cartList?.length;i++){
+        this.crudService.get(appModels.DETAILS +this.cartList[i].item['_id']).pipe(untilDestroyed(this)).subscribe((res:any) => {
+          this.machinedetails.push(res)
+          if(i==this.cartList?.length-1){
+              for(let j=0;j<this.machinedetails?.length;j++){
+            
+                let data={item_name : this.machinedetails[j]['items']['item_name'],cube_id : this.machinedetails[j]['machine']['cube']['cube_id'], bin_name : this.machinedetails[j]['machine']['bin']['bin_name'], compartment_name : this.machinedetails[j]['machine']['compartment']['compartment_name']}
+               this.val.push(data)
+            
+               if(j==this.machinedetails?.length-1){
+                console.log(this.machinedetails)
+                if(this.val){
+              
+                  this.crudService.post(appModels.TAKENOW,this.val).pipe(untilDestroyed(this)).subscribe(res => {
+                    console.log(res)
+                  })
+                }
+               }
+            }
+          
+        }
+        })
+     
+    }
+    
+  }}
 }
 
 
