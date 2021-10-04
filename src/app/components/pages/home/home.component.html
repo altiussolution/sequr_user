@@ -6,7 +6,7 @@
             {{categoryName}} 
         </div>
         <div class="row as-color-1">
-            <div class="mr-3 as-font-14">
+            <div class="as-font-14">
                 <mat-paginator [length]="subcategories.length"
                 [pageSize]="size"
                 [pageIndex]="page"
@@ -14,10 +14,10 @@
                 (page)="getData($event)">
                 </mat-paginator>
             </div>
-            <div class="mr-3 pointer  as-g-active view-active" (click)="gridview()">
+            <div class="mr-3 pointer  as-g-active view-active d-none" (click)="gridview()">
                 <i class="fa fa-th" aria-hidden="true"></i>
             </div>
-            <div class="mr-3 pointer  as-l-active" (click)="listview()">
+            <div class="mr-3 pointer  as-l-active d-none" (click)="listview()">
                 <i class="fa fa-list" aria-hidden="true"></i>
             </div>
         </div>
@@ -28,6 +28,7 @@
     <div class="row ml-0 as-grid">
       <div class="as-card " *ngFor="let category of data ">
         <div class="as-home-img" style="background: url({{category?.image_path}});"  (click)="selectcategory(category)"></div>
+        <!-- <img class="as-home-img" src="{{category?.image_path}}"> -->
         <a class="as-crd-title" (click)="selectcategory(category)">{{category?.sub_category_name}}</a>  
     </div>
     </div>

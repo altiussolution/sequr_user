@@ -23,6 +23,8 @@ export class HomeComponent implements OnInit {
   data: any=[];
   page = 0;
   size = 4;
+
+
   constructor(public crud:CrudService,public router:Router,private changeDetectorRef: ChangeDetectorRef) { 
   
   }
@@ -35,6 +37,7 @@ export class HomeComponent implements OnInit {
       
         this.message=JSON.parse(message)
         this.categoryName=this.message?.category?.category_name
+        
         this.crud.get(appModels.SUBCATEGORY+this.message?.category?._id).pipe(untilDestroyed(this)).subscribe((res:any) => {
           localStorage.setItem("allow","data")
           console.log(res)
