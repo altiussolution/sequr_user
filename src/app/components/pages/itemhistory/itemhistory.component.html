@@ -18,7 +18,7 @@
         <div class="as-product-img" style="background-image: url({{cart?.item?.image_path}});"></div>
       </div>
 
-      <div class="mb-3 text-left as-bold as-color-4">{{cart?.item?.item_name}}</div>
+      <div class="mb-3 text-left as-bold as-color-4">{{cart?.item?.item_name}}({{cart?.qty}})</div>
       <div class="row  mx-0">
         <div class="as-history1">
           <div class="mr-2"><i class="fa fa-calendar"></i> <span class="as-color-2 mt-3 as-font-16">
@@ -75,7 +75,7 @@
           </div>
           <div>
             <div class="as-font-18 as-bold as-color-4">
-              {{item?.item?.item_name}}
+              {{item?.item?.item_name}}({{item?.quantity}})
             </div>
             <div class="as-color-2 mt-3 as-font-16">
               Machine: {{item?.cube?.cube_name}} Column ID: {{item?.bin?.bin_id}} Rack: {{item?.compartment?.compartment_id}}

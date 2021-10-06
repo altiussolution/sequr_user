@@ -35,7 +35,7 @@ textarea {
 }
 
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 6px;
 }
 
 
@@ -45,12 +45,12 @@ textarea {
 
 
 ::-webkit-scrollbar-thumb {
-  background: #888;
+  background: #10a1d1;
 }
 
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #555;
+  background: #0a8db9;
 }
 
 .as-mt-main {
@@ -64,6 +64,7 @@ textarea {
   float: right;
   padding-right: 50px;
   padding-left: 50px;
+  transition: all .3s linear;
 }
 
 .login {
@@ -167,9 +168,13 @@ input:-webkit-autofill {
 
 .navbar-expand-lg .navbar-nav.side-nav {
   flex-direction: column;
+  transition: all .3s linear;
 }
 
-
+.navbar-expand-lg .navbar-nav.side-nav .nav-link.as-active{
+  color: #2e2e2e !important;
+    cursor: pointer;
+}
 
 .header-top {
   box-shadow: 0 3px 5px rgba(0, 0, 0, .1)
@@ -346,7 +351,9 @@ input:-webkit-autofill {
 .as-color-8 {
   color: #494949;
 }
-
+.as-color-9{
+  color: #3b3b3b !important;
+}
 .as-bold {
   font-weight: 500;
 }
@@ -606,7 +613,10 @@ input {
 
 // Nave Bar expand
 .navbar-nav.side-nav.sidenav.sidebar-hidden {
-  display: none;
+  // display: none;
+  opacity: 0;
+  width: 0;
+  left: -57px;
 }
 
 .activemenu .as-mt-main {
