@@ -22,6 +22,7 @@ export class HeaderComponent implements OnInit {
   searchIcon = 'search-icon';
   cartDetails: any;
   itemhistorykit: any=[];
+  selectedItem: any;
 
  constructor(public router: Router,public crud:CrudService) {}
  ngOnInit(): void {
@@ -34,19 +35,20 @@ this.crud.CurrentMessage.subscribe(message=>this.message=message)
    this.category=res['data']
    localStorage.removeItem("allow") 
    this.crud.changemessage(JSON.stringify(this.category[0]))
+   this.selectedItem = this.category[0];
   })
   this.crud.get(appModels.ITEMLIST).pipe(untilDestroyed(this)).subscribe((res:any) => {
     console.log(res)
     this.itemhistorykit=res['Kits']
   })
-  
+ 
   
   }
 setval(val:any){
   localStorage.removeItem("allow") 
   this.crud.changemessage(JSON.stringify(val))
   this.router.navigate(['pages/home'])
- 
+  this.selectedItem = val;
 }
 
   logout(){ 
@@ -87,6 +89,18 @@ private searchInput: ElementRef;
 //  ngOnInit(): void {
     
 //   }
+test(){
+  let assidebar = document.querySelector('.sidenav');
+  let body = document.querySelector('body');
+  debugger
+  if(assidebar.classList.contains('sidenav'))    
+      {
+        assidebar.classList.add('sidebar-hidden');
+        body.classList.add('activemenu');
+        assidebar.classList.add('sidebar');
+      }
+    
+}
 toggleSidebar() {
   let assidebar = document.querySelector('.sidenav');
   let body = document.querySelector('body');
@@ -133,6 +147,7 @@ selectcategory(val:any,category:any){
     this.crud.changemessage1(JSON.stringify(val))
   
   this.router.navigate(['/pages/products'])
+  
 
 }
 

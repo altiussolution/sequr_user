@@ -1,6 +1,6 @@
 <div id="navbar">
   <nav class="navbar header-top fixed-top navbar-expand-lg  navbar-light bg-white">
-   
+
     <div class="navbar-brand logo-img " [routerLink]="'/pages/home'"></div>
     <span class="navbar-toggler-icon leftmenutrigger" (click)="toggleSidebar()" id="sidebarCollapse"></span>
 
@@ -10,12 +10,15 @@
           <div class="d-flex as-menu-w">
             <ul class="as-menu-mega-blog-nav as-drop-head">
 
-              <li class="as-active-menu-item1" *ngFor="let Categories of category"><a >{{Categories.category.category_name}}({{Categories?.sub_category?.length==''?'0':Categories?.sub_category?.length}})</a>
+              <li class="as-active-menu-item1" *ngFor="let Categories of category">
+                <a>{{Categories.category.category_name}}({{Categories?.sub_category?.length==''?'0':Categories?.sub_category?.length}})</a>
                 <div class="as-grid as-grid-lined">
                   <div class="row">
                     <div class="as-drop-head">
 
-                      <div class="as-item pointer" *ngFor="let subcategory of Categories?.sub_category" (click)="selectcategory(subcategory,Categories)"><i  class="fa fa-chevron-right mr-3 as-color-7" ></i>{{subcategory?.sub_category_name}}</div>
+                      <div class="as-item pointer" *ngFor="let subcategory of Categories?.sub_category"
+                        (click)="selectcategory(subcategory,Categories)"><i
+                          class="fa fa-chevron-right mr-3 as-color-7"></i>{{subcategory?.sub_category_name}}</div>
                       <!-- <div class="as-item"><i class="fa fa-chevron-right mr-3 as-color-7"></i>Spot Drills(20)</div>
                       <div class="as-item"><i class="fa fa-chevron-right mr-3 as-color-7"></i>Carbide Drills(20)</div>
                       <div class="as-item"><i class="fa fa-chevron-right mr-3 as-color-7"></i>Had Tools(20)</div>
@@ -42,7 +45,7 @@
                 <span class="as-dropdown-toggle"></span>
               </li>
 
-            
+
 
             </ul>
             <div class="as-drop-head">
@@ -72,9 +75,10 @@
       <ul class="navbar-nav animate side-nav sidenav">
 
         <li class="nav-item">
-          <div class="nav-link nav-title as-bold as-color-8">Category </div>
+          <div class="nav-link nav-title as-bold as-color-9">Category </div>
           <hr>
-          <a *ngFor="let Categories of category"class="nav-link " (click)="setval(Categories)">{{Categories.category.category_name}}({{Categories?.sub_category?.length==''?'0':Categories?.sub_category?.length}})</a>
+          <a *ngFor="let Categories of category" class="nav-link " [ngClass]="{'as-active': selectedItem === Categories}"
+            (click)="setval(Categories)">{{Categories.category.category_name}}({{Categories?.sub_category?.length==''?'0':Categories?.sub_category?.length}})</a>
           <!-- <a class="nav-link">Gage(14)</a>
           <a class="nav-link">Kitting(32)</a>
           <a class="nav-link">Assembly(21)</a>
@@ -84,9 +88,10 @@
           <a class="nav-link">Kit(29)</a> -->
         </li>
         <li class="nav-item mt-3">
-          <div class="nav-link nav-title as-bold as-color-8" [routerLink]="'itemhistory'">Item History</div>
+          <div class="nav-link nav-title as-bold as-color-9" [routerLink]="'itemhistory'">Item History</div>
           <hr>
-          <a  *ngFor="let kitting of itemhistorykit" class="nav-link" [routerLink]="'itemhistory'">{{kitting?.kit_name}}({{kitting?.kit_data?.length===''?'0':kitting?.kit_data?.length}})</a>
+          <a *ngFor="let kitting of itemhistorykit" class="nav-link as-color-9"
+            [routerLink]="'itemhistory'">{{kitting?.kit_name}}({{kitting?.kit_data?.length===''?'0':kitting?.kit_data?.length}})</a>
         </li>
         <!-- <li class="nav-item mt-3">
           <div class="nav-link nav-title as-bold as-color-8" href="#">Similar Products</div>
@@ -132,7 +137,7 @@
       <ul class="navbar-nav ml-md-auto d-md-flex">
         <li class="nav-item d-flex">
 
-           <div id="search-container">
+          <div id="search-container">
             <div class="search-fields">
               <div>
                 <input matInput #searchInput placeholder="Search..." (keyup.enter)="search()" autocomplete="off">
@@ -148,9 +153,9 @@
           </div>
 
         </li>
-        <li class="nav-item" [routerLink]="'/pages/profile'">
-          <a class="nav-link" >
-            <div class="user-icon" ></div>
+        <li (click)="test()" class="nav-item" [routerLink]="'/pages/profile'">
+          <a class="nav-link">
+            <div class="user-icon"></div>
           </a>
         </li>
         <li class="nav-item relative" [routerLink]="'/pages/mycart'">
@@ -181,9 +186,10 @@
 
           <div class="d-grid mb-3 as-mt-2">
             <button class="btn btn-lg btn-primary btn-login  fw-bold mb-2 mr-2" type="button" data-toggle="modal"
-           (click)="logout()" data-dismiss="modal">Yes</button>
+              (click)="logout()" data-dismiss="modal">Yes</button>
             <!--   data-target="#myModal1" -->
-            <button class="btn btn-lg btn-secondary btn-login  fw-bold mb-2 ml-2" type="button" data-dismiss="modal">No</button>
+            <button class="btn btn-lg btn-secondary btn-login  fw-bold mb-2 ml-2" type="button"
+              data-dismiss="modal">No</button>
           </div>
         </div>
       </div>
