@@ -14,7 +14,7 @@ enum appModels {
     CHANGEPWD='employee/changePassword/id',
     RETURNCART='cart/return',
     RETURNKIT='kits/return',
-    TAKENOW='machine/machineAccess'
+    TAKENOW='machine'
 }
 //614993f607f4ce431244b852
 //6149b8ec74e1d5ef4317a9b1

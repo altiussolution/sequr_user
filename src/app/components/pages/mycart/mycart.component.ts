@@ -165,6 +165,7 @@ export class MycartComponent implements OnInit {
   machineResponse;
 
   async machineAccess(val){
+    console.log(val);
     var result = groupBy(val, function(item) {
       return [item.cube_id, item.bin_name]
     })
@@ -181,57 +182,54 @@ export class MycartComponent implements OnInit {
       })
     }
     var x = 0
+    var loop_break = false;
+    setInterval(() => {    
     for(let val of result){
       result[x].sort(function(a, b) { 
         return b.compartment_name - a.compartment_name;
       });
-      this.crudService.post(appModels.TAKENOW,result[x][0]).pipe(delay(5000)).subscribe(async (res) => {
-       
+      this.crudService.post(`${appModels.TAKENOW}/machineAccess`,result[x][0]).pipe(delay(5000)).subscribe(async (res) => {
+        console.log(res.details.singledevinfo.column[0].status[0]);
+       if(res.details.singledevinfo.column[0].status[0] == "Locked"){ 
+         console.log(Date, 'if 1')
+        this.crudService.post(`${appModels.TAKENOW}/unLockMachine`,result[x][0]).pipe(delay(5000)).subscribe(async (res) => {
+          if(res.details.unlock.reply[0] == 'NoError'){
+            this.toast.success('Machine Unlocked');
+          }else if(res.details.Error.request[0] == 'unlock' && res.details.Error.message[0] == 'Busy'){
+            this.toast.success('Machine Unlock is in progress and busy');
+          }
+        })
+       }else if(res.details.singledevinfo.column[0].status[0] == "Unlocked"){
+        console.log(Date, 'if 2')
+        this.toast.success('Machine Unlocked Open and take your products');
+         
+       }else if(res.details.singledevinfo.column[0].status[0] == "Closed"){
+        this.crudService.post(`${appModels.TAKENOW}/lockMachine`,result[x][0]).pipe(delay(5000)).subscribe(async (res) => {
+          if(res.details.unlock.reply[0] == 'NoError'){
+            loop_break = true;
+            this.toast.success('Machine Locked');  
+          }
+        })
+      }
       })
+      if(loop_break){
+        x++; // for testing
+      }
     }
+  }, 10000)
   }
-
-  // successFn(value){
-  //   this.crudService.post(appModels.TAKENOW,result[x][0]).pipe(delay(5000)).subscribe(async (res) => {
-  //     this.machineResponse = await res;
-  //     return this.machineResponse
-  //   })
-  // }
 
   take(){ 
     this.machinedetails=[];
     this.val=[];
-    if(this.machinedetails.length==0){
-      for(let i=0;i<this.cartList?.length;i++){
-        this.crudService.get(appModels.DETAILS +this.cartList[i].item['_id']).pipe(untilDestroyed(this)).subscribe(async (res:any) => {
-          await this.machinedetails.push(res)
-          if(i==this.cartList?.length-1){
-              for(let j=0;j<this.machinedetails?.length;j++){
-            
-                let data={item_name : this.machinedetails[j]['items']['item_name'],cube_id : this.machinedetails[j]['machine']['cube']['cube_id'], bin_name : this.machinedetails[j]['machine']['bin']['bin_name'], compartment_name : this.machinedetails[j]['machine']['compartment']['compartment_name']}
-
-               await this.val.push(data)
-              setTimeout(() =>{
-                this.machineAccess(this.val)
-              }, 5000);
-                
-            
-              //  if(j==this.machinedetails?.length-1){
-              //   if(this.val){
-              
-              //     this.crudService.post(appModels.TAKENOW,this.val).pipe(untilDestroyed(this)).subscribe(res => {
-              //       console.log(res)
-              //     })
-              //   }
-              //  }
-            }
-          
-        }
-        })
-     
+    for(let cart of this.cartList){
+      let data={item_name : cart.item.item_name,cube_id : cart.allocation.cube.cube_id, bin_name : cart.allocation.bin.bin_name, compartment_name : cart.allocation.compartment.compartment_name}
+      this.val.push(data)
+      if(this.cartList.length == this.val.length){
+        this.machineAccess(this.val)
+      }
     }
-    
-  }}
+  }
 }
 
 
