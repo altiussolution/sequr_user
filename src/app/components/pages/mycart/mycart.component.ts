@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { ToastrService } from 'ngx-toastr';
+import { delay } from 'rxjs/operators';
 import { CrudService } from 'src/app/services/crud.service';
 import { appModels } from 'src/app/services/shared/enum/enum.util';
 
@@ -161,29 +162,68 @@ export class MycartComponent implements OnInit {
     asgridl.classList.remove('view-active')
   }
 
-  take(){
+  machineResponse;
+
+  async machineAccess(val){
+    var result = groupBy(val, function(item) {
+      return [item.cube_id, item.bin_name]
+    })
+
+    function groupBy(array, f){
+      let groups = {};
+      array.forEach(element => {
+        var group = JSON.stringify(f(element));
+        groups[group] = groups[group] || [];
+        groups[group].push(element)
+      });
+      return Object.keys(groups).map(function (group) {
+        return groups[group]
+      })
+    }
+    var x = 0
+    for(let val of result){
+      result[x].sort(function(a, b) { 
+        return b.compartment_name - a.compartment_name;
+      });
+      this.crudService.post(appModels.TAKENOW,result[x][0]).pipe(delay(5000)).subscribe(async (res) => {
+       
+      })
+    }
+  }
+
+  // successFn(value){
+  //   this.crudService.post(appModels.TAKENOW,result[x][0]).pipe(delay(5000)).subscribe(async (res) => {
+  //     this.machineResponse = await res;
+  //     return this.machineResponse
+  //   })
+  // }
+
+  take(){ 
     this.machinedetails=[];
     this.val=[];
-    console.log(this.cartList)
     if(this.machinedetails.length==0){
       for(let i=0;i<this.cartList?.length;i++){
-        this.crudService.get(appModels.DETAILS +this.cartList[i].item['_id']).pipe(untilDestroyed(this)).subscribe((res:any) => {
-          this.machinedetails.push(res)
+        this.crudService.get(appModels.DETAILS +this.cartList[i].item['_id']).pipe(untilDestroyed(this)).subscribe(async (res:any) => {
+          await this.machinedetails.push(res)
           if(i==this.cartList?.length-1){
               for(let j=0;j<this.machinedetails?.length;j++){
             
                 let data={item_name : this.machinedetails[j]['items']['item_name'],cube_id : this.machinedetails[j]['machine']['cube']['cube_id'], bin_name : this.machinedetails[j]['machine']['bin']['bin_name'], compartment_name : this.machinedetails[j]['machine']['compartment']['compartment_name']}
-               this.val.push(data)
+
+               await this.val.push(data)
+              setTimeout(() =>{
+                this.machineAccess(this.val)
+              }, 5000);
+                
             
-               if(j==this.machinedetails?.length-1){
-                console.log(this.machinedetails)
-                if(this.val){
+              //  if(j==this.machinedetails?.length-1){
+              //   if(this.val){
               
-                  this.crudService.post(appModels.TAKENOW,this.val).pipe(untilDestroyed(this)).subscribe(res => {
-                    console.log(res)
-                  })
-                }
-               }
+              //     this.crudService.post(appModels.TAKENOW,this.val).pipe(untilDestroyed(this)).subscribe(res => {
+              //       console.log(res)
+              //     })
+              //   }
+              //  }
             }
           
         }

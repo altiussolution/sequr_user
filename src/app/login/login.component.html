@@ -9,8 +9,6 @@
           <div class="row mt-5">
             <div class="col-md-9 col-lg-8 mx-auto mt-5">
               <div class="login-heading mb-4 as-color-3 "> Sign in with Email</div>
-
-             
               <form [formGroup]="loginForm" autocomplete="off">
                 <div class="form-floating mb-3">
                   <input type="email" class="form-control" id="floatingInput" placeholder="Username" formControlName="username">
@@ -18,10 +16,10 @@
                 </div>
                 <div class="form-floating mb-4 relative ">
                   <input type="password" class="form-control" #password1  id="floatingPassword" placeholder="Password" formControlName="password">
-                  <i (click)="changeType(password1)" class="as-eye " [ngClass]="toggle1 ? 'fa fa-eye' : 'fa fa-eye-slash'"></i>
+                  <i (click)="changeType(password1)" class="as-eye pointer" [ngClass]="toggle1 ? 'fa fa-eye' : 'fa fa-eye-slash'"></i>
                 </div>
                 <div class="text-right ">
-                  <a class="as-color-1 " data-toggle="modal" data-target="#myModal">Forgot password?</a>
+                  <a class="as-color-1 pointer" data-toggle="modal" data-target="#myModal">Forgot password?</a>
                 </div>
                
                 <div class="d-grid text-center mt-5">
