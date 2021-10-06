@@ -90,8 +90,7 @@
         <li class="nav-item mt-3">
           <div class="nav-link nav-title as-bold as-color-9" [routerLink]="'itemhistory'">Item History</div>
           <hr>
-          <a *ngFor="let kitting of itemhistorykit" class="nav-link as-color-9"
-            [routerLink]="'itemhistory'">{{kitting?.kit_name}}({{kitting?.kit_data?.length===''?'0':kitting?.kit_data?.length}})</a>
+          <a  *ngFor="let kitting of itemhistorykit" class="nav-link as-color-9" [routerLink]="'itemhistory'">{{kitting?.kit_name}}({{kitting?.kit_item_details?.length===''?'0':kitting?.kit_item_details?.length}})</a>
         </li>
         <!-- <li class="nav-item mt-3">
           <div class="nav-link nav-title as-bold as-color-8" href="#">Similar Products</div>

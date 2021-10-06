@@ -21,7 +21,7 @@ export class DetailsComponent implements OnInit {
   qty: any;
   qtyform!: FormGroup;
   id: any;
-  qut: any=[];
+  qut:number;
 
   constructor(  public router: Router,private toast: ToastrService, private fb: FormBuilder,public crud:CrudService) { 
       this.qtyform = this.fb.group({
@@ -55,17 +55,25 @@ changing(event) {
 }
 
   addtocart() {
-    if(this.qut?.length !=0 && this.qut>0){
+    if(this.qut && this.qut>0){
       let cart = {
         "item" : this.machine.item,
         "total_quantity" : this.qut,
-        "cart_status" : 1    
+           
     }
   
     this.crud.post(appModels.ADDTOCART,cart).subscribe(res => {
       console.log(res)
         this.toast.success("cart added successfully")
-      
+        this.crud.get(appModels.listCart).pipe(untilDestroyed(this)).subscribe(res => {
+          console.log(res)
+          if(res){
+            this.crud.getcarttotal(res[0])
+          }
+        
+        }, error => {
+          this.toast.error(error.message);
+        })
     })  
     }else{
       this.toast.error("please Enter QTY")

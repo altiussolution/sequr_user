@@ -19,20 +19,25 @@ export class ItemhistoryComponent implements OnInit {
   DataForm:FormGroup;
   @ViewChild('closebutton') closebutton;
   arrayvalue1: any=[];
+  id: any;
+  cartdata: any=[];
   constructor(public crud:CrudService, private toast: ToastrService) { }
   ngOnInit(): void {
   this.arrayvalue1=[];
   this.arrayvalue=[];
   this.crud.get(appModels.ITEMLIST).pipe(untilDestroyed(this)).subscribe((res:any) => {
       console.log(res)
-      this.itemhistorycart=res['Cart'][0]['cart']
+      this.itemhistorycart=[]
+      this.cartdata=res['Cart'][0]['cart']
+      for(let i=0;i< this.cartdata?.length;i++){
+        if( this.cartdata[i]['cart_status']==1 || this.cartdata[i]['cart_status']==2){
+        this.itemhistorycart.push(this.cartdata[i])
+        }}
+      this.id=res['Cart'][0]['_id']
       this.date=res['Cart'][0]['updated_at']
       this.itemhistorykit=res['Kits']
-  
-    })
-   
- 
-  }
+  })
+}
   passParams(event:any,val:any){
     if(event.target.checked){
       this.arrayvalue.push(val);
@@ -64,10 +69,11 @@ export class ItemhistoryComponent implements OnInit {
   }
   returnproduct(){
     if(this.arrayvalue.length!=0){
-    var result = this.arrayvalue.map(function(a) {return a?.item?._id;});
-    console.log(result)
+    var result = this.arrayvalue.map(function(a) {return a?._id;});
+    console.log(this.itemhistorycart["_id"])
     let data={
-      "_id" : result,
+      "cart_id": this.id,
+      "return_items" : result,
       "cart_status" : 3 ,
      
     }
@@ -98,11 +104,13 @@ export class ItemhistoryComponent implements OnInit {
     if(this.arrayvalue1.length!=0){
       var kitnames = this.arrayvalue1.map(function(a) {return a?.kit_name;});
       if (confirm(`Are you sure want to Return the Kits for ${kitnames}?`)) {
-          var kitids = this.arrayvalue1.map(function(a) {return a?.kit_id;});
+          var kitids = this.arrayvalue1.map(function(a) {return a?.update_kit_id;});
+          var cartid = this.arrayvalue1.map(function(a) {return a?.cart_id;});
           console.log(kitids)
           let data={
-          "_id" : kitids,
-          "kit_status" : 3 ,
+            "cart_id":cartid,
+          "return_items" : kitids,
+          "kit_status" : 3,
           }
     this.crud.update2(appModels.RETURNCART,data).pipe(untilDestroyed(this)).subscribe((res:any) => {
        this.closebutton.nativeElement.click();
