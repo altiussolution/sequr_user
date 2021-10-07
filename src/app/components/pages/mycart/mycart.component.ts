@@ -65,7 +65,7 @@ export class MycartComponent implements OnInit {
   deleteCart(cart) {
     if (confirm(`Are you sure, you want to Delete?`)) {
       let data = {
-        "cart_id": this.cartDetails['_id'],
+        "cart_id": this.cartdata['_id'],
         "item_id": [cart.item._id],
       }
       this.crudService.update2('cart/deleteItemFromCart', data).pipe(untilDestroyed(this)).subscribe(res => {
@@ -85,7 +85,7 @@ export class MycartComponent implements OnInit {
     } else {
       if (confirm(`Are you sure, you want to Delete?`)) {
         let data = {
-          "cart_id": this.cartDetails['_id'],
+          "cart_id": this.cartdata['_id'],
           "item_id": this.selected3,
         }
         this.crudService.update2('cart/deleteItemFromCart', data).pipe(untilDestroyed(this)).subscribe(res => {
