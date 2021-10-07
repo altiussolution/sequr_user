@@ -68,7 +68,8 @@ changing(event) {
         this.crud.get(appModels.listCart).pipe(untilDestroyed(this)).subscribe(res => {
           console.log(res)
           if(res){
-            this.crud.getcarttotal(res[0])
+            this.crud.getcarttotal(res[0]?.length)
+            this.router.navigate(['pages/mycart'])
           }
         
         }, error => {

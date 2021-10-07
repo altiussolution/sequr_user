@@ -24,6 +24,7 @@ export class ProductsComponent implements OnInit {
    }
 
   ngOnInit(): void {
+    
     this.crud.CurrentMessage2.subscribe(message=>{
       if(message !=""){
         this.routername=message
@@ -88,6 +89,9 @@ export class ProductsComponent implements OnInit {
       if (res != "") {
         if(res['message']=="Successfully added into cart!"){
           this.toast.success("cart added successfully")
+          this.router.navigate(['pages/mycart'])
+        }else if(res['message']=="Stock Not Yet Allocated"){
+          this.toast.error(res['message'])
         }
        }
     },error=>{
@@ -96,5 +100,8 @@ export class ProductsComponent implements OnInit {
   }
   ngOnDestroy(){
     localStorage.removeItem("allow")
+  }
+  clicktitle(){
+    this.router.navigate(['pages/home'])
   }
 }

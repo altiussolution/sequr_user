@@ -1,7 +1,7 @@
 
 <div class="container-fluid as-mt-main product" >
     <div class="as-header">
-        <div class="as-title">
+        <div class="as-title" (click)="clicktitle()">
           {{routername}}
         </div>
         <div class="row as-color-1">
@@ -43,9 +43,12 @@
         </div>
 
     </div>
-    <div class="text-center mb-5 mt-3">
+    <ng-container *ngIf="data?.length == 0">
+        <div class="no_data_msg">No Data Avaliable</div>
+      </ng-container>
+    <!-- <div class="text-center mb-5 mt-3">
         <button type="button" class="btn btn-round btn-outline-info as-more-btn">Load More..</button>
-    </div>
+    </div> -->
 </div>
 
 
