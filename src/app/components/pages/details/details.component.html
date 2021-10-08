@@ -5,14 +5,21 @@
         <div class="col-md-6 pl-0">
             <div class="image-gallery">
                 <aside class="thumbnails">
-                  <a href="#" class="selected thumbnail" >
+                  <a class="selected thumbnail" >
                     <div class="thumbnail-image" style="background-image: url({{items?.image_path}});"></div>
                   </a>
-                  <a href="#" class="thumbnail" >
+                  <a class="thumbnail" >
                     <div class="thumbnail-image" style="background-image: url({{items?.image_path}});"></div>
                   </a>
-                  <a href="#" class="thumbnail" >
+                  <a class="thumbnail" >
                     <div class="thumbnail-image" style="background-image: url({{items?.image_path}});"></div>
+
+                  <!--<div class="video">
+                        <video controls (click)="toggleVideo($event)" #videoPlayer>
+                            <source src=" {{items?.video_path}}" type="video/mp4" />
+                            Browser not supported
+                        </video>
+                    </div>-->
                   </a>
                 </aside>
               
@@ -185,5 +192,14 @@
       
 
 </div>
+
+<video   controls (canplay)="pauseVideo(videoplayer)"
+#videoPlayer >
+
+<source [src]="videoSource" type="video/mp4">
+Your browser does not support the video tag.
+</video>
+
+
 </div>
 

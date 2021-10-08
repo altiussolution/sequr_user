@@ -88,16 +88,14 @@
       <div class="row mt-4" [formGroup]="cpForm">
         <div class="col-md-6 ">
           <div class="form-floating mb-3">
-            <input type="email" class="form-control" id="floatingInput" placeholder="Old Password" formControlName="oldpassword">
-           <!-- <mat-error *ngIf="cpForm.controls['oldpassword'].errors?.required"><small>Enter Old Password.</small>
-            </mat-error>-->
+            <input type="Password"  #password1 class="form-control" id="floatingInput" placeholder="Old Password" formControlName="oldpassword">
+             <i (click)="changeType(password1)" class="as-eye pointer" [ngClass]="toggle1 ? 'fa fa-eye' : 'fa fa-eye-slash'"></i>
           </div>
         </div>
         <div class="col-md-6 ">
           <div class="form-floating mb-3">
-            <input type="email" class="form-control" id="floatingInput" placeholder="New Password" formControlName="newpassword">
-           <!-- <mat-error *ngIf="cpForm.controls['newpassword'].errors?.required"><small> Enter New Password.</small>
-            </mat-error>-->
+            <input type="Password"  #password2 class="form-control" id="floatingInput" placeholder="New Password" formControlName="newpassword">
+            <i (click)="changeType(password2)" class="as-eye pointer" [ngClass]="toggle1 ? 'fa fa-eye' : 'fa fa-eye-slash'"></i>
           </div>
         </div>
 

@@ -25,6 +25,7 @@ export class ProductslistComponent implements OnInit {
     this.crud.get(appModels.KITTINGLIST).pipe(untilDestroyed(this)).subscribe((res:any) => {
       console.log(res)
       this.kit =res.data
+      this.getData({pageIndex: this.page, pageSize: this.size});
     })
   }
   addkitcart(_id:any) {
