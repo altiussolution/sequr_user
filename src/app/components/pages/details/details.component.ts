@@ -21,6 +21,8 @@ export class DetailsComponent implements OnInit {
   qty: any;
   id: any;
   qut: number;
+  video_path: any;
+  video_url: any;
 
   constructor(public router: Router, private toast: ToastrService, private fb: FormBuilder, public crud: CrudService) {
 
@@ -43,7 +45,10 @@ export class DetailsComponent implements OnInit {
       this.cube = this.machine.cube
       this.bin = this.machine.bin
       this.compartment = this.machine.compartment
-     // this.video_url = this.value?.edit?.video_path.split('/').pop();
+      this.video_path=this.items.video_path
+      //this.video_url = this.video_path.split('/').pop();
+      console.log(this.video_path)
+      console.log(this.video_url)
 
     })
   }

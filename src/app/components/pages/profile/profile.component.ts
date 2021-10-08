@@ -20,7 +20,16 @@ export class ProfileComponent implements OnInit {
   profile: any = [];
   language: any = [];
   lan: any;
+    toggle1: boolean = false;
 
+  changeType(input_field_password){
+    if(input_field_password.type=="password")
+    {input_field_password.type = "text";}
+  else
+    {input_field_password.type = "password";}
+
+    this.toggle1 = !this.toggle1;
+  }
   constructor(public crud: CrudService, public router: Router,
     private fb: FormBuilder,
     private toast: ToastrService,

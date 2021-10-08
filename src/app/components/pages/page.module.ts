@@ -37,7 +37,8 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
    MycartComponent,
    ProductsComponent,
    ProductslistComponent,
-   ProfileComponent
+   ProfileComponent,
+   
   ],
   entryComponents: [
 
@@ -48,7 +49,6 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     PageRoutingModule,
     ShellModule,
     FormsModule,
-   
     ReactiveFormsModule, MatDatepickerModule, MatInputModule, MatNativeDateModule,
     MatRippleModule, MatIconModule, MatSidenavModule, MatSlideToggleModule, MatListModule,
     MatCheckboxModule
