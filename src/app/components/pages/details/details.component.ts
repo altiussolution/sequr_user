@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { untilDestroyed } from 'ngx-take-until-destroy';
@@ -20,49 +20,51 @@ export class DetailsComponent implements OnInit {
   it: any;
   qty: any;
   id: any;
-  qut: number;
-  video_path: any;
-  video_url: any;
+  qut:number;
+ 
 
-  constructor(public router: Router, private toast: ToastrService, private fb: FormBuilder, public crud: CrudService) {
-
-  }
-  @ViewChild('videoPlayer') videoplayer: ElementRef;
+  @ViewChild('videoPlayer') videoplayer: any;
+  public startedPlay:boolean = false;
+  public show:boolean = false;
+  videoSource="http://13.232.128.227:4500/uploads/11. Making a Promise.mp4";
+  videoform: FormGroup;
+  constructor(  public router: Router,private toast: ToastrService, private fb: FormBuilder,public crud:CrudService) { 
+  
+    
+    }
 
   toggleVideo(event: any) {
     console.log(event)
       this.videoplayer.nativeElement.play();
   }
   ngOnInit(): void {
-    console.log(localStorage.getItem("_id"))
-    this.crud.get(appModels.DETAILS + localStorage.getItem("_id")).pipe(untilDestroyed(this)).subscribe((res: any) => {
+    
+  console.log(localStorage.getItem("_id"))
+    this.crud.get(appModels.DETAILS +localStorage.getItem("_id")).pipe(untilDestroyed(this)).subscribe((res:any) => {
       console.log(res)
-      this.items = res.items
-      this.machine = res.machine
-      this.it = this.machine.item
-      this.qty = this.machine.quantity
+      this.items=res.items
+      console.log(this.items.video_path)
+ 
+      this.machine=res.machine
+      this.it=this.machine.item
+      this.qty=this.machine.quantity
       console.log(this.it)
-      this.cube = this.machine.cube
-      this.bin = this.machine.bin
-      this.compartment = this.machine.compartment
-      this.video_path=this.items.video_path
-      //this.video_url = this.video_path.split('/').pop();
-      console.log(this.video_path)
-      console.log(this.video_url)
-
-    })
+      this.cube=this.machine.cube
+      this.bin=this.machine.bin
+      this.compartment=this.machine.compartment
+  
+  })
+}
+changing(event) {
+ 
+  console.log(event.target.value)
+  if(this.qty>=event.target.value){
+    this.qut=event.target.value
+  }else{
+   (<HTMLInputElement>document.getElementById(event.target.id)).value="";
+   this.qut=0
   }
-  changing(event) {
-
-    console.log(event.target.value)
-    if (this.qty >= event.target.value) {
-      this.qut = event.target.value
-    } else {
-      (<HTMLInputElement>document.getElementById(event.target.id)).value = "";
-      this.qut = 0
-    }
-  }
-
+}
   addtocart() {
     if (this.qut && this.qut > 0) {
       let cart = {
@@ -88,15 +90,32 @@ export class DetailsComponent implements OnInit {
     } else {
       this.toast.error("please Enter QTY")
     }
-
-
-
   }
-  //addtocard(){
-  // this.router.navigate(['/pages/mycart']);
 
-  //}
-  ngOnDestroy() {
-    localStorage.removeItem("allow1")
-  }
+//}
+ngOnDestroy(){
+  localStorage.removeItem("allow1")
+}
+
+pauseVideo(videoplayer)
+{
+  videoplayer.nativeElement.play();
+  // this.startedPlay = true;
+  // if(this.startedPlay == true)
+  // {
+     setTimeout(() => 
+     {
+      videoplayer.nativeElement.pause();
+       if(videoplayer.nativeElement.paused)
+      {
+        this.show = !this.show;       
+      } 
+     }, 5000);
+  // }
+}
+
+closebutton(videoplayer){
+  this.show = !this.show; 
+  videoplayer.nativeElement.play();
+}
 }
