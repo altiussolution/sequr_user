@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -59,9 +60,10 @@ export class ProfileComponent implements OnInit {
       console.log(res)
       if(res['message']=="Password changed successfully"){
         this.toast.success("Password Change successfully")
-      }else{
-        this.toast.success("Please Enter vaild Password")
-      
+      }
+    },(error:HttpErrorResponse)=>{
+      if(error.status === 422){  
+        this.toast.error('Current password is incorrect')
       }
     })
   }
