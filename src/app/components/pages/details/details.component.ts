@@ -71,8 +71,9 @@ export class DetailsComponent implements OnInit {
         this.toast.success("cart added successfully")
         this.crud.get(appModels.listCart).pipe(untilDestroyed(this)).subscribe(res => {
           console.log(res)
-          if (res) {
-            this.crud.getcarttotal(res[0])
+          if(res){
+            this.crud.getcarttotal(res[0]?.length)
+            this.router.navigate(['pages/mycart'])
           }
 
         }, error => {

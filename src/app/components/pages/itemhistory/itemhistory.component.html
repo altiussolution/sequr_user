@@ -6,7 +6,7 @@
     <div class="as-color-1">
 
       <div class="text-center">
-        <button type="button" class="btn btn-round btn-outline-info" data-toggle="modal" data-target="#myModal">Return
+        <button type="button" [disabled]="arrayvalue?.length==0" class="btn btn-round btn-outline-info" data-toggle="modal" data-target="#myModal">Return
           Products</button>
       </div>
     </div>
@@ -43,7 +43,7 @@
     <div class=" as-color-1">
 
       <div class="text-center">
-        <button type="button" class="btn btn-round btn-outline-info" (click)="returnkits()">Return Kits</button>
+        <button type="button" class="btn btn-round btn-outline-info" (click)="returnkits()" [disabled]="arrayvalue1?.length==0">Return Kits</button>
       </div>
     </div>
   </div>

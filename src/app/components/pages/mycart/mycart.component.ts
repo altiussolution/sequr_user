@@ -29,6 +29,7 @@ export class MycartComponent implements OnInit {
     this.getCartItems();
   }
   getCartItems() {
+    this.cartList=[];
     this.crudService.get(appModels.listCart).pipe(untilDestroyed(this)).subscribe(res => {
       console.log(res)
       this.cartdata=res[0]
@@ -37,24 +38,20 @@ export class MycartComponent implements OnInit {
         this.cartList.push(this.cartdata?.cart[i])
         }
     }
-      this.cartDetails = res[0];
-      this.crudService.getcarttotal(this.cartDetails)
+
+      this.crudService.getcarttotal(this.cartList?.length)
     }, error => {
       this.toast.error(error.message);
     })
   }
 
   updateCart(cart, qty) {
-//     "cart_id" : "61545519f7654233891d3da4",
-// "qty" : 19,
-// "item" : "614adb1a7ba6c0c391f71cbc",
-// "allocation":"614adbdf7ba6c0c391f71cc5"
     console.log(qty)
     let data = {
       "item": cart.item._id,
       "allocation": cart.allocation,
       "qty": qty,
-      "cart_id": [this.cartDetails['_id']]
+      "cart_id": this.cartdata['_id']
     }
     this.crudService.update2(appModels.updateCart, data).pipe(untilDestroyed(this)).subscribe(res => {
       console.log(res)
@@ -68,7 +65,7 @@ export class MycartComponent implements OnInit {
   deleteCart(cart) {
     if (confirm(`Are you sure, you want to Delete?`)) {
       let data = {
-        "cart_id": this.cartDetails['_id'],
+        "cart_id": this.cartdata['_id'],
         "item_id": [cart.item._id],
       }
       this.crudService.update2('cart/deleteItemFromCart', data).pipe(untilDestroyed(this)).subscribe(res => {
@@ -88,7 +85,7 @@ export class MycartComponent implements OnInit {
     } else {
       if (confirm(`Are you sure, you want to Delete?`)) {
         let data = {
-          "cart_id": this.cartDetails['_id'],
+          "cart_id": this.cartdata['_id'],
           "item_id": this.selected3,
         }
         this.crudService.update2('cart/deleteItemFromCart', data).pipe(untilDestroyed(this)).subscribe(res => {

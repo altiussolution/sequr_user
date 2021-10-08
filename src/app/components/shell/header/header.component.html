@@ -139,7 +139,14 @@
           <div id="search-container">
             <div class="search-fields">
               <div>
-                <input matInput #searchInput placeholder="Search..." (keyup.enter)="search()" autocomplete="off">
+                <input matInput #searchInput placeholder="Search..." (keyup.enter)="search()" autocomplete="off" list="suggestions">
+                <datalist id="suggestions">
+                  <option value="Black">
+                  <option value="Red">
+                  <option value="Green">
+                  <option value="Blue">
+                  <option value="White">
+              </datalist>
               </div>
               <!-- <button mat-icon-button class="submitButton " (click)="search()">
                  GO
@@ -161,7 +168,7 @@
           <a class="nav-link" (click)="getCartTotal()">
             <div class="addtocart-icon"></div>
           </a>
-          <div class="shop-count">{{cartDetails?.total_quantity}}</div>
+          <div class="shop-count">{{cartList?.length==0?'0':cartList.length}}</div>
         </li>
         <li class="nav-item">
           <!-- <a class="nav-link" href="#"><i class="fa fa-power-off" aria-hidden="true"></i></a> -->

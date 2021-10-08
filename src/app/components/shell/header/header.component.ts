@@ -20,14 +20,25 @@ export class HeaderComponent implements OnInit {
   category1: any=[];
   subcategory: any=[];
   searchIcon = 'search-icon';
-  cartDetails: any;
+  cartDetails: any=[];
   itemhistorykit: any=[];
   selectedItem: any;
+  cartList: any=[];
+  cartdata: any=[];
 
  constructor(public router: Router,public crud:CrudService) {}
  ngOnInit(): void {
-this.getCartTotal()
-   this.crud.currentTotal.subscribe(cart => this.cartDetails = cart)
+
+  this.cartList=[];
+  this.crud.get(appModels.listCart).pipe(untilDestroyed(this)).subscribe(res => {
+    console.log(res)
+    this.cartdata=res[0]
+  for(let i=0;i< this.cartdata?.cart?.length;i++){
+      if( this.cartdata?.cart[i]['cart_status']==1 || this.cartdata?.cart[i]['cart_status']==2){
+      this.cartList.push(this.cartdata?.cart[i])
+       }}})
+  
+// this.getCartTotal()
 this.crud.CurrentMessage.subscribe((message:any)=>{this.message=message
 })
   this.crud.get(appModels.CATEGORYLIST).pipe(untilDestroyed(this)).subscribe((res:any) => {
@@ -92,7 +103,6 @@ private searchInput: ElementRef;
 test(){
   let assidebar = document.querySelector('.sidenav');
   let body = document.querySelector('body');
-  debugger
   if(assidebar.classList.contains('sidenav'))    
       {
         assidebar.classList.add('sidebar-hidden');
@@ -154,7 +164,8 @@ selectcategory(val:any,category:any){
 getCartTotal() {
   this.crud.get(appModels.listCart).pipe(untilDestroyed(this)).subscribe(res => {
     console.log(res)
-    this.cartDetails = res[0];
+    this.cartDetails = res[0]?.length;
+    this.crud.currentTotal.subscribe(cart => this.cartDetails = cart)
   })
 }
 ngOnDestroy(){
