@@ -1177,3 +1177,21 @@ button:focus {
   width: 100%;
 }
 }
+
+
+//developer code
+body {
+  top: 0px !important; 
+  }
+  
+  .goog-logo-link {
+      display:none !important;
+  } 
+      
+  .goog-te-gadget {
+      color: transparent !important;
+  }
+  
+  .goog-te-banner-frame.skiptranslate {
+  display: none !important;
+  } 

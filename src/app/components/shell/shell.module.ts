@@ -38,6 +38,7 @@ import { MatCardModule } from '@angular/material/card';
     MatPaginatorModule,
     MatTableModule,
     MatCardModule,
+   
     ],
   exports: [HeaderComponent,FooterComponent,MenuComponent,ShellComponent,
     RouterModule,
@@ -49,6 +50,7 @@ import { MatCardModule } from '@angular/material/card';
     MatTableModule,
     MatSortModule,
     MatCardModule,
+
     
   ],
 })
