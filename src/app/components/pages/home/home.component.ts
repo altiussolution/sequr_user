@@ -7,6 +7,7 @@ import { untilDestroyed } from 'ngx-take-until-destroy';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { CrudService } from 'src/app/services/crud.service';
 import { appModels } from 'src/app/services/shared/enum/enum.util';
+declare var google
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -29,8 +30,9 @@ export class HomeComponent implements OnInit {
   
   }
 
-  ngOnInit(): void {
-
+async  ngOnInit() {
+  this.googleTranslateElementInit()
+  
     this.crud.CurrentMessage.subscribe(message=>{
 
       if(message !="" && !localStorage.getItem("allow")){
@@ -48,6 +50,11 @@ export class HomeComponent implements OnInit {
       }
      
     })
+  }
+
+googleTranslateElementInit() {
+  
+    new google.translate.TranslateElement({pageLanguage: 'ja'}, 'google_translate_element');
   }
   getData(obj) {
     let index=0,
