@@ -141,7 +141,10 @@
               <div>
                 <input matInput #searchInput placeholder="Search..." (keyup.enter)="search()" autocomplete="off" list="suggestions">
                 <datalist id="suggestions">
-                  <option value="Black">
+                  <mat-select (selectionChange)="getitem($event.value)">
+                    <mat-option *ngFor="let it of item;let i=index" [value]="it._id">{{it.item_name}}</mat-option>
+                  </mat-select>
+                  <option value="{{this.name}}">
                   <option value="Red">
                   <option value="Green">
                   <option value="Blue">
