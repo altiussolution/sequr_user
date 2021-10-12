@@ -26,7 +26,7 @@ export class DetailsComponent implements OnInit {
   @ViewChild('videoPlayer') videoplayer: any;
   public startedPlay:boolean = false;
   public show:boolean = false;
-  videoSource="http://13.232.128.227:4500/uploads/11. Making a Promise.mp4";
+  videoSource="";
   videoform: FormGroup;
   constructor(  public router: Router,private toast: ToastrService, private fb: FormBuilder,public crud:CrudService) { 
   
@@ -44,7 +44,7 @@ export class DetailsComponent implements OnInit {
       console.log(res)
       this.items=res.items
       console.log(this.items.video_path)
- 
+      this.videoSource=this.items.video_path
       this.machine=res.machine
       this.it=this.machine.item
       this.qty=this.machine.quantity

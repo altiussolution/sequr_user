@@ -89,7 +89,8 @@ export class ProductsComponent implements OnInit {
       if (res != "") {
         if(res['message']=="Successfully added into cart!"){
           this.toast.success("cart added successfully")
-          this.router.navigate(['pages/mycart'])
+            this.router.navigate(['pages/mycart'])
+          // this.router.navigate(['pages/mycart'])
         }else if(res['message']=="Stock Not Yet Allocated"){
           this.toast.error(res['message'])
         }

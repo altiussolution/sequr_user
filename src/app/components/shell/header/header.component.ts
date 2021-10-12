@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { CrudService } from 'src/app/services/crud.service';
 import { appModels } from 'src/app/services/shared/enum/enum.util';
-
+import { CookieService } from 'ngx-cookie-service'
 
 @Component({
   selector: 'app-header',
@@ -27,10 +27,20 @@ export class HeaderComponent implements OnInit {
   cartdata: any=[];
   item: any=[];
   name: any=[];
+  cartListlength: any;
+  
 
- constructor(public router: Router,public crud:CrudService) {}
+ constructor(public router: Router,public crud:CrudService,private cookie: CookieService) {
+
+ }
+
+ 
+ cart(){
+  return localStorage.getItem("cartcount");
+}
  ngOnInit(): void {
-
+  // var intervalId = window.setInterval(, 5000);
+  // setInterval(()=> { this.function1() },5000);
   this.cartList=[];
   this.crud.get(appModels.listCart).pipe(untilDestroyed(this)).subscribe(res => {
     console.log(res)
@@ -38,10 +48,13 @@ export class HeaderComponent implements OnInit {
   for(let i=0;i< this.cartdata?.cart?.length;i++){
       if( this.cartdata?.cart[i]['cart_status']==1 || this.cartdata?.cart[i]['cart_status']==2){
       this.cartList.push(this.cartdata?.cart[i])
-       }}})
-  
+      this.cartListlength=this.cartList.length
+       }}
+             localStorage.setItem("cartcount",this.cartList?.length)
+      })
+
 // this.getCartTotal()
-this.crud.CurrentMessage.subscribe((message:any)=>{this.message=message
+this.crud.currentTotal.subscribe((message:any)=>{this.cartListlength=message
 })
   this.crud.get(appModels.CATEGORYLIST).pipe(untilDestroyed(this)).subscribe((res:any) => {
     console.log(res)
