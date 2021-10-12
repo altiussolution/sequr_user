@@ -25,6 +25,8 @@ export class HeaderComponent implements OnInit {
   selectedItem: any;
   cartList: any=[];
   cartdata: any=[];
+  item: any=[];
+  name: any=[];
 
  constructor(public router: Router,public crud:CrudService) {}
  ngOnInit(): void {
@@ -96,6 +98,18 @@ private searchInput: ElementRef;
     const searchTerm = this.searchInput.nativeElement.value;
     this.searchEvent.emit({ query: searchTerm, action: 'SEARCH' });
     this.interactedWithSearch = true;
+    this.crud.get(appModels.ITEM).pipe(untilDestroyed(this)).subscribe((res:any) => {
+      console.log("oi",res)
+      this.item=res.item
+      for (let i = 0; i < this.item.length; i++) {
+        this.name=this.item[i]?.item_name
+        console.log(this.name)  
+      }
+      
+    })
+  }
+  getitem(value){
+    console.log(value)
   }
 //  ngOnInit(): void {
     

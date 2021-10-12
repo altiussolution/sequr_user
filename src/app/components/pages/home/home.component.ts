@@ -1,5 +1,6 @@
 
 import { Component, OnInit, EventEmitter, Input, Output, ViewChild ,ChangeDetectorRef} from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
@@ -7,6 +8,8 @@ import { untilDestroyed } from 'ngx-take-until-destroy';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { CrudService } from 'src/app/services/crud.service';
 import { appModels } from 'src/app/services/shared/enum/enum.util';
+
+declare var google
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -23,13 +26,21 @@ export class HomeComponent implements OnInit {
   data: any=[];
   page = 0;
   size = 4;
+  selectedValue: any;
+  languageform: FormGroup;
+  selectedGroup: any;
 
 
-  constructor(public crud:CrudService,public router:Router,private changeDetectorRef: ChangeDetectorRef) { 
-  
+  constructor(public crud:CrudService,public router:Router,public fb:FormBuilder) { 
+    this.languageform = this.fb.group({
+      language: []
+    });
   }
 
-  ngOnInit(): void {
+async  ngOnInit() {
+
+  this.googleTranslateElementInit()
+// this.languageform.get(['language']).setValue("ta")
 
     this.crud.CurrentMessage.subscribe(message=>{
 
@@ -49,6 +60,40 @@ export class HomeComponent implements OnInit {
      
     })
   }
+
+googleTranslateElementInit() {
+
+    new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
+    this.delete_cookie("googtrans")
+
+    if(!localStorage.getItem("defaultlang")){
+      this.setCookie("googtrans", "/en/et");
+    }
+   
+   
+ }
+   setCookie(name,value,) {
+   document.cookie = name + "=" + value;
+   localStorage.setItem("defaultlang","language")
+   window.location.reload()
+}
+   delete_cookie(name) {
+   document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+}
+ // console.log(this.readCookie('googtrans'));
+//    readCookie(name) {
+//      console.log(document.cookie)
+//     var c = document.cookie.split('; '),
+//     cookies = {}, i, C;
+
+//     for (i = c.length - 1; i >= 0; i--) {
+//         C = c[i].split('=');
+//         cookies[C[0]] = C[1];
+//      }
+
+//      return cookies[name];
+// }
+ 
   getData(obj) {
     let index=0,
         startingIndex=obj.pageIndex * obj.pageSize,
