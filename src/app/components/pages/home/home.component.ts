@@ -27,20 +27,14 @@ export class HomeComponent implements OnInit {
   page = 0;
   size = 4;
   selectedValue: any;
-  languageform: FormGroup;
   selectedGroup: any;
-
-
+  profiledetails: any=[];
   constructor(public crud:CrudService,public router:Router,public fb:FormBuilder) { 
-    this.languageform = this.fb.group({
-      language: []
-    });
+ 
   }
 
 async  ngOnInit() {
-
-  this.googleTranslateElementInit()
-// this.languageform.get(['language']).setValue("ta")
+ 
 
     this.crud.CurrentMessage.subscribe(message=>{
 
@@ -61,25 +55,7 @@ async  ngOnInit() {
     })
   }
 
-googleTranslateElementInit() {
 
-    new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
-    this.delete_cookie("googtrans")
-
-    if(!localStorage.getItem("defaultlang")){
-      this.setCookie("googtrans", "/en/et");
-    }
-   
-   
- }
-   setCookie(name,value,) {
-   document.cookie = name + "=" + value;
-   localStorage.setItem("defaultlang","language")
-   window.location.reload()
-}
-   delete_cookie(name) {
-   document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-}
  // console.log(this.readCookie('googtrans'));
 //    readCookie(name) {
 //      console.log(document.cookie)
