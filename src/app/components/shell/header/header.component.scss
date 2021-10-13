@@ -448,7 +448,7 @@ ul.as-menu > li.as-menu-mega > div,ul.as-menu > li.as-menu-mega-blog > div,ul.as
     left: 0;
     background: #fff;
     border-top: 4px solid #2a96c7   ;
-    overflow: hidden;
+    overflow: auto;
     -webkit-box-shadow: 0 8px 24px -5px #ccc;
     -moz-box-shadow: 0 8px 24px -5px #ccc;
     box-shadow: 0 8px 24px -5px #ccc;
@@ -458,10 +458,16 @@ ul.as-menu > li.as-menu-mega > div,ul.as-menu > li.as-menu-mega-blog > div,ul.as
 ul.as-menu > li.as-menu-mega-blog > div > ul.as-menu-mega-blog-nav {
     position: relative;
     width: 200px;
-    height: 100%;
-    left: 0;
+    // height: 100%;
+    // left: 0;
+    left: -76%;
     top: 0;
-    background: #efefef
+    background: #efefef;
+    // overflow: auto;
+    // overflow-x: hidden;
+    font-size: 16px;
+    height: fit-content;
+    direction: ltr;
 }
 
 // ul.as-menu > li.as-menu-mega-blog > div > ul.as-menu-mega-blog-nav > li {

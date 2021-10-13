@@ -28,7 +28,6 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 
 
 
-
 @NgModule({
   declarations: [
    HomeComponent,
@@ -41,9 +40,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
    
   ],
   entryComponents: [
-
-
-  ],
+   ],
   imports: [
     CommonModule,
     PageRoutingModule,
@@ -51,7 +48,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     FormsModule,
     ReactiveFormsModule, MatDatepickerModule, MatInputModule, MatNativeDateModule,
     MatRippleModule, MatIconModule, MatSidenavModule, MatSlideToggleModule, MatListModule,
-    MatCheckboxModule
+    MatCheckboxModule,
   ]
 })
 export class PageModule { }

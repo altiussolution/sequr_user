@@ -11,7 +11,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { LoginComponent } from './login/login.component';
 import { AuthInterceptor } from './services/core/auth.interceptor';
 import { ToastrModule } from 'ngx-toastr';
-
+import {MatSelectModule} from '@angular/material/select';
 
 @NgModule({
   declarations: [
@@ -31,7 +31,7 @@ import { ToastrModule } from 'ngx-toastr';
       positionClass: 'toast-top-right',
       tapToDismiss: true
     }), // ToastrModule added
-
+    MatSelectModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
