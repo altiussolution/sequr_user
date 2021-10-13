@@ -6,8 +6,9 @@
 
     <div class="as-menu-as-drophover-header">
       <ul class="as-menu">
+      
         <li class="as-menu-mega-blog"><a>Category</a>
-          <div class="d-flex as-menu-w">
+          <div class="d-flex as-menu-w as-category-scroll">
             <ul class="as-menu-mega-blog-nav as-drop-head">
 
               <li class="as-active-menu-item1" *ngFor="let Categories of category">
@@ -141,15 +142,25 @@
               <div>
                 <input matInput #searchInput placeholder="Search..." (keyup.enter)="search()" autocomplete="off" list="suggestions">
                 <datalist id="suggestions">
-                  <mat-select (selectionChange)="getitem($event.value)">
+                  <option  value="Black">
+                        <div>1234567890</div>
+                     
+                   
+                  </option>
+                  <option value="Red"></option>
+                  <option value="Green"></option>
+                  <option value="Blue"></option>
+                  <option value="White"></option>
+                </datalist>
+                  <!-- <mat-select (selectionChange)="getitem($event.value)">
                     <mat-option *ngFor="let it of item;let i=index" [value]="it._id">{{it.item_name}}</mat-option>
                   </mat-select>
                   <option value="{{this.name}}">
                   <option value="Red">
                   <option value="Green">
                   <option value="Blue">
-                  <option value="White">
-              </datalist>
+                  <option value="White"> -->
+             
               </div>
               <!-- <button mat-icon-button class="submitButton " (click)="search()">
                  GO
