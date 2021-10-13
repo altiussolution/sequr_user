@@ -13,6 +13,7 @@ import { AuthInterceptor } from './services/core/auth.interceptor';
 import { ToastrModule } from 'ngx-toastr';
 import {MatSelectModule} from '@angular/material/select';
 import { CookieService } from 'ngx-cookie-service';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -34,7 +35,7 @@ import { CookieService } from 'ngx-cookie-service';
     MatSelectModule
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },CookieService
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },CookieService,
   ],
   bootstrap: [AppComponent]
 })

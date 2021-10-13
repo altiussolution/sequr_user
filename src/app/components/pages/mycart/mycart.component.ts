@@ -6,6 +6,7 @@ import { delay } from 'rxjs/operators';
 import { CrudService } from 'src/app/services/crud.service';
 import { appModels } from 'src/app/services/shared/enum/enum.util';
 import { CookieService } from 'ngx-cookie-service'
+
 @Component({
   selector: 'app-mycart',
   templateUrl: './mycart.component.html',
@@ -23,8 +24,10 @@ export class MycartComponent implements OnInit {
   machinedetails: any=[];
   val: any=[];
 
-  constructor(private crudService: CrudService, private toast: ToastrService,public cookie: CookieService) { }
-
+  constructor(private crudService: CrudService,
+     private toast: ToastrService,public cookie: CookieService,
+    ) { }
+  
   ngOnInit(): void {
 
     this.getCartItems();
@@ -39,6 +42,9 @@ export class MycartComponent implements OnInit {
         this.cartList.push(this.cartdata?.cart[i])
         }
     }
+ 
+  
+    
   localStorage.setItem("cartcount",this.cartList?.length)
 
       this.crudService.getcarttotal(this.cartList?.length)

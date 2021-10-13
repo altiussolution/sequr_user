@@ -27,7 +27,7 @@ export class HeaderComponent implements OnInit {
   cartdata: any=[];
   item: any=[];
   name: any=[];
-  cartListlength: any;
+  cartListlength: any[]=[];
   
 
  constructor(public router: Router,public crud:CrudService,private cookie: CookieService) {
@@ -35,10 +35,7 @@ export class HeaderComponent implements OnInit {
  }
 
  
- cart(){
-   let data;
-  return data=localStorage.getItem("cartcount");
-}
+
  ngOnInit(): void {
   // var intervalId = window.setInterval(, 5000);
   // setInterval(()=> { this.function1() },5000);
