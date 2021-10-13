@@ -196,10 +196,10 @@
           </a>
         </li>
         <li class="nav-item relative" [routerLink]="'/pages/mycart'">
-          <a class="nav-link" (click)="getCartTotal()">
+          <a class="nav-link" >
             <div class="addtocart-icon"></div>
           </a>
-    <div class="shop-count" (click)="ngOnInit()">{{cartListlength }}</div>
+        <div class="shop-count" ><span [innerHTML]="cartProductCount"></span></div>
           <!-- <div class="shop-count">{{cartListlength==0?'0':cartListlength}}</div> -->
         </li>
         <li class="nav-item">
