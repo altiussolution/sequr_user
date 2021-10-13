@@ -27,6 +27,10 @@ export class HeaderComponent implements OnInit {
   cartdata: any=[];
   item: any=[];
   name: any=[];
+  val:any =[];
+  searchValue: any=[];
+  public codeValue: string;
+  id: any;
   cartListlength: any[]=[];
   
 
@@ -71,6 +75,8 @@ this.crud.currentTotal.subscribe((message:any)=>{this.cartListlength=message
 setval(val:any){
   localStorage.removeItem("allow") 
   this.crud.changemessage(JSON.stringify(val))
+  this.crud.changemessage3(this.id)
+
   this.router.navigate(['pages/home'])
   this.selectedItem = val;
 }
@@ -105,23 +111,53 @@ private searchInput: ElementRef;
     return elem.classList.contains(className);
   }
 
-  search() {
+  /*search(event) {
+   // this.val=[]
+
+    this.searchValue=event.target.value
+    console.log(this.searchValue)
+    let params: any = {};
+    if (this.searchValue) {
+      params['searchString'] = this.searchValue;
+    }
+    this.crud.get1(appModels.ITEM, { params }).pipe(untilDestroyed(this)).subscribe((res:any) => {
+      console.log("oi",res)
+      this.item=res.item
+      this.val=this.item[0]._id
+      console.log(this.val)
+    
+      this.crud.get(appModels.DETAILS +this.val).pipe(untilDestroyed(this)).subscribe((res:any) => {
+        console.log(res)
+        this.router.navigate(['pages/details'])
+    
+      })
+    })
+   
     const searchTerm = this.searchInput.nativeElement.value;
     this.searchEvent.emit({ query: searchTerm, action: 'SEARCH' });
     this.interactedWithSearch = true;
-    this.crud.get(appModels.ITEM).pipe(untilDestroyed(this)).subscribe((res:any) => {
-      console.log("oi",res)
+
+  }*/
+  public saveCode(e): void {
+    let params: any = {};
+    if (this.codeValue) {
+      params['searchString'] = this.codeValue;
+    }
+    console.log(this.codeValue)
+    this.crud.get1(appModels.ITEM, { params }).pipe(untilDestroyed(this)).subscribe((res:any) => {
+      console.log(res)
       this.item=res.item
-      for (let i = 0; i < this.item.length; i++) {
-        this.name=this.item[i]?.item_name
-        console.log(this.name)  
-      }
-      
-    })
-  }
-  getitem(value){
-    console.log(value)
-  }
+    let find = this.item.find(x => x?.item_name === e.target.value);
+    console.log(find?._id);
+    this.id=find?._id
+    this.crud.changemessage3(this.id)
+   // localStorage.setItem("_id",find?._id)
+   localStorage.removeItem("hlo")
+    this.router.navigate(['pages/details'])
+   
+  })
+}
+
 //  ngOnInit(): void {
     
 //   }
