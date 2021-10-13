@@ -22,8 +22,6 @@ export class ShellComponent implements OnInit {
 
     new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
     this.delete_cookie("googtrans")
-
-    if(!localStorage.getItem("defaultlang")){
       this.profiledetails = JSON.parse(localStorage.getItem('personal'))
       console.log(this.profiledetails?.language_prefered)
       this.crud.get(appModels.LAN).pipe(untilDestroyed(this)).subscribe((res: any) => {
@@ -33,14 +31,13 @@ export class ShellComponent implements OnInit {
           console.log(data.code)
           this.setCookie("googtrans", "/en/"+data.code);
       })
-  }
+  
    
    
  }
    setCookie(name,value,) {
    document.cookie = name + "=" + value;
-   localStorage.setItem("defaultlang","language")
-   window.location.reload()
+
 }
    delete_cookie(name) {
    document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';

@@ -36,7 +36,8 @@ export class HeaderComponent implements OnInit {
 
  
  cart(){
-  return localStorage.getItem("cartcount");
+   let data;
+  return data=localStorage.getItem("cartcount");
 }
  ngOnInit(): void {
   // var intervalId = window.setInterval(, 5000);
