@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { ToastrService } from 'ngx-toastr';
@@ -23,7 +23,6 @@ export class MycartComponent implements OnInit {
   cartdata: any=[];
   machinedetails: any=[];
   val: any=[];
-
   constructor(private crudService: CrudService,
      private toast: ToastrService,public cookie: CookieService,
     ) { }
