@@ -31,7 +31,8 @@ export class HeaderComponent implements OnInit {
   searchValue: any=[];
   public codeValue: string;
   id: any;
-  cartListlength: any[]=[];
+   cartProductCount: "";
+
   
 
  constructor(public router: Router,public crud:CrudService,private cookie: CookieService) {
@@ -41,8 +42,12 @@ export class HeaderComponent implements OnInit {
  
 
  ngOnInit(): void {
-  // var intervalId = window.setInterval(, 5000);
-  // setInterval(()=> { this.function1() },5000);
+   
+  this.crud.getProducts().subscribe(data => {
+    this.cartProductCount=""
+    this.cartProductCount = data;
+    console.log(this.cartProductCount)
+  })
   this.cartList=[];
   this.crud.get(appModels.listCart).pipe(untilDestroyed(this)).subscribe(res => {
     console.log(res)
@@ -50,15 +55,12 @@ export class HeaderComponent implements OnInit {
   for(let i=0;i< this.cartdata?.cart?.length;i++){
       if( this.cartdata?.cart[i]['cart_status']==1 || this.cartdata?.cart[i]['cart_status']==2){
       this.cartList.push(this.cartdata?.cart[i])
-      this.cartListlength=this.cartList.length
+      // this.cartListlength=this.cartList.length
        }}
-             localStorage.setItem("cartcount",this.cartList?.length)
+            
+             this.crud.getcarttotal(this.cartList?.length)
       })
-
-// this.getCartTotal()
-this.crud.currentTotal.subscribe((message:any)=>{this.cartListlength=message
-})
-  this.crud.get(appModels.CATEGORYLIST).pipe(untilDestroyed(this)).subscribe((res:any) => {
+this.crud.get(appModels.CATEGORYLIST).pipe(untilDestroyed(this)).subscribe((res:any) => {
     console.log(res)
    this.category=res['data']
    localStorage.removeItem("allow") 
@@ -69,9 +71,8 @@ this.crud.currentTotal.subscribe((message:any)=>{this.cartListlength=message
     console.log(res)
     this.itemhistorykit=res['Kits']
   })
- 
-  
-  }
+ }
+
 setval(val:any){
   localStorage.removeItem("allow") 
   this.crud.changemessage(JSON.stringify(val))
@@ -222,13 +223,7 @@ selectcategory(val:any,category:any){
 
 }
 
-getCartTotal() {
-  this.crud.get(appModels.listCart).pipe(untilDestroyed(this)).subscribe(res => {
-    console.log(res)
-    this.cartDetails = res[0]?.length;
-    this.crud.currentTotal.subscribe(cart => this.cartDetails = cart)
-  })
-}
+
 ngOnDestroy(){
 
 }

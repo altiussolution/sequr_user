@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {  Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from "@angular/common/http";
-
+import { Subject } from 'rxjs';
 import {  BehaviorSubject } from 'rxjs';
 @Injectable({
   providedIn: 'root'
@@ -13,15 +13,26 @@ private messagesource= new BehaviorSubject<any>("");
 private messagesource1= new BehaviorSubject<any>("");
 private messagesource2= new BehaviorSubject<any>("");
 private messagesource3= new BehaviorSubject<any>("");
-private cartTotal = new BehaviorSubject<any>("");
+
 CurrentMessage= this.messagesource.asObservable();
 CurrentMessage1= this.messagesource1.asObservable();
 CurrentMessage2= this.messagesource2.asObservable();
 CurrentMessage3= this.messagesource3.asObservable();
-currentTotal = this.cartTotal.asObservable();
 
- constructor(private http: HttpClient) { }
 
+ constructor(private http: HttpClient) {
+  let existingCartItems = JSON.parse(localStorage.getItem('products'));
+  if (!existingCartItems) {
+    existingCartItems = 0;
+  }
+  this.cartTotal.next(existingCartItems);
+  }
+  public cartTotal = new Subject();
+  // private cartTotal = new BehaviorSubject<any>("");
+
+  getProducts(): Observable<any> {
+    return this.cartTotal.asObservable();
+  }
 changemessage(message:any){
   this.messagesource.next(message)
 }
@@ -36,6 +47,7 @@ changemessage3(message:any){
 }
 getcarttotal(cart:any) {
   this.cartTotal.next(cart);
+  localStorage.setItem('products', JSON.stringify(cart));
 }
   get(model: string): Observable<any> {
     return this.http.get(model);

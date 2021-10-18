@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { ToastrService } from 'ngx-toastr';
@@ -23,6 +23,8 @@ export class MycartComponent implements OnInit {
   cartdata: any=[];
   machinedetails: any=[];
   val: any=[];
+  @Input() products: any[];
+  @Output() productAdded = new EventEmitter();
   constructor(private crudService: CrudService,
      private toast: ToastrService,public cookie: CookieService,
     ) { }
@@ -41,17 +43,12 @@ export class MycartComponent implements OnInit {
         this.cartList.push(this.cartdata?.cart[i])
         }
     }
- 
-  
-    
-  localStorage.setItem("cartcount",this.cartList?.length)
-
-      this.crudService.getcarttotal(this.cartList?.length)
+ this.crudService.getcarttotal(this.cartList?.length)
     }, error => {
       this.toast.error(error.message);
     })
   }
-
+  
   updateCart(cart, qty) {
     console.log(qty)
     let data = {
