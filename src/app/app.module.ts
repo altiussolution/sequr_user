@@ -14,6 +14,7 @@ import { ToastrModule } from 'ngx-toastr';
 import {MatSelectModule} from '@angular/material/select';
 import { CookieService } from 'ngx-cookie-service';
 import { CrudService } from './services/crud.service';
+import {AutocompleteLibModule} from 'angular-ng-autocomplete';
 @NgModule({
   declarations: [
     AppComponent,
@@ -32,7 +33,8 @@ import { CrudService } from './services/crud.service';
       positionClass: 'toast-top-right',
       tapToDismiss: true
     }), // ToastrModule added
-    MatSelectModule
+    MatSelectModule,
+    AutocompleteLibModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },CookieService,CrudService
