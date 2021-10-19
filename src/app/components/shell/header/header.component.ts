@@ -33,16 +33,45 @@ export class HeaderComponent implements OnInit {
   id: any;
    cartProductCount: "";
 
+   
+   keyword = 'item_name';
+   states = [
+     {
+       name: 'Arkansas',
+       population: '2.978M',
+       flag: 'https://upload.wikimedia.org/wikipedia/commons/9/9d/Flag_of_Arkansas.svg'
+      //  ../../../../assets/img/hamer.png
+     },
+     {
+       name: 'California',
+       population: '39.14M',
+       flag: 'https://upload.wikimedia.org/wikipedia/commons/0/01/Flag_of_California.svg'
+     },
+     {
+       name: 'Florida',
+       population: '20.27M',
+       flag: 'https://upload.wikimedia.org/wikipedia/commons/f/f7/Flag_of_Florida.svg'
+     },
+     {
+       name: 'Texas',
+       population: '27.47M',
+       flag: 'https://upload.wikimedia.org/wikipedia/commons/f/f7/Flag_of_Texas.svg'
+     }
+   ];
   
 
  constructor(public router: Router,public crud:CrudService,private cookie: CookieService) {
 
+  this.crud.get(appModels.ITEM).pipe(untilDestroyed(this)).subscribe((res:any) => {
+    console.log(res)
+    this.item=res.item
+  })
  }
 
  
 
  ngOnInit(): void {
-   
+
   this.crud.getProducts().subscribe(data => {
     this.cartProductCount=""
     this.cartProductCount = data;
@@ -139,6 +168,14 @@ private searchInput: ElementRef;
     this.interactedWithSearch = true;
 
   }*/
+  search(_id: any){
+   
+    this.id=_id
+    this.crud.changemessage3(this.id)
+   // localStorage.setItem("_id",_id)
+   localStorage.removeItem("hlo")
+    //this.router.navigate(['pages/details'])
+  }
   public saveCode(e): void {
     let params: any = {};
     if (this.codeValue) {

@@ -16,6 +16,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { MatCardModule } from '@angular/material/card';
+import {AutocompleteLibModule} from 'angular-ng-autocomplete';
 
 /** Custom Material Module */
 /** Shell Module */
@@ -38,7 +39,7 @@ import { MatCardModule } from '@angular/material/card';
     MatPaginatorModule,
     MatTableModule,
     MatCardModule,
-   
+    AutocompleteLibModule,
     ],
   exports: [HeaderComponent,FooterComponent,MenuComponent,ShellComponent,
     RouterModule,
@@ -50,7 +51,7 @@ import { MatCardModule } from '@angular/material/card';
     MatTableModule,
     MatSortModule,
     MatCardModule,
-
+    AutocompleteLibModule,
     
   ],
 })

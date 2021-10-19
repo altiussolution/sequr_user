@@ -24,7 +24,10 @@
   position: relative;
 }
 
-
+img {
+  object-fit: contain;
+  margin: 96px auto;
+}
 .thumbnail-image {
   width: 100px;
   height: 100px;
@@ -35,11 +38,15 @@
   border: 4px solid transparent;
   box-shadow: 0 0 8px 1px lightgrey;
 }
-
+.thumbnail video{
+  margin: 0px 24px;
+}
 .thumbnails a:nth-child(1) .thumbnail-image {
   margin: 0px auto;
 }
-
+.thumbnails .thumbnail-image:nth-child(1) {
+  margin: 0px auto;
+}
 .as-avaliable {
   background-image: linear-gradient(#00b77d, #78d34c);
   color: white;
