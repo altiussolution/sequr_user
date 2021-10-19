@@ -137,24 +137,42 @@
         </li> -->
       </ul>
       <ul class="navbar-nav ml-md-auto d-md-flex">
+        <li>
+         
+        </li>
         <li class="nav-item d-flex">
 
           <div id="search-container">
             <div class="search-fields">
 
-              <!--<div>
-                <input matInput #searchInput placeholder="Search..." (keyup)="search($event)" autocomplete="off" list="suggestions">
-                <datalist id="suggestions" *ngFor="let it of item;let i=index"  >
-                  <option value="{{it.item_name}}">
-    
-              </datalist>
+              <div class="ng-autocomplete">
+            <ng-autocomplete
+              [data]="item"
+              [searchKeyword]="keyword"
+              placeholder="Search..."
+              historyIdentifier="item"
+              [itemTemplate]="itemTemplate"
+              [notFoundTemplate]="notFoundTemplate">
+            </ng-autocomplete>
+          
+            <ng-template #itemTemplate let-item>
+              <div class="item"   (click)="search(item._id)" [routerLink]="'/pages/details'">
+                <img src="{{item.image_path}}" height="25">
+               
+                <small class="ml-40">Product:{{item.item_name}}</small>
+              </div>
+            </ng-template>
+          
+            <ng-template #notFoundTemplate let-notFound>
+              <div [innerHTML]="notFound"></div>
+            </ng-template>
+          </div>
 
-              </div>-->
-
-              <input type="text" list="codes" [(ngModel)]="codeValue" (change)="saveCode($event)">
-              <datalist id="codes">
+              <!-- <input type="text" list="codes" [(ngModel)]="codeValue" (change)="saveCode($event)" list="codes">
+              <datalist id="codes" >
                 <option *ngFor="let c of item" [value]="c.item_name" style="background-image: url({{c?.image_path}});" >{{c.item_name}}</option>
-              </datalist>
+              
+              </datalist> -->
               
               <!--<div>
                 <input matInput #searchInput placeholder="Search..." (keyup.enter)="search()" autocomplete="off" list="suggestions">

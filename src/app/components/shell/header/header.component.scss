@@ -1116,8 +1116,13 @@ a.nav-link.active, .sidenav a.nav-link:hover{
         right: 0;
 }
 
+// #search-container.open {
+//         width: 300px;
+// }
 #search-container.open {
-        width: 300px;
+    width: auto;
+    left: 0px;
+    overflow: inherit;
 }
 button.toggleBtn {
     background-color: transparent;
@@ -1134,6 +1139,21 @@ button.toggleBtn {
 .open .search-fields input{
     opacity: 1;
 }
+
+.search-fields img{
+    height: 60px;
+ }
+ 
+.autocomplete-container .suggestions-container ul {
+    padding: 20px;
+}
+.ml-40{
+    margin-left: 40px;
+}
+.ng-autocomplete {
+    width: 400px;
+}
+
 @media only screen and (min-width : 768px)  
 and (orientation : landscape)
 and (-webkit-min-device-pixel-ratio: 2){
