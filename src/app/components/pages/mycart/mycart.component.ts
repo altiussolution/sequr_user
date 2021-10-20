@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { ToastrService } from 'ngx-toastr';
 import { delay } from 'rxjs/operators';
 import { CrudService } from 'src/app/services/crud.service';
 import { appModels } from 'src/app/services/shared/enum/enum.util';
+import { CookieService } from 'ngx-cookie-service'
 
 @Component({
   selector: 'app-mycart',
@@ -23,9 +24,16 @@ export class MycartComponent implements OnInit {
   machinedetails: any = [];
   val: any = [];
 
-  constructor(private crudService: CrudService, private toast: ToastrService) { }
 
+ 
+  @Input() products: any[];
+  @Output() productAdded = new EventEmitter();
+  constructor(private crudService: CrudService,
+     private toast: ToastrService,public cookie: CookieService,
+    ) { }
+  
   ngOnInit(): void {
+
     this.getCartItems();
     // this.takeItems()
   }
@@ -40,14 +48,12 @@ export class MycartComponent implements OnInit {
         }
       }
       console.log(this.cartList)
-
-
       this.crudService.getcarttotal(this.cartList?.length)
     }, error => {
       this.toast.error(error.message);
     })
   }
-
+  
   updateCart(cart, qty) {
     console.log(qty)
     let data = {

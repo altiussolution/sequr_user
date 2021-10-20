@@ -448,7 +448,7 @@ ul.as-menu > li.as-menu-mega > div,ul.as-menu > li.as-menu-mega-blog > div,ul.as
     left: 0;
     background: #fff;
     border-top: 4px solid #2a96c7   ;
-    overflow: hidden;
+    overflow: auto;
     -webkit-box-shadow: 0 8px 24px -5px #ccc;
     -moz-box-shadow: 0 8px 24px -5px #ccc;
     box-shadow: 0 8px 24px -5px #ccc;
@@ -458,10 +458,16 @@ ul.as-menu > li.as-menu-mega > div,ul.as-menu > li.as-menu-mega-blog > div,ul.as
 ul.as-menu > li.as-menu-mega-blog > div > ul.as-menu-mega-blog-nav {
     position: relative;
     width: 200px;
-    height: 100%;
-    left: 0;
+    // height: 100%;
+    // left: 0;
+    left: -76%;
     top: 0;
-    background: #efefef
+    background: #efefef;
+    // overflow: auto;
+    // overflow-x: hidden;
+    font-size: 16px;
+    height: fit-content;
+    direction: ltr;
 }
 
 // ul.as-menu > li.as-menu-mega-blog > div > ul.as-menu-mega-blog-nav > li {
@@ -1110,8 +1116,13 @@ a.nav-link.active, .sidenav a.nav-link:hover{
         right: 0;
 }
 
+// #search-container.open {
+//         width: 300px;
+// }
 #search-container.open {
-        width: 300px;
+    width: auto;
+    left: 0px;
+    overflow: inherit;
 }
 button.toggleBtn {
     background-color: transparent;
@@ -1128,6 +1139,21 @@ button.toggleBtn {
 .open .search-fields input{
     opacity: 1;
 }
+
+.search-fields img{
+    height: 60px;
+ }
+ 
+.autocomplete-container .suggestions-container ul {
+    padding: 20px;
+}
+.ml-40{
+    margin-left: 40px;
+}
+.ng-autocomplete {
+    width: 400px;
+}
+
 @media only screen and (min-width : 768px)  
 and (orientation : landscape)
 and (-webkit-min-device-pixel-ratio: 2){

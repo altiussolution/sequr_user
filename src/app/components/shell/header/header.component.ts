@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { CrudService } from 'src/app/services/crud.service';
 import { appModels } from 'src/app/services/shared/enum/enum.util';
-
+import { CookieService } from 'ngx-cookie-service'
 
 @Component({
   selector: 'app-header',
@@ -25,10 +25,66 @@ export class HeaderComponent implements OnInit {
   selectedItem: any;
   cartList: any=[];
   cartdata: any=[];
+  item: any=[];
+  name: any=[];
+  val:any =[];
+  searchValue: any=[];
+  public codeValue: string;
+  id: any;
+   cartProductCount: "";
+  profiledetails: any=[];
+  profile: any=[];
 
- constructor(public router: Router,public crud:CrudService) {}
+   
+   keyword = 'item_name';
+   states = [
+     {
+       name: 'Arkansas',
+       population: '2.978M',
+       flag: 'https://upload.wikimedia.org/wikipedia/commons/9/9d/Flag_of_Arkansas.svg'
+      //  ../../../../assets/img/hamer.png
+     },
+     {
+       name: 'California',
+       population: '39.14M',
+       flag: 'https://upload.wikimedia.org/wikipedia/commons/0/01/Flag_of_California.svg'
+     },
+     {
+       name: 'Florida',
+       population: '20.27M',
+       flag: 'https://upload.wikimedia.org/wikipedia/commons/f/f7/Flag_of_Florida.svg'
+     },
+     {
+       name: 'Texas',
+       population: '27.47M',
+       flag: 'https://upload.wikimedia.org/wikipedia/commons/f/f7/Flag_of_Texas.svg'
+     }
+   ];
+  
+
+ constructor(public router: Router,public crud:CrudService,private cookie: CookieService) {
+
+  this.crud.get(appModels.ITEM).pipe(untilDestroyed(this)).subscribe((res:any) => {
+    console.log(res)
+    this.item=res.item
+  })
+ }
+
+ 
+
  ngOnInit(): void {
+  this.profiledetails = JSON.parse(localStorage.getItem('personal'))
+  console.log(this.profiledetails)
+  this.crud.get(appModels.USERPROFILE + this.profiledetails._id).pipe(untilDestroyed(this)).subscribe((res: any) => {
+    console.log(res)
+    this.profile = res['data']
+  })
 
+  this.crud.getProducts().subscribe(data => {
+    this.cartProductCount=""
+    this.cartProductCount = data;
+    console.log(this.cartProductCount)
+  })
   this.cartList=[];
   this.crud.get(appModels.listCart).pipe(untilDestroyed(this)).subscribe(res => {
     console.log(res)
@@ -36,12 +92,12 @@ export class HeaderComponent implements OnInit {
   for(let i=0;i< this.cartdata?.cart?.length;i++){
       if( this.cartdata?.cart[i]['cart_status']==1 || this.cartdata?.cart[i]['cart_status']==2){
       this.cartList.push(this.cartdata?.cart[i])
-       }}})
-  
-// this.getCartTotal()
-this.crud.CurrentMessage.subscribe((message:any)=>{this.message=message
-})
-  this.crud.get(appModels.CATEGORYLIST).pipe(untilDestroyed(this)).subscribe((res:any) => {
+      // this.cartListlength=this.cartList.length
+       }}
+            
+             this.crud.getcarttotal(this.cartList?.length)
+      })
+this.crud.get(appModels.CATEGORYLIST).pipe(untilDestroyed(this)).subscribe((res:any) => {
     console.log(res)
    this.category=res['data']
    localStorage.removeItem("allow") 
@@ -52,12 +108,13 @@ this.crud.CurrentMessage.subscribe((message:any)=>{this.message=message
     console.log(res)
     this.itemhistorykit=res['Kits']
   })
- 
-  
-  }
+ }
+
 setval(val:any){
   localStorage.removeItem("allow") 
   this.crud.changemessage(JSON.stringify(val))
+  this.crud.changemessage3(this.id)
+
   this.router.navigate(['pages/home'])
   this.selectedItem = val;
 }
@@ -92,11 +149,61 @@ private searchInput: ElementRef;
     return elem.classList.contains(className);
   }
 
-  search() {
+  /*search(event) {
+   // this.val=[]
+
+    this.searchValue=event.target.value
+    console.log(this.searchValue)
+    let params: any = {};
+    if (this.searchValue) {
+      params['searchString'] = this.searchValue;
+    }
+    this.crud.get1(appModels.ITEM, { params }).pipe(untilDestroyed(this)).subscribe((res:any) => {
+      console.log("oi",res)
+      this.item=res.item
+      this.val=this.item[0]._id
+      console.log(this.val)
+    
+      this.crud.get(appModels.DETAILS +this.val).pipe(untilDestroyed(this)).subscribe((res:any) => {
+        console.log(res)
+        this.router.navigate(['pages/details'])
+    
+      })
+    })
+   
     const searchTerm = this.searchInput.nativeElement.value;
     this.searchEvent.emit({ query: searchTerm, action: 'SEARCH' });
     this.interactedWithSearch = true;
+
+  }*/
+  search(_id: any){
+   
+    this.id=_id
+    this.crud.changemessage3(this.id)
+   // localStorage.setItem("_id",_id)
+   localStorage.removeItem("hlo")
+    //this.router.navigate(['pages/details'])
   }
+  public saveCode(e): void {
+    let params: any = {};
+    if (this.codeValue) {
+      params['searchString'] = this.codeValue;
+    }
+    console.log(this.codeValue)
+    this.crud.get1(appModels.ITEM, { params }).pipe(untilDestroyed(this)).subscribe((res:any) => {
+      console.log(res)
+      this.item=res.item
+    let find = this.item.find(x => x?.item_name === e.target.value);
+    console.log(find?._id);
+    this.id=find?._id
+    this.crud.changemessage3(this.id)
+   // localStorage.setItem("_id",find?._id)
+   localStorage.removeItem("hlo")
+    this.router.navigate(['pages/details'])
+   
+  })
+}
+
 //  ngOnInit(): void {
     
 //   }
@@ -161,13 +268,7 @@ selectcategory(val:any,category:any){
 
 }
 
-getCartTotal() {
-  this.crud.get(appModels.listCart).pipe(untilDestroyed(this)).subscribe(res => {
-    console.log(res)
-    this.cartDetails = res[0]?.length;
-    this.crud.currentTotal.subscribe(cart => this.cartDetails = cart)
-  })
-}
+
 ngOnDestroy(){
 
 }

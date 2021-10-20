@@ -74,7 +74,9 @@ export class ProductsComponent implements OnInit {
     asgridl.classList.remove('view-active')
   }
   select(id:any){
-    localStorage.setItem("_id",id)
+    this.crud.changemessage3(id)
+    localStorage.removeItem("hlo")
+   // localStorage.setItem("_id",id)
     this.router.navigate(['pages/details'])
   }
   addtocart(it: any, qty: number) {
@@ -89,7 +91,8 @@ export class ProductsComponent implements OnInit {
       if (res != "") {
         if(res['message']=="Successfully added into cart!"){
           this.toast.success("cart added successfully")
-          this.router.navigate(['pages/mycart'])
+            this.router.navigate(['pages/mycart'])
+          // this.router.navigate(['pages/mycart'])
         }else if(res['message']=="Stock Not Yet Allocated"){
           this.toast.error(res['message'])
         }

@@ -21,12 +21,13 @@ export class DetailsComponent implements OnInit {
   qty: any;
   id: any;
   qut: number;
+  message: any=[];
 
 
   @ViewChild('videoPlayer') videoplayer: any;
   public startedPlay: boolean = false;
   public show: boolean = false;
-  videoSource = "http://13.232.128.227:4500/uploads/11. Making a Promise.mp4";
+  videoSource = "";
   videoform: FormGroup;
   constructor(public router: Router, private toast: ToastrService, private fb: FormBuilder, public crud: CrudService) {
 
@@ -38,21 +39,28 @@ export class DetailsComponent implements OnInit {
     this.videoplayer.nativeElement.play();
   }
   ngOnInit(): void {
+    this.crud.CurrentMessage3.subscribe((message: any) => {
+      console.log(message)
+      //console.log(localStorage.getItem("_id"))
+      if (message != "" && !localStorage.getItem("hlo")) {
+        this.message = message
+        console.log(this.message)
+        this.crud.get(appModels.DETAILS + this.message).pipe(untilDestroyed(this)).subscribe((res: any) => {
+          console.log(res)
+          localStorage.setItem("hlo","data")
+          this.items = res.items
+this.videoSource=this.items.video_path
+          console.log(this.items.video_path)
+          this.machine = res.machine
+          this.it = this.machine.item
+          this.qty = this.machine.quantity
+          console.log(this.it)
+          this.cube = this.machine.cube
+          this.bin = this.machine.bin
+          this.compartment = this.machine.compartment
 
-    console.log(localStorage.getItem("_id"))
-    this.crud.get(appModels.DETAILS + localStorage.getItem("_id")).pipe(untilDestroyed(this)).subscribe((res: any) => {
-      console.log(res)
-      this.items = res.items
-      console.log(this.items.video_path)
-
-      this.machine = res.machine
-      this.it = this.machine.item
-      this.qty = this.machine.quantity
-      console.log(this.it)
-      this.cube = this.machine.cube
-      this.bin = this.machine.bin
-      this.compartment = this.machine.compartment
-
+        })
+      }
     })
   }
   changing(event) {
@@ -65,6 +73,16 @@ export class DetailsComponent implements OnInit {
       this.qut = 0
     }
   }
+//  sendimg(a)
+// {
+//   debugger
+//   // element: HTMLImageElement;
+//   // var myImg = <HTMLInputElement>document.getElementById('mainimg');
+//   var myImg = document.getElementById("mainimg") as HTMLImageElement;
+// // document.getElementById('mainimg').src=a.src;
+// myImg.src = a.src;
+
+// }
   async addtocart(item?) {
     if (this.qut && this.qut > 0) {
       let cart = {
@@ -322,9 +340,7 @@ export class DetailsComponent implements OnInit {
   }
 
 
-  ngOnDestroy() {
-    localStorage.removeItem("allow1")
-  }
+
 
   pauseVideo(videoplayer) {
     videoplayer.nativeElement.play();
@@ -340,6 +356,10 @@ export class DetailsComponent implements OnInit {
     // }
   }
 
+  //}
+  ngOnDestroy() {
+    localStorage.removeItem("allow1")
+  }
   closebutton(videoplayer) {
     this.show = !this.show;
     videoplayer.nativeElement.play();

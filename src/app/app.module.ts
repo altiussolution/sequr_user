@@ -11,8 +11,10 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { LoginComponent } from './login/login.component';
 import { AuthInterceptor } from './services/core/auth.interceptor';
 import { ToastrModule } from 'ngx-toastr';
-
-
+import {MatSelectModule} from '@angular/material/select';
+import { CookieService } from 'ngx-cookie-service';
+import { CrudService } from './services/crud.service';
+import {AutocompleteLibModule} from 'angular-ng-autocomplete';
 @NgModule({
   declarations: [
     AppComponent,
@@ -31,10 +33,11 @@ import { ToastrModule } from 'ngx-toastr';
       positionClass: 'toast-top-right',
       tapToDismiss: true
     }), // ToastrModule added
-
+    MatSelectModule,
+    AutocompleteLibModule
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },CookieService,CrudService
   ],
   bootstrap: [AppComponent]
 })

@@ -1,13 +1,14 @@
 <div id="navbar">
   <nav class="navbar header-top fixed-top navbar-expand-lg  navbar-light bg-white">
 
-    <div class="navbar-brand logo-img " [routerLink]="'/pages/home'"></div>
+    <div class="navbar-brand logo-img " [routerLink]="'/pages/home'" (click)="ngOnInit()"></div>
     <span class="navbar-toggler-icon leftmenutrigger" (click)="toggleSidebar()" id="sidebarCollapse"></span>
 
     <div class="as-menu-as-drophover-header">
       <ul class="as-menu">
+      
         <li class="as-menu-mega-blog"><a>Category</a>
-          <div class="d-flex as-menu-w">
+          <div class="d-flex as-menu-w as-category-scroll">
             <ul class="as-menu-mega-blog-nav as-drop-head">
 
               <li class="as-active-menu-item1" *ngFor="let Categories of category">
@@ -77,7 +78,8 @@
         <li class="nav-item">
           <div class="nav-link nav-title as-bold as-color-9">Category </div>
           <hr>
-          <a *ngFor="let Categories of category" class="nav-link " [ngClass]="{'as-active': selectedItem === Categories}"
+          <a *ngFor="let Categories of category" class="nav-link "
+            [ngClass]="{'as-active': selectedItem === Categories}"
             (click)="setval(Categories)">{{Categories.category.category_name}}({{Categories?.sub_category?.length==''?'0':Categories?.sub_category?.length}})</a>
           <!-- <a class="nav-link">Gage(14)</a>
           <a class="nav-link">Kitting(32)</a>
@@ -90,7 +92,8 @@
         <li class="nav-item mt-3">
           <div class="nav-link nav-title as-bold as-color-9" [routerLink]="'itemhistory'">Item History</div>
           <hr>
-          <a  *ngFor="let kitting of itemhistorykit" class="nav-link as-color-9" [routerLink]="'itemhistory'">{{kitting?.kit_name}}({{kitting?.kit_item_details?.length===''?'0':kitting?.kit_item_details?.length}})</a>
+          <a *ngFor="let kitting of itemhistorykit" class="nav-link as-color-9"
+            [routerLink]="'itemhistory'">{{kitting?.kit_name}}({{kitting?.kit_item_details?.length===''?'0':kitting?.kit_item_details?.length}})</a>
         </li>
         <!-- <li class="nav-item mt-3">
           <div class="nav-link nav-title as-bold as-color-8" href="#">Similar Products</div>
@@ -134,20 +137,66 @@
         </li> -->
       </ul>
       <ul class="navbar-nav ml-md-auto d-md-flex">
+        <li>
+         
+        </li>
         <li class="nav-item d-flex">
 
           <div id="search-container">
             <div class="search-fields">
-              <div>
+
+              <div class="ng-autocomplete">
+            <ng-autocomplete
+              [data]="item"
+              [searchKeyword]="keyword"
+              placeholder="Search..."
+              historyIdentifier="item"
+              [itemTemplate]="itemTemplate"
+              [notFoundTemplate]="notFoundTemplate">
+            </ng-autocomplete>
+          
+            <ng-template #itemTemplate let-item>
+              <div class="item"   (click)="search(item._id)" [routerLink]="'/pages/details'">
+                <img src="{{item.image_path}}" height="25">
+               
+                <small class="ml-40">Product:{{item.item_name}}</small>
+              </div>
+            </ng-template>
+          
+            <ng-template #notFoundTemplate let-notFound>
+              <div [innerHTML]="notFound"></div>
+            </ng-template>
+          </div>
+
+              <!-- <input type="text" list="codes" [(ngModel)]="codeValue" (change)="saveCode($event)" list="codes">
+              <datalist id="codes" >
+                <option *ngFor="let c of item" [value]="c.item_name" style="background-image: url({{c?.image_path}});" >{{c.item_name}}</option>
+              
+              </datalist> -->
+              
+              <!--<div>
                 <input matInput #searchInput placeholder="Search..." (keyup.enter)="search()" autocomplete="off" list="suggestions">
                 <datalist id="suggestions">
-                  <option value="Black">
+                  <option  value="Black">
+                        <div>1234567890</div>
+                     
+                   
+                  </option>
+                  <option value="Red"></option>
+                  <option value="Green"></option>
+                  <option value="Blue"></option>
+                  <option value="White"></option>
+                </datalist>  </div>-->
+                  <!-- <mat-select (selectionChange)="getitem($event.value)">
+                    <mat-option *ngFor="let it of item;let i=index" [value]="it._id">{{it.item_name}}</mat-option>
+                  </mat-select>
+                  <option value="{{this.name}}">
                   <option value="Red">
                   <option value="Green">
                   <option value="Blue">
-                  <option value="White">
-              </datalist>
-              </div>
+                  <option value="White"> -->
+             
+            
               <!-- <button mat-icon-button class="submitButton " (click)="search()">
                  GO
               </button> -->
@@ -161,14 +210,16 @@
         </li>
         <li (click)="test()" class="nav-item" [routerLink]="'/pages/profile'">
           <a class="nav-link">
-            <div class="user-icon"></div>
+            <!-- <div class="user-icon"></div> -->
+              <img width="35px" height="35px"  [src]="profile?.profile_pic" style="border-radius: 25px;" onError="this.src='../../../assets/images/Avatar.png'" alt="">
           </a>
         </li>
         <li class="nav-item relative" [routerLink]="'/pages/mycart'">
-          <a class="nav-link" (click)="getCartTotal()">
+          <a class="nav-link" >
             <div class="addtocart-icon"></div>
           </a>
-          <div class="shop-count">{{cartList?.length==0?'0':cartList.length}}</div>
+        <div class="shop-count" ><span [innerHTML]="cartProductCount"></span></div>
+          <!-- <div class="shop-count">{{cartListlength==0?'0':cartListlength}}</div> -->
         </li>
         <li class="nav-item">
           <!-- <a class="nav-link" href="#"><i class="fa fa-power-off" aria-hidden="true"></i></a> -->

@@ -1,5 +1,6 @@
 
 import { Component, OnInit, EventEmitter, Input, Output, ViewChild ,ChangeDetectorRef} from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
@@ -7,6 +8,7 @@ import { untilDestroyed } from 'ngx-take-until-destroy';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { CrudService } from 'src/app/services/crud.service';
 import { appModels } from 'src/app/services/shared/enum/enum.util';
+
 declare var google
 @Component({
   selector: 'app-home',
@@ -24,15 +26,23 @@ export class HomeComponent implements OnInit {
   data: any=[];
   page = 0;
   size = 4;
-
-
-  constructor(public crud:CrudService,public router:Router,private changeDetectorRef: ChangeDetectorRef) { 
-  
+  selectedValue: any;
+  selectedGroup: any;
+  profiledetails: any=[];
+  constructor(public crud:CrudService,public router:Router,public fb:FormBuilder) { 
+ 
   }
 
 async  ngOnInit() {
-  this.googleTranslateElementInit()
-  
+  console.log(this.readCookie('googtrans'));
+  if(!localStorage.getItem("language")){
+    if (confirm(`please reload the page`)) {
+   localStorage.setItem("language","lang")
+    window.location.reload()
+    }
+  }
+
+
     this.crud.CurrentMessage.subscribe(message=>{
 
       if(message !="" && !localStorage.getItem("allow")){
@@ -52,10 +62,21 @@ async  ngOnInit() {
     })
   }
 
-googleTranslateElementInit() {
-  
-    new google.translate.TranslateElement({pageLanguage: 'ja'}, 'google_translate_element');
-  }
+
+
+   readCookie(name) {
+     console.log(document.cookie)
+    var c = document.cookie.split('; '),
+    cookies = {}, i, C;
+
+    for (i = c.length - 1; i >= 0; i--) {
+        C = c[i].split('=');
+        cookies[C[0]] = C[1];
+     }
+
+     return cookies[name];
+}
+ 
   getData(obj) {
     let index=0,
         startingIndex=obj.pageIndex * obj.pageSize,
