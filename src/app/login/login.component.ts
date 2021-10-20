@@ -58,8 +58,8 @@ export class LoginComponent implements OnInit {
            console.log(res)
            this.language = res['list']
            let data= this.language.find(x => x._id === this.profiledetails?.language_prefered)
-           console.log(data.code)
-           this.setCookie("googtrans", "/en/"+data.code);
+           console.log(data?.code)
+           this.setCookie("googtrans", "/en/"+data?.code);
            this.toast.success("Logged in Successfully")
            this.router.navigate(['/pages/home'])
        })
