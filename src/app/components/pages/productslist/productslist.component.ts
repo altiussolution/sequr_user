@@ -32,12 +32,13 @@ export class ProductslistComponent implements OnInit {
     })
   }
   addkitcart(_id: any, data) {
-    this.crud.post(appModels.ADDKITCART + _id).pipe(untilDestroyed(this)).subscribe((res: any) => {
+    this.crud.post(appModels.ADDKITCART + _id).pipe(untilDestroyed(this)).subscribe(async (res: any) => {
       console.log(res)
       if (res != "") {
         if (res['message'] == "Successfully added into cart!") {
-          this.itemHistory(data)
           this.toast.success("Kitting cart added successfully")
+          await this.itemHistory(data)
+
         }
       }
     }, error => {
@@ -45,16 +46,16 @@ export class ProductslistComponent implements OnInit {
     })
   }
   async itemHistory(data) {
-    this.crud.get(appModels.ITEMLIST).pipe(untilDestroyed(this)).subscribe((res: any) => {
+    this.crud.get(appModels.ITEMLIST).pipe(untilDestroyed(this)).subscribe(async (res: any) => {
       console.log(res)
       this.id = res['Cart'][0]['_id']
       this.itemhistorykit = res['Kits']
-      for  (let kit of this.itemhistorykit) {
+      for  await (let kit of this.itemhistorykit) {
         if (kit.kit_status == 1 && kit.kit_id._id == data._id) {
           this.takeNowKit.push(kit)
         }
       }
-      this.takeKit('kit')
+      await this.takeKit('kit')
     })
   }
   getData(obj) {
@@ -118,10 +119,11 @@ export class ProductslistComponent implements OnInit {
       eachItemForMachines['kit_id'] = this.takeNowKit[0].kit_id._id
       eachItemForMachines['kit_cart_id'] = this.takeNowKit[0].kit_cart_id
       eachItemForMachines['item_id'] = item.item._id
-      eachItemForMachines['kit_qty'] = item.qty
-      eachItemForMachines['qty'] = item.kit_id.kit_data[i].qty
+      eachItemForMachines['kit_qty'] = this.takeNowKit[0].qty
+      eachItemForMachines['qty'] = this.takeNowKit[0].kit_id.kit_data[i].qty
+      eachItemForMachines['qty'] = 1
       eachItemForMachines['stock_allocation_id'] = item._id
-      eachItemForMachines['cube_id'] = item.cube_id
+      eachItemForMachines['cube_id'] = item.cube_cube_id
       eachItemForMachines['column_id'] = item.bin.bin_id
       eachItemForMachines['bin_id'] = item.compartment.compartment_id
       eachItemForMachines['compartment_id'] = item.compartment_number
