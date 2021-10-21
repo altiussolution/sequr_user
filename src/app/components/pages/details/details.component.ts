@@ -73,16 +73,7 @@ this.videoSource=this.items.video_path
       this.qut = 0
     }
   }
-//  sendimg(a)
-// {
-//   debugger
-//   // element: HTMLImageElement;
-//   // var myImg = <HTMLInputElement>document.getElementById('mainimg');
-//   var myImg = document.getElementById("mainimg") as HTMLImageElement;
-// // document.getElementById('mainimg').src=a.src;
-// myImg.src = a.src;
 
-// }
   async addtocart(item?) {
     if (this.qut && this.qut > 0) {
       let cart = {
