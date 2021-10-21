@@ -73,7 +73,7 @@ this.videoSource=this.items.video_path
       this.qut = 0
     }
   }
-
+ 
   async addtocart(item?) {
     if (this.qut && this.qut > 0) {
       let cart = {
@@ -116,7 +116,7 @@ this.videoSource=this.items.video_path
         })
       })
     } else {
-      this.toast.error("please Enter QTY")
+      this.toast.error("Please Enter Valid QTY")
     }
   }
   cartList

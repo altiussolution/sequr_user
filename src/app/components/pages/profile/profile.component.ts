@@ -15,6 +15,7 @@ import { appModels } from 'src/app/services/shared/enum/enum.util';
 })
 export class ProfileComponent implements OnInit {
   cpForm: FormGroup;
+  date=new Date()
 
   profiledetails: any = [];
   profile: any = [];
