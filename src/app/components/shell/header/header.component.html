@@ -210,7 +210,8 @@
         </li>
         <li (click)="test()" class="nav-item" [routerLink]="'/pages/profile'">
           <a class="nav-link">
-            <div class="user-icon"></div>
+            <!-- <div class="user-icon"></div> -->
+              <img width="35px" height="35px"  [src]="profile?.profile_pic" style="border-radius: 25px;" onError="this.src='../../../assets/img/profile_user_icon.svg'" >
           </a>
         </li>
         <li class="nav-item relative" [routerLink]="'/pages/mycart'">

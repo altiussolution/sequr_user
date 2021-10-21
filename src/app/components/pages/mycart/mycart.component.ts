@@ -15,14 +15,17 @@ import { CookieService } from 'ngx-cookie-service'
 export class MycartComponent implements OnInit {
 
   cartDetails: any[] = [];
-  cartList: any=[];
+  cartList: any = [];
   cartIds: any[] = [];
   selected3: any[] = [];
   page = 0;
   size = 4;
-  cartdata: any=[];
-  machinedetails: any=[];
-  val: any=[];
+  cartdata: any = [];
+  machinedetails: any = [];
+  val: any = [];
+
+
+ 
   @Input() products: any[];
   @Output() productAdded = new EventEmitter();
   constructor(private crudService: CrudService,
@@ -32,18 +35,20 @@ export class MycartComponent implements OnInit {
   ngOnInit(): void {
 
     this.getCartItems();
+    // this.takeItems()
   }
   getCartItems() {
-    this.cartList=[];
+    this.cartList = [];
     this.crudService.get(appModels.listCart).pipe(untilDestroyed(this)).subscribe(res => {
       console.log(res)
-      this.cartdata=res[0]
-    for(let i=0;i< this.cartdata?.cart?.length;i++){
-        if( this.cartdata?.cart[i]['cart_status']==1 || this.cartdata?.cart[i]['cart_status']==2){
-        this.cartList.push(this.cartdata?.cart[i])
+      this.cartdata = res[0]
+      for (let i = 0; i < this.cartdata?.cart?.length; i++) {
+        if (this.cartdata?.cart[i]['cart_status'] == 1) {
+          this.cartList.push(this.cartdata?.cart[i])
         }
-    }
- this.crudService.getcarttotal(this.cartList?.length)
+      }
+      console.log(this.cartList)
+      this.crudService.getcarttotal(this.cartList?.length)
     }, error => {
       this.toast.error(error.message);
     })
@@ -105,7 +110,7 @@ export class MycartComponent implements OnInit {
   }
 
   ngOnDestroy() { }
-  
+
 
   toggle(cart, event: MatCheckboxChange) {
     if (event.checked) {
@@ -116,7 +121,7 @@ export class MycartComponent implements OnInit {
         this.selected3.splice(index, 1);
       }
     }
-    console.log(cart.item._id , event.checked);
+    console.log(cart.item._id, event.checked);
   }
 
   exists(cart) {
@@ -165,13 +170,13 @@ export class MycartComponent implements OnInit {
 
   machineResponse;
 
-  async machineAccess(val){
+  async machineAccess(val) {
     console.log(val);
-    var result = groupBy(val, function(item) {
+    var result = groupBy(val, function (item) {
       return [item.cube_id, item.bin_name]
     })
 
-    function groupBy(array, f){
+    function groupBy(array, f) {
       let groups = {};
       array.forEach(element => {
         var group = JSON.stringify(f(element));
@@ -182,55 +187,272 @@ export class MycartComponent implements OnInit {
         return groups[group]
       })
     }
+
     var x = 0
     var loop_break = false;
-    setInterval(() => {    
-    for(let val of result){
-      result[x].sort(function(a, b) { 
-        return b.compartment_name - a.compartment_name;
-      });
-      this.crudService.post(`${appModels.TAKENOW}/machineAccess`,result[x][0]).pipe(delay(5000)).subscribe(async (res) => {
-        console.log(res.details.singledevinfo.column[0].status[0]);
-       if(res.details.singledevinfo.column[0].status[0] == "Locked"){ 
-         console.log(Date, 'if 1')
-        this.crudService.post(`${appModels.TAKENOW}/unLockMachine`,result[x][0]).pipe(delay(5000)).subscribe(async (res) => {
-          if(res.details.unlock.reply[0] == 'NoError'){
-            this.toast.success('Machine Unlocked');
-          }else if(res.details.Error.request[0] == 'unlock' && res.details.Error.message[0] == 'Busy'){
-            this.toast.success('Machine Unlock is in progress and busy');
+    setInterval(() => {
+      for (let val of result) {
+        result[x].sort(function (a, b) {
+          return b.compartment_name - a.compartment_name;
+        });
+        this.crudService.post(`${appModels.TAKENOW}/machineAccess`, result[x][0]).pipe(delay(5000)).subscribe(async (res) => {
+          console.log(res.details.singledevinfo.column[0].status[0]);
+          if (res.details.singledevinfo.column[0].status[0] == "Locked") {
+            console.log(Date, 'if 1')
+            this.crudService.post(`${appModels.TAKENOW}/unLockMachine`, result[x][0]).pipe(delay(5000)).subscribe(async (res) => {
+              if (res.details.unlock.reply[0] == 'NoError') {
+                this.toast.success('Machine Unlocked');
+              } else if (res.details.Error.request[0] == 'unlock' && res.details.Error.message[0] == 'Busy') {
+                this.toast.success('Machine Unlock is in progress and busy');
+              }
+            })
+          } else if (res.details.singledevinfo.column[0].status[0] == "Unlocked") {
+            console.log(Date, 'if 2')
+            this.toast.success('Machine Unlocked Open and take your products');
+
+          } else if (res.details.singledevinfo.column[0].status[0] == "Closed") {
+            this.crudService.post(`${appModels.TAKENOW}/lockMachine`, result[x][0]).pipe(delay(5000)).subscribe(async (res) => {
+              if (res.details.unlock.reply[0] == 'NoError') {
+                loop_break = true;
+                this.toast.success('Machine Locked');
+              }
+            })
           }
         })
-       }else if(res.details.singledevinfo.column[0].status[0] == "Unlocked"){
-        console.log(Date, 'if 2')
-        this.toast.success('Machine Unlocked Open and take your products');
-         
-       }else if(res.details.singledevinfo.column[0].status[0] == "Closed"){
-        this.crudService.post(`${appModels.TAKENOW}/lockMachine`,result[x][0]).pipe(delay(5000)).subscribe(async (res) => {
-          if(res.details.unlock.reply[0] == 'NoError'){
-            loop_break = true;
-            this.toast.success('Machine Locked');  
-          }
-        })
+        if (loop_break) {
+          x++; // for testing
+        }
       }
-      })
-      if(loop_break){
-        x++; // for testing
-      }
-    }
-  }, 10000)
+    }, 10000)
   }
 
-  take(){ 
-    this.machinedetails=[];
-    this.val=[];
-    for(let cart of this.cartList){
-      let data={item_name : cart.item.item_name,cube_id : cart.allocation.cube.cube_id, bin_name : cart.allocation.bin.bin_name, compartment_name : cart.allocation.compartment.compartment_name}
+  take() {
+    this.machinedetails = [];
+    this.val = [];
+    for (let cart of this.cartList) {
+      let data = { item_name: cart.item.item_name, cube_id: cart.allocation.cube.cube_id, bin_name: cart.allocation.bin.bin_name, compartment_name: cart.allocation.compartment.compartment_name }
       this.val.push(data)
-      if(this.cartList.length == this.val.length){
+      if (this.cartList.length == this.val.length) {
         this.machineAccess(this.val)
       }
     }
   }
+
+  //************   Arunkumar  ***********************/
+  async allDeviceInfo() {
+    let response = await this.crudService.get('machine/allDeviceInfo').pipe(untilDestroyed(this)).toPromise()
+    console.log(response)
+    return response
+  }
+
+  async singleDeviceInfo(machine: any) {
+
+    let response = await this.crudService.post('machine/singleDeviceInfo', machine).pipe(untilDestroyed(this)).toPromise()
+    console.log(response)
+    return response
+  }
+  // Sleep Function
+  sleep(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  // Format and Clean Objects
+  async formatMachineData() {
+    let machineData: any[] = []
+    console.log('*******  Format Data **********')
+    this.cartList.forEach(async item => {
+      let eachItemForMachines = {}
+      eachItemForMachines['cart_id'] = item._id
+      eachItemForMachines['item_id'] = item.item._id
+      eachItemForMachines['qty'] = item.qty
+      eachItemForMachines['stock_allocation_id'] = item.item_details._id
+      eachItemForMachines['cube_id'] = item.item_details.cube.cube_id
+      eachItemForMachines['column_id'] = item.item_details.bin.bin_id
+      eachItemForMachines['bin_id'] = item.item_details.compartment.compartment_id
+      eachItemForMachines['compartment_id'] = item.item_details.compartment_number
+      await machineData.push(eachItemForMachines)
+    });
+    return machineData
+
+  }
+
+  // GroupBy machineData by bin_id and column id
+  async groupbyData(arr: any[]) {
+    let helper = {};
+    var result = arr.reduce(function (r: any[], o: { column_id: string; bin_id: string; compartment_id: any; }) {
+      var key = o.column_id + '-' + o.bin_id;
+      if (!helper[key]) {
+        helper[key] = Object.assign({}, o); // create a copy of o
+        r.push(helper[key]);
+      } else {
+        helper[key].compartment_id = [o.compartment_id, helper[key].compartment_id]
+      }
+      return r;
+    }, []);
+
+    let i = 0
+    for await (let item of result) {
+      item.compartment_id = [item.compartment_id]
+      result[i]['compartment_id'] = (((item.compartment_id.flat()).flat()).flat().flat()).flat()
+      i++
+    }
+    return result
+  }
+
+  // filter successfully taken items from cartList take now
+  // async fiterArray(cartList: any[], successTake: any[]) {
+  //   console.log(cartList)
+  //   console.log(successTake)
+  //   let successTakeItems = await cartList.filter((x: { column_id: any; bin_id: any; }) => !successTake.find((y: { column_id: any; bin_id: any; }) => (y.column_id == x.column_id && y.bin_id == x.bin_id)))
+  //   console.log(successTakeItems)
+  //   return successTakeItems
+  // }
+  async fiterArray(array, filter) {
+    var myArrayFiltered: any[] = []
+    let i = 0
+    async function machine(array, filter) {
+      for await (let filterId of filter) {
+        for await (let arrayId of array) {
+          if (filterId.column_id == arrayId.column_id && filterId.bin_id == arrayId.bin_id) {
+            myArrayFiltered.push(arrayId)
+            i++
+          }
+        }
+      }
+    }
+    await machine(array, filter)
+    return { item: myArrayFiltered, count: i }
+  }
+  // Take Items form machine  
+  TakeOrReturnItems: any[] = []
+  machinesList = []
+  async takeItems() {
+    let totalMachinesList = await this.formatMachineData()
+    let machinesList = await this.groupbyData(totalMachinesList)
+    console.log(machinesList)
+    //call allDevInfo once
+    // await this.allDeviceInfo()
+    // for loop for all machines lids
+    for await (let machine of machinesList) {
+      let maxCompartmentNo = Math.max(...machine.compartment_id)
+      machine['compartment_id'] = maxCompartmentNo
+      console.log('maxCompartmentNo')
+      console.log(maxCompartmentNo)
+      let singleDeviceInfo = await this.singleDeviceInfo(machine)
+      let status = singleDeviceInfo.details.singledevinfo.column[0]['status'][0]
+      console.log('Column : ' + machine.column_id + '' + 'drawer: ' + machine.bin_id + ' ' + 'Compartment: ' + machine.compartment_id)
+      console.log(status)
+
+      if (status == 'Locked' || status == 'Closed' || status == 'Unlocked') {
+        // Lock that Column API, machine._id
+        if (status == 'Closed' || status == 'Unlocked') {
+          await this.crudService.post('machine/lockBin', machine).pipe(untilDestroyed(this)).toPromise()
+          await this.sleep(1000)
+        }
+
+        // unlock Column API, machine._id, machine.column_id, machine.compartment_id
+        await this.crudService.post('machine/unlockBin', machine).pipe(untilDestroyed(this)).toPromise()
+        await this.sleep(10000)
+        let apiHitTimes = 0
+        let machineColumnStatus = false
+        while (apiHitTimes < 15 && !machineColumnStatus) {
+          console.log('********************* while loop **************' + machineColumnStatus)
+          let singleDeviceInfo = await this.singleDeviceInfo(machine)
+          let status = singleDeviceInfo.details.singledevinfo.column[0]['status'][0]
+          console.log('inside while loop status bin ' + machine.bin_id + status)
+          if (status == 'Closed' || status == 'Locked') {
+            await this.sleep(9000)
+            await this.crudService.post('machine/lockBin', machine).pipe(untilDestroyed(this)).toPromise()            
+            machineColumnStatus = true
+            await this.TakeOrReturnItems.push(machine)
+          }
+          //Drawer current status, (opening, opened, closing, closed)
+          else if (status !== 'Closed' && status !== 'Locked') {
+            console.log('please close properly, Current Status = ' + status)
+            // ColumnActionStatus = singleDeviceInfo
+          }
+          //set delay time
+          await this.sleep(10000)
+          apiHitTimes++
+        }
+        // if user does not closed after ceratin count of times API hit
+        if (apiHitTimes == 10 && machineColumnStatus !== true) {
+          console.log('Application waiting time over for bin ' + machine.bin_id + 'in column ' + machine.column_id)
+
+        }
+        await this.sleep(5000)
+      }
+      // break for loop if single device info is unknown
+      else {
+        console.log('Machine status unknown ' + status)
+        console.log('Close all drawers properly and click take now')
+        break
+      }
+    }
+    const successTake = await totalMachinesList.filter(array => this.TakeOrReturnItems.some(filter => filter.column_id === array.column_id && filter.bin_id === array.bin_id));
+
+    console.log(successTake)
+    if (successTake.length == 0) {
+      console.log('Machine status unknown No Item taken')
+    } else if (successTake.length == totalMachinesList.length) {
+      console.log(successTake.length + ' items Taken successfully')
+      await this.updateAfterTakeOrReturn(successTake)
+    } else if (successTake.length < totalMachinesList.length) {
+      console.log(successTake.length + ' items Taken successfully \n' + (totalMachinesList.length - successTake.length) + ' items failed return')
+      await this.updateAfterTakeOrReturn(successTake)
+    }
+  }
+
+  //Update Cart and Stock Allocation documents after item Take/Return
+  async updateAfterTakeOrReturn(successTake: any) {
+    let data = {
+      cart_id: this.cartdata._id,
+      take_items: successTake,
+      cart_status: 2
+    }
+    this.crudService.post(`cart/updateReturnTake`, data).pipe().subscribe(async (res) => {
+      console.log(res)
+      if (res.status) {      
+        this.toast.success('Cart Updated Successfully');
+      }
+    })
+  }
+
+
+  // machinesList = [
+  //   {
+  //     column_id: 1,
+  //     bin_id: 1,
+  //     compartment_id: 5
+  //   },
+  //   {
+  //     column_id: 1,
+  //     bin_id: 1,
+  //     compartment_id: 5
+  //   },
+  //   {
+  //     column_id: 1,
+  //     bin_id: 3,
+  //     compartment_id: 5
+  //   },
+  //   {
+  //     column_id: 1,
+  //     bin_id: 4,
+  //     compartment_id: 5
+  //   },
+  //   {
+  //     column_id: 1,
+  //     bin_id: 5,
+  //     compartment_id: 5
+  //   },
+  // ]
+  // machineColumnStatus
+
 }
+
+
+
+
+
 
 

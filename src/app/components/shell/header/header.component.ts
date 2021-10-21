@@ -32,6 +32,8 @@ export class HeaderComponent implements OnInit {
   public codeValue: string;
   id: any;
    cartProductCount: "";
+  profiledetails: any=[];
+  profile: any=[];
 
    
    keyword = 'item_name';
@@ -71,6 +73,12 @@ export class HeaderComponent implements OnInit {
  
 
  ngOnInit(): void {
+  this.profiledetails = JSON.parse(localStorage.getItem('personal'))
+  console.log(this.profiledetails)
+  this.crud.get(appModels.USERPROFILE + this.profiledetails._id).pipe(untilDestroyed(this)).subscribe((res: any) => {
+    console.log(res)
+    this.profile = res['data']
+  })
 
   this.crud.getProducts().subscribe(data => {
     this.cartProductCount=""

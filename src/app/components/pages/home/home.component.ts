@@ -34,7 +34,14 @@ export class HomeComponent implements OnInit {
   }
 
 async  ngOnInit() {
- 
+  console.log(this.readCookie('googtrans'));
+  if(!localStorage.getItem("language")){
+    if (confirm(`please reload the page`)) {
+   localStorage.setItem("language","lang")
+    window.location.reload()
+    }
+  }
+
 
     this.crud.CurrentMessage.subscribe(message=>{
 
@@ -56,19 +63,19 @@ async  ngOnInit() {
   }
 
 
- // console.log(this.readCookie('googtrans'));
-//    readCookie(name) {
-//      console.log(document.cookie)
-//     var c = document.cookie.split('; '),
-//     cookies = {}, i, C;
 
-//     for (i = c.length - 1; i >= 0; i--) {
-//         C = c[i].split('=');
-//         cookies[C[0]] = C[1];
-//      }
+   readCookie(name) {
+     console.log(document.cookie)
+    var c = document.cookie.split('; '),
+    cookies = {}, i, C;
 
-//      return cookies[name];
-// }
+    for (i = c.length - 1; i >= 0; i--) {
+        C = c[i].split('=');
+        cookies[C[0]] = C[1];
+     }
+
+     return cookies[name];
+}
  
   getData(obj) {
     let index=0,
