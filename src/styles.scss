@@ -989,6 +989,14 @@ button:focus {
 .activemenu .i-history .as-card {
   width: 14%;
 }
+.modal-dialog {
+  max-width: 500px;
+  margin: 11.75rem auto;
+}
+.logo-image {
+  background-position: 25%;
+  top: 210px;
+}
 }
 
 @media (min-width:768px) and (max-width:1024px) {

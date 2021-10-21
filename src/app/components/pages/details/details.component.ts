@@ -73,7 +73,7 @@ this.videoSource=this.items.video_path
       this.qut = 0
     }
   }
-
+ 
   async addtocart(item?) {
     if (this.qut && this.qut > 0) {
       let cart = {
