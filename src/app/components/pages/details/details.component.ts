@@ -116,7 +116,7 @@ this.videoSource=this.items.video_path
         })
       })
     } else {
-      this.toast.error("please Enter QTY")
+      this.toast.error("Please Enter Valid QTY")
     }
   }
   cartList
