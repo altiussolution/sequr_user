@@ -443,7 +443,8 @@ ul.as-menu > li > ul > li.as-open-to-left > ul,ul.as-menu > li > ul > li > ul > 
 ul.as-menu > li.as-menu-mega > div,ul.as-menu > li.as-menu-mega-blog > div,ul.as-menu > li.as-menu-mega-shop > div {
     position: absolute;
     width: 100%;
-    height: 55vh;
+    // height: 55vh;
+    height: 370px;
     top: 50px;
     left: 0;
     background: #fff;
@@ -466,7 +467,7 @@ ul.as-menu > li.as-menu-mega-blog > div > ul.as-menu-mega-blog-nav {
     // overflow: auto;
     // overflow-x: hidden;
     font-size: 16px;
-    height: fit-content;
+    height: auto;
     direction: ltr;
 }
 
@@ -1108,9 +1109,11 @@ a.nav-link.active, .sidenav a.nav-link:hover{
         display: flex;
         align-items: center;
         flex-direction: row;
-        padding: 0px 50px;
+        padding: 0px 50px ;
 }
-
+#search-container.open .search-fields{
+    padding: 0px 50px 0 15px;
+}
 #search-container .toggleBtn {
         position:absolute;
         right: 0;
