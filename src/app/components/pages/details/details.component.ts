@@ -29,7 +29,6 @@ export class DetailsComponent implements OnInit {
   public show: boolean = false;
   videoSource = "";
   videoform: FormGroup;
-  Previewimage: any;
   constructor(public router: Router, private toast: ToastrService, private fb: FormBuilder, public crud: CrudService) {
 
 
@@ -74,13 +73,7 @@ this.videoSource=this.items.video_path
       this.qut = 0
     }
   }
-  // imgPreviews: string[] = [];
-  // sendimg(e){
-  //   this.imgPreviews.push(e.target.src);
-  //   this.Previewimage = e.target.src;
-  // }
 
-// }
   async addtocart(item?) {
     if (this.qut && this.qut > 0) {
       let cart = {
