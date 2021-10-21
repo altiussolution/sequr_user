@@ -6,15 +6,15 @@
                 <div class='row'>
                     <div class='col-md-2 thumbnails' id='thumb_container'>
                        
-                    <img class="thumbnail-image" src='https://images-na.ssl-images-amazon.com/images/I/81StewvXHeL._UX500_.jpg'  alt='image1' (click)='sendimg(this);' >
-                    <img class="thumbnail-image" src='https://images-na.ssl-images-amazon.com/images/I/81D8-r%2BiZgL._UX500_.jpg' alt='image2' (click)='sendimg(this);'>
-                      <img class="thumbnail-image" src='https://images-na.ssl-images-amazon.com/images/I/81StewvXHeL._UX500_.jpg'  alt='image3'   (click)='sendimg(this);'>
-                      <video  class="thumbnail-image"   controls (canplay)="pauseVideo(videoplayer)" (click)='sendimg(this);'
+                    <img class="thumbnail-image" id="imgid1" [src]="items?.image_path"  alt='image1' (click)='sendimg($event);' >
+                    <img class="thumbnail-image" id="imgid2" src="https://images-na.ssl-images-amazon.com/images/I/81D8-r%2BiZgL._UX500_.jpg "alt='image2' (click)='sendimg($event);'>
+                      <img class="thumbnail-image" id="imgid3" src='https://images-na.ssl-images-amazon.com/images/I/81StewvXHeL._UX500_.jpg'  alt='image3'   (click)='sendimg($event);'>
+                      <video  class="thumbnail-image"  id="imgid4"  controls (canplay)="pauseVideo(videoplayer)" (click)='sendimg($event);'
                       #videoPlayer  [src]="videoSource" type="video/mp4">
                       </video>
                     </div>
                     <div class='col-md-9 primary' id='main_image'>
-                    <img id='mainimg' src='https://images-na.ssl-images-amazon.com/images/I/81StewvXHeL._UX500_.jpg'  alt='image'>
+                    <img id='mainimg'  [src]="Previewimage" src="{{items?.image_path}}" style="width:100%" alt='image'>
                       
                     <div class="as-avaliable">
                         <div class="as-avaliable-btn"></div>
