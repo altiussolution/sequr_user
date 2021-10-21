@@ -127,7 +127,7 @@ export class DetailsComponent implements OnInit {
         })
       })
     } else {
-      this.toast.error("please Enter QTY")
+      this.toast.error("Please Enter Valid QTY")
     }
   }
   cartList

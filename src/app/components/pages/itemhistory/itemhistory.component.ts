@@ -172,7 +172,7 @@ export class ItemhistoryComponent implements OnInit {
         // eachItemForMachines['kit_cart_id'] = this.arrayvalue1[0].kit_cart_id
         eachItemForMachines['item_id'] = item.item._id
         eachItemForMachines['kit_qty'] = item.qty
-        // eachItemForMachines['qty'] = item.kit_id.kit_data[i].qty
+        eachItemForMachines['qty'] = item.kit_id.kit_data[i].qty
         eachItemForMachines['stock_allocation_id'] = item._id
         eachItemForMachines['cube_id'] = item.cube.cube_id
         eachItemForMachines['column_id'] = item.bin.bin_id

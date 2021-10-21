@@ -123,7 +123,7 @@ export class ProductslistComponent implements OnInit {
       eachItemForMachines['qty'] = this.takeNowKit[0].kit_id.kit_data[i].qty
       eachItemForMachines['qty'] = 1
       eachItemForMachines['stock_allocation_id'] = item._id
-      eachItemForMachines['cube_id'] = item.cube_cube_id
+      eachItemForMachines['cube_id'] = item.cube._id
       eachItemForMachines['column_id'] = item.bin.bin_id
       eachItemForMachines['bin_id'] = item.compartment.compartment_id
       eachItemForMachines['compartment_id'] = item.compartment_number

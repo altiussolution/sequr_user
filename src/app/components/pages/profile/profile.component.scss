@@ -7,10 +7,23 @@
 .as-bg{
     height: 273px;
     background-repeat: no-repeat;
-    background-size: contain;
-    width: 100%;
+    background-size: cover;
+    width: 98.4%;
     position: absolute;
 }
+@media (min-width:1920px){
+    .as-bg{
+        height: 390px;
+       
+    }
+    .as-user-bg{
+        top: 28%;
+    }
+    .as-eye {
+       
+        right: 17px;
+    }
+    }
 .as-shadow{
     box-shadow: 0px 0px 8px 1px #e0dfdf;
 }
