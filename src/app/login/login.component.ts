@@ -6,6 +6,7 @@ import { appModels } from '../services/shared/enum/enum.util';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { ToastrService } from 'ngx-toastr';
 import { CrudService } from '../services/crud.service';
+import { HttpErrorResponse } from '@angular/common/http';
 declare var google
 @Component({
   selector: 'app-login',
@@ -64,8 +65,12 @@ export class LoginComponent implements OnInit {
            this.router.navigate(['/pages/home'])
        })
     
-    },error=>{
-      
+    }
+      ,(error:HttpErrorResponse)=>{
+        if(error.status === 400){  
+          this.toast.error('Invalid Credentials or No user found')
+        }
+     
     })
   }
   okay(){
