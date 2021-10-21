@@ -6,7 +6,9 @@
     <div class="as-color-1">
 
       <div class="text-center">
-        <button type="button" [disabled]="arrayvalue?.length==0" class="btn btn-round btn-outline-info" data-toggle="modal" data-target="#myModal">Return
+        <button type="button" [disabled]="arrayvalue?.length==0"
+          class="btn btn-round btn-outline-info" data-toggle="modal" data-target="#myModal"
+          >Return
           Products</button>
       </div>
     </div>
@@ -22,10 +24,10 @@
       <div class="row  mx-0">
         <div class="as-history1">
           <div class="mr-2"><i class="fa fa-calendar"></i> <span class="as-color-2 mt-3 as-font-16">
-            {{date | date:'MMM d, y'}}
+              {{date | date:'MMM d, y'}}
             </span> </div>
           <div><i class="fa fa-clock-o"></i> <span class="as-color-2 mt-3 as-font-16">
-            {{date | date:"hh:mm a"}}
+              {{date | date:"hh:mm a"}}
             </span> </div>
         </div>
       </div>
@@ -43,7 +45,8 @@
     <div class=" as-color-1">
 
       <div class="text-center">
-        <button type="button" class="btn btn-round btn-outline-info" (click)="returnkits()" [disabled]="arrayvalue1?.length==0">Return Kits</button>
+        <button type="button" class="btn btn-round btn-outline-info"
+          [disabled]="arrayvalue1?.length==0" (click)="returnItem('kit')">Return Kits</button>
       </div>
     </div>
   </div>
@@ -55,10 +58,10 @@
           <div class="row align-items-center mx-0">
             <div class="as-history">
               <div class="mr-2"><i class="fa fa-calendar"></i> <span class="as-color-2 mt-3 as-font-16">
-                {{kitting?.updated_at| date:'MMM d, y'}}
+                  {{kitting?.updated_at| date:'MMM d, y'}}
                 </span> </div>
               <div><i class="fa fa-clock-o"></i> <span class="as-color-2 mt-3 as-font-16">
-                 {{kitting?.updated_at| date:"hh:mm a"}}
+                  {{kitting?.updated_at| date:"hh:mm a"}}
                 </span> </div>
             </div>
             <div class="form-group form-check ">
@@ -78,7 +81,8 @@
               {{item?.item?.item_name}}({{item?.quantity}})
             </div>
             <div class="as-color-2 mt-3 as-font-16">
-              Machine: {{item?.cube?.cube_name}} Column ID: {{item?.bin?.bin_id}} Rack: {{item?.compartment?.compartment_id}}
+              Machine: {{item?.cube?.cube_name}} Column ID: {{item?.bin?.bin_id}} Rack:
+              {{item?.compartment?.compartment_id}}
             </div>
           </div>
         </div>
@@ -190,7 +194,7 @@
         </div>
         <hr class="as-width-93">
         <div class="modal-body text-center">
-         
+
           <div class="row py-2" *ngFor="let data of arrayvalue;let i=index">
             <div class="w-25">
               <!-- <img src="../../../assets/img/tools.png"> -->
@@ -199,21 +203,21 @@
             <div class="as-w-60 pl-3">
               <div class="mb-3 text-left as-bold as-color-4">
                 {{data?.item?.item_name}}
-            </div>
+              </div>
               <div class="d-flex align-items-center as-mr-det">
                 <label class="mr-2">Qty :</label>
-                <input type="number" id="quantity{{i}}" class="form-control quantity" placeholder="2" name="quantity" min="1"
-                  max="5"  (keyup)="myFunction($event,i)">
+                <input type="number" id="quantity{{i}}" class="form-control quantity" placeholder="2" name="quantity"
+                  min="1" max="5" (keyup)="myFunction($event,i)">
               </div>
             </div>
             <div class="as-w-15">
 
-              <button  (click)="delete(i)"  type="button" class="btn btn-round btn-light "><i class="fa fa-trash-o as-font-20"
-                  aria-hidden="true"></i></button>
+              <button (click)="delete(i)" type="button" class="btn btn-round btn-light "><i
+                  class="fa fa-trash-o as-font-20" aria-hidden="true"></i></button>
             </div>
             <hr class="w-100">
           </div>
-     
+
           <!-- <div class="row py-2">
             <div class="w-25">
               
@@ -239,7 +243,8 @@
         <div class="modal-footer">
           <div class="d-flex mb-3">
             <div class="as-color-4 as-font-24 line-h-12">Are you sure, do you want to return the item?</div>
-            <button class="btn btn-lg btn-primary btn-login  fw-bold mb-2" type="button" (click)="returnproduct()">Confirm</button>
+            <button class="btn btn-lg btn-primary btn-login  fw-bold mb-2" type="button"
+            (click)="returnItem('cart')">Confirm</button>
           </div>
         </div>
 
@@ -247,6 +252,6 @@
     </div>
   </div>
 
-   
+
 
 </div>

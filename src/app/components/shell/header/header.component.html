@@ -147,19 +147,19 @@
 
               <div class="ng-autocomplete">
             <ng-autocomplete
-              [data]="states"
+              [data]="item"
               [searchKeyword]="keyword"
               placeholder="Search..."
-              historyIdentifier="states"
+              historyIdentifier="item"
               [itemTemplate]="itemTemplate"
               [notFoundTemplate]="notFoundTemplate">
             </ng-autocomplete>
           
             <ng-template #itemTemplate let-item>
-              <div class="item">
-                <img src="{{item.flag}}" height="25">
+              <div class="item"   (click)="search(item._id)" [routerLink]="'/pages/details'">
+                <img src="{{item.image_path}}" height="25">
                
-                <small class="ml-40">Product: {{item.name}}</small>
+                <small class="ml-40">Product:{{item.item_name}}</small>
               </div>
             </ng-template>
           
@@ -210,7 +210,8 @@
         </li>
         <li (click)="test()" class="nav-item" [routerLink]="'/pages/profile'">
           <a class="nav-link">
-            <div class="user-icon"></div>
+            <!-- <div class="user-icon"></div> -->
+              <img width="35px" height="35px"  [src]="profile?.profile_pic" style="border-radius: 25px;" onError="this.src='../../../assets/img/profile_user_icon.svg'" >
           </a>
         </li>
         <li class="nav-item relative" [routerLink]="'/pages/mycart'">

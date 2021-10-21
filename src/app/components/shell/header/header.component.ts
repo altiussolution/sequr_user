@@ -32,9 +32,11 @@ export class HeaderComponent implements OnInit {
   public codeValue: string;
   id: any;
    cartProductCount: "";
+  profiledetails: any=[];
+  profile: any=[];
 
    
-   keyword = 'name';
+   keyword = 'item_name';
    states = [
      {
        name: 'Arkansas',
@@ -62,12 +64,22 @@ export class HeaderComponent implements OnInit {
 
  constructor(public router: Router,public crud:CrudService,private cookie: CookieService) {
 
+  this.crud.get(appModels.ITEM).pipe(untilDestroyed(this)).subscribe((res:any) => {
+    console.log(res)
+    this.item=res.item
+  })
  }
 
  
 
  ngOnInit(): void {
-   
+  this.profiledetails = JSON.parse(localStorage.getItem('personal'))
+  console.log(this.profiledetails)
+  this.crud.get(appModels.USERPROFILE + this.profiledetails._id).pipe(untilDestroyed(this)).subscribe((res: any) => {
+    console.log(res)
+    this.profile = res['data']
+  })
+
   this.crud.getProducts().subscribe(data => {
     this.cartProductCount=""
     this.cartProductCount = data;
@@ -164,6 +176,14 @@ private searchInput: ElementRef;
     this.interactedWithSearch = true;
 
   }*/
+  search(_id: any){
+   
+    this.id=_id
+    this.crud.changemessage3(this.id)
+   // localStorage.setItem("_id",_id)
+   localStorage.removeItem("hlo")
+    //this.router.navigate(['pages/details'])
+  }
   public saveCode(e): void {
     let params: any = {};
     if (this.codeValue) {
