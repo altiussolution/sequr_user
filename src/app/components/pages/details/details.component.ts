@@ -21,7 +21,7 @@ export class DetailsComponent implements OnInit {
   qty: any;
   id: any;
   qut: number;
-  message: any=[];
+  message: any = [];
 
 
   @ViewChild('videoPlayer') videoplayer: any;
@@ -47,9 +47,9 @@ export class DetailsComponent implements OnInit {
         console.log(this.message)
         this.crud.get(appModels.DETAILS + this.message).pipe(untilDestroyed(this)).subscribe((res: any) => {
           console.log(res)
-          localStorage.setItem("hlo","data")
+          localStorage.setItem("hlo", "data")
           this.items = res.items
-this.videoSource=this.items.video_path
+          this.videoSource = this.items.video_path
           console.log(this.items.video_path)
           this.machine = res.machine
           this.it = this.machine.item
@@ -73,16 +73,16 @@ this.videoSource=this.items.video_path
       this.qut = 0
     }
   }
-//  sendimg(a)
-// {
-//   debugger
-//   // element: HTMLImageElement;
-//   // var myImg = <HTMLInputElement>document.getElementById('mainimg');
-//   var myImg = document.getElementById("mainimg") as HTMLImageElement;
-// // document.getElementById('mainimg').src=a.src;
-// myImg.src = a.src;
+  //  sendimg(a)
+  // {
+  //   debugger
+  //   // element: HTMLImageElement;
+  //   // var myImg = <HTMLInputElement>document.getElementById('mainimg');
+  //   var myImg = document.getElementById("mainimg") as HTMLImageElement;
+  // // document.getElementById('mainimg').src=a.src;
+  // myImg.src = a.src;
 
-// }
+  // }
   async addtocart(item?) {
     if (this.qut && this.qut > 0) {
       let cart = {
@@ -98,7 +98,9 @@ this.videoSource=this.items.video_path
           console.log(res)
           if (res) {
             this.crud.getcarttotal(res[0]?.length)
-            this.router.navigate(['pages/mycart'])
+            if (!item) {
+              this.router.navigate(['pages/mycart'])
+            }
             if (item) {
               this.cartList = [];
               this.crud.get(appModels.listCart).pipe(untilDestroyed(this)).subscribe(async res => {
@@ -109,8 +111,8 @@ this.videoSource=this.items.video_path
                     this.cartList.push(this.cartdata?.cart[i])
                   }
                 }
-                await this.takeItem(item)
                 console.log(this.cartList)
+                await this.takeItem(item)
                 this.crud.getcarttotal(this.cartList?.length)
               }, error => {
                 this.toast.error(error.message);
@@ -322,14 +324,9 @@ this.videoSource=this.items.video_path
   //Update Cart and Stock Allocation documents after item Take/Return
   async updateAfterTakeOrReturn(successTake: any, item?) {
     let data = {
-      cart_id: this.id,
+      cart_id: this.cartdata._id,
       take_items: successTake,
-    }
-    if (item == 'cart') {
-      data['cart_status'] = 3
-    } else {
-      data['kit_status'] = 3
-
+      cart_status: 2
     }
     this.crud.post(`cart/updateReturnTake`, data).pipe().subscribe(async (res) => {
       console.log(res)

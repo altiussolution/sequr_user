@@ -266,9 +266,9 @@ export class ProductslistComponent implements OnInit {
       take_items: successTake,
     }
     if (item == 'cart') {
-      data['cart_status'] = 3
+      data['cart_status'] = 2
     } else {
-      data['kit_status'] = 3
+      data['kit_status'] = 2
 
     }
     this.crud.post(`cart/updateReturnTake`, data).pipe().subscribe(async (res) => {
