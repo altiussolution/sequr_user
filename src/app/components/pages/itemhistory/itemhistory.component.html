@@ -14,19 +14,19 @@
     </div>
   </div>
   <div class="row mx-0">
-    <div class="as-card py-3" *ngFor="let cart of itemhistorycart;let i=index">
+    <div class="as-card " *ngFor="let cart of itemhistorycart;let i=index">
       <div class="">
-        <!-- <img src="../../../assets/img/tools.png"> -->
-        <div class="as-product-img" style="background-image: url({{cart?.item?.image_path}});"></div>
+        <img src="{{cart?.item?.image_path}}">
+        <!-- <div class="as-product-img" style="background-image: url({{cart?.item?.image_path}});"></div> -->
       </div>
 
-      <div class="mb-3 text-left as-bold as-color-4">{{cart?.item?.item_name}}({{cart?.qty}})</div>
+      <div class="mb-3 text-left as-bold as-color-4 title-b">{{cart?.item?.item_name}}({{cart?.qty}})</div>
       <div class="row  mx-0">
-        <div class="as-history1">
-          <div class="mr-2"><i class="fa fa-calendar"></i> <span class="as-color-2 mt-3 as-font-16">
+        <div class="as-history1 title-sml-mrgn">
+          <div class="mr-2"><i class="fa fa-calendar ic_lrg"></i> <span class="as-color-2 mt-3 as-font-26">
               {{date | date:'MMM d, y'}}
             </span> </div>
-          <div><i class="fa fa-clock-o"></i> <span class="as-color-2 mt-3 as-font-16">
+          <div><i class="fa fa-clock-o ic_lrg"></i> <span class="as-color-2 mt-3 as-font-26">
               {{date | date:"hh:mm a"}}
             </span> </div>
         </div>
@@ -39,9 +39,9 @@
 
   </div>
   <div class="as-header mb-4">
-    <div class="as-font-18 as-bold">
+    <h2 class="h2-sub">
       Kitting Sets
-    </div>
+    </h2>
     <div class=" as-color-1">
 
       <div class="text-center">
@@ -54,18 +54,18 @@
     <div class="col-md-6 " *ngFor="let kitting of itemhistorykit">
       <div class="as-item-box">
         <div class="d-flex justify-content-between align-items-center">
-          <div class="as-font-24">{{kitting?.kit_name}}</div>
+          <div class="as-font-34">{{kitting?.kit_name}}</div>
           <div class="row align-items-center mx-0">
-            <div class="as-history">
-              <div class="mr-2"><i class="fa fa-calendar"></i> <span class="as-color-2 mt-3 as-font-16">
+            <div class="as-history ">
+              <div class="mr-2"><i class="fa fa-calendar as-font-25"></i> <span class="as-color-2 mt-3 as-font-16 as-font-25">
                   {{kitting?.updated_at| date:'MMM d, y'}}
                 </span> </div>
-              <div><i class="fa fa-clock-o"></i> <span class="as-color-2 mt-3 as-font-16">
+              <div><i class="fa fa-clock-o as-font-25"></i> <span class="as-color-2 mt-3 as-font-16 as-font-25">
                   {{kitting?.updated_at| date:"hh:mm a"}}
                 </span> </div>
             </div>
             <div class="form-group form-check ">
-              <input type="checkbox" class="form-check-input" id="Check1" (change)="passParams1($event,kitting)">
+              <input type="checkbox" class="form-check-input cb-kit" id="Check1" (change)="passParams1($event,kitting)">
             </div>
 
 
@@ -77,10 +77,10 @@
             <img class="as-productlst-img" [src]="item?.item?.image_path" />
           </div>
           <div>
-            <div class="as-font-18 as-bold as-color-4">
+            <div class="as-font-18 as-bold as-color-4 as-font-30">
               {{item?.item?.item_name}}({{item?.quantity}})
             </div>
-            <div class="as-color-2 mt-3 as-font-16">
+            <div class="as-color-2 mt-3 as-font-16 as-font-25">
               Machine: {{item?.cube?.cube_name}} Column ID: {{item?.bin?.bin_id}} Rack:
               {{item?.compartment?.compartment_id}}
             </div>
