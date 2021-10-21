@@ -41,7 +41,7 @@
 
                   </a>-->
 
-                  <a class="thumbnail">
+                  <a class="thumbnail" *ngIf="videoSource != ''">
                     <video  class="thumbnail-image"   controls (canplay)="pauseVideo(videoplayer)"
                     #videoPlayer  [src]="videoSource" type="video/mp4">
                     </video>
@@ -81,7 +81,7 @@
                 </div>
                 <div class="as-details-txt">
                     <div class="as-font-18 as-bold">
-                        Rack ID
+                        Draw ID
                     </div>
                     <div>
                         {{compartment?.compartment_id}}
@@ -94,12 +94,12 @@
                     <input type="number" value="" id="quantity" class="form-control" (change)="changing($event)" placeholder="Qty" name="quantity" min="1" max="{{machine.quantity}}">  
                
                 </div>
-                <div class="as-mr-det">
+                <!--<div class="as-mr-det">
                     <button class="btn  btn-primary fw-bold mb-2" type="button" (click)="addtocart('cart')">Take Now</button>
                 </div>
                 <div class="as-mr-or">
                     or
-                </div>
+                </div>-->
                 <div class="as-mr-det">
                     <button class="btn  btn-secondary   fw-bold mb-2" type="button" (click)="addtocart()">Add to cart</button>
                 </div>
@@ -133,9 +133,9 @@
                 Column ID: 01   Rack: 02
             </div>
             <div class="row align-items-center mx-0 as-addtocart-pos">
-                <div class="mr-3">
+                <!--<div class="mr-3">
                     <button type="button" class="btn bg-white btn-round btn-light">Take Now</button>
-                </div>
+                </div>-->
                 <div class="">
                    
                     <button type="button" class="btn bg-white btn-round btn-light addtocart-icon addtocart-btn"></button>
@@ -156,9 +156,9 @@
                 Column ID: 01   Rack: 02
             </div>
             <div class="row align-items-center mx-0 as-addtocart-pos">
-                <div class="mr-3">
+                <!--<div class="mr-3">
                     <button type="button" class="btn bg-white btn-round btn-light">Take Now</button>
-                </div>
+                </div>-->
                 <div class="">
                    
                     <button type="button" class="btn bg-white btn-round btn-light addtocart-icon addtocart-btn"></button>
@@ -179,9 +179,9 @@
                 Column ID: 01   Rack: 02
             </div>
             <div class="row align-items-center mx-0 as-addtocart-pos">
-                <div class="mr-3">
+                <!--<div class="mr-3">
                     <button type="button" class="btn bg-white btn-round btn-light">Take Now</button>
-                </div>
+                </div>-->
                 <div class="">
                    
                     <button type="button" class="btn bg-white btn-round btn-light addtocart-icon addtocart-btn"></button>
@@ -202,9 +202,9 @@
                 Column ID: 01   Rack: 02
             </div>
             <div class="row align-items-center mx-0 as-addtocart-pos">
-                <div class="mr-3">
+                <!--<div class="mr-3">
                     <button type="button" class="btn bg-white btn-round btn-light">Take Now</button>
-                </div>
+                </div>-->
                 <div class="">
                    
                     <button type="button" class="btn bg-white btn-round btn-light addtocart-icon addtocart-btn"></button>
