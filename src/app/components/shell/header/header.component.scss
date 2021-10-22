@@ -1310,7 +1310,17 @@ button.toggleBtn {
 .ng-autocomplete {
   width: 400px;
 }
-
+@media (min-width: 1536px){
+    .as-menu-w {
+        width: 42rem !important;
+    }
+    
+    ul.as-menu > li.as-menu-mega-blog > div > ul.as-menu-mega-blog-nav {
+        position: relative;
+        width: 200px;
+            left: -71%;
+    }
+}
 @media (min-width:1920px) {
   ul.as-menu>li.as-menu-mega-blog>div>ul.as-menu-mega-blog-nav {
     font-size: 1.5rem;
