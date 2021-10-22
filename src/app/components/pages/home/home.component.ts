@@ -33,7 +33,7 @@ export class HomeComponent implements OnInit {
  
   }
 
-ngOnInit() {
+  ngOnInit() {
   console.log(this.readCookie('googtrans'));
   if(!localStorage.getItem("language")){
     if (confirm(`please reload the page`)) {
