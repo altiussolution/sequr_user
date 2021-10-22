@@ -343,9 +343,9 @@ export class MycartComponent implements OnInit {
       console.log('Column : ' + machine.column_id + '' + 'drawer: ' + machine.bin_id + ' ' + 'Compartment: ' + machine.compartment_id)
       console.log(status)
 
-      if (status == 'Locked' || status == 'Closed' || status == 'Unlocked') {
+      if (status == 'Locked' || status == 'Closed' || status == 'Unlocked' || status == 'Unknown') {
         // Lock that Column API, machine._id
-        if (status == 'Closed' || status == 'Unlocked') {
+        if (status == 'Closed' || status == 'Unlocked' || status == 'Unknown') {
           await this.crudService.post('machine/lockBin', machine).pipe(untilDestroyed(this)).toPromise()
           await this.sleep(1000)
         }
@@ -360,14 +360,14 @@ export class MycartComponent implements OnInit {
           let singleDeviceInfo = await this.singleDeviceInfo(machine)
           let status = singleDeviceInfo.details.singledevinfo.column[0]['status'][0]
           console.log('inside while loop status bin ' + machine.bin_id + status)
-          if (status == 'Closed' || status == 'Locked') {
+          if (status == 'Closed' || status == 'Locked' || status == 'Unknown') {
             await this.sleep(9000)
             await this.crudService.post('machine/lockBin', machine).pipe(untilDestroyed(this)).toPromise()            
             machineColumnStatus = true
             await this.TakeOrReturnItems.push(machine)
           }
           //Drawer current status, (opening, opened, closing, closed)
-          else if (status !== 'Closed' && status !== 'Locked') {
+          else if (status !== 'Closed' && status !== 'Locked' && status == 'Unknown' ) {
             console.log('please close properly, Current Status = ' + status)
             // ColumnActionStatus = singleDeviceInfo
           }

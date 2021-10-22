@@ -24,8 +24,8 @@
                   </a>
                 </aside>
               
-               <main class="primary" style="background-image: url({{items?.image_path}});">
-   
+               <main class="primary" >
+                <img  src="{{items?.image_path}}" >
                 <div class="as-avaliable">
                     <div class="as-avaliable-btn"></div>
                     <div class="as-font-18 as-z-index-1">Available</div>
@@ -70,12 +70,12 @@
                     <input type="number" value="" id="quantity" class="form-control" (change)="changing($event)" placeholder="Qty" name="quantity" min="1" max="{{machine.quantity}}">  
                
                 </div>
-                <!--<div class="as-mr-det">
+                <div class="as-mr-det">
                     <button class="btn  btn-primary fw-bold mb-2" type="button" (click)="addtocart('cart')">Take Now</button>
                 </div>
                 <div class="as-mr-or">
                     or
-                </div>-->
+                </div>
                 <div class="as-mr-det">
                     <button class="btn  btn-secondary   fw-bold mb-2" type="button" (click)="addtocart()">Add to cart</button>
                 </div>

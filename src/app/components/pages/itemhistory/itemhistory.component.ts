@@ -167,14 +167,15 @@ export class ItemhistoryComponent implements OnInit {
       let i = 0
       this.arrayvalue1[0].kit_item_details.forEach(async item => {
         let eachItemForMachines = {}
-        eachItemForMachines['cart_id'] = this.arrayvalue1[0].kit_cart_id
+        eachItemForMachines['cart_id'] = this.arrayvalue1[0].cart_id
         eachItemForMachines['kit_id'] = this.arrayvalue1[0].kit_id._id
-        // eachItemForMachines['kit_cart_id'] = this.arrayvalue1[0].kit_cart_id
+        eachItemForMachines['kit_cart_id'] = this.arrayvalue1[0].kit_cart_id
         eachItemForMachines['item_id'] = item.item._id
-        eachItemForMachines['kit_qty'] = item.qty
-        eachItemForMachines['qty'] = item.kit_id.kit_data[i].qty
+        eachItemForMachines['kit_qty'] = this.arrayvalue1[0].qty
+        eachItemForMachines['qty'] = this.arrayvalue1[0].kit_id.kit_data[i].qty
+        eachItemForMachines['qty'] = 1
         eachItemForMachines['stock_allocation_id'] = item._id
-        eachItemForMachines['cube_id'] = item.cube.cube_id
+        eachItemForMachines['cube_id'] = item.cube._id
         eachItemForMachines['column_id'] = item.bin.bin_id
         eachItemForMachines['bin_id'] = item.compartment.compartment_id
         eachItemForMachines['compartment_id'] = item.compartment_number
@@ -257,9 +258,9 @@ export class ItemhistoryComponent implements OnInit {
       console.log('Column : ' + machine.column_id + '' + 'drawer: ' + machine.bin_id + ' ' + 'Compartment: ' + machine.compartment_id)
       console.log(status)
 
-      if (status == 'Locked' || status == 'Closed' || status == 'Unlocked') {
+      if (status == 'Locked' || status == 'Closed' || status == 'Unlocked' || status == 'Unknown') {
         // Lock that Column API, machine._id
-        if (status == 'Closed' || status == 'Unlocked') {
+        if (status == 'Closed' || status == 'Unlocked' || status == 'Unknown') {
           await this.crud.post('machine/lockBin', machine).pipe(untilDestroyed(this)).toPromise()
           await this.sleep(1000)
         }
@@ -274,14 +275,14 @@ export class ItemhistoryComponent implements OnInit {
           let singleDeviceInfo = await this.singleDeviceInfo(machine)
           let status = singleDeviceInfo.details.singledevinfo.column[0]['status'][0]
           console.log('inside while loop status bin ' + machine.bin_id + status)
-          if (status == 'Closed' || status == 'Locked') {
+          if (status == 'Closed' || status == 'Locked' || status == 'Unknown') {
             await this.sleep(9000)
             await this.crud.post('machine/lockBin', machine).pipe(untilDestroyed(this)).toPromise()
             machineColumnStatus = true
             await this.TakeOrReturnItems.push(machine)
           }
           //Drawer current status, (opening, opened, closing, closed)
-          else if (status !== 'Closed' && status !== 'Locked') {
+          else if (status !== 'Closed' && status !== 'Locked' || status == 'Unknown') {
             console.log('please close properly, Current Status = ' + status)
             // ColumnActionStatus = singleDeviceInfo
           }
@@ -307,9 +308,9 @@ export class ItemhistoryComponent implements OnInit {
 
     console.log(successTake)
     if (successTake.length == 0) {
-      console.log('Machine status unknown No Item taken')
+      console.log('Machine status unknown No Item returned')
     } else if (successTake.length == totalMachinesList.length) {
-      console.log(successTake.length + ' items Taken successfully')
+      console.log(successTake.length + ' items returned successfully')
       await this.updateAfterTakeOrReturn(successTake)
     } else if (successTake.length < totalMachinesList.length) {
       console.log(successTake.length + ' items Taken successfully \n' + successTake.length + ' items failed return')
