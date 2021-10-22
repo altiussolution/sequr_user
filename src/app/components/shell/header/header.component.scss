@@ -1325,6 +1325,18 @@ button.toggleBtn {
   ul.as-menu>li.as-menu-mega-blog>div>ul.as-menu-mega-blog-nav {
     font-size: 1.5rem;
   }
+  .as-menu-w {
+    width: 51rem !important;
+  }
+  ul.as-menu > li.as-menu-mega-blog > div > ul.as-menu-mega-blog-nav {
+    position: relative;
+    width: 260px;
+    left: -69%;
+  }
+  ul.as-menu > li.as-menu-mega-blog > div > ul.as-menu-mega-blog-nav > li > div {
+
+    left: 250px;
+  }
 }
 
 @media only screen and (min-width : 768px) and (orientation : landscape) and (-webkit-min-device-pixel-ratio: 2) {

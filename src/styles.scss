@@ -749,9 +749,9 @@ input:-webkit-autofill::first-line {
   padding: 0rem 3rem;
 }
 
-.mycart .as-card {
-  max-width: 280px;
-}
+// .mycart .as-card {
+//   max-width: 280px;
+// }
 
 .as-sp .row:nth-child(3) {
   margin-top: 15px;
@@ -1056,6 +1056,10 @@ a.as-crd-title-new {
 
     font-size: 2rem !important;
   }
+  .mycart .as-header .row.as-color-1 .mr-5 {
+    margin-top: 35px;
+}
+
 
   .user-icon1 {
     width: 50px;
