@@ -31,7 +31,7 @@
       <div class="as-card " *ngFor="let category of data ">
         <!--<div class="as-home-img" style="background: url({{category?.image_path}});"  (click)="selectcategory(category)"></div>-->
          <img class="as-home-img" src="{{category?.image_path}}" (click)="selectcategory(category)"> 
-        <a class="as-crd-title title-new" (click)="selectcategory(category)">{{category?.sub_category_name}}</a>  
+        <a class="as-crd-title-new" (click)="selectcategory(category)">{{category?.sub_category_name}}</a>  
     </div>
     <ng-container class="ng-star-inserted w-100 text-center as-nodata" *ngIf="data?.length == 0">
         <div class="no_data_msg ">No Data Avaliable</div>
