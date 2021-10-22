@@ -1,12 +1,18 @@
-.addtocart-btn{
-    height: 40px;
-    width: 40px;
-  }
-
-.as-btn{
-    padding: 8px 28px;
+.addtocart-btn {
+  height: 40px;
+  width: 40px;
 }
 
-.qty.as-btn{
+.as-btn {
+  padding: 8px 28px;
+}
+
+.qty.as-btn {
   padding: 4px 10px;
+}
+
+@media (min-width:1920px) {
+  .qty.as-btn {
+    padding: 0px 10px;
+  }
 }
