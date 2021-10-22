@@ -479,7 +479,7 @@ input {
   width: 40px;
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 64px;
+  background-size: 48px;
   margin-top: -8px;
 }
 
@@ -494,11 +494,12 @@ input {
   cursor: pointer;
 }
 .user-icon1{
-  width: 50px;
+  width: 36px;
   aspect-ratio: auto 59 / 75;
-  height: 60px;
+  height: 46px;
   margin-top: -6px;
   margin-right: -12px;
+  cursor: pointer;
 }
 
 .addtocart-icon {
@@ -950,6 +951,9 @@ button:focus {
 .activemenu .as-list .as-card-width2{
   width: 67%;
 }
+.as-card img{
+  width: 100%;
+}
 // Tab Design
 .as-nodata{
   position: absolute;
@@ -977,6 +981,26 @@ button:focus {
    
     font-size: 2rem !important;
 }
+.user-icon1 {
+  width: 50px;
+  aspect-ratio: auto 59/75;
+  height: 60px;
+  margin-top: -6px;
+  margin-right: -12px;
+  cursor: pointer;
+}
+.search-icon {
+  background-size: 64px;
+}
+.footer {
+  font-size: 1.5rem;
+}
+.modal-header .close {
+  font-size: 2.2rem;
+}
+.as-font-20 {
+  font-size: 1.8rem;
+}
 .as-font-16 {
   font-size: 2rem;
 }
@@ -986,19 +1010,22 @@ button:focus {
 .as-calendar{
 margin-top: 2rem;
 }
+.logout-popup {
+  height: 180px;
+}
 .shop-count {
   position: absolute;
-  top: 7px;
+  top: 4px;
   font-size: 17px;
-  width: 20px;
-  height: 20px;
+  width: 25px;
+  height: 25px;
   background: black;
   color: white;
   text-align: center;
   border-radius: 100%;
   font-weight: 800;
   right: 3px;
-  line-height: 1.2;
+  line-height: 1.5;
 }
 .mycart .form-group.form-check {
   margin-top: 2.3rem;
@@ -1214,8 +1241,9 @@ ul.as-menu > li > a {
   margin: 11.75rem auto;
 }
 .logo-image {
-  background-position: 25%;
-  top: 270px;
+  background-position: 35%;
+  top: 240px;
+  background-size: 50%;
 }
 }
 
