@@ -90,7 +90,7 @@ export class HeaderComponent implements OnInit {
     console.log(res)
     this.cartdata=res[0]
   for(let i=0;i< this.cartdata?.cart?.length;i++){
-      if( this.cartdata?.cart[i]['cart_status']==1 || this.cartdata?.cart[i]['cart_status']==2){
+      if( this.cartdata?.cart[i]['cart_status']==1){
       this.cartList.push(this.cartdata?.cart[i])
       // this.cartListlength=this.cartList.length
        }}
