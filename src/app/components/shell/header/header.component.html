@@ -203,7 +203,7 @@
       <div class="as-se-popup" *ngIf="searchdata !=0">
      <div class="as-1">
         <ul *ngFor="let data of searchdata">
-          <li><a>
+          <li><a (click)="search(data._id)">
               <span class="as-2">
                 <img class="as-1-img" src="{{data.image_path}}" ></span>
               <p class="as-txt">{{data.item_name}}</p>

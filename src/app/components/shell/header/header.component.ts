@@ -183,7 +183,7 @@ private searchInput: ElementRef;
     this.crud.changemessage3(this.id)
    // localStorage.setItem("_id",_id)
    localStorage.removeItem("hlo")
-    //this.router.navigate(['pages/details'])
+    this.router.navigate(['pages/details'])
   }
   public saveCode(e): void {
     let params: any = {};
@@ -211,7 +211,7 @@ searching(event){
     if (this.searchValue) {
       params['searchString'] = event.target.value;
     }
-    this.crud.get1('item/getItemfilter', { params }).pipe(untilDestroyed(this)).subscribe(res => {
+    this.crud.get1(appModels.ITEM, { params }).pipe(untilDestroyed(this)).subscribe(res => {
     console.log(res)
     this.searchdata=res['item']
     })
