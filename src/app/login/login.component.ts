@@ -66,7 +66,7 @@ export class LoginComponent implements OnInit {
            this.router.navigate(['/pages/home'])
        })
       }else{
-        this.toast.error("You are not Allow")
+        this.toast.error("Admin block your account,Please contact Admin")
       }
     /*}
       ,(error:HttpErrorResponse)=>{

@@ -184,6 +184,7 @@ private searchInput: ElementRef;
    // localStorage.setItem("_id",_id)
    localStorage.removeItem("hlo")
     this.router.navigate(['pages/details'])
+    this.searchdata=""
   }
   public saveCode(e): void {
     let params: any = {};
