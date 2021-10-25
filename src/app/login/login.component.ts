@@ -48,6 +48,7 @@ export class LoginComponent implements OnInit {
   console.log(data)
     this.authendication.post(appModels.LOGIN,data).pipe(untilDestroyed(this)).subscribe((res:any) => {
       console.log(res)
+      if(res.status === true){  
       localStorage.setItem("personal",JSON.stringify(res))
      localStorage.setItem("JWTokens",res['token'])
 
@@ -64,7 +65,9 @@ export class LoginComponent implements OnInit {
            this.toast.success("Logged in Successfully")
            this.router.navigate(['/pages/home'])
        })
-    
+      }else{
+        this.toast.error("You are not Allow")
+      }
     /*}
       ,(error:HttpErrorResponse)=>{
         if(error.status === 400){  
