@@ -60,6 +60,7 @@ export class HeaderComponent implements OnInit {
        flag: 'https://upload.wikimedia.org/wikipedia/commons/f/f7/Flag_of_Texas.svg'
      }
    ];
+  searchdata: any=[];
   
 
  constructor(public router: Router,public crud:CrudService,private cookie: CookieService) {
@@ -182,7 +183,8 @@ private searchInput: ElementRef;
     this.crud.changemessage3(this.id)
    // localStorage.setItem("_id",_id)
    localStorage.removeItem("hlo")
-    //this.router.navigate(['pages/details'])
+    this.router.navigate(['pages/details'])
+    this.searchdata=""
   }
   public saveCode(e): void {
     let params: any = {};
@@ -203,10 +205,23 @@ private searchInput: ElementRef;
    
   })
 }
+searching(event){
+  console.log(event)
+  if(event.target.value){
+    let params: any = {};
+    if (this.searchValue) {
+      params['searchString'] = event.target.value;
+    }
+    this.crud.get1(appModels.ITEM, { params }).pipe(untilDestroyed(this)).subscribe(res => {
+    console.log(res)
+    this.searchdata=res['item']
+    })
+  }else{
+    this.searchdata=[]
+  }
+ 
+}
 
-//  ngOnInit(): void {
-    
-//   }
 test(){
   let assidebar = document.querySelector('.sidenav');
   let body = document.querySelector('body');
