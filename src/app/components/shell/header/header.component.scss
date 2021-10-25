@@ -1372,7 +1372,18 @@ button.toggleBtn {
         width: 200px;
             left: -71%;
     }
+    .as-se-popup{
+      top: 72px;
+    }
+    .as-txt {
+      font-size: 1.8rem;
+    }
+    .as-1-img {
+      width: 75px;
+      height: 75px;
+    }
 }
+
 @media (min-width:1920px) {
   ul.as-menu>li.as-menu-mega-blog>div>ul.as-menu-mega-blog-nav {
     font-size: 1.5rem;
@@ -1388,6 +1399,16 @@ button.toggleBtn {
   ul.as-menu > li.as-menu-mega-blog > div > ul.as-menu-mega-blog-nav > li > div {
 
     left: 250px;
+  }
+  .as-se-popup{
+    top: 122px;
+  }
+  .as-txt {
+    font-size: 1.8rem;
+  }
+  .as-1-img {
+    width: 75px;
+    height: 75px;
   }
 }
 

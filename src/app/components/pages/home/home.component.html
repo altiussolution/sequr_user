@@ -33,13 +33,8 @@
          <img class="as-home-img" src="{{category?.image_path}}" (click)="selectcategory(category)"> 
         <a class="as-crd-title-new" (click)="selectcategory(category)">{{category?.sub_category_name}}</a>  
     </div>
-<<<<<<< HEAD
     <ng-container class="ng-star-inserted w-100 text-center as-nodata" *ngIf="data?.length == 0">
         <div class="no_data_msg w-100 text-center as-nodata ">No Data Avaliable</div>
-=======
-    <ng-container *ngIf="data?.length == 0" class="">
-        <div class="no_data_msg w-100 text-center as-nodata">No Data Avaliable</div>
->>>>>>> 6a2e06c15faabe988e2c7d1b41529974d8775d09
       </ng-container>
     <!--<ng-container class="ng-star-inserted w-100 text-center as-nodata" *ngIf="data?.length == 0">
         <div class="no_data_msg ">No Data Avaliable</div>
