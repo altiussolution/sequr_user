@@ -176,7 +176,7 @@
             </button>
           </div> -->
 
-          <input type="text" placeholder="serch" class="form-control">
+          <input type="text" placeholder="search" class="form-control" (keyup)="searching($event)">
 
         </li>
         <li (click)="test()" class="nav-item as-nav" [routerLink]="'/pages/profile'">
@@ -200,45 +200,16 @@
           </a>
         </li>
       </ul>
-      <div class="as-se-popup">
+      <div class="as-se-popup" *ngIf="searchdata !=0">
      <div class="as-1">
-        <ul>
-          <li><a href="#">
+        <ul *ngFor="let data of searchdata">
+          <li><a>
               <span class="as-2">
-                <img class="as-1-img" src="../../../../assets/img/hamer.png" ></span>
-              <p class="as-txt">Oblivion Heavy Duty Small Hammer Stubby Mini Claw Hammers Short Handle Rubber Grip</p>
+                <img class="as-1-img" src="{{data.image_path}}" ></span>
+              <p class="as-txt">{{data.item_name}}</p>
             </a></li>
         </ul>
-        <ul>
-          <li><a href="#">
-              <span class="as-2">
-                <img class="as-1-img" src="../../../../assets/img/hamer.png" ></span>
-              <p class="as-txt">Oblivion Heavy Duty Small Hammer Stubby Mini Claw Hammers Short Handle Rubber Grip</p>
-            </a></li>
-        </ul>
-        <ul>
-          <li><a href="#">
-              <span class="as-2">
-                <img class="as-1-img" src="../../../../assets/img/hamer.png" ></span>
-              <p class="as-txt">Oblivion Heavy Duty Small Hammer Stubby Mini Claw Hammers Short Handle Rubber Grip</p>
-            </a></li>
-        </ul>
-        <ul>
-          <li><a href="#">
-              <span class="as-2">
-                <img class="as-1-img" src="../../../../assets/img/hamer.png" ></span>
-              <p class="as-txt">Oblivion Heavy Duty Small Hammer Stubby Mini Claw Hammers Short Handle Rubber Grip</p>
-            </a></li>
-        </ul>
-        <ul>
-          <li><a href="#">
-              <span class="as-2">
-                <img class="as-1-img" src="../../../../assets/img/hamer.png" ></span>
-              <p class="as-txt">Oblivion Heavy Duty Small Hammer Stubby Mini Claw Hammers Short Handle Rubber Grip</p>
-            </a></li>
-        </ul>
-
-      </div>
+        </div>
       </div>
 
     </div>
