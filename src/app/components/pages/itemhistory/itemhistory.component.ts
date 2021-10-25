@@ -54,6 +54,8 @@ export class ItemhistoryComponent implements OnInit {
   delete(i: any) {
     if (i > -1) {
       this.arrayvalue.splice(i, 1);
+      this.toast.success("Item Delete Successfully")
+
     }
   }
   myFunction(event, i) {

@@ -13,7 +13,7 @@
       </div>
       <!-- <div class="mr-3 as-font-14">
         Items 1-8 of 8
-      </div> -->
+      </div>    [disabled]="cartdata?.length==0"-->
       <div class="mr-3 pointer as-g-active view-active" (click)="gridview()">
         <i class="fa fa-th" aria-hidden="true"></i>
       </div>
@@ -60,9 +60,10 @@
     </div>
    
   </div>
-  <ng-container class="" *ngIf="cartList?.length == 0">
-    <div class="no_data_msg ">No Data Avaliable</div>
+  <ng-container *ngIf="cartList?.length == 0" class="">
+    <div class="no_data_msg w-100 text-center as-nodata">No Data Avaliable</div>
   </ng-container>
+  
   <div class="text-right mb-5 mt-3  ">
     <button type="button" class="btn as-btn btn-primary mr-3" [routerLink]="'/pages/home'">Add More</button>
     <!--<button type="button" class="btn as-btn btn-secondary " (click)="takeItems()">Take Now</button>-->
