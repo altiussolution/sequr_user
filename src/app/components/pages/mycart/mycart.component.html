@@ -60,8 +60,8 @@
     </div>
    
   </div>
-  <ng-container class="" *ngIf="cartList?.length == 0">
-    <div class="no_data_msg ">No Data Avaliable</div>
+  <ng-container class="as-nodata" *ngIf="cartList?.length == 0">
+    <div class="no_data_msg w-100 text-center as-nodata">No Data Avaliable</div>
   </ng-container>
   <div class="text-right mb-5 mt-3  ">
     <button type="button" class="btn as-btn btn-primary mr-3" [routerLink]="'/pages/home'">Add More</button>

@@ -510,6 +510,7 @@ input {
   margin-top: -6px;
   margin-right: -12px;
   cursor: pointer;
+  object-fit: contain;
 }
 
 .addtocart-icon {
@@ -1008,11 +1009,11 @@ a.as-crd-title-new {
     right: 12vw;
   }
 
-  .as-card {
-    /* max-width: 25%; */
-    /* border: 1px solid lightgray; */
-    width: 22%;
-  }
+  // .as-card {
+  //   /* max-width: 25%; */
+  //   /* border: 1px solid lightgray; */
+  //   width: 22%;
+  // }
 }
 
 @media (min-width:1366px) {
@@ -1068,6 +1069,8 @@ a.as-crd-title-new {
     margin-top: -6px;
     margin-right: -12px;
     cursor: pointer;
+    object-fit: contain;
+
   }
 
   .search-icon {
