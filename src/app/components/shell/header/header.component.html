@@ -175,8 +175,10 @@
              
             </button>
           </div> -->
-
-          <input type="text" placeholder="search" class="form-control" (keyup)="searching($event)">
+<form autocomplete="off">
+  <input type="text" placeholder="search" class="form-control" (keyup)="searching($event)">
+</form>
+          
 
         </li>
         <li (click)="test()" class="nav-item as-nav" [routerLink]="'/pages/profile'">
