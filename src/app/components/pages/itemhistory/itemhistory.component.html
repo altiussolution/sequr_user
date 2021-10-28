@@ -198,7 +198,8 @@
           <div class="row py-2" *ngFor="let data of arrayvalue;let i=index">
             <div class="w-25">
               <!-- <img src="../../../assets/img/tools.png"> -->
-              <div class="as-product-img-pop" style="background-image: url({{data?.item?.image_path}});"></div>
+              <img class="as-product-img-pop" src="{{data?.item?.image_path}}">
+
             </div>
             <div class="as-w-60 pl-3">
               <div class="mb-3 text-left as-bold as-color-4">

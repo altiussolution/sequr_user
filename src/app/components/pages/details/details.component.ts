@@ -33,11 +33,6 @@ export class DetailsComponent implements OnInit {
 
 
   }
-
-  toggleVideo(event: any) {
-    console.log(event)
-    this.videoplayer.nativeElement.play();
-  }
   ngOnInit(): void {
     this.crud.CurrentMessage3.subscribe((message: any) => {
       console.log(message)
@@ -84,18 +79,20 @@ export class DetailsComponent implements OnInit {
 
       this.crud.post(appModels.ADDTOCART, cart).subscribe(async res => {
         console.log(res)
-        this.toast.success("cart added successfully")
+        //this.toast.success("cart added successfully")
         this.crud.get(appModels.listCart).pipe(untilDestroyed(this)).subscribe(async res => {
           console.log(res)
           if (res) {
             this.crud.getcarttotal(res[0]?.length)
             if (!item) {
+              this.toast.success("cart added successfully")
               this.router.navigate(['pages/mycart'])
             }
             if (item) {
               this.cartList = [];
               this.crud.get(appModels.listCart).pipe(untilDestroyed(this)).subscribe(async res => {
                 console.log(res)
+                this.toast.success("Door open Sucessfully")
                 this.cartdata = res[0]
                 for (let i = 0; i < this.cartdata?.cart?.length; i++) {
                   if (this.cartdata?.cart[i]['cart_status'] == 1 && this.cartdata?.cart[i]['item']['_id'] == this.machine.item) {
@@ -331,25 +328,22 @@ export class DetailsComponent implements OnInit {
 
 
   pauseVideo(videoplayer) {
-    videoplayer.nativeElement.play();
-    // this.startedPlay = true;
-    // if(this.startedPlay == true)
-    // {
+    videoplayer.nativeElement.pause();
     setTimeout(() => {
       videoplayer.nativeElement.pause();
       if (videoplayer.nativeElement.paused) {
         this.show = !this.show;
       }
     }, 5000);
-    // }
+  
   }
 
-  //}
-  ngOnDestroy() {
-    localStorage.removeItem("allow1")
-  }
+
   closebutton(videoplayer) {
     this.show = !this.show;
     videoplayer.nativeElement.play();
+  }
+  ngOnDestroy() {
+    localStorage.removeItem("allow1")
   }
 }
