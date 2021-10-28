@@ -506,11 +506,11 @@ input {
 .user-icon1 {
   width: 33px;
   aspect-ratio: auto 59 / 75;
-  height: 46px;
-  margin-top: -6px;
+  height: 33px;
+  margin-top: 4px;
   margin-right: -12px;
   cursor: pointer;
-  object-fit: contain;
+  object-fit: cover;
 }
 
 .addtocart-icon {
@@ -985,6 +985,7 @@ button:focus {
 
 .as-card img {
   width: 100%;
+  height: 12rem;
 }
 
 // Tab Design
@@ -1353,7 +1354,7 @@ a.as-crd-title-new {
   // }
   .as-card img {
     width: 100%;
-    height: 15rem;
+    height: 20rem;
     object-fit: contain;
   }
 
