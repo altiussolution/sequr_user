@@ -321,8 +321,8 @@ export class DetailsComponent implements OnInit {
     }
     this.crud.post(`cart/updateReturnTake`, data).pipe().subscribe(async (res) => {
       console.log(res)
-      if (res.status) {
-        this.toast.success('Cart Updated Successfully');
+      if (res) {
+        this.toast.success('Item taken Successfully...');
       }
     })
   }

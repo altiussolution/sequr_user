@@ -21,7 +21,7 @@ CurrentMessage3= this.messagesource3.asObservable();
 
 
  constructor(private http: HttpClient) {
-  let existingCartItems = JSON.parse(localStorage.getItem('products'));
+  let existingCartItems = JSON?.parse(localStorage.getItem('products'));
   if (!existingCartItems) {
     existingCartItems = 0;
   }
