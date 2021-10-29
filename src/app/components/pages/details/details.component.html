@@ -67,7 +67,7 @@
             <div class="row mx-0 as-details-border as-details-btn">
                 <div class="as-w20 as-mr-det">
                    
-                    <input type="number" value="" id="quantity" class="form-control" (change)="changing($event)" placeholder="Qty" name="quantity" min="1" max="{{machine.quantity}}">  
+                    <input type="number" value="" id="quantity" class="form-control" (keyup)="changing($event)" placeholder="Qty" name="quantity" min="1" max="{{machine.quantity}}">  
                
                 </div>
                 <div class="as-mr-det">
