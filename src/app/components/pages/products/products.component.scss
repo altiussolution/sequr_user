@@ -1,6 +1,9 @@
 .addtocart-btn{
     height: 40px;
     width: 40px;
+    position: absolute;
+    top: 0;
+    right: 0;
   }
 
 
@@ -10,8 +13,11 @@
   }
   @media (min-width:1920px){
   .addtocart-btn {
-    height: 84px;
-    width: 120px;
+    height: 57px;
+    width: 81px;
+    position: absolute;
+    top: 7px;
+    right: 6px;
   }
 .as-title {
     font-size: 44px;

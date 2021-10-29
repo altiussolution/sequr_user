@@ -54,7 +54,9 @@ export class ItemhistoryComponent implements OnInit {
   delete(i: any) {
     if (i > -1) {
       this.arrayvalue.splice(i, 1);
+      this.toast.success("Item deleted from choosed list")
     }
+    this.close()
   }
   myFunction(event, i) {
     console.log(event.target.id)

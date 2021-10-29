@@ -7,7 +7,7 @@
 
       <div class="text-center">
         <button type="button" [disabled]="arrayvalue?.length==0"
-          class="btn btn-round btn-outline-info" data-toggle="modal" data-target="#myModal"
+          class="btn btn-round btn-outline-info" data-toggle="modal" data-target="#myModal" 
           >Return
           Products</button>
       </div>
@@ -81,7 +81,7 @@
               {{item?.item?.item_name}}({{item?.quantity}})
             </div>
             <div class="as-color-2 mt-3 as-font-16 as-font-25">
-              Machine: {{item?.cube?.cube_name}} Column ID: {{item?.bin?.bin_id}} Rack:
+              Machine: {{item?.cube?.cube_name}} Column ID: {{item?.bin?.bin_id}} Draw:
               {{item?.compartment?.compartment_id}}
             </div>
           </div>
@@ -198,7 +198,8 @@
           <div class="row py-2" *ngFor="let data of arrayvalue;let i=index">
             <div class="w-25">
               <!-- <img src="../../../assets/img/tools.png"> -->
-              <div class="as-product-img-pop" style="background-image: url({{data?.item?.image_path}});"></div>
+              <img class="as-product-img-pop" src="{{data?.item?.image_path}}">
+
             </div>
             <div class="as-w-60 pl-3">
               <div class="mb-3 text-left as-bold as-color-4">

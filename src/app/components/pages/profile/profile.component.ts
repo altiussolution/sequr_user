@@ -22,6 +22,7 @@ export class ProfileComponent implements OnInit {
   language: any = [];
   lan: any;
     toggle1: boolean = false;
+  citylist: any=[];
 
   changeType(input_field_password){
     if(input_field_password.type=="password")
@@ -48,6 +49,7 @@ export class ProfileComponent implements OnInit {
       console.log(res)
       this.profile = res['data']
     })
+ 
     this.crud.get(appModels.LAN).pipe(untilDestroyed(this)).subscribe((res: any) => {
       console.log(res)
       this.language = res['list']

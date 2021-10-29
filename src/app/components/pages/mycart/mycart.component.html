@@ -5,7 +5,7 @@
     </div>
     <div class="row as-color-1">
       <div class="form-group form-check mr-3">
-        <mat-checkbox class="example-margin" [checked]="isChecked()" [indeterminate]="isIndeterminate()"
+        <mat-checkbox class="example-margin" [checked]="isChecked()==true && this.cartList.length==0?false:isChecked()" [indeterminate]="isIndeterminate()"
           (change)="$event ? toggleAll($event) : null">Select All</mat-checkbox>
       </div>
       <div class="mr-5">
@@ -13,7 +13,7 @@
       </div>
       <!-- <div class="mr-3 as-font-14">
         Items 1-8 of 8
-      </div> -->
+      </div>    [disabled]="cartdata?.length==0"-->
       <div class="mr-3 pointer as-g-active view-active" (click)="gridview()">
         <i class="fa fa-th" aria-hidden="true"></i>
       </div>
@@ -25,8 +25,8 @@
   <div class="row mx-0 as-grid">
     <div class="as-card py-3" *ngFor="let cart of cartList">
       <div class="as-card-width1">
-        <!-- <img class="as-product-img" [src]="cart?.item?.image_path" onError="this.src='../../../assets/img/tools.png'"> -->
-        <div class="as-product-img" style="background-image: url({{cart?.item?.image_path}});" onError="this.src='../../../assets/img/tools.png'"></div>
+        <img class="as-product-img" [src]="cart?.item?.image_path" onError="this.src='../../../assets/img/tools.png'">
+        <!-- <div class="as-product-img" style="background-image: url({{cart?.item?.image_path}});" onError="this.src='../../../assets/img/tools.png'"></div> -->
       </div>
 
       <div class="my-2 text-left as-bold as-color-4 as-card-width2">{{cart?.item?.item_name}}</div>
@@ -35,7 +35,7 @@
           <!-- <div type="button" class=" dropdown-toggle btn btn-round btn-light" data-toggle="dropdown"> -->
           <!-- <input style="width: 50px;" type="number" min="1" [value]="cart?.qty" #qty> -->
           <input type="number" class="as-width-60" id="quantity" class="form-control" placeholder="Qty" min="1"
-            [value]="cart?.qty" name="quantity" #qty>
+            [value]="cart?.qty" name="quantity" #qty (change)="updateCart(cart, qty.value)" (keyup)="updateCart(cart, qty.value)">
           <!-- </div> -->
           <!-- <div class="dropdown-menu">
                   <a class="dropdown-item" href="#">1</a>
@@ -43,10 +43,10 @@
                   <a class="dropdown-item" href="#">3</a>
               </div> -->
         </div>
-        <div>
+        <!--<div>
           <button type="button" class="btn qty as-btn btn-primary mr-3" (click)="updateCart(cart, qty.value)"><i
               class="fa fa-plus"></i></button>
-        </div>
+        </div>-->
         <div class="">
           <button type="button" class="btn btn-round btn-light " (click)="deleteCart(cart)"><i
               class="fa fa-trash-o as-font-20" aria-hidden="true"></i></button>
@@ -60,9 +60,10 @@
     </div>
    
   </div>
-  <ng-container class="" *ngIf="cartList?.length == 0">
-    <div class="no_data_msg ">No Data Avaliable</div>
+  <ng-container class="as-nodata" *ngIf="cartList?.length == 0">
+    <div class="no_data_msg w-100 text-center as-nodata">No Data Avaliable</div>
   </ng-container>
+  
   <div class="text-right mb-5 mt-3  ">
     <button type="button" class="btn as-btn btn-primary mr-3" [routerLink]="'/pages/home'">Add More</button>
     <!--<button type="button" class="btn as-btn btn-secondary " (click)="takeItems()">Take Now</button>-->

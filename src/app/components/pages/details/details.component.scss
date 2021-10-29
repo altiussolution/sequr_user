@@ -26,7 +26,12 @@
 
 img {
   object-fit: contain;
-  margin: 96px auto;
+  // margin: 96px auto;
+  width: 100%;
+}
+img {
+  vertical-align: unset;
+  border-style: none;
 }
 .thumbnail-image {
   width: 100px;

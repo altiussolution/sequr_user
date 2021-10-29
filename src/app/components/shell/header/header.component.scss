@@ -2,7 +2,59 @@ ul li {
   list-style: none;
 }
 
-
+.as-se-popup{
+  position: absolute;
+    top: 73px;
+    left: 5%;
+    right: 5%;
+    background: white;
+    box-shadow: 1px 1px 8px 0px #bbbbbb;
+    border-radius: 0 0 8px 8px;
+    
+}
+// .as-se-pro{
+// width: 25%;
+// }
+.as-1{ 
+  height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    border-left: 1px solid #ccc;
+    overflow-y: auto;
+    padding: 20px;
+    max-height: 330px;
+}
+.as-1 ul{
+  margin-right: 8px;
+  width: 32%;
+}
+.as-1 a{
+  align-items: flex-start;
+    display: flex;
+}
+.as-1-img{
+  width: 50px;
+    height: 50px;
+    -o-object-fit: contain;
+    object-fit: contain;
+    -o-object-position: center;
+    object-position: center;
+}
+.as-2{
+  max-width: 100%;
+    margin-right: 10px;
+    border: 1px solid #d8d8d8;
+    padding: 5px;
+}
+.as-txt{
+  margin-bottom: 5px;
+    font-size: 14px;
+    color: #828181;
+    font-weight: 400;
+    padding-bottom: 5px;
+    line-height: 18px;
+}
 .as-menu-as-drophover-header {
   position: relative;
   left: 0;
@@ -1310,10 +1362,53 @@ button.toggleBtn {
 .ng-autocomplete {
   width: 400px;
 }
+@media (min-width: 1536px){
+    .as-menu-w {
+        width: 42rem !important;
+    }
+    
+    ul.as-menu > li.as-menu-mega-blog > div > ul.as-menu-mega-blog-nav {
+        position: relative;
+        width: 200px;
+            left: -71%;
+    }
+    .as-se-popup{
+      top: 72px;
+    }
+    .as-txt {
+      font-size: 1.8rem;
+    }
+    .as-1-img {
+      width: 75px;
+      height: 75px;
+    }
+}
 
 @media (min-width:1920px) {
   ul.as-menu>li.as-menu-mega-blog>div>ul.as-menu-mega-blog-nav {
     font-size: 1.5rem;
+  }
+  .as-menu-w {
+    width: 51rem !important;
+  }
+  ul.as-menu > li.as-menu-mega-blog > div > ul.as-menu-mega-blog-nav {
+    position: relative;
+    width: 260px;
+    left: -69%;
+  }
+  ul.as-menu > li.as-menu-mega-blog > div > ul.as-menu-mega-blog-nav > li > div {
+
+    left: 250px;
+  }
+  .as-se-popup{
+    top: 122px;
+  }
+  .as-txt {
+    font-size: 1.8rem;
+  }
+  .as-1-img {
+    width: 75px;
+    height: 75px;
   }
 }
 

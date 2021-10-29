@@ -1,83 +1,103 @@
 .as-mt-main {
-    margin-top: 56px;
-    width: 100%;
-    margin-left: 0;
-    padding: 0;
-}
-.as-bg{
-    height: 273px;
-    background-repeat: no-repeat;
-    background-size: cover;
-    width: 98.4%;
-    position: absolute;
-}
-@media (min-width:1920px){
-    .as-bg{
-        height: 390px;
-       
-    }
-    .as-user-bg{
-        top: 28%;
-    }
-    .as-eye {
-       
-        right: 17px;
-    }
-    }
-.as-shadow{
-    box-shadow: 0px 0px 8px 1px #e0dfdf;
+  margin-top: 56px;
+  width: 100%;
+  margin-left: 0;
+  padding: 0;
 }
 
-.as-user{
-    height: 150px;
-    background-repeat: no-repeat;
-    background-size: cover;
-    width: 150px;
-    margin: 35px auto;
-    border-radius: 100px;
+.as-bg {
+  height: 273px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 98.4%;
+  position: absolute;
 }
-.as-user-bg{
-    width: 80%;
-    position: absolute;
-    top: 22%;
-    left: 15%;
+
+@media (min-width:1920px) {
+  .as-bg {
+    height: 390px;
+
+  }
+
+  .as-user-bg {
+    top: 28%;
+  }
+
+  .as-eye {
+
+    right: 17px;
+  }
 }
-.asbg-1{
-    width: 35%;
-    background: white;
-    border-radius: 12px;
-    height: 48vh;
+
+.as-shadow {
+  box-shadow: 0px 0px 8px 1px #e0dfdf;
 }
-.asbg-2{
-    width: 50%;
-    background: white;
-    border-radius: 12px;
-    
-    margin-left: 3rem;
-    padding: 30px;
+
+.as-user {
+  height: 150px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 150px;
+  margin: 35px auto;
+  border-radius: 100px;
+}
+
+.as-user-bg {
+  width: 80%;
+  position: absolute;
+  top: 22%;
+  left: 15%;
+}
+
+.asbg-1 {
+  width: 35%;
+  background: white;
+  border-radius: 12px;
+  height: 48vh;
+}
+
+.asbg-2 {
+  width: 50%;
+  background: white;
+  border-radius: 12px;
+
+  margin-left: 3rem;
+  padding: 30px;
 }
 
 .as-mt-main {
-   
-    height: 96vh;
+
+  height: 96vh;
 }
 
 .profile i {
-    color: #909090;
+  color: #909090;
 }
 
-.fw-bold{
-    padding: 0.8rem 1.5rem;
+.fw-bold {
+  padding: 0.8rem 1.5rem;
 }
 
-@media only screen and (min-width : 768px)  
-and (orientation : landscape)
-and (-webkit-min-device-pixel-ratio: 2){
-    .as-user-bg{
-        left: 10%;
-      }
-      .asbg-1 {
-        width: 43%;
-        height: 47vh;
-      }
+@media only screen and (min-width : 768px) and (orientation : landscape) and (-webkit-min-device-pixel-ratio: 2) {
+  .as-user-bg {
+    left: 10%;
+  }
+
+  .asbg-1 {
+    width: 43%;
+    height: 47vh;
+  }
+}
+
+@media (min-width:1280px) {
+  .asbg-1 {
+
+    height: 57vh;
+  }
+}
+
+@media (min-width:1536px) {
+  .asbg-1 {
+    height: 48vh;
+  }
 }
