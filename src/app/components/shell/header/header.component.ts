@@ -78,7 +78,7 @@ myform: FormGroup;
 
  
 
- ngOnInit(): void {
+ ngOnInit():void {
   this.profiledetails = JSON.parse(localStorage.getItem('personal'))
   console.log(this.profiledetails)
   this.crud.get(appModels.USERPROFILE + this.profiledetails._id).pipe(untilDestroyed(this)).subscribe((res: any) => {
