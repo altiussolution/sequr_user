@@ -17,10 +17,10 @@
 
                   </a>-->
 
-                  <a class="thumbnail" *ngIf="videoSource != ''">
-                    <video  class="thumbnail-image"   controls (canplay)="pauseVideo(videoplayer)"
-                    #videoPlayer  [src]="videoSource" type="video/mp4">
-                    </video>
+                  <a class="thumbnail" *ngIf="videoSource != ''" (click)="toggleVideo()">
+                   <video    class="thumbnail-image" id="video" controls (click)="toggleVideo()"
+              #videoPlayer  [src]="videoSource" type="video/mp4" data-setup='{ "aspectRatio":"640:267", "playbackRates": [1, 1.5, 2] }'>
+                 </video>
                   </a>
                 </aside>
               
@@ -92,6 +92,9 @@
         </div>
     </div>
 </div>
+<!-- <video     id="video" controls (click)="toggleVideo()" 
+#videoPlayer  [src]="videoSource" type="video/mp4" data-setup='{ "aspectRatio":"640:267", "playbackRates": [1, 1.5, 2] }'>
+</video> -->
 <div class="as-bold as-font-16 mx-3 my-3">
     Similar Products
 </div>

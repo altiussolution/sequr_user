@@ -48,13 +48,21 @@ export class MycartComponent implements OnInit {
         }
       }
       console.log(this.cartList)
+      console.log(this.cartList[0].item_details.quantity)
       this.crudService.getcarttotal(this.cartList?.length)
     }, error => {
       this.toast.error(error.message);
     })
+    
   }
   
-  updateCart(cart, qty) {
+  updateCart(cart, qty,maxqty) {
+    if(qty>=maxqty){
+      qty = maxqty
+    }
+    if(qty=0){
+      qty=1
+    }
     console.log(qty)
     let data = {
       "item": cart.item._id,

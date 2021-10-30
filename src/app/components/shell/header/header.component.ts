@@ -5,6 +5,7 @@ import { untilDestroyed } from 'ngx-take-until-destroy';
 import { CrudService } from 'src/app/services/crud.service';
 import { appModels } from 'src/app/services/shared/enum/enum.util';
 import { CookieService } from 'ngx-cookie-service'
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-header',
@@ -34,7 +35,7 @@ export class HeaderComponent implements OnInit {
    cartProductCount: "";
   profiledetails: any=[];
   profile: any=[];
-
+myform: FormGroup;
    
    keyword = 'item_name';
    states = [
@@ -61,6 +62,7 @@ export class HeaderComponent implements OnInit {
      }
    ];
   searchdata: any=[];
+  typed: any;
   
 
  constructor(public router: Router,public crud:CrudService,private cookie: CookieService) {
@@ -68,6 +70,9 @@ export class HeaderComponent implements OnInit {
   this.crud.get(appModels.ITEM).pipe(untilDestroyed(this)).subscribe((res:any) => {
     console.log(res)
     this.item=res.item
+  })
+  this.myform = new FormGroup({
+    searchvalue : new FormControl("")
   })
  }
 
@@ -178,7 +183,7 @@ private searchInput: ElementRef;
 
   }*/
   search(_id: any){
-   
+  this.myform.reset();
     this.id=_id
     this.crud.changemessage3(this.id)
    // localStorage.setItem("_id",_id)

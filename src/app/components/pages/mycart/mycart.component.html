@@ -34,8 +34,8 @@
         <div class="dropdown1 as-width-60 mr-3">
           <!-- <div type="button" class=" dropdown-toggle btn btn-round btn-light" data-toggle="dropdown"> -->
           <!-- <input style="width: 50px;" type="number" min="1" [value]="cart?.qty" #qty> -->
-          <input type="number" class="as-width-60" id="quantity" class="form-control" placeholder="Qty" min="1"
-            [value]="cart?.qty" name="quantity" #qty (change)="updateCart(cart, qty.value)" (keyup)="updateCart(cart, qty.value)">
+          <input type="number" class="as-width-60" id="quantity" class="form-control" placeholder="Qty" min="1" max="{{cart?.item_details.quantity}}"
+            [value]="cart?.qty" name="quantity" #qty (change)="updateCart(cart, qty.value,cart?.item_details.quantity)" (keyup)="updateCart(cart, qty.value,cart?.item_details.quantity)">
           <!-- </div> -->
           <!-- <div class="dropdown-menu">
                   <a class="dropdown-item" href="#">1</a>
@@ -66,6 +66,6 @@
   
   <div class="text-right mb-5 mt-3  ">
     <button type="button" class="btn as-btn btn-primary mr-3" [routerLink]="'/pages/home'">Add More</button>
-    <!--<button type="button" class="btn as-btn btn-secondary " (click)="takeItems()">Take Now</button>-->
+    <button type="button" class="btn as-btn btn-secondary " (click)="takeItems()">Take Now</button>
   </div>
 </div>
