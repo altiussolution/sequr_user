@@ -31,6 +31,13 @@ export class DetailsComponent implements OnInit {
   videoform: FormGroup;
   cartList1: any=[];
   cartdata1: any=[];
+  status: any;
+  machineCubeID: any;
+  machineDrawID: any;
+  machinebinID: any;
+  machineColumnID: any;
+  machineStatus: any;
+  machineCompartmentID: any;
   constructor(public router: Router, private toast: ToastrService, private fb: FormBuilder, public crud: CrudService) {
 
 
@@ -44,6 +51,7 @@ export class DetailsComponent implements OnInit {
         console.log(this.message)
         this.crud.get(appModels.DETAILS + this.message).pipe(untilDestroyed(this)).subscribe((res: any) => {
           console.log(res)
+          this.status=res.status
           localStorage.setItem("hlo", "data")
           this.items = res.items
           this.videoSource = this.items.video_path
@@ -76,7 +84,7 @@ export class DetailsComponent implements OnInit {
     if (this.qut && this.qut > 0) {
       let cart = {
         "item": this.machine.item,
-        "total_quantity": this.qut,
+        "total_quantity": Number(this.qut),
 
       }
 
@@ -261,7 +269,11 @@ export class DetailsComponent implements OnInit {
       let status = singleDeviceInfo.details.singledevinfo.column[0]['status'][0]
       console.log('Column : ' + machine.column_id + '' + 'drawer: ' + machine.bin_id + ' ' + 'Compartment: ' + machine.compartment_id)
       console.log(status)
-
+      this.machineCubeID = machine.cube_id
+      this.machineColumnID = machine.column_id
+      this.machineDrawID = machine.bin_id
+      this.machineCompartmentID = machine.compartment_id
+      this.machineStatus=status
       if (status == 'Locked' || status == 'Closed' || status == 'Unlocked' || status == 'Unknown') {
         // Lock that Column API, machine._id
         if (status == 'Closed' || status == 'Unlocked') {

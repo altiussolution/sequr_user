@@ -28,6 +28,12 @@ export class MycartComponent implements OnInit {
  
   @Input() products: any[];
   @Output() productAdded = new EventEmitter();
+  item_details: any;
+  machineCubeID: any;
+  machineColumnID: any;
+  machineDrawID: any;
+  machineCompartmentID: any;
+  machineStatus: any;
   constructor(private crudService: CrudService,
      private toast: ToastrService,public cookie: CookieService,
     ) { }
@@ -41,6 +47,9 @@ export class MycartComponent implements OnInit {
     this.cartList = [];
     this.crudService.get(appModels.listCart).pipe(untilDestroyed(this)).subscribe(res => {
       console.log(res)
+      this.item_details=res.item_details
+      console.log(this.item_details)
+
       this.cartdata = res[0]
       for (let i = 0; i < this.cartdata?.cart?.length; i++) {
         if (this.cartdata?.cart[i]['cart_status'] == 1) {
@@ -87,7 +96,9 @@ export class MycartComponent implements OnInit {
     }
   }
 
-
+close(){
+  console.log("hi")
+}
   deleteMultiple() {
     if (this.selected3.length === 0) {
       this.toast.warning('Please select a product')
@@ -342,7 +353,11 @@ export class MycartComponent implements OnInit {
       let status = singleDeviceInfo.details.singledevinfo.column[0]['status'][0]
       console.log('Column : ' + machine.column_id + '' + 'drawer: ' + machine.bin_id + ' ' + 'Compartment: ' + machine.compartment_id)
       console.log(status)
-
+      this.machineCubeID = machine.cube_id
+      this.machineColumnID = machine.column_id
+      this.machineDrawID = machine.bin_id
+      this.machineCompartmentID = machine.compartment_id
+      this.machineStatus=status
       if (status == 'Locked' || status == 'Closed' || status == 'Unlocked' || status == 'Unknown') {
         // Lock that Column API, machine._id
         if (status == 'Closed' || status == 'Unlocked' || status == 'Unknown') {

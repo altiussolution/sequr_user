@@ -1,202 +1,233 @@
+<div class="container-fluid as-mt-main pt-5 details">
 
-<div class="container-fluid as-mt-main pt-5 details" >
-    
-<div class="col-md-12 p-0">
-    <div class="row mx-0">
-        <div class="col-md-6 pl-0">
-            <div class="image-gallery">
-                <aside class="thumbnails">
-                  <a class="selected thumbnail" >
-                    <div class="thumbnail-image" style="background-image: url({{items?.image_path}});"></div>
-                  </a>
-                  <a class="thumbnail" >
-                    <div class="thumbnail-image" style="background-image: url({{items?.image_path}});"></div>
-                  </a>
-                  <!--<a class="thumbnail" >
+    <div class="col-md-12 p-0">
+        <div class="row mx-0">
+            <div class="col-md-6 pl-0">
+                <div class="image-gallery">
+                    <aside class="thumbnails">
+                        <a class="selected thumbnail">
+                            <div class="thumbnail-image" style="background-image: url({{items?.image_path}});"></div>
+                        </a>
+                        <a class="thumbnail">
+                            <div class="thumbnail-image" style="background-image: url({{items?.image_path}});"></div>
+                        </a>
+                        <!--<a class="thumbnail" >
                     <div class="thumbnail-image" style="background-image: url({{items?.image_path}});"></div>
 
                   </a>-->
 
-                  <a class="thumbnail" *ngIf="videoSource != ''">
-                    <video  class="thumbnail-image"   controls (canplay)="pauseVideo(videoplayer)"
-                    #videoPlayer  [src]="videoSource" type="video/mp4">
-                    </video>
-                  </a>
-                </aside>
-              
-               <main class="primary" >
-                <img  src="{{items?.image_path}}" >
-                <div class="as-avaliable">
-                    <div class="as-avaliable-btn"></div>
-                    <div class="as-font-18 as-z-index-1">Available</div>
-                    <div class="as-font-24">{{machine?.quantity}}</div>
-                </div>
-                   
-         </main>
-              </div>
-        </div>
-        <div class="col-md-6 pr-0">
-            <div class="as-details-title">{{items?.item_name}}
-            </div>
-            <div class="row mx-0 as-details-border">
-                <div class="as-details-txt">
-                    <div class="as-font-18 as-bold">
-                        Machine Name
-                    </div>
-                    <div>
-                        {{cube?.cube_name}}
-                    </div>
-                </div>
-                <div class="as-details-txt">
-                    <div class="as-font-18 as-bold">
-                        Column ID
-                    </div>
-                    <div class="text-center">
-                        {{bin?.bin_id}}
-                    </div>
-                </div>
-                <div class="as-details-txt">
-                    <div class="as-font-18 as-bold">
-                        Draw ID
-                    </div>
-                    <div class="text-center">
-                        {{compartment?.compartment_id}}
-                    </div>
-                </div>
-            </div>
-            <div class="row mx-0 as-details-border as-details-btn">
-                <div class="as-w20 as-mr-det">
-                   
-                    <input type="number" value="" id="quantity" class="form-control" (keyup)="changing($event)" placeholder="Qty" name="quantity" min="1" max="{{machine.quantity}}">  
-               
-                </div>
-                <div class="as-mr-det">
-                    <button class="btn  btn-primary fw-bold mb-2" type="button" (click)="addtocart('cart')">Take Now</button>
-                </div>
-                <div class="as-mr-or">
-                    or
-                </div>
-                <div class="as-mr-det">
-                    <button class="btn  btn-secondary   fw-bold mb-2" type="button" (click)="addtocart()">Add to cart</button>
-                </div>
-            </div>
+                        <a class="thumbnail" *ngIf="videoSource != ''">
+                            <video class="thumbnail-image" controls (canplay)="pauseVideo(videoplayer)" #videoPlayer
+                                [src]="videoSource" type="video/mp4">
+                            </video>
+                        </a>
+                    </aside>
 
-            <div class="as-font-16 as-color-5">
-                <div class="as-bold my-3">
-                    Technical Specification
+                    <main class="primary">
+                        <img src="{{items?.image_path}}">
+                        <div class="as-avaliable">
+                            <div class="as-avaliable-btn"></div>
+                            <div class="as-font-18 as-z-index-1">Available</div>
+                            <div class="as-font-24">{{machine?.quantity}}</div>
+                        </div>
+
+                    </main>
                 </div>
-                <p>
-                    {{machine?.description}}
-                </p>
+            </div>
+            <div class="col-md-6 pr-0">
+                <div class="as-details-title">{{items?.item_name}}
+                </div>
+                <div class="row mx-0 as-details-border">
+                    <div class="as-details-txt">
+                        <div class="as-font-18 as-bold">
+                            Machine Name
+                        </div>
+                        <div>
+                            {{cube?.cube_name}}
+                        </div>
+                    </div>
+                    <div class="as-details-txt">
+                        <div class="as-font-18 as-bold">
+                            Column ID
+                        </div>
+                        <div class="text-center">
+                            {{bin?.bin_id}}
+                        </div>
+                    </div>
+                    <div class="as-details-txt">
+                        <div class="as-font-18 as-bold">
+                            Draw ID
+                        </div>
+                        <div class="text-center">
+                            {{compartment?.compartment_id}}
+                        </div>
+                    </div>
+                </div>
+                <div class="row mx-0 as-details-border as-details-btn">
+                    <div class="as-w20 as-mr-det">
+
+                        <input type="number" value="" id="quantity" class="form-control" (keyup)="changing($event)"
+                            placeholder="Qty" name="quantity" min="1" max="{{machine.quantity}}">
+
+                    </div>
+                    <div class="as-mr-det">
+                        <button class="btn  btn-primary fw-bold mb-2"  data-toggle="modal" data-target="#myModal" type="button" (click)="addtocart('cart')">Take
+                            Now</button>
+                        <!-- Modal -->
+                        <div class="modal fade" id="myModal" role="dialog" data-backdrop="static">
+                            <div class="modal-dialog">
+
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <!-- <h4 class="modal-title">Modal Header</h4> -->
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Cube ID :{{machineCubeID}} </p>
+                                        <p>Colomn ID :{{machineColumnID}} </p>
+                                        <p>Draw ID :{{machineDrawID}} </p>
+                                        <p>compartment ID :{{machineCompartmentID}} </p>
+                                        <p>Status :{{machineStatus}}</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">OK</button>
+                                        <!--<button type="button" class="btn btn-default" data-dismiss="modal" (click)="yes()">Yes</button>
+                      <button type="button" class="btn btn-default" data-dismiss="modal" (click)="close()">Close</button>-->
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="as-mr-or">
+                        or
+                    </div>
+                    <div class="as-mr-det">
+                        <button class="btn  btn-secondary   fw-bold mb-2" type="button" (click)="addtocart()">Add to
+                            cart</button>
+                    </div>
+                </div>
+
+                <div class="as-font-16 as-color-5">
+                    <div class="as-bold my-3">
+                        Technical Specification
+                    </div>
+                    <p>
+                        {{machine?.description}}
+                    </p>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<div class="as-bold as-font-16 mx-3 my-3">
-    Similar Products
-</div>
-<div class="row mx-0 mb-5">
-   
-    <div class="as-card py-3">
-        <div class="">
-            <!-- <img src="../../../../assets/img/tools.png"> -->
-            <div class="as-product-img" style="background-image: url(../../../../assets/img/hamer.png);"></div>
-        </div>
-        
-        <div class=" text-left as-bold as-color-4">Stubby Claw 
-            Hammer 2</div>
+    <div class="as-bold as-font-16 mx-3 my-3">
+        Similar Products
+    </div>
+    <div class="row mx-0 mb-5">
+
+        <div class="as-card py-3">
+            <div class="">
+                <!-- <img src="../../../../assets/img/tools.png"> -->
+                <div class="as-product-img" style="background-image: url(../../../../assets/img/hamer.png);"></div>
+            </div>
+
+            <div class=" text-left as-bold as-color-4">Stubby Claw
+                Hammer 2</div>
             <div class="as-color-2 mt-2 as-font-16 text-left as-bold">
-                Column ID: 01   Rack: 02
+                Column ID: 01 Rack: 02
             </div>
             <div class="row align-items-center mx-0 as-addtocart-pos">
                 <!--<div class="mr-3">
                     <button type="button" class="btn bg-white btn-round btn-light">Take Now</button>
                 </div>-->
                 <div class="">
-                   
-                    <button type="button" class="btn bg-white btn-round btn-light addtocart-icon addtocart-btn"></button>
+
+                    <button type="button"
+                        class="btn bg-white btn-round btn-light addtocart-icon addtocart-btn"></button>
                 </div>
             </div>
-            
-    </div>
 
-    <div class="as-card py-3">
-        <div class="">
-            <!-- <img src="../../../../assets/img/tools.png"> -->
-            <div class="as-product-img" style="background-image: url(../../../../assets/img/hamer.png);"></div>
         </div>
-        
-        <div class=" text-left as-bold as-color-4">Stubby Claw 
-            Hammer 2</div>
+
+        <div class="as-card py-3">
+            <div class="">
+                <!-- <img src="../../../../assets/img/tools.png"> -->
+                <div class="as-product-img" style="background-image: url(../../../../assets/img/hamer.png);"></div>
+            </div>
+
+            <div class=" text-left as-bold as-color-4">Stubby Claw
+                Hammer 2</div>
             <div class="as-color-2 mt-2 as-font-16 text-left as-bold">
-                Column ID: 01   Rack: 02
+                Column ID: 01 Rack: 02
             </div>
             <div class="row align-items-center mx-0 as-addtocart-pos">
                 <!--<div class="mr-3">
                     <button type="button" class="btn bg-white btn-round btn-light">Take Now</button>
                 </div>-->
                 <div class="">
-                   
-                    <button type="button" class="btn bg-white btn-round btn-light addtocart-icon addtocart-btn"></button>
+
+                    <button type="button"
+                        class="btn bg-white btn-round btn-light addtocart-icon addtocart-btn"></button>
                 </div>
             </div>
-            
-    </div>
 
-    <div class="as-card py-3">
-        <div class="">
-            <!-- <img src="../../../../assets/img/tools.png"> -->
-            <div class="as-product-img" style="background-image: url(../../../../assets/img/hamer.png);"></div>
         </div>
-        
-        <div class=" text-left as-bold as-color-4">Stubby Claw 
-            Hammer 2</div>
+
+        <div class="as-card py-3">
+            <div class="">
+                <!-- <img src="../../../../assets/img/tools.png"> -->
+                <div class="as-product-img" style="background-image: url(../../../../assets/img/hamer.png);"></div>
+            </div>
+
+            <div class=" text-left as-bold as-color-4">Stubby Claw
+                Hammer 2</div>
             <div class="as-color-2 mt-2 as-font-16 text-left as-bold">
-                Column ID: 01   Rack: 02
+                Column ID: 01 Rack: 02
             </div>
             <div class="row align-items-center mx-0 as-addtocart-pos">
                 <!--<div class="mr-3">
                     <button type="button" class="btn bg-white btn-round btn-light">Take Now</button>
                 </div>-->
                 <div class="">
-                   
-                    <button type="button" class="btn bg-white btn-round btn-light addtocart-icon addtocart-btn"></button>
+
+                    <button type="button"
+                        class="btn bg-white btn-round btn-light addtocart-icon addtocart-btn"></button>
                 </div>
             </div>
-            
-    </div>
 
-    <div class="as-card py-3">
-        <div class="">
-            <!-- <img src="../../../../assets/img/tools.png"> -->
-            <div class="as-product-img" style="background-image: url(../../../../assets/img/hamer.png);"></div>
         </div>
-        
-        <div class=" text-left as-bold as-color-4">Stubby Claw 
-            Hammer 2</div>
+
+        <div class="as-card py-3">
+            <div class="">
+                <!-- <img src="../../../../assets/img/tools.png"> -->
+                <div class="as-product-img" style="background-image: url(../../../../assets/img/hamer.png);"></div>
+            </div>
+
+            <div class=" text-left as-bold as-color-4">Stubby Claw
+                Hammer 2</div>
             <div class="as-color-2 mt-2 as-font-16 text-left as-bold">
-                Column ID: 01   Rack: 02
+                Column ID: 01 Rack: 02
             </div>
             <div class="row align-items-center mx-0 as-addtocart-pos">
                 <!--<div class="mr-3">
                     <button type="button" class="btn bg-white btn-round btn-light">Take Now</button>
                 </div>-->
                 <div class="">
-                   
-                    <button type="button" class="btn bg-white btn-round btn-light addtocart-icon addtocart-btn"></button>
+
+                    <button type="button"
+                        class="btn bg-white btn-round btn-light addtocart-icon addtocart-btn"></button>
                 </div>
             </div>
-            
+
+        </div>
+
+
+
+
     </div>
 
-    
-      
+
+
+
 
 </div>
-
-
-
-
-
-</div>
-
