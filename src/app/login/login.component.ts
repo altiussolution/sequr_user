@@ -16,6 +16,7 @@ declare var google
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   toggle1: boolean = false;
+  myform:FormGroup;
   @ViewChild('closebutton') closebutton;
   profiledetails: any=[];
   language: any=[];
@@ -36,6 +37,9 @@ export class LoginComponent implements OnInit {
       this.loginForm = this.fb.group({
         username: ['', Validators.required],
         password: ['', Validators.required]
+      })
+      this.myform = this.fb.group({
+        username : ['', Validators.required]
       })
      }
   ngOnInit(): void {
@@ -75,11 +79,17 @@ export class LoginComponent implements OnInit {
         }*/
      
     },error=>{
-      this.toast.error("Please Enter Valid Credentials")
+      this.toast.error("Invalid Username/Password")
     })
   }
   okay(){
-    this.closebutton.nativeElement.click();
+    if(this.myform.valid){
+      this.toast.success("Reset password details sent to your mail")
+      this.closebutton.nativeElement.click();
+    }else{
+      this.toast.warning("please enter username")
+    }
+    
   }
   ngOnDestroy() { }
 

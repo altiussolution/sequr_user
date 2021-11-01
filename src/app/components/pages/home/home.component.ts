@@ -36,10 +36,10 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
   console.log(this.readCookie('googtrans'));
   if(!localStorage.getItem("language")){
-    if (confirm(`Language has been updated for you please refresh the page.`)) {
+    // if (confirm(`Language has been updated for you please refresh the page.`)) {
    localStorage.setItem("language","lang")
     window.location.reload()
-    }
+    
   }
 
 
