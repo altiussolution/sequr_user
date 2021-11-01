@@ -76,7 +76,7 @@ export class DetailsComponent implements OnInit {
     if (this.qut && this.qut > 0) {
       let cart = {
         "item": this.machine.item,
-        "total_quantity": this.qut,
+        "total_quantity": Number(this.qut),
 
       }
 
