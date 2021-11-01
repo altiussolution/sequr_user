@@ -21,16 +21,21 @@ CurrentMessage3= this.messagesource3.asObservable();
 
 
  constructor(private http: HttpClient) {
-  let existingCartItems = JSON?.parse(localStorage.getItem('products'));
-  if (!existingCartItems) {
-    existingCartItems = 0;
+
+
+
+
   }
-  this.cartTotal.next(existingCartItems);
-  }
-  public cartTotal = new Subject();
+  public cartTotal = new Subject
   // private cartTotal = new BehaviorSubject<any>("");
 
   getProducts(): Observable<any> {
+    let existingCartItems = JSON?.parse(localStorage.getItem('products'));
+    this.cartTotal.next(existingCartItems);
+    if (!existingCartItems) {
+      existingCartItems = 0;
+    }
+    console.log("localstorage",existingCartItems)
     return this.cartTotal.asObservable();
   }
 changemessage(message:any){
@@ -46,8 +51,10 @@ changemessage3(message:any){
   this.messagesource3.next(message)
 }
 getcarttotal(cart:any) {
-  this.cartTotal.next(cart);
+  console.log(cart,"carttotal")
   localStorage.setItem('products', JSON.stringify(cart));
+  this.cartTotal.next(cart);
+ 
 }
   get(model: string): Observable<any> {
     return this.http.get(model);
