@@ -82,7 +82,7 @@ export class ProductsComponent implements OnInit {
   addtocart(it: any, qty: number) {
     let cart = {
         "item" : it,
-        "total_quantity" : qty,
+        "total_quantity" : Number(qty),
         
     }
     console.log(cart)
