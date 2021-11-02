@@ -75,6 +75,7 @@ export class ProductsComponent implements OnInit {
   }
   select(id:any){
     this.crud.changemessage3(id)
+    localStorage.setItem('ids',id)
     localStorage.removeItem("hlo")
    // localStorage.setItem("_id",id)
     this.router.navigate(['pages/details'])

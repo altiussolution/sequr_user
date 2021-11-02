@@ -25,7 +25,7 @@ export class MycartComponent implements OnInit {
   val: any = [];
 
 
- 
+
   @Input() products: any[];
   @Output() productAdded = new EventEmitter();
   item_details: any;
@@ -35,9 +35,9 @@ export class MycartComponent implements OnInit {
   machineCompartmentID: any;
   machineStatus: any;
   constructor(private crudService: CrudService,
-     private toast: ToastrService,public cookie: CookieService,
-    ) { }
-  
+    private toast: ToastrService, public cookie: CookieService,
+  ) { }
+
   ngOnInit(): void {
 
     this.getCartItems();
@@ -47,7 +47,7 @@ export class MycartComponent implements OnInit {
     this.cartList = [];
     this.crudService.get(appModels.listCart).pipe(untilDestroyed(this)).subscribe(res => {
       console.log(res)
-      this.item_details=res.item_details
+      this.item_details = res.item_details
       console.log(this.item_details)
 
       this.cartdata = res[0]
@@ -100,9 +100,9 @@ export class MycartComponent implements OnInit {
     }
   }
 
-close(){
-  console.log("hi")
-}
+  close() {
+    console.log("hi")
+  }
   deleteMultiple() {
     if (this.selected3.length === 0) {
       this.toast.warning('Please select a product')
@@ -348,7 +348,16 @@ close(){
     //call allDevInfo once
     // await this.allDeviceInfo()
     // for loop for all machines lids
+    let totalMachineUsage = []
     for await (let machine of machinesList) {
+
+      // Record Total Machine Usage
+      let eachColumnUsage = {}
+      eachColumnUsage['cube_id'] = machine.cube_id
+      eachColumnUsage['column_id'] = machine.column_id
+      eachColumnUsage['bin_id'] = machine.bin_id
+      eachColumnUsage['compartment_id'] = machine.compartment_id
+      // Record Total Machine Usage
       let maxCompartmentNo = Math.max(...machine.compartment_id)
       machine['compartment_id'] = maxCompartmentNo
       console.log('maxCompartmentNo')
@@ -361,7 +370,7 @@ close(){
       this.machineColumnID = machine.column_id
       this.machineDrawID = machine.bin_id
       this.machineCompartmentID = machine.compartment_id
-      this.machineStatus=status
+      this.machineStatus = status
       if (status == 'Locked' || status == 'Closed' || status == 'Unlocked' || status == 'Unknown') {
         // Lock that Column API, machine._id
         if (status == 'Closed' || status == 'Unlocked' || status == 'Unknown') {
@@ -371,6 +380,8 @@ close(){
 
         // unlock Column API, machine._id, machine.column_id, machine.compartment_id
         await this.crudService.post('machine/unlockBin', machine).pipe(untilDestroyed(this)).toPromise()
+        // Record Total Machine Usage
+        let t0 = performance.now();
         await this.sleep(10000)
         let apiHitTimes = 0
         let machineColumnStatus = false
@@ -381,12 +392,12 @@ close(){
           console.log('inside while loop status bin ' + machine.bin_id + status)
           if (status == 'Closed' || status == 'Locked' || status == 'Unknown') {
             await this.sleep(9000)
-            await this.crudService.post('machine/lockBin', machine).pipe(untilDestroyed(this)).toPromise()            
+            await this.crudService.post('machine/lockBin', machine).pipe(untilDestroyed(this)).toPromise()
             machineColumnStatus = true
             await this.TakeOrReturnItems.push(machine)
           }
           //Drawer current status, (opening, opened, closing, closed)
-          else if (status !== 'Closed' && status !== 'Locked' && status == 'Unknown' ) {
+          else if (status !== 'Closed' && status !== 'Locked' && status == 'Unknown') {
             console.log('please close properly, Current Status = ' + status)
             // ColumnActionStatus = singleDeviceInfo
           }
@@ -399,6 +410,9 @@ close(){
           console.log('Application waiting time over for bin ' + machine.bin_id + 'in column ' + machine.column_id)
 
         }
+        let t1 = performance.now();
+        eachColumnUsage['column_usage'] = t1 - t0
+        totalMachineUsage.push(eachColumnUsage)
         await this.sleep(5000)
       }
       // break for loop if single device info is unknown
@@ -431,8 +445,18 @@ close(){
     }
     this.crudService.post(`cart/updateReturnTake`, data).pipe().subscribe(async (res) => {
       console.log(res)
-      if (res.status) {      
+      if (res.status) {
         this.toast.success('Cart Updated Successfully');
+      }
+    })
+  }
+
+  async addMachineUsage(data) {
+    console.log(data)
+    this.crudService.post(`dashboard/machineUsageAdd`, data).pipe().subscribe(async (res) => {
+      console.log(res)
+      if (res) {
+        // this.toast.success('machine Usage Added Successfully...');
       }
     })
   }

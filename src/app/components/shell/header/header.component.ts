@@ -187,6 +187,7 @@ private searchInput: ElementRef;
     this.id=_id
     this.crud.changemessage3(this.id)
    // localStorage.setItem("_id",_id)
+   localStorage.setItem('ids',this.id)
    localStorage.removeItem("hlo")
     this.router.navigate(['pages/details'])
     this.searchdata=""
@@ -205,6 +206,7 @@ private searchInput: ElementRef;
     this.id=find?._id
     this.crud.changemessage3(this.id)
    // localStorage.setItem("_id",find?._id)
+   localStorage.setItem('ids',this.id)
    localStorage.removeItem("hlo")
     this.router.navigate(['pages/details'])
    

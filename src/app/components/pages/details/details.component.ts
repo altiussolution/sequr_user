@@ -29,8 +29,8 @@ export class DetailsComponent implements OnInit {
   public show: boolean = false;
   videoSource = "";
   videoform: FormGroup;
-  cartList1: any=[];
-  cartdata1: any=[];
+  cartList1: any = [];
+  cartdata1: any = [];
   status: any;
   machineCubeID: any;
   machineDrawID: any;
@@ -53,7 +53,26 @@ export class DetailsComponent implements OnInit {
         console.log(this.message)
         this.crud.get(appModels.DETAILS + this.message).pipe(untilDestroyed(this)).subscribe((res: any) => {
           console.log(res)
-          this.status=res.status
+          this.status = res.status
+          localStorage.setItem("hlo", "data")
+          this.items = res.items
+          this.videoSource = this.items.video_path
+          console.log(this.items.video_path)
+          this.machine = res.machine
+          this.it = this.machine.item
+          this.qty = this.machine.quantity
+          console.log(this.it)
+          this.cube = this.machine.cube
+          this.bin = this.machine.bin
+          this.compartment = this.machine.compartment
+
+        })
+      }
+      else{
+
+        this.crud.get(appModels.DETAILS + localStorage.getItem("ids")).pipe(untilDestroyed(this)).subscribe((res: any) => {
+          console.log(res)
+          this.status = res.status
           localStorage.setItem("hlo", "data")
           this.items = res.items
           this.videoSource = this.items.video_path
@@ -81,7 +100,7 @@ export class DetailsComponent implements OnInit {
       this.toast.error("You have reached maximum quantity of the item.")
     }
   }
- 
+
   async addtocart(item?) {
     if (this.qut && this.qut > 0) {
       let cart = {
@@ -100,17 +119,18 @@ export class DetailsComponent implements OnInit {
               this.toast.success("cart added successfully")
               this.cartList1 = [];
               this.crud.get(appModels.listCart).pipe(untilDestroyed(this)).subscribe(async res => {
-               this.cartdata1 = res[0]
+                this.cartdata1 = res[0]
                 for (let i = 0; i < this.cartdata1?.cart?.length; i++) {
-                  if (this.cartdata1?.cart[i]['cart_status'] == 1 ) {
+                  if (this.cartdata1?.cart[i]['cart_status'] == 1) {
                     this.cartList1.push(this.cartdata1?.cart[i])
                   }
                 }
                 console.log(this.cartList1)
                 this.crud.getcarttotal(this.cartList1?.length)
                 this.router.navigate(['pages/details'])
-              
-              })}
+
+              })
+            }
             if (item) {
               this.cartList = [];
               this.crud.get(appModels.listCart).pipe(untilDestroyed(this)).subscribe(async res => {
@@ -262,7 +282,18 @@ export class DetailsComponent implements OnInit {
     //call allDevInfo once
     // await this.allDeviceInfo()
     // for loop for all machines lids
+
+    // Record Total Machine Usage
+    let totalMachineUsage = []
     for await (let machine of machinesList) {
+      // Record Total Machine Usage
+      let eachColumnUsage = {}
+      eachColumnUsage['cube_id'] = machine.cube_id
+      eachColumnUsage['column_id'] = machine.column_id
+      eachColumnUsage['bin_id'] = machine.bin_id
+      eachColumnUsage['compartment_id'] = machine.compartment_id
+      // Record Total Machine Usage
+
       let maxCompartmentNo = Math.max(...machine.compartment_id)
       machine['compartment_id'] = maxCompartmentNo
       console.log('maxCompartmentNo')
@@ -275,7 +306,7 @@ export class DetailsComponent implements OnInit {
       this.machineColumnID = machine.column_id
       this.machineDrawID = machine.bin_id
       this.machineCompartmentID = machine.compartment_id
-      this.machineStatus=status
+      this.machineStatus = status
       if (status == 'Locked' || status == 'Closed' || status == 'Unlocked' || status == 'Unknown') {
         // Lock that Column API, machine._id
         if (status == 'Closed' || status == 'Unlocked') {
@@ -285,6 +316,9 @@ export class DetailsComponent implements OnInit {
 
         // unlock Column API, machine._id, machine.column_id, machine.compartment_id
         await this.crud.post('machine/unlockBin', machine).pipe(untilDestroyed(this)).toPromise()
+        // Record Total Machine Usage
+        let t0 = performance.now();
+
         await this.sleep(10000)
         let apiHitTimes = 0
         let machineColumnStatus = false
@@ -300,7 +334,7 @@ export class DetailsComponent implements OnInit {
             await this.TakeOrReturnItems.push(machine)
           }
           //Drawer current status, (opening, opened, closing, closed)
-          else if (status !== 'Closed' && status !== 'Locked' && status !='Unknown') {
+          else if (status !== 'Closed' && status !== 'Locked' && status != 'Unknown') {
             console.log('please close properly, Current Status = ' + status)
             // ColumnActionStatus = singleDeviceInfo
           }
@@ -313,7 +347,10 @@ export class DetailsComponent implements OnInit {
           console.log('Application waiting time over for bin ' + machine.bin_id + 'in column ' + machine.column_id)
 
         }
-        await this.sleep(5000)
+        let t1 = performance.now();
+        eachColumnUsage['column_usage'] = t1 - t0
+        totalMachineUsage.push(eachColumnUsage)
+        await this.sleep(5000)       
       }
       // break for loop if single device info is unknown
       else {
@@ -329,10 +366,13 @@ export class DetailsComponent implements OnInit {
       console.log('Machine status unknown No Item taken')
     } else if (successTake.length == totalMachinesList.length) {
       console.log(successTake.length + ' items Taken successfully')
+      await this.addMachineUsage(totalMachineUsage)
       await this.updateAfterTakeOrReturn(successTake)
     } else if (successTake.length < totalMachinesList.length) {
       console.log(successTake.length + ' items Taken successfully \n' + successTake.length + ' items failed return')
+      await this.addMachineUsage(totalMachineUsage)
       await this.updateAfterTakeOrReturn(successTake, item)
+
     }
   }
 
@@ -347,6 +387,15 @@ export class DetailsComponent implements OnInit {
       console.log(res)
       if (res) {
         this.toast.success('Item taken Successfully...');
+      }
+    })
+  }
+  async addMachineUsage(data) {
+    console.log(data)
+    this.crud.post(`dashboard/machineUsageAdd`, data).pipe().subscribe(async (res) => {
+      console.log(res)
+      if (res) {
+        // this.toast.success('machine Usage Added Successfully...');
       }
     })
   }

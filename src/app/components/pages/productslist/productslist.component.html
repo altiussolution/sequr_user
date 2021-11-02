@@ -28,12 +28,12 @@
             <div class="as-font-24">{{data?.kit_name}}</div>
             <div class="row align-items-center mx-0">
               <div class="mr-3">
-                <button type="button" class="btn bg-white btn-round btn-light">Take Now</button>
+                <button type="button" class="btn bg-white btn-round btn-light" (click)="addkitcart(data._id, data)">Take Now</button>
               </div>
-              <div class="">
+              <!-- <div class="">
 
                 <button type="button" class="btn bg-white btn-round btn-light addtocart-icon addtocart-btn" (click)="addkitcart(data._id, data)"></button>
-              </div>
+              </div> -->
             </div>
           </div>
           <div class="bg-white mx-1 my-3 row as-text-flex as-pro-py" *ngFor="let items of data?.kit_data">
