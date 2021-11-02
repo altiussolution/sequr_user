@@ -34,6 +34,9 @@ export class MycartComponent implements OnInit {
   machineDrawID: any;
   machineCompartmentID: any;
   machineStatus: any;
+  message: string;
+  msgg: string;
+  msg: string;
   constructor(private crudService: CrudService,
      private toast: ToastrService,public cookie: CookieService,
     ) { }
@@ -384,6 +387,7 @@ close(){
           //Drawer current status, (opening, opened, closing, closed)
           else if (status !== 'Closed' && status !== 'Locked' && status == 'Unknown' ) {
             console.log('please close properly, Current Status = ' + status)
+            this.msg='please close properly, Current Status = ' + status
             // ColumnActionStatus = singleDeviceInfo
           }
           //set delay time
@@ -400,7 +404,10 @@ close(){
       // break for loop if single device info is unknown
       else {
         console.log('Machine status unknown ' + status)
+        this.msg='Machine status unknown ' + status
         console.log('Close all drawers properly and click take now')
+        this.msg='Close all drawers properly and click take now'
+
         break
       }
     }
@@ -409,11 +416,14 @@ close(){
     console.log(successTake)
     if (successTake.length == 0) {
       console.log('Machine status unknown No Item taken')
+      this.msgg='Machine status unknown No Item taken'
     } else if (successTake.length == totalMachinesList.length) {
       console.log(successTake.length + ' items Taken successfully')
+      this.msgg=successTake.length + ' items Taken successfully'
       await this.updateAfterTakeOrReturn(successTake)
     } else if (successTake.length < totalMachinesList.length) {
       console.log(successTake.length + ' items Taken successfully \n' + (totalMachinesList.length - successTake.length) + ' items failed return')
+      this.msgg=successTake.length + ' items Taken successfully \n' + successTake.length + ' items failed return'
       await this.updateAfterTakeOrReturn(successTake)
     }
   }

@@ -38,6 +38,9 @@ export class DetailsComponent implements OnInit {
   machineColumnID: any;
   machineStatus: any;
   machineCompartmentID: any;
+  msg: string;
+  massage: string;
+  msgg: string;
   constructor(public router: Router, private toast: ToastrService, private fb: FormBuilder, public crud: CrudService) {
 
 
@@ -300,6 +303,7 @@ export class DetailsComponent implements OnInit {
           //Drawer current status, (opening, opened, closing, closed)
           else if (status !== 'Closed' && status !== 'Locked' && status !='Unknown') {
             console.log('please close properly, Current Status = ' + status)
+            this.msg='please close properly, Current Status = ' + status
             // ColumnActionStatus = singleDeviceInfo
           }
           //set delay time
@@ -316,7 +320,9 @@ export class DetailsComponent implements OnInit {
       // break for loop if single device info is unknown
       else {
         console.log('Machine status unknown ' + status)
+        this.msg='Machine status unknown ' + status
         console.log('Close all drawers properly and click take now')
+        this.msg='Close all drawers properly and click take now'
         break
       }
     }
@@ -325,11 +331,15 @@ export class DetailsComponent implements OnInit {
     console.log(successTake)
     if (successTake.length == 0) {
       console.log('Machine status unknown No Item taken')
+      this.msgg='Machine status unknown No Item taken'
     } else if (successTake.length == totalMachinesList.length) {
       console.log(successTake.length + ' items Taken successfully')
+      this.msgg=successTake.length + ' items Taken successfully'
       await this.updateAfterTakeOrReturn(successTake)
     } else if (successTake.length < totalMachinesList.length) {
       console.log(successTake.length + ' items Taken successfully \n' + successTake.length + ' items failed return')
+      this.msgg=successTake.length + ' items Taken successfully \n' + successTake.length + ' items failed return'
+
       await this.updateAfterTakeOrReturn(successTake, item)
     }
   }
