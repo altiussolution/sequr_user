@@ -326,10 +326,10 @@ export class DetailsComponent implements OnInit {
           console.log('Application waiting time over for bin ' + machine.bin_id + 'in column ' + machine.column_id)
 
         }
-        await this.sleep(5000)
         let t1 = performance.now();
         eachColumnUsage['column_usage'] = t1 - t0
         totalMachineUsage.push(eachColumnUsage)
+        await this.sleep(5000)       
       }
       // break for loop if single device info is unknown
       else {

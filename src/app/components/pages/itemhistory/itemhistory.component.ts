@@ -249,7 +249,15 @@ export class ItemhistoryComponent implements OnInit {
     //call allDevInfo once
     // await this.allDeviceInfo()
     // for loop for all machines lids
+    let totalMachineUsage = []
     for await (let machine of machinesList) {
+      // Record Total Machine Usage
+      let eachColumnUsage = {}
+      eachColumnUsage['cube_id'] = machine.cube_id
+      eachColumnUsage['column_id'] = machine.column_id
+      eachColumnUsage['bin_id'] = machine.bin_id
+      eachColumnUsage['compartment_id'] = machine.compartment_id
+      // Record Total Machine Usage
       let maxCompartmentNo = Math.max(...machine.compartment_id)
       machine['compartment_id'] = maxCompartmentNo
       console.log('maxCompartmentNo')
@@ -268,6 +276,8 @@ export class ItemhistoryComponent implements OnInit {
 
         // unlock Column API, machine._id, machine.column_id, machine.compartment_id
         await this.crud.post('machine/unlockBin', machine).pipe(untilDestroyed(this)).toPromise()
+        // Record Total Machine Usage
+        let t0 = performance.now();
         await this.sleep(10000)
         let apiHitTimes = 0
         let machineColumnStatus = false
@@ -296,7 +306,11 @@ export class ItemhistoryComponent implements OnInit {
           console.log('Application waiting time over for bin ' + machine.bin_id + 'in column ' + machine.column_id)
 
         }
+        let t1 = performance.now();
+        eachColumnUsage['column_usage'] = t1 - t0
+        totalMachineUsage.push(eachColumnUsage)
         await this.sleep(5000)
+        
       }
       // break for loop if single device info is unknown
       else {
@@ -339,7 +353,15 @@ export class ItemhistoryComponent implements OnInit {
     })
   }
 
-
+  async addMachineUsage(data) {
+    console.log(data)
+    this.crud.post(`dashboard/machineUsageAdd`, data).pipe().subscribe(async (res) => {
+      console.log(res)
+      if (res) {
+        // this.toast.success('machine Usage Added Successfully...');
+      }
+    })
+  }
   // machinesList = [
   //   {
   //     column_id: 1,
