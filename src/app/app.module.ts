@@ -15,6 +15,7 @@ import {MatSelectModule} from '@angular/material/select';
 import { CookieService } from 'ngx-cookie-service';
 import { CrudService } from './services/crud.service';
 import {AutocompleteLibModule} from 'angular-ng-autocomplete';
+import { NgxImageZoomModule } from 'ngx-image-zoom';
 @NgModule({
   declarations: [
     AppComponent,
@@ -25,6 +26,7 @@ import {AutocompleteLibModule} from 'angular-ng-autocomplete';
     AppRoutingModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     BrowserAnimationsModule,
+    NgxImageZoomModule,
     ReactiveFormsModule,
     FormsModule,
     HttpClientModule,

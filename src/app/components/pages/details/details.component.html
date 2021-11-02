@@ -16,24 +16,32 @@
 
                   </a>-->
 
-                        <a class="thumbnail" *ngIf="videoSource != ''">
-                            <video class="thumbnail-image" controls (canplay)="pauseVideo(videoplayer)" #videoPlayer
-                                [src]="videoSource" type="video/mp4">
-                            </video>
-                        </a>
-                    </aside>
-
-                    <main class="primary">
-                        <img src="{{items?.image_path}}">
-                        <div class="as-avaliable">
-                            <div class="as-avaliable-btn"></div>
-                            <div class="as-font-18 as-z-index-1">Available</div>
-                            <div class="as-font-24">{{machine?.quantity}}</div>
-                        </div>
-
-                    </main>
+                  <a class="thumbnail" *ngIf="videoSource != ''" (click)="toggleVideo()">
+                   <video    class="thumbnail-image" id="video" controls (click)="toggleVideo()"
+              #videoPlayer  [src]="videoSource" type="video/mp4" data-setup='{ "aspectRatio":"640:267", "playbackRates": [1, 1.5, 2] }'>
+                 </video>
+                  </a>
+                </aside>
+              
+               <main class="primary" >
+                <!-- <img  src="{{items?.image_path}}" > -->
+                    <lib-ngx-image-zoom
+                        [thumbImage]=items?.image_path
+                        [fullImage]=items?.image_path
+                        [magnification]="1"
+                        [enableScrollZoom]="true"
+                        [enableLens]="true"
+                        [lensWidth]="200"
+                    ></lib-ngx-image-zoom>
+                </main>
+                <div class="as-avaliable">
+                    <div class="as-avaliable-btn"></div>
+                    <div class="as-font-18 as-z-index-1">Available</div>
+                    <div class="as-font-24">{{machine?.quantity}}</div>
                 </div>
+       
             </div>
+       
             <div class="col-md-6 pr-0">
                 <div class="as-details-title">{{items?.item_name}}
                 </div>
@@ -120,26 +128,28 @@
             </div>
         </div>
     </div>
-    <div class="as-bold as-font-16 mx-3 my-3">
-        Similar Products
-    </div>
-    <div class="row mx-0 mb-5">
-
-        <div class="as-card py-3">
-            <div class="">
-                <!-- <img src="../../../../assets/img/tools.png"> -->
-                <div class="as-product-img" style="background-image: url(../../../../assets/img/hamer.png);"></div>
-            </div>
-
-            <div class=" text-left as-bold as-color-4">Stubby Claw
-                Hammer 2</div>
+</div>
+<!-- <video     id="video" controls (click)="toggleVideo()" 
+#videoPlayer  [src]="videoSource" type="video/mp4" data-setup='{ "aspectRatio":"640:267", "playbackRates": [1, 1.5, 2] }'>
+</video> -->
+<!-- <div class="as-bold as-font-16 mx-3 my-3">
+    Similar Products
+</div> -->
+<!-- <div class="row mx-0 mb-5">
+   
+    <div class="as-card py-3">
+        <div class="">
+     
+            <div class="as-product-img" style="background-image: url(../../../../assets/img/hamer.png);"></div>
+        </div>
+        
+        <div class=" text-left as-bold as-color-4">Stubby Claw 
+            Hammer 2</div>
             <div class="as-color-2 mt-2 as-font-16 text-left as-bold">
                 Column ID: 01 Rack: 02
             </div>
             <div class="row align-items-center mx-0 as-addtocart-pos">
-                <!--<div class="mr-3">
-                    <button type="button" class="btn bg-white btn-round btn-light">Take Now</button>
-                </div>-->
+              
                 <div class="">
 
                     <button type="button"
@@ -151,7 +161,7 @@
 
         <div class="as-card py-3">
             <div class="">
-                <!-- <img src="../../../../assets/img/tools.png"> -->
+              
                 <div class="as-product-img" style="background-image: url(../../../../assets/img/hamer.png);"></div>
             </div>
 
@@ -161,9 +171,7 @@
                 Column ID: 01 Rack: 02
             </div>
             <div class="row align-items-center mx-0 as-addtocart-pos">
-                <!--<div class="mr-3">
-                    <button type="button" class="btn bg-white btn-round btn-light">Take Now</button>
-                </div>-->
+               
                 <div class="">
 
                     <button type="button"
@@ -175,7 +183,7 @@
 
         <div class="as-card py-3">
             <div class="">
-                <!-- <img src="../../../../assets/img/tools.png"> -->
+            
                 <div class="as-product-img" style="background-image: url(../../../../assets/img/hamer.png);"></div>
             </div>
 
@@ -185,9 +193,7 @@
                 Column ID: 01 Rack: 02
             </div>
             <div class="row align-items-center mx-0 as-addtocart-pos">
-                <!--<div class="mr-3">
-                    <button type="button" class="btn bg-white btn-round btn-light">Take Now</button>
-                </div>-->
+               
                 <div class="">
 
                     <button type="button"
@@ -199,7 +205,7 @@
 
         <div class="as-card py-3">
             <div class="">
-                <!-- <img src="../../../../assets/img/tools.png"> -->
+                
                 <div class="as-product-img" style="background-image: url(../../../../assets/img/hamer.png);"></div>
             </div>
 
@@ -209,9 +215,7 @@
                 Column ID: 01 Rack: 02
             </div>
             <div class="row align-items-center mx-0 as-addtocart-pos">
-                <!--<div class="mr-3">
-                    <button type="button" class="btn bg-white btn-round btn-light">Take Now</button>
-                </div>-->
+              
                 <div class="">
 
                     <button type="button"
@@ -224,7 +228,7 @@
 
 
 
-    </div>
+    </div> -->
 
 
 

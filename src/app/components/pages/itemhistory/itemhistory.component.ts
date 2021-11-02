@@ -52,9 +52,13 @@ export class ItemhistoryComponent implements OnInit {
     console.log(this.arrayvalue)
   }
   delete(i: any) {
+    if (confirm(`Are you sure want to delete?`)) {
     if (i > -1) {
       this.arrayvalue.splice(i, 1);
       this.toast.success("Item deleted from choosed list")
+    }
+    }else {
+     
     }
   }
   myFunction(event, i) {
@@ -242,6 +246,7 @@ export class ItemhistoryComponent implements OnInit {
   TakeOrReturnItems: any[] = []
   machinesList = []
   async returnItem(item: string) {
+    if (confirm(`Are you sure want to return?`)) {
     let totalMachinesList = await this.formatMachineData(item)
     console.log(totalMachinesList)
     let machinesList = await this.groupbyData(totalMachinesList)
@@ -317,6 +322,9 @@ export class ItemhistoryComponent implements OnInit {
       console.log(successTake.length + ' items Taken successfully \n' + successTake.length + ' items failed return')
       await this.updateAfterTakeOrReturn(successTake, item)
     }
+  }else {
+
+  }
   }
 
   //Update Cart and Stock Allocation documents after item Take/Return

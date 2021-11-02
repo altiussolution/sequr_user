@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild,ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { untilDestroyed } from 'ngx-take-until-destroy';
@@ -24,7 +24,7 @@ export class DetailsComponent implements OnInit {
   message: any = [];
 
 
-  @ViewChild('videoPlayer') videoplayer: any;
+  @ViewChild('videoPlayer') videoplayer: ElementRef;
   public startedPlay: boolean = false;
   public show: boolean = false;
   videoSource = "";
@@ -38,6 +38,8 @@ export class DetailsComponent implements OnInit {
   machineColumnID: any;
   machineStatus: any;
   machineCompartmentID: any;
+  myThumbnail="https://wittlock.github.io/ngx-image-zoom/assets/thumb.jpg";
+  myFullresImage="https://wittlock.github.io/ngx-image-zoom/assets/fullres.jpg";
   constructor(public router: Router, private toast: ToastrService, private fb: FormBuilder, public crud: CrudService) {
 
 
@@ -353,20 +355,24 @@ export class DetailsComponent implements OnInit {
 
 
   pauseVideo(videoplayer) {
-    videoplayer.nativeElement.pause();
+    this.videoplayer.nativeElement.pause();
     setTimeout(() => {
-      videoplayer.nativeElement.pause();
+      this.videoplayer.nativeElement.pause();
       if (videoplayer.nativeElement.paused) {
         this.show = !this.show;
       }
     }, 5000);
   
+  
   }
 
 
-  closebutton(videoplayer) {
-    this.show = !this.show;
-    videoplayer.nativeElement.play();
+  // closebutton(videoplayer) {
+  //   this.show = !this.show;
+  //   videoplayer.nativeElement.play();
+  // }
+  toggleVideo(){
+    this.videoplayer.nativeElement.play();
   }
   ngOnDestroy() {
     localStorage.removeItem("allow1")
