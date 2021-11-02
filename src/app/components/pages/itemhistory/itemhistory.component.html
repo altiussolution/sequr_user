@@ -35,7 +35,9 @@
         <input type="checkbox" class="form-check-input" id="Check1" (change)="passParams($event,cart)">
       </div>
     </div>
-
+    <ng-container class="ng-star-inserted w-100 text-center as-nodata" *ngIf="itemhistorycart?.length == 0">
+      <div class="no_data_msg w-100 text-center as-nodata ">No Data Avaliable</div>
+    </ng-container>
 
   </div>
   <div class="as-header mb-4">
@@ -182,7 +184,9 @@
 
     </div> -->
   </div>
-
+  <ng-container class="ng-star-inserted w-100 text-center as-nodata" *ngIf="itemhistorykit?.length == 0">
+    <div class="no_data_msg w-100 text-center as-nodata ">No Data Avaliable</div>
+  </ng-container>
 
   <!-- POPUP DESIGN Return -->
   <div class="modal" id="myModal">
