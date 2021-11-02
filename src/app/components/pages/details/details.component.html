@@ -25,7 +25,15 @@
                 </aside>
               
                <main class="primary" >
-                <img  src="{{items?.image_path}}" >
+                <!-- <img  src="{{items?.image_path}}" > -->
+                <lib-ngx-image-zoom
+        [thumbImage]=items?.image_path
+        [fullImage]=items?.image_path
+        [magnification]="1"
+        [enableScrollZoom]="true"
+        [enableLens]="true"
+        [lensWidth]="200"
+    ></lib-ngx-image-zoom>
                 <div class="as-avaliable">
                     <div class="as-avaliable-btn"></div>
                     <div class="as-font-18 as-z-index-1">Available</div>

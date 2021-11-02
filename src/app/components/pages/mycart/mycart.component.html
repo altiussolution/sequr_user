@@ -35,7 +35,7 @@
           <!-- <div type="button" class=" dropdown-toggle btn btn-round btn-light" data-toggle="dropdown"> -->
           <!-- <input style="width: 50px;" type="number" min="1" [value]="cart?.qty" #qty> -->
           <input type="number" class="as-width-60" id="quantity" class="form-control" placeholder="Qty" min="1" max="{{cart?.item_details.quantity}}"
-            [value]="cart?.qty" name="quantity" #qty (change)="updateCart(cart, qty.value,cart?.item_details.quantity)" (keyup)="updateCart(cart, qty.value,cart?.item_details.quantity)">
+            [value]="cart?.qty" name="quantity" #qty (change)="updateCart(cart,qty.value,cart?.item_details.quantity)" (keyup)="updateCart(cart,qty.value,cart?.item_details.quantity)">
           <!-- </div> -->
           <!-- <div class="dropdown-menu">
                   <a class="dropdown-item" href="#">1</a>

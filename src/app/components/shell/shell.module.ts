@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 /** Custom Module */
 import { RouterModule } from '@angular/router';
 import {FormsModule, ReactiveFormsModule } from '@angular/forms';
-
+import { NgxImageZoomModule } from 'ngx-image-zoom';
 import { ShellComponent } from './shell.component';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
@@ -39,6 +39,7 @@ import {AutocompleteLibModule} from 'angular-ng-autocomplete';
     MatPaginatorModule,
     MatTableModule,
     MatCardModule,
+    NgxImageZoomModule,
     AutocompleteLibModule,
     ],
   exports: [HeaderComponent,FooterComponent,MenuComponent,ShellComponent,
@@ -49,6 +50,7 @@ import {AutocompleteLibModule} from 'angular-ng-autocomplete';
     MatSelectModule,
     MatPaginatorModule,
     MatTableModule,
+    NgxImageZoomModule,
     MatSortModule,
     MatCardModule,
     AutocompleteLibModule,

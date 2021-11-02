@@ -31,6 +31,8 @@ export class DetailsComponent implements OnInit {
   videoform: FormGroup;
   cartList1: any=[];
   cartdata1: any=[];
+  myThumbnail="https://wittlock.github.io/ngx-image-zoom/assets/thumb.jpg";
+  myFullresImage="https://wittlock.github.io/ngx-image-zoom/assets/fullres.jpg";
   constructor(public router: Router, private toast: ToastrService, private fb: FormBuilder, public crud: CrudService) {
 
 

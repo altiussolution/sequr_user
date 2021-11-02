@@ -13,7 +13,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule, MatRippleModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
-
+// import { NgxImageZoomModule } from 'ngx-image-zoom';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatListModule } from '@angular/material/list';
@@ -48,7 +48,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     FormsModule,
     ReactiveFormsModule, MatDatepickerModule, MatInputModule, MatNativeDateModule,
     MatRippleModule, MatIconModule, MatSidenavModule, MatSlideToggleModule, MatListModule,
-    MatCheckboxModule,
+    MatCheckboxModule
   ]
 })
 export class PageModule { }

@@ -56,11 +56,9 @@ export class ItemhistoryComponent implements OnInit {
     if (i > -1) {
       this.arrayvalue.splice(i, 1);
       this.toast.success("Item deleted from choosed list")
-      this.ngOnInit();
-      this.closebutton.nativeElement.click();
     }
     }else {
-      this.closebutton.nativeElement.click();
+     
     }
   }
   myFunction(event, i) {
