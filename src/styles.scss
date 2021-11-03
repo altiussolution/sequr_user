@@ -1750,3 +1750,15 @@ body {
 .goog-te-banner-frame.skiptranslate {
   display: none !important;
 }
+
+main.primary .ngxImageZoomContainer {
+  width: 418px !important;
+  margin-bottom: 250px !important;
+  height: 0px !important;
+  overflow: visible !important;
+}
+
+img.ngxImageZoomThumbnail {
+  width: 410px;
+  margin: inherit;
+}
