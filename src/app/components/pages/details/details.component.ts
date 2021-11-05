@@ -319,17 +319,20 @@ export class DetailsComponent implements OnInit {
           }
           //set delay time
           await this.sleep(10000)
+          if (status == 'Unlocked' && apiHitTimes == 14) {
+            await this.crud.post('machine/lockBin', machine).pipe(untilDestroyed(this)).toPromise()
+          }
           apiHitTimes++
         }
         // if user does not closed after ceratin count of times API hit
-        if (apiHitTimes == 10 && machineColumnStatus !== true) {
+        if (apiHitTimes == 15 && machineColumnStatus !== true) {
           console.log('Application waiting time over for bin ' + machine.bin_id + 'in column ' + machine.column_id)
 
         }
         let t1 = performance.now();
         eachColumnUsage['column_usage'] = t1 - t0
         totalMachineUsage.push(eachColumnUsage)
-        await this.sleep(5000)       
+        await this.sleep(5000)
       }
       // break for loop if single device info is unknown
       else {
