@@ -302,7 +302,8 @@ export class DetailsComponent implements OnInit {
         let apiHitTimes = 0
         let machineColumnStatus = false
         while (apiHitTimes < 15 && !machineColumnStatus) {
-          console.log('********************* while loop **************' + machineColumnStatus)
+          console.log('********************* API Hit Times ************** ' + machineColumnStatus)
+          console.log(' Machine Status : ' + machineColumnStatus)
           let singleDeviceInfo = await this.singleDeviceInfo(machine)
           let status = singleDeviceInfo.details.singledevinfo.column[0]['status'][0]
           console.log('inside while loop status bin ' + machine.bin_id + status)
