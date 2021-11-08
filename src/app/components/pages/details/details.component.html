@@ -42,39 +42,41 @@
        
             </div>
        
-            <div class="col-md-6 pr-0">
-                <div class="as-details-title">{{items?.item_name}}
-                </div>
-                <div class="row mx-0 as-details-border">
-                    <div class="as-details-txt">
-                        <div class="as-font-18 as-bold">
-                            Machine Name
-                        </div>
-                        <div>
-                            {{cube?.cube_name}}
-                        </div>
+            
+        </div>
+        <div class="col-md-6 pr-0">
+            <div class="as-details-title">{{items?.item_name}}
+            </div>
+            <div class="row mx-0 as-details-border">
+                <div class="as-details-txt">
+                    <div class="as-font-18 as-bold">
+                        Machine Name
                     </div>
-                    <div class="as-details-txt">
-                        <div class="as-font-18 as-bold">
-                            Column ID
-                        </div>
-                        <div class="text-center">
-                            {{bin?.bin_id}}
-                        </div>
-                    </div>
-                    <div class="as-details-txt">
-                        <div class="as-font-18 as-bold">
-                            Draw ID
-                        </div>
-                        <div class="text-center">
-                            {{compartment?.compartment_id}}
-                        </div>
+                    <div>
+                        {{cube?.cube_name}}
                     </div>
                 </div>
-                <div class="row mx-0 as-details-border as-details-btn">
-                    <div class="as-w20 as-mr-det">
+                <div class="as-details-txt">
+                    <div class="as-font-18 as-bold">
+                        Column ID
+                    </div>
+                    <div class="text-center">
+                        {{bin?.bin_id}}
+                    </div>
+                </div>
+                <div class="as-details-txt">
+                    <div class="as-font-18 as-bold">
+                        Draw ID
+                    </div>
+                    <div class="text-center">
+                        {{compartment?.compartment_id}}
+                    </div>
+                </div>
+            </div>
+            <div class="row mx-0 as-details-border as-details-btn">
+                <div class="as-w20 as-mr-det">
 
-                        <input type="number" value="" id="quantity" class="form-control" (keyup)="changing($event)"
+                        <input type="number" value="" id="quantity" class="form-control" (keyup)="changing($event)" (click)="changing($event)" 
                             placeholder="Qty" name="quantity" min="1" max="{{machine.quantity}}">
 
                     </div>
@@ -97,34 +99,36 @@
                                         <p>Draw ID :{{machineDrawID}} </p>
                                         <p>compartment ID :{{machineCompartmentID}} </p>
                                         <p>Status :{{machineStatus}}</p>
+                                        <p>{{msg}}</p>
+                                        <p>{{msgg}}</p>
                                     </div>
-                                    <div class="modal-footer">
+                                    <!--<div class="modal-footer">
                                         <button type="button" class="btn btn-default" data-dismiss="modal">OK</button>
-                                        <!--<button type="button" class="btn btn-default" data-dismiss="modal" (click)="yes()">Yes</button>
-                      <button type="button" class="btn btn-default" data-dismiss="modal" (click)="close()">Close</button>-->
-                                    </div>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal" (click)="yes()">Yes</button>
+                      <button type="button" class="btn btn-default" data-dismiss="modal" (click)="close()">Close</button>
+                                    </div>-->
                                 </div>
-
                             </div>
+
                         </div>
                     </div>
-                    <div class="as-mr-or">
-                        or
-                    </div>
-                    <div class="as-mr-det">
-                        <button class="btn  btn-secondary   fw-bold mb-2" type="button" (click)="addtocart()">Add to
-                            cart</button>
-                    </div>
                 </div>
+                <div class="as-mr-or">
+                    or
+                </div>
+                <div class="as-mr-det">
+                    <button class="btn  btn-secondary   fw-bold mb-2" type="button" (click)="addtocart()">Add to
+                        cart</button>
+                </div>
+            </div>
 
-                <div class="as-font-16 as-color-5">
-                    <div class="as-bold my-3">
-                        Technical Specification
-                    </div>
-                    <p>
-                        {{machine?.description}}
-                    </p>
+            <div class="as-font-16 as-color-5">
+                <div class="as-bold my-3">
+                    Technical Specification
                 </div>
+                <p>
+                    {{machine?.description}}
+                </p>
             </div>
         </div>
     </div>
@@ -234,4 +238,3 @@
 
 
 
-</div>
