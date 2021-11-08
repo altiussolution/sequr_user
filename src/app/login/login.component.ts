@@ -84,7 +84,13 @@ export class LoginComponent implements OnInit {
   }
   okay(){
     if(this.myform.valid){
-      this.toast.success("Reset password details sent to your mail")
+      let data = {
+        "new_pass_req" : true
+      }
+      this.authendication.update2(`employee/updateForgotpassword/${this.myform.value.username}`, data).pipe(untilDestroyed(this)).subscribe(res=>{
+console.log(res)
+      })
+      this.toast.success("Forgot password request sent to admin")
       this.closebutton.nativeElement.click();
     }else{
       this.toast.warning("please enter username")
