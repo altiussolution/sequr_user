@@ -28,12 +28,16 @@ export class ProductsComponent implements OnInit {
     this.crud.CurrentMessage2.subscribe(message=>{
       if(message !=""){
         this.routername=message
-      
-      }})
+        localStorage.setItem("routename",this.routername)
+      }else{
+        this.routername=localStorage.getItem("routename")
+      }
+    })
    this.crud.CurrentMessage1.subscribe(message=>{
      console.log(message)
     if(message !="" && !localStorage.getItem("allow1")){
           this.product=JSON.parse(message)
+          localStorage.setItem("subid",JSON.stringify(this.product))
           console.log(this.product)
           this.crud.get('item/getItemByCategory/'+this.product?.category_id+'/'+this.product?._id).pipe(untilDestroyed(this)).subscribe((res:any) => {
           localStorage.setItem("allow1","data")
@@ -41,7 +45,17 @@ export class ProductsComponent implements OnInit {
           this.items=res['data']
           this.getData({pageIndex: this.page, pageSize: this.size});
           })
-      }})
+      }else{
+        this.product=JSON.parse(localStorage.getItem("subid"))
+        this.crud.get('item/getItemByCategory/'+this.product?.category_id+'/'+this.product?._id).pipe(untilDestroyed(this)).subscribe((res:any) => {
+        localStorage.setItem("allow1","data")
+        console.log(res)
+        this.items=res['data']
+        this.getData({pageIndex: this.page, pageSize: this.size});
+        })
+      }
+    
+    })
   }
   getData(obj) {
     let index=0,

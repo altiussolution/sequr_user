@@ -28,7 +28,9 @@
             <div class="as-font-24">{{data?.kit_name}}</div>
             <div class="row align-items-center mx-0">
               <div class="mr-3">
-                <button type="button" class="btn bg-white btn-round btn-light"  data-toggle="modal" data-target="#myModal" (click)="addkitcart(data._id, data)">Take Now</button>
+                <!-- data-target="#myModal" -->
+                <button type="button" class="btn bg-white btn-round btn-light"  data-toggle="modal" (click)="addkitcart(data._id, data)" data-target="#myModal" >Take Now</button>
+                <!-- <button type="button" class="btn bg-white btn-round btn-light"  data-toggle="modal"  (click)="addkitcart(data._id, data)">Take Now</button> -->
                    <!-- Modal -->
                    <div class="modal fade" id="myModal" role="dialog" data-backdrop="static">
                     <div class="modal-dialog">
@@ -66,7 +68,7 @@
           </div>
           <div class="bg-white mx-1 my-3 row as-text-flex as-pro-py" *ngFor="let items of data?.kit_data">
             <div class="pr-list-w-100">
-              <img class="as-productlst-img" [src]="items?.item.image_path" onError="this.src='../../../assets/img/tools.png'">
+              <img class="as-productlst-img" [src]="items?.item.image_path" onError="this.src='../../../assets/img/errorimage.png'">
 
               <!--<div class="as-productlst-img" style="background-image: url({{items?.item.image_path}});"></div>-->
             </div>

@@ -29,6 +29,10 @@ export class ProductslistComponent implements OnInit {
   machineStatus: any;
   msg: string;
   msgg: string;
+  kitdatas: any=[];
+  kits: any;
+  List: any;
+  highkitqty: any=[];
   constructor(public crud: CrudService, private toast: ToastrService) { }
 
   ngOnInit(): void {
@@ -39,7 +43,25 @@ export class ProductslistComponent implements OnInit {
     })
   }
   addkitcart(_id: any, data) {
-    this.crud.post(appModels.ADDKITCART + _id).pipe(untilDestroyed(this)).subscribe(async (res: any) => {
+  console.log(data);
+    
+    this.highkitqty=[];
+   console.log(data)
+    this.kitdatas=data
+    console.log(this.kitdatas.kit_data)
+    this.kits = this.kitdatas.kit_data.map(m => { 
+   if(m.kit_item_qty > m.qty) { 
+    this.highkitqty.push(m?.kit_item_qty+'>'+m?.qty)
+      return false;
+  }
+ return true;
+})
+console.log(this.kits)
+this.List = this.kits.filter(item => item === false);
+console.log(this.List)
+if(this.List?.length ==0){
+ 
+   this.crud.post(appModels.ADDKITCART + _id).pipe(untilDestroyed(this)).subscribe(async (res: any) => {
       console.log(res)
       if (res != "") {
         if (res['message'] == "Successfully added into cart!") {
@@ -51,6 +73,10 @@ export class ProductslistComponent implements OnInit {
     }, error => {
       this.toast.error("Kitting cart added Unsuccessfully")
     })
+}else{
+  this.toast.error("now choosed the kit item quantity for"+this.highkitqty)
+}
+ 
   }
   
   async itemHistory(data) {

@@ -25,7 +25,7 @@
   <div class="row mx-0 as-grid">
     <div class="as-card py-3" *ngFor="let cart of cartList">
       <div class="as-card-width1">
-        <img class="as-product-img" [src]="cart?.item?.image_path" onError="this.src='../../../assets/img/tools.png'">
+        <img class="as-product-img" [src]="cart?.item?.image_path" onError="this.src='../../../assets/img/errorimage.png'">
         <!-- <div class="as-product-img" style="background-image: url({{cart?.item?.image_path}});" onError="this.src='../../../assets/img/tools.png'"></div> -->
       </div>
 
