@@ -45,9 +45,9 @@
       <div class="modal-body text-center">
         <div class="login-popup"></div>
         <div class="as-font-24 as-color-5 my-3">Forgot Password?</div>
-        <div class="mb-3">Username</div>
-        <form [formGroup]="myform">
-          <input type="text"  formControlName="username" />
+        
+        <form [formGroup]="myform" style="margin-top: 15px;">
+          <input class="pop" type="text" placeholder="Username" formControlName="username" />
         </form>
          <div class="d-grid mb-3">
           <button class="btn btn-lg btn-primary btn-login  fw-bold mb-2" type="button" (click)="okay()">Submit</button>
