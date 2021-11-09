@@ -22,6 +22,13 @@ export class ProductslistComponent implements OnInit {
   cube: any = [];
   itemhistorykit: any = [];
   takeNowKit: any = [];
+  machineCubeID: any;
+  machineColumnID: any;
+  machineDrawID: any;
+  machineCompartmentID: any;
+  machineStatus: any;
+  msg: string;
+  msgg: string;
   constructor(public crud: CrudService, private toast: ToastrService) { }
 
   ngOnInit(): void {
@@ -45,6 +52,7 @@ export class ProductslistComponent implements OnInit {
       this.toast.error("Kitting cart added Unsuccessfully")
     })
   }
+  
   async itemHistory(data) {
     this.crud.get(appModels.ITEMLIST).pipe(untilDestroyed(this)).subscribe(async (res: any) => {
       console.log(res)
@@ -208,7 +216,11 @@ export class ProductslistComponent implements OnInit {
       let status = singleDeviceInfo.details.singledevinfo.column[0]['status'][0]
       console.log('Column : ' + machine.column_id + '' + 'drawer: ' + machine.bin_id + ' ' + 'Compartment: ' + machine.compartment_id)
       console.log(status)
-
+      this.machineCubeID = machine.cube_id
+      this.machineColumnID = machine.column_id
+      this.machineDrawID = machine.bin_id
+      this.machineCompartmentID = machine.compartment_id
+      this.machineStatus=status
       if (status == 'Locked' || status == 'Closed' || status == 'Unlocked' || status == 'Unknown') {
         // Lock that Column API, machine._id
         if (status == 'Closed' || status == 'Unlocked' || status == 'Unknown') {
@@ -237,6 +249,8 @@ export class ProductslistComponent implements OnInit {
           //Drawer current status, (opening, opened, closing, closed)
           else if (status !== 'Closed' && status !== 'Locked' && status == 'Unknown') {
             console.log('please close properly, Current Status = ' + status)
+            this.msg='please close properly, Current Status = ' + status
+
             // ColumnActionStatus = singleDeviceInfo
           }
           //set delay time
@@ -256,7 +270,9 @@ export class ProductslistComponent implements OnInit {
       // break for loop if single device info is unknown
       else {
         console.log('Machine status unknown ' + status)
+        this.msg='Machine status unknown ' + status
         console.log('Close all drawers properly and click take now')
+        this.msg='Close all drawers properly and click take now'
         break
       }
     }
@@ -265,12 +281,16 @@ export class ProductslistComponent implements OnInit {
     console.log(successTake)
     if (successTake.length == 0) {
       console.log('Machine status unknown No Item taken')
+      this.msgg='Machine status unknown No Item taken'
     } else if (successTake.length == totalMachinesList.length) {
       console.log(successTake.length + ' items Taken successfully')
+      this.msgg=successTake.length + ' items Taken successfully'
       await this.updateAfterTakeOrReturn(successTake)
     } else if (successTake.length < totalMachinesList.length) {
       console.log(successTake.length + ' items Taken successfully \n' + successTake.length + ' items failed return')
       await this.updateAfterTakeOrReturn(successTake, item)
+      this.msgg=successTake.length + ' items Taken successfully \n' + successTake.length + ' items failed return'
+
     }
   }
 
