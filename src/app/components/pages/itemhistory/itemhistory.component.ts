@@ -335,9 +335,11 @@ export class ItemhistoryComponent implements OnInit {
       console.log('Machine status unknown No Item returned')
     } else if (successTake.length == totalMachinesList.length) {
       console.log(successTake.length + ' items returned successfully')
+      await this.addMachineUsage(totalMachineUsage)
       await this.updateAfterTakeOrReturn(successTake)
     } else if (successTake.length < totalMachinesList.length) {
       console.log(successTake.length + ' items Taken successfully \n' + successTake.length + ' items failed return')
+      await this.addMachineUsage(totalMachineUsage)
       await this.updateAfterTakeOrReturn(successTake, item)
     }
   }else {

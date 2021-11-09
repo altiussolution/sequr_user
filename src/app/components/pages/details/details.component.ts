@@ -378,11 +378,12 @@ export class DetailsComponent implements OnInit {
     } else if (successTake.length == totalMachinesList.length) {
       console.log(successTake.length + ' items Taken successfully')
       this.msgg=successTake.length + ' items Taken successfully'
+      await this.addMachineUsage(totalMachineUsage)
       await this.updateAfterTakeOrReturn(successTake)
     } else if (successTake.length < totalMachinesList.length) {
       console.log(successTake.length + ' items Taken successfully \n' + successTake.length + ' items failed return')
       this.msgg=successTake.length + ' items Taken successfully \n' + successTake.length + ' items failed return'
-
+      await this.addMachineUsage(totalMachineUsage)
       await this.updateAfterTakeOrReturn(successTake, item)
 
     }
