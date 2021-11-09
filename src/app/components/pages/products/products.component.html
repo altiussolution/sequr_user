@@ -27,7 +27,7 @@
         <div class="as-card py-3" *ngFor="let item of data">
             <div class="as-card-width1">
                 
-                <img src="{{item?.image_path}}" (click)="select(item?._id)">
+                <img src="{{item?.image_path}}" (click)="select(item?._id)" onError="this.src='../../../assets/img/errorimage.png'">
             </div>
             
             <div class="mb-3 mt-1 text-left as-bold as-color-4 as-card-width2 as-font-30" (click)="select(item?._id)">{{item?.item_name}}</div>

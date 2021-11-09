@@ -435,7 +435,8 @@ input {
 }
 
 .as-font-24 {
-  font-size: 24px;
+  font-size: 20px;
+  font-weight: 500;
 }
 
 .as-font-20 {
@@ -966,6 +967,12 @@ button:focus {
   margin-right: 14px;
 }
 
+.asbg-1 {
+  height: fit-content !important;
+  padding-bottom: 50px;
+}
+
+
 .as-list .as-card-width2 {
   width: 55%;
 }
@@ -1004,6 +1011,18 @@ a.as-crd-title-new {
   color: #fff;
   margin-bottom: 11px;
   cursor: pointer;
+}
+
+input.pop {
+  width: 70%;
+  border: 1px solid #c0c0c0;
+  border-radius: 7px;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+.as-shadow.asbg-1 .row.justify-content-center {
+  align-items: end;
 }
 
 @media (min-width:1200px) {
@@ -1069,6 +1088,14 @@ a.as-crd-title-new {
     margin-top: 35px;
   }
 
+  .login-popup {
+    
+    background-size: unset;
+}
+
+.row.mt-5 {
+  margin-top: 80px;
+}
 
   .user-icon1 {
     width: 50px;
@@ -1099,8 +1126,12 @@ a.as-crd-title-new {
   }
 
   .as-font-16 {
-    font-size: 2rem;
+    font-size: 20px;
   }
+
+  .login-heading.mb-4 {
+    margin-bottom: 60px !important;
+}
 
   .as-font-24 {
     font-size: 2.1rem;
@@ -1156,26 +1187,27 @@ a.as-crd-title-new {
 
   .login-heading {
     font-size: 2.2rem;
+    margin-top: 70px;
   }
 
   .form-control {
-    font-size: 1.7rem;
+    font-size: 1.4rem;
   }
 
   body,
   .mat-typography {
-    font-size: 1.7rem;
+    font-size: 18px;
   }
 
   .btn {
-    font-size: 2rem;
-    padding: 4px 44px;
+    font-size: 20px;
+    padding: 10px 34px;
   }
 
   input:-webkit-autofill {
 
     -webkit-text-size-adjust: 1.7rem;
-    font-size: 1.7rem;
+    font-size: 18px !important;
   }
 
   .as-g-active,
@@ -1220,7 +1252,7 @@ a.as-crd-title-new {
   }
 
   ul.as-menu>li>a {
-    font-size: 2rem;
+    font-size: 1.4rem;
   }
 
   .navbar-nav.side-nav {
@@ -1235,7 +1267,7 @@ a.as-crd-title-new {
   .navbar-expand-lg .navbar-nav.side-nav .nav-link {
     padding-right: 0rem;
     padding-left: 0rem;
-    font-size: 1.9rem;
+    font-size: 20px;
     padding-bottom: 23px;
   }
 
@@ -1248,7 +1280,7 @@ a.as-crd-title-new {
   }
 
   .as-title {
-    font-size: 50px;
+    font-size:40px;
 
   }
 
@@ -1383,7 +1415,7 @@ a.as-crd-title-new {
   .mat-paginator,
   .mat-paginator-page-size .mat-select-trigger {
 
-    font-size: 26px;
+    font-size: 20px;
   }
 
   .take-now {

@@ -16,7 +16,7 @@
   <div class="row mx-0">
     <div class="as-card " *ngFor="let cart of itemhistorycart;let i=index">
       <div class="">
-        <img src="{{cart?.item?.image_path}}">
+        <img src="{{cart?.item?.image_path}}" onError="this.src='../../../assets/img/errorimage.png'">
         <!-- <div class="as-product-img" style="background-image: url({{cart?.item?.image_path}});"></div> -->
       </div>
 
@@ -76,7 +76,7 @@
         <div class="bg-white mx-1 my-3 row as-text-flex px-3" *ngFor="let item of kitting?.kit_item_details">
           <div class="">
             <!-- <div class="as-productlst-img" style="background-image: url({{item?.item_id?.image_path}});"></div> -->
-            <img class="as-productlst-img" [src]="item?.item?.image_path" />
+            <img class="as-productlst-img" [src]="item?.item?.image_path" onError="this.src='../../../assets/img/errorimage.png'" />
           </div>
           <div>
             <div class="as-font-18 as-bold as-color-4 as-font-30">
@@ -202,7 +202,7 @@
           <div class="row py-2" *ngFor="let data of arrayvalue;let i=index">
             <div class="w-25">
               <!-- <img src="../../../assets/img/tools.png"> -->
-              <img class="as-product-img-pop" src="{{data?.item?.image_path}}">
+              <img class="as-product-img-pop" src="{{data?.item?.image_path}}" onError="this.src='https://t3.ftcdn.net/jpg/04/34/72/82/360_F_434728286_OWQQvAFoXZLdGHlObozsolNeuSxhpr84.jpg'">
 
             </div>
             <div class="as-w-60 pl-3">

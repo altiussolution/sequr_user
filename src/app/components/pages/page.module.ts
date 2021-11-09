@@ -40,6 +40,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
    
   ],
   entryComponents: [
+
    ],
   imports: [
     CommonModule,
