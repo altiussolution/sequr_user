@@ -223,7 +223,7 @@ export class ProductslistComponent implements OnInit {
       this.machineStatus=status
       if (status == 'Locked' || status == 'Closed' || status == 'Unlocked' || status == 'Unknown') {
         // Lock that Column API, machine._id
-        if (status == 'Closed' || status == 'Unlocked' || status == 'Unknown') {
+        if (status == 'Closed' || status == 'Unlocked') {
           await this.crud.post('machine/lockBin', machine).pipe(untilDestroyed(this)).toPromise()
           await this.sleep(1000)
         }

@@ -274,7 +274,7 @@ export class ItemhistoryComponent implements OnInit {
 
       if (status == 'Locked' || status == 'Closed' || status == 'Unlocked' || status == 'Unknown') {
         // Lock that Column API, machine._id
-        if (status == 'Closed' || status == 'Unlocked' || status == 'Unknown') {
+        if (status == 'Closed' || status == 'Unlocked') {
           await this.crud.post('machine/lockBin', machine).pipe(untilDestroyed(this)).toPromise()
           await this.sleep(1000)
         }
@@ -299,7 +299,7 @@ export class ItemhistoryComponent implements OnInit {
             await this.TakeOrReturnItems.push(machine)
           }
           //Drawer current status, (opening, opened, closing, closed)
-          else if (status !== 'Closed' && status !== 'Locked' || status == 'Unknown') {
+          else if (status !== 'Closed' && status !== 'Locked' && status !== 'Unknown') {
             console.log('please close properly, Current Status = ' + status)
             // ColumnActionStatus = singleDeviceInfo
           }

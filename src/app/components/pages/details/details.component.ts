@@ -314,7 +314,7 @@ export class DetailsComponent implements OnInit {
         // Lock that Column API, machine._id
         if (status == 'Closed' || status == 'Unlocked') {
           await this.crud.post('machine/lockBin', machine).pipe(untilDestroyed(this)).toPromise()
-          await this.sleep(1000)
+          await this.sleep(5000)
         }
 
         // unlock Column API, machine._id, machine.column_id, machine.compartment_id
