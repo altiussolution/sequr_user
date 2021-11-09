@@ -11,6 +11,9 @@ export class AuthenticationService {
   post(model: string, params?: any): Observable<any> {
     return this.http.post(model, params);
   }
- 
+  update2(model: string, body: any): Observable<any> {
+    return this.http.put(`${model}`, body);
+  }
+
 }
 
