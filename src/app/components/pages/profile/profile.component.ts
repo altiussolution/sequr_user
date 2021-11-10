@@ -48,17 +48,21 @@ export class ProfileComponent implements OnInit {
     this.crud.get(appModels.USERPROFILE + this.profiledetails._id).pipe(untilDestroyed(this)).subscribe((res: any) => {
       console.log(res)
       this.profile = res['data']
+      console.log(this.profile['language_prefered'])
+      this.crud.get(appModels.LAN).pipe(untilDestroyed(this)).subscribe((res: any) => {
+        console.log(res)
+        this.language = res['list']
+          console.log(this.profile['language_prefered'])
+        for (let i = 0; i < this.language.length; i++) {
+          if (this.language[i]._id == this.profile['language_prefered']) {
+           this.lan = this.language[i]
+          }
+        }
+        console.log(this.lan)
+      })
     })
  
-    this.crud.get(appModels.LAN).pipe(untilDestroyed(this)).subscribe((res: any) => {
-      console.log(res)
-      this.language = res['list']
-      for (let i = 0; i < this.language.length; i++) {
-        if (this.language[i]?._id == this.profile.language_prefered) {
-          this.lan = this.language[i]
-        }
-      }
-    })
+   
 
   }
   changepwd() {
