@@ -320,7 +320,7 @@ showimg(value){
         // Lock that Column API, machine._id
         if (status == 'Closed' || status == 'Unlocked') {
           await this.crud.post('machine/lockBin', machine).pipe(untilDestroyed(this)).toPromise()
-          await this.sleep(1000)
+          await this.sleep(5000)
         }
 
         // unlock Column API, machine._id, machine.column_id, machine.compartment_id
@@ -332,7 +332,8 @@ showimg(value){
         let apiHitTimes = 0
         let machineColumnStatus = false
         while (apiHitTimes < 15 && !machineColumnStatus) {
-          console.log('********************* while loop **************' + machineColumnStatus)
+          console.log('********************* API Hit Times ************** ' + machineColumnStatus)
+          console.log(' Machine Status : ' + machineColumnStatus)
           let singleDeviceInfo = await this.singleDeviceInfo(machine)
           let status = singleDeviceInfo.details.singledevinfo.column[0]['status'][0]
           console.log('inside while loop status bin ' + machine.bin_id + status)
@@ -350,17 +351,20 @@ showimg(value){
           }
           //set delay time
           await this.sleep(10000)
+          if (status == 'Unlocked' && apiHitTimes == 14) {
+            await this.crud.post('machine/lockBin', machine).pipe(untilDestroyed(this)).toPromise()
+          }
           apiHitTimes++
         }
         // if user does not closed after ceratin count of times API hit
-        if (apiHitTimes == 10 && machineColumnStatus !== true) {
+        if (apiHitTimes == 15 && machineColumnStatus !== true) {
           console.log('Application waiting time over for bin ' + machine.bin_id + 'in column ' + machine.column_id)
 
         }
         let t1 = performance.now();
         eachColumnUsage['column_usage'] = t1 - t0
         totalMachineUsage.push(eachColumnUsage)
-        await this.sleep(5000)       
+        await this.sleep(5000)
       }
       // break for loop if single device info is unknown
       else {
@@ -380,11 +384,12 @@ showimg(value){
     } else if (successTake.length == totalMachinesList.length) {
       console.log(successTake.length + ' items Taken successfully')
       this.msgg=successTake.length + ' items Taken successfully'
+      await this.addMachineUsage(totalMachineUsage)
       await this.updateAfterTakeOrReturn(successTake)
     } else if (successTake.length < totalMachinesList.length) {
       console.log(successTake.length + ' items Taken successfully \n' + successTake.length + ' items failed return')
       this.msgg=successTake.length + ' items Taken successfully \n' + successTake.length + ' items failed return'
-
+      await this.addMachineUsage(totalMachineUsage)
       await this.updateAfterTakeOrReturn(successTake, item)
 
     }

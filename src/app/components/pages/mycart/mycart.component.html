@@ -3,7 +3,7 @@
     <div class="as-title">
       My Cart
     </div>
-    <div class="row as-color-1">
+    <div class="row as-color-1" *ngIf="cartList.length !=0">
       <div class="form-group form-check mr-3">
         <mat-checkbox class="example-margin" [checked]="isChecked()==true && this.cartList.length==0?false:isChecked()" [indeterminate]="isIndeterminate()"
           (change)="$event ? toggleAll($event) : null">Select All</mat-checkbox>
@@ -14,7 +14,7 @@
       <!-- <div class="mr-3 as-font-14">
         Items 1-8 of 8
       </div>    [disabled]="cartdata?.length==0"-->
-      <div class="mr-3 pointer as-g-active view-active" (click)="gridview()">
+      <div class="mr-3 pointer as-g-active view-active" (click)="gridview()" >
         <i class="fa fa-th" aria-hidden="true"></i>
       </div>
       <div class="mr-3  pointer as-l-active" (click)="listview()">
@@ -65,8 +65,8 @@
   </ng-container>
   
   <div class="text-right mb-5 mt-3  ">
-    <button type="button" class="btn as-btn btn-primary mr-3" [routerLink]="'/pages/home'">Add More</button>
-    <button type="button" class="btn as-btn btn-secondary "  data-toggle="modal" data-target="#myModal" (click)="takeItems()">Take Now</button>
+    <button type="button" class="btn as-btn btn-primary mr-3" (click)="Addmore()">Add More</button>
+    <button type="button" class="btn as-btn btn-secondary "  data-toggle="modal" data-target="#myModal" (click)="takeItems()" *ngIf="cartList.length !=0">Take Now</button>
        <!-- Modal -->
        <div class="text-left mb-5 mt-3  ">
 

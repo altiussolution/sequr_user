@@ -6,6 +6,7 @@ import { delay } from 'rxjs/operators';
 import { CrudService } from 'src/app/services/crud.service';
 import { appModels } from 'src/app/services/shared/enum/enum.util';
 import { CookieService } from 'ngx-cookie-service'
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-mycart',
@@ -37,8 +38,9 @@ export class MycartComponent implements OnInit {
   message: string;
   msgg: string;
   msg: string;
+  category: any;
   constructor(private crudService: CrudService,
-    private toast: ToastrService, public cookie: CookieService,
+    private toast: ToastrService, public cookie: CookieService,public router:Router
   ) { }
 
   ngOnInit(): void {
@@ -59,8 +61,8 @@ export class MycartComponent implements OnInit {
           this.cartList.push(this.cartdata?.cart[i])
         }
       }
-      console.log(this.cartList[0].qty)
-      console.log(this.cartList[0].item_details.quantity)
+      console.log(this.cartList[0]?.qty)
+      console.log(this.cartList[0]?.item_details?.quantity)
       this.crudService.getcarttotal(this.cartList?.length)
     }, error => {
       this.toast.error(error.message);
@@ -154,7 +156,15 @@ export class MycartComponent implements OnInit {
     return this.selected3.length === this.cartList?.length;
   };
 
-
+Addmore(){
+  this.crudService.get(appModels.CATEGORYLIST).pipe(untilDestroyed(this)).subscribe((res:any) => {
+    console.log(res)
+   this.category=res['data']
+   localStorage.removeItem("allow") 
+   this.crudService.changemessage(JSON.stringify(this.category[0]))
+   this.router.navigate(['/pages/home'])
+  })
+}
   toggleAll(event: MatCheckboxChange) {
     if (event.checked) {
       this.cartList.forEach(cart => {
@@ -376,7 +386,7 @@ export class MycartComponent implements OnInit {
       this.machineStatus = status
       if (status == 'Locked' || status == 'Closed' || status == 'Unlocked' || status == 'Unknown') {
         // Lock that Column API, machine._id
-        if (status == 'Closed' || status == 'Unlocked' || status == 'Unknown') {
+        if (status == 'Closed' || status == 'Unlocked') {
           await this.crudService.post('machine/lockBin', machine).pipe(untilDestroyed(this)).toPromise()
           await this.sleep(1000)
         }
@@ -389,7 +399,8 @@ export class MycartComponent implements OnInit {
         let apiHitTimes = 0
         let machineColumnStatus = false
         while (apiHitTimes < 15 && !machineColumnStatus) {
-          console.log('********************* while loop **************' + machineColumnStatus)
+          console.log('********************* API Hit Times ************** ' + machineColumnStatus)
+          console.log(' Machine Status : ' + machineColumnStatus)
           let singleDeviceInfo = await this.singleDeviceInfo(machine)
           let status = singleDeviceInfo.details.singledevinfo.column[0]['status'][0]
           console.log('inside while loop status bin ' + machine.bin_id + status)
@@ -407,6 +418,9 @@ export class MycartComponent implements OnInit {
           }
           //set delay time
           await this.sleep(10000)
+          if (status == 'Unlocked' && apiHitTimes == 14) {
+            await this.crudService.post('machine/lockBin', machine).pipe(untilDestroyed(this)).toPromise()
+          }
           apiHitTimes++
         }
         // if user does not closed after ceratin count of times API hit
@@ -438,10 +452,14 @@ export class MycartComponent implements OnInit {
     } else if (successTake.length == totalMachinesList.length) {
       console.log(successTake.length + ' items Taken successfully')
       this.msgg=successTake.length + ' items Taken successfully'
+      await this.addMachineUsage(totalMachineUsage)
+
       await this.updateAfterTakeOrReturn(successTake)
     } else if (successTake.length < totalMachinesList.length) {
       console.log(successTake.length + ' items Taken successfully \n' + (totalMachinesList.length - successTake.length) + ' items failed return')
       this.msgg=successTake.length + ' items Taken successfully \n' + successTake.length + ' items failed return'
+      await this.addMachineUsage(totalMachineUsage)
+
       await this.updateAfterTakeOrReturn(successTake)
     }
   }
