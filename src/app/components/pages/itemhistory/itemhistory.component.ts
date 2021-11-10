@@ -274,7 +274,7 @@ export class ItemhistoryComponent implements OnInit {
 
       if (status == 'Locked' || status == 'Closed' || status == 'Unlocked' || status == 'Unknown') {
         // Lock that Column API, machine._id
-        if (status == 'Closed' || status == 'Unlocked' || status == 'Unknown') {
+        if (status == 'Closed' || status == 'Unlocked') {
           await this.crud.post('machine/lockBin', machine).pipe(untilDestroyed(this)).toPromise()
           await this.sleep(1000)
         }
@@ -287,7 +287,8 @@ export class ItemhistoryComponent implements OnInit {
         let apiHitTimes = 0
         let machineColumnStatus = false
         while (apiHitTimes < 15 && !machineColumnStatus) {
-          console.log('********************* while loop **************' + machineColumnStatus)
+          console.log('********************* API Hit Times ************** ' + machineColumnStatus)
+          console.log(' Machine Status : ' + machineColumnStatus)
           let singleDeviceInfo = await this.singleDeviceInfo(machine)
           let status = singleDeviceInfo.details.singledevinfo.column[0]['status'][0]
           console.log('inside while loop status bin ' + machine.bin_id + status)
@@ -298,12 +299,15 @@ export class ItemhistoryComponent implements OnInit {
             await this.TakeOrReturnItems.push(machine)
           }
           //Drawer current status, (opening, opened, closing, closed)
-          else if (status !== 'Closed' && status !== 'Locked' || status == 'Unknown') {
+          else if (status !== 'Closed' && status !== 'Locked' && status !== 'Unknown') {
             console.log('please close properly, Current Status = ' + status)
             // ColumnActionStatus = singleDeviceInfo
           }
           //set delay time
           await this.sleep(10000)
+          if (status == 'Unlocked' && apiHitTimes == 14) {
+            await this.crud.post('machine/lockBin', machine).pipe(untilDestroyed(this)).toPromise()
+          }
           apiHitTimes++
         }
         // if user does not closed after ceratin count of times API hit
@@ -331,9 +335,11 @@ export class ItemhistoryComponent implements OnInit {
       console.log('Machine status unknown No Item returned')
     } else if (successTake.length == totalMachinesList.length) {
       console.log(successTake.length + ' items returned successfully')
+      await this.addMachineUsage(totalMachineUsage)
       await this.updateAfterTakeOrReturn(successTake)
     } else if (successTake.length < totalMachinesList.length) {
       console.log(successTake.length + ' items Taken successfully \n' + successTake.length + ' items failed return')
+      await this.addMachineUsage(totalMachineUsage)
       await this.updateAfterTakeOrReturn(successTake, item)
     }
   }else {

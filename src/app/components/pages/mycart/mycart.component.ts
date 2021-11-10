@@ -386,7 +386,7 @@ Addmore(){
       this.machineStatus = status
       if (status == 'Locked' || status == 'Closed' || status == 'Unlocked' || status == 'Unknown') {
         // Lock that Column API, machine._id
-        if (status == 'Closed' || status == 'Unlocked' || status == 'Unknown') {
+        if (status == 'Closed' || status == 'Unlocked') {
           await this.crudService.post('machine/lockBin', machine).pipe(untilDestroyed(this)).toPromise()
           await this.sleep(1000)
         }
@@ -399,7 +399,8 @@ Addmore(){
         let apiHitTimes = 0
         let machineColumnStatus = false
         while (apiHitTimes < 15 && !machineColumnStatus) {
-          console.log('********************* while loop **************' + machineColumnStatus)
+          console.log('********************* API Hit Times ************** ' + machineColumnStatus)
+          console.log(' Machine Status : ' + machineColumnStatus)
           let singleDeviceInfo = await this.singleDeviceInfo(machine)
           let status = singleDeviceInfo.details.singledevinfo.column[0]['status'][0]
           console.log('inside while loop status bin ' + machine.bin_id + status)
@@ -417,6 +418,9 @@ Addmore(){
           }
           //set delay time
           await this.sleep(10000)
+          if (status == 'Unlocked' && apiHitTimes == 14) {
+            await this.crudService.post('machine/lockBin', machine).pipe(untilDestroyed(this)).toPromise()
+          }
           apiHitTimes++
         }
         // if user does not closed after ceratin count of times API hit
@@ -448,10 +452,14 @@ Addmore(){
     } else if (successTake.length == totalMachinesList.length) {
       console.log(successTake.length + ' items Taken successfully')
       this.msgg=successTake.length + ' items Taken successfully'
+      await this.addMachineUsage(totalMachineUsage)
+
       await this.updateAfterTakeOrReturn(successTake)
     } else if (successTake.length < totalMachinesList.length) {
       console.log(successTake.length + ' items Taken successfully \n' + (totalMachinesList.length - successTake.length) + ' items failed return')
       this.msgg=successTake.length + ' items Taken successfully \n' + successTake.length + ' items failed return'
+      await this.addMachineUsage(totalMachineUsage)
+
       await this.updateAfterTakeOrReturn(successTake)
     }
   }
