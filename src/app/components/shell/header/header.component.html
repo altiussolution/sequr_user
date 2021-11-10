@@ -89,7 +89,7 @@
           <a class="nav-link">Gage(21)</a>
           <a class="nav-link">Kit(29)</a> -->
         </li>
-        <li class="nav-item mt-3" *ngIf="itemhistorykit.length !=0">
+        <li class="nav-item mt-3" *ngIf="itemhistorykit?.length !=0">
           <div class="nav-link nav-title as-bold as-color-9" [routerLink]="'itemhistory'">Item History</div>
           <hr>
           <a *ngFor="let kitting of itemhistorykit" class="nav-link as-color-9"
@@ -189,7 +189,7 @@
               onError="this.src='../../../assets/img/profile_user_icon.svg'">
           </a>
         </li>
-        <li class="nav-item relative as-nav" [routerLink]="'/pages/mycart'">
+        <li class="nav-item relative as-nav" [routerLink]="'/pages/mycart'" (click)="this.selectedItem=''">
           <a class="nav-link">
             <div class="addtocart-icon"></div>
           </a>
