@@ -16,10 +16,12 @@ import { CookieService } from 'ngx-cookie-service';
 import { CrudService } from './services/crud.service';
 import {AutocompleteLibModule} from 'angular-ng-autocomplete';
 import { NgxImageZoomModule } from 'ngx-image-zoom';
+import { ForgotpasswordComponent } from './forgotpassword/forgotpassword.component';
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent
+    LoginComponent,
+    ForgotpasswordComponent
   ],
   imports: [
     BrowserModule,
