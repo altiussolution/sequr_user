@@ -44,7 +44,7 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.profiledetails = JSON.parse(localStorage.getItem('personal'))
-    console.log(this.profiledetails)
+    console.log(this.profiledetails._id)
     this.crud.get(appModels.USERPROFILE + this.profiledetails._id).pipe(untilDestroyed(this)).subscribe((res: any) => {
       console.log(res)
       this.profile = res['data']
@@ -72,10 +72,10 @@ export class ProfileComponent implements OnInit {
     }
     console.log(data)
     if (this.cpForm.valid) {
-    this.crud.post(appModels.CHANGEPWD, data).subscribe(res => {
+    this.crud.post(appModels.CHANGEPWD + this.profiledetails._id, data).subscribe(res => {
       console.log(res)
       if(res['message']=="Password changed successfully"){
-        this.toast.success("Password Change successfully")
+        this.toast.success("Password Changed successfully")
       }
     },(error:HttpErrorResponse)=>{
       if(error.status === 422){  
