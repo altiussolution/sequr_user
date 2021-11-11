@@ -34,6 +34,11 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
+  this.home();
+  }
+
+home(){
+
   console.log(this.readCookie('googtrans'));
   if(!localStorage.getItem("language")){
     // if (confirm(`Language has been updated for you please refresh the page.`)) {
@@ -41,28 +46,39 @@ export class HomeComponent implements OnInit {
     window.location.reload()
     
   }
-
-
     this.crud.CurrentMessage.subscribe(message=>{
 
       if(message !="" && !localStorage.getItem("allow")){
       
         this.message=JSON.parse(message)
         this.categoryName=this.message?.category?.category_name
-        
+        localStorage.setItem("catname",this.message?.category?.category_name)
+        localStorage.setItem("catid",this.message?.category?._id)
         this.crud.get(appModels.SUBCATEGORY+this.message?.category?._id).pipe(untilDestroyed(this)).subscribe((res:any) => {
           localStorage.setItem("allow","data")
           console.log(res)
+       
           this.subcategories=res['data']
           
           this.getData({pageIndex: this.page, pageSize: this.size});
+   
+        })
+      }else{
+        this.categoryName=localStorage.getItem("catname")
+      
+        this.crud.get(appModels.SUBCATEGORY+localStorage.getItem("catid")).pipe(untilDestroyed(this)).subscribe((res:any) => {
+          localStorage.setItem("allow","data")
+          console.log(res)
+       
+          this.subcategories=res['data']
+          
+          this.getData({pageIndex: this.page, pageSize: this.size});
+   
         })
       }
      
     })
-  }
-
-
+}
 
    readCookie(name) {
      console.log(document.cookie)

@@ -176,7 +176,8 @@
             </button>
           </div> -->
 <form autocomplete="off" [formGroup]="myform">
-  <input type="text" placeholder="search" class="form-control" formControlName="searchvalue" (keyup)="searching($event)">
+  <input type="search" placeholder="Search" class="form-control" formControlName="searchvalue" (keyup)="searching($event)" >
+ 
 </form>
           
 
@@ -188,7 +189,7 @@
               onError="this.src='../../../assets/img/profile_user_icon.svg'">
           </a>
         </li>
-        <li class="nav-item relative as-nav" [routerLink]="'/pages/mycart'">
+        <li class="nav-item relative as-nav" [routerLink]="'/pages/mycart'" (click)="this.selectedItem=''">
           <a class="nav-link">
             <div class="addtocart-icon"></div>
           </a>

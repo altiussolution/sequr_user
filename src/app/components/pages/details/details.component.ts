@@ -43,6 +43,7 @@ export class DetailsComponent implements OnInit {
   msg: string;
   massage: string;
   msgg: string;
+  mainimage: any;
   constructor(public router: Router, private toast: ToastrService, private fb: FormBuilder, public crud: CrudService) {
 
 
@@ -60,6 +61,7 @@ export class DetailsComponent implements OnInit {
           localStorage.setItem("hlo", "data")
           this.items = res.items
           this.videoSource = this.items.video_path
+          this.mainimage = this.items.image_path[0]
           console.log(this.items.video_path)
           this.machine = res.machine
           this.it = this.machine.item
@@ -79,6 +81,7 @@ export class DetailsComponent implements OnInit {
           localStorage.setItem("hlo", "data")
           this.items = res.items
           this.videoSource = this.items.video_path
+          this.mainimage = this.items.image_path[0]
           console.log(this.items.video_path)
           this.machine = res.machine
           this.it = this.machine.item
@@ -185,7 +188,10 @@ export class DetailsComponent implements OnInit {
   // }
 
   //}
-
+showimg(value){
+  console.log(value)
+  this.mainimage=value
+}
   //************   Arunkumar  ***********************/
   async allDeviceInfo() {
     let response = await this.crud.get('machine/allDeviceInfo').pipe(untilDestroyed(this)).toPromise()

@@ -6,6 +6,7 @@ import { delay } from 'rxjs/operators';
 import { CrudService } from 'src/app/services/crud.service';
 import { appModels } from 'src/app/services/shared/enum/enum.util';
 import { CookieService } from 'ngx-cookie-service'
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-mycart',
@@ -37,8 +38,9 @@ export class MycartComponent implements OnInit {
   message: string;
   msgg: string;
   msg: string;
+  category: any;
   constructor(private crudService: CrudService,
-    private toast: ToastrService, public cookie: CookieService,
+    private toast: ToastrService, public cookie: CookieService,public router:Router
   ) { }
 
   ngOnInit(): void {
@@ -59,8 +61,8 @@ export class MycartComponent implements OnInit {
           this.cartList.push(this.cartdata?.cart[i])
         }
       }
-      console.log(this.cartList[0].qty)
-      console.log(this.cartList[0].item_details.quantity)
+      console.log(this.cartList[0]?.qty)
+      console.log(this.cartList[0]?.item_details?.quantity)
       this.crudService.getcarttotal(this.cartList?.length)
     }, error => {
       this.toast.error(error.message);
@@ -154,7 +156,15 @@ export class MycartComponent implements OnInit {
     return this.selected3.length === this.cartList?.length;
   };
 
-
+Addmore(){
+  this.crudService.get(appModels.CATEGORYLIST).pipe(untilDestroyed(this)).subscribe((res:any) => {
+    console.log(res)
+   this.category=res['data']
+   localStorage.removeItem("allow") 
+   this.crudService.changemessage(JSON.stringify(this.category[0]))
+   this.router.navigate(['/pages/home'])
+  })
+}
   toggleAll(event: MatCheckboxChange) {
     if (event.checked) {
       this.cartList.forEach(cart => {
