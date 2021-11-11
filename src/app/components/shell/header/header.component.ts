@@ -6,6 +6,7 @@ import { CrudService } from 'src/app/services/crud.service';
 import { appModels } from 'src/app/services/shared/enum/enum.util';
 import { CookieService } from 'ngx-cookie-service'
 import { FormControl, FormGroup } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-header',
@@ -63,9 +64,11 @@ myform: FormGroup;
    ];
   searchdata: any=[];
   typed: any;
-  
+  dooropens: any=[];
+  dooropenss: any=[];
+  @ViewChild('modal') closebutton;
 
- constructor(public router: Router,public crud:CrudService,private cookie: CookieService) {
+ constructor(public router: Router,public crud:CrudService,private cookie: CookieService,private toast: ToastrService) {
 
   this.crud.get(appModels.ITEM).pipe(untilDestroyed(this)).subscribe((res:any) => {
     console.log(res)
@@ -126,8 +129,24 @@ setval(val:any){
 }
 
   logout(){ 
+this.dooropens=[];
+this.dooropenss=[];
+this.crud.get('machine/wasfullopen').pipe(untilDestroyed(this)).subscribe((res:any) => {
+console.log(res)
+this.dooropens=res?.details?.alldevinfo?.Count
+this.crud.get('machine/isfullopen').pipe(untilDestroyed(this)).subscribe((res:any) => {
+  console.log(res)
+  this.dooropenss=res?.details?.alldevinfo?.Count
+if(this.dooropens.length==0 && this.dooropenss.length==0){
+  this.closebutton.nativeElement.click();
     localStorage.clear();
     this.router.navigate(['./login']);
+}else{
+  this.toast.error("Please Close The Door")
+}
+  })
+})
+
 }
 @ViewChild('searchInput', { read: ElementRef })
 private searchInput: ElementRef;

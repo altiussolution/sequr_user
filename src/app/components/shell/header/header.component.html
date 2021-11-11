@@ -89,7 +89,7 @@
           <a class="nav-link">Gage(21)</a>
           <a class="nav-link">Kit(29)</a> -->
         </li>
-        <li class="nav-item mt-3" *ngIf="itemhistorykit.length !=0">
+        <li class="nav-item mt-3" *ngIf="itemhistorykit?.length !=0">
           <div class="nav-link nav-title as-bold as-color-9" [routerLink]="'itemhistory'">Item History</div>
           <hr>
           <a *ngFor="let kitting of itemhistorykit" class="nav-link as-color-9"
@@ -229,7 +229,7 @@
 
           <div class="d-grid mb-3 as-mt-2">
             <button class="btn btn-lg btn-primary btn-login  fw-bold mb-2 mr-2" type="button" data-toggle="modal"
-              (click)="logout()" data-dismiss="modal">Yes</button>
+              (click)="logout()">Yes</button>
             <!--   data-target="#myModal1" -->
             <button class="btn btn-lg btn-secondary btn-login  fw-bold mb-2 ml-2" type="button"
               data-dismiss="modal">No</button>
