@@ -930,6 +930,11 @@ button:focus {
 .as-card-width2,
 .as-card-width3 {
   width: auto;
+  justify-content: space-between;
+}
+
+.my-2.text-left.as-bold.as-color-4.as-card-width2 {
+  text-align: center;
 }
 
 .footer {
