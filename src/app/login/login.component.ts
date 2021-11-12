@@ -62,10 +62,15 @@ export class LoginComponent implements OnInit {
        console.log(this.profiledetails?.language_prefered)
        this.crud.get(appModels.LAN).pipe(untilDestroyed(this)).subscribe((res: any) => {
            console.log(res)
-           this.language = res['list']
-           let data= this.language.find(x => x._id === this.profiledetails?.language_prefered)
-           console.log(data?.code)
-           this.setCookie("googtrans", "/en/"+data?.code);
+           if(res){
+            this.language = res['list']
+            let data= this.language.find(x => x._id === this.profiledetails?.language_prefered)
+            console.log(data?.code)
+            this.setCookie("googtrans", "/en/"+data?.code);
+           }else{
+            this.setCookie("googtrans", "/en/en");
+           }
+         
            this.toast.success("Logged in Successfully")
            this.router.navigate(['/pages/home'])
        })
