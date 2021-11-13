@@ -145,6 +145,7 @@ if(this.List?.length ==0){
   async formatMachineData(item) {
     let machineData: any[] = []
     console.log('*******  Format Data **********')
+    console.log(this.takeNowKit) 
 
     let i = 0
     this.takeNowKit[0].kit_item_details.forEach(async item => {
@@ -219,7 +220,9 @@ if(this.List?.length ==0){
   TakeOrReturnItems: any[] = []
   machinesList = []
   async takeKit(item: string) {
+    console.log(item)
     let totalMachinesList = await this.formatMachineData(item)
+    console.log(totalMachinesList)
     let machinesList = await this.groupbyData(totalMachinesList)
     console.log(machinesList)
     //call allDevInfo once

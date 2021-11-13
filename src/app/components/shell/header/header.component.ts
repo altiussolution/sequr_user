@@ -106,6 +106,11 @@ myform: FormGroup;
             
              this.crud.getcarttotal(this.cartList?.length)
       })
+           
+      this.crud.get(appModels.COLOMNIDS).pipe(untilDestroyed(this)).subscribe((res:any) => {
+        console.log(res)
+
+      })
 this.crud.get(appModels.CATEGORYLIST).pipe(untilDestroyed(this)).subscribe((res:any) => {
     console.log(res)
    this.category=res['data']
@@ -129,23 +134,26 @@ setval(val:any){
 }
 
   logout(){ 
-this.dooropens=[];
-this.dooropenss=[];
-this.crud.get('machine/wasfullopen').pipe(untilDestroyed(this)).subscribe((res:any) => {
-console.log(res)
-this.dooropens=res?.details?.alldevinfo?.Count
-this.crud.get('machine/isfullopen').pipe(untilDestroyed(this)).subscribe((res:any) => {
-  console.log(res)
-  this.dooropenss=res?.details?.alldevinfo?.Count
-if(this.dooropens.length==0 && this.dooropenss.length==0){
-  this.closebutton.nativeElement.click();
+    this.closebutton.nativeElement.click();
     localStorage.clear();
     this.router.navigate(['./login']);
-}else{
-  this.toast.error("Please Close The Door")
-}
-  })
-})
+// this.dooropens=[];
+// this.dooropenss=[];
+// this.crud.get('machine/wasfullopen').pipe(untilDestroyed(this)).subscribe((res:any) => {
+// console.log(res)
+// this.dooropens=res?.details?.alldevinfo?.Count
+// this.crud.get('machine/isfullopen').pipe(untilDestroyed(this)).subscribe((res:any) => {
+//   console.log(res)
+//   this.dooropenss=res?.details?.alldevinfo?.Count
+// if(this.dooropens.length==0 && this.dooropenss.length==0){
+//   this.closebutton.nativeElement.click();
+//     localStorage.clear();
+//     this.router.navigate(['./login']);
+// }else{
+//   this.toast.error("Please Close The Door")
+// }
+//   })
+// })
 
 }
 @ViewChild('searchInput', { read: ElementRef })

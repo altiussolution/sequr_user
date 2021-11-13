@@ -6,6 +6,8 @@ enum appModels {
     CATEGORYLIST='category/getCategorylist',
     SUBCATEGORY='subCategory/get?category_id=',
     ITEMLIST='cart/itemHistory',
+    COLOMNIDS='machine/assignedColumns',
+
     KITTINGLIST='kitting/get',
     ADDKITCART='kitting/addKitToCart/',
     updateCart = 'cart/update',
