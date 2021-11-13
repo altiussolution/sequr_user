@@ -5,12 +5,13 @@
             <div class="col-md-6 pl-0">
                 <div class="image-gallery">
                     <aside class="thumbnails">
-                        <a class="selected thumbnail">
-                            <div class="thumbnail-image" style="background-image: url({{items?.image_path}});"></div>
+                        <a class="selected thumbnail" *ngFor="let data of items.image_path">
+                                          <img  src="{{data}}" (click)="showimg(data)">
+                            <!-- <div class="thumbnail-image" style="background-image: url({{data}});" (click)="showimg(data)"></div> -->
                         </a>
-                        <a class="thumbnail">
+                        <!-- <a class="thumbnail">
                             <div class="thumbnail-image" style="background-image: url({{items?.image_path}});"></div>
-                        </a>
+                        </a> -->
                         <!--<a class="thumbnail" >
                     <div class="thumbnail-image" style="background-image: url({{items?.image_path}});"></div>
 
@@ -26,12 +27,13 @@
                <main class="primary" >
                 <!-- <img  src="{{items?.image_path}}" > -->
                     <lib-ngx-image-zoom
-                        [thumbImage]=items?.image_path
-                        [fullImage]=items?.image_path
+                        [thumbImage]=mainimage
+                        [fullImage]=mainimage
                         [magnification]="1"
                         [enableScrollZoom]="true"
                         [enableLens]="true"
                         [lensWidth]="200"
+                     
                     ></lib-ngx-image-zoom>
                 </main>
                 <div class="as-avaliable">

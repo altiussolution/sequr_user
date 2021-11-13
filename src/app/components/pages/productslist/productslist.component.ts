@@ -29,6 +29,10 @@ export class ProductslistComponent implements OnInit {
   machineStatus: any;
   msg: string;
   msgg: string;
+  kitdatas: any=[];
+  kits: any;
+  List: any;
+  highkitqty: any=[];
   constructor(public crud: CrudService, private toast: ToastrService) { }
 
   ngOnInit(): void {
@@ -39,7 +43,25 @@ export class ProductslistComponent implements OnInit {
     })
   }
   addkitcart(_id: any, data) {
-    this.crud.post(appModels.ADDKITCART + _id).pipe(untilDestroyed(this)).subscribe(async (res: any) => {
+  console.log(data);
+    
+    this.highkitqty=[];
+   console.log(data)
+    this.kitdatas=data
+    console.log(this.kitdatas.kit_data)
+    this.kits = this.kitdatas.kit_data.map(m => { 
+   if(m.kit_item_qty > m.qty) { 
+    this.highkitqty.push(m?.kit_item_qty+'>'+m?.qty)
+      return false;
+  }
+ return true;
+})
+console.log(this.kits)
+this.List = this.kits.filter(item => item === false);
+console.log(this.List)
+if(this.List?.length ==0){
+ 
+   this.crud.post(appModels.ADDKITCART + _id).pipe(untilDestroyed(this)).subscribe(async (res: any) => {
       console.log(res)
       if (res != "") {
         if (res['message'] == "Successfully added into cart!") {
@@ -51,6 +73,10 @@ export class ProductslistComponent implements OnInit {
     }, error => {
       this.toast.error("Kitting cart added Unsuccessfully")
     })
+}else{
+  this.toast.error("now choosed the kit item quantity for"+this.highkitqty)
+}
+ 
   }
   
   async itemHistory(data) {
@@ -223,7 +249,7 @@ export class ProductslistComponent implements OnInit {
       this.machineStatus=status
       if (status == 'Locked' || status == 'Closed' || status == 'Unlocked' || status == 'Unknown') {
         // Lock that Column API, machine._id
-        if (status == 'Closed' || status == 'Unlocked' || status == 'Unknown') {
+        if (status == 'Closed' || status == 'Unlocked') {
           await this.crud.post('machine/lockBin', machine).pipe(untilDestroyed(this)).toPromise()
           await this.sleep(1000)
         }
@@ -236,7 +262,8 @@ export class ProductslistComponent implements OnInit {
         let apiHitTimes = 0
         let machineColumnStatus = false
         while (apiHitTimes < 15 && !machineColumnStatus) {
-          console.log('********************* while loop **************' + machineColumnStatus)
+          console.log('********************* API Hit Times ************** ' + machineColumnStatus)
+          console.log(' Machine Status : ' + machineColumnStatus)
           let singleDeviceInfo = await this.singleDeviceInfo(machine)
           let status = singleDeviceInfo.details.singledevinfo.column[0]['status'][0]
           console.log('inside while loop status bin ' + machine.bin_id + status)
@@ -255,6 +282,9 @@ export class ProductslistComponent implements OnInit {
           }
           //set delay time
           await this.sleep(10000)
+          if (status == 'Unlocked' && apiHitTimes == 14) {
+            await this.crud.post('machine/lockBin', machine).pipe(untilDestroyed(this)).toPromise()
+          }
           apiHitTimes++
         }
         // if user does not closed after ceratin count of times API hit
@@ -285,9 +315,11 @@ export class ProductslistComponent implements OnInit {
     } else if (successTake.length == totalMachinesList.length) {
       console.log(successTake.length + ' items Taken successfully')
       this.msgg=successTake.length + ' items Taken successfully'
+      await this.addMachineUsage(totalMachineUsage)
       await this.updateAfterTakeOrReturn(successTake)
     } else if (successTake.length < totalMachinesList.length) {
       console.log(successTake.length + ' items Taken successfully \n' + successTake.length + ' items failed return')
+      await this.addMachineUsage(totalMachineUsage)
       await this.updateAfterTakeOrReturn(successTake, item)
       this.msgg=successTake.length + ' items Taken successfully \n' + successTake.length + ' items failed return'
 

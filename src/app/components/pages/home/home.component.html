@@ -30,7 +30,7 @@
     <div class="row ml-0 as-grid">
       <div class="as-card " *ngFor="let category of data ">
         <!--<div class="as-home-img" style="background: url({{category?.image_path}});"  (click)="selectcategory(category)"></div>-->
-         <img class="as-home-img" src="{{category?.image_path}}" (click)="selectcategory(category)"> 
+         <img class="as-home-img" src="{{category?.image_path}}" (click)="selectcategory(category)" onError="this.src='../../../assets/img/errorimage.png'"> 
         <a class="as-crd-title-new" (click)="selectcategory(category)">{{category?.sub_category_name}}</a>  
     </div>
     <ng-container class="ng-star-inserted w-100 text-center as-nodata" *ngIf="data?.length == 0">

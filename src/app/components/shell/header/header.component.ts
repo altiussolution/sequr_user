@@ -79,6 +79,14 @@ myform: FormGroup;
  
 
  ngOnInit():void {
+  let assidebar = document.querySelector('.sidenav');
+  let body = document.querySelector('body');
+  if(assidebar.classList.contains('sidenav'))    
+      {
+        assidebar.classList.add('sidebar-hidden');
+        body.classList.add('activemenu');
+        assidebar.classList.add('sidebar');
+      }
   this.profiledetails = JSON.parse(localStorage.getItem('personal'))
   console.log(this.profiledetails)
   this.crud.get(appModels.USERPROFILE + this.profiledetails._id).pipe(untilDestroyed(this)).subscribe((res: any) => {
