@@ -49,13 +49,13 @@ export class MycartComponent implements OnInit {
     // this.takeItems()
   }
   getCartItems() {
-    this.cartList = [];
+  
     this.crudService.get(appModels.listCart).pipe(untilDestroyed(this)).subscribe(res => {
       console.log(res)
       this.item_details = res.item_details
       console.log(this.item_details)
-
       this.cartdata = res[0]
+      this.cartList = [];
       for (let i = 0; i < this.cartdata?.cart?.length; i++) {
         if (this.cartdata?.cart[i]['cart_status'] == 1) {
           this.cartList.push(this.cartdata?.cart[i])

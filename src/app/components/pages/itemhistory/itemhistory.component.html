@@ -1,9 +1,9 @@
-<div class="container-fluid as-mt-main i-history">
+<div class="container-fluid as-mt-main i-history" *ngIf="this.view">
   <div class="as-header">
     <div class="as-title">
       Item History
     </div>
-    <div class="as-color-1">
+    <div class="as-color-1" *ngIf="itemhistorycart.length!=0">
 
       <div class="text-center">
         <button type="button" [disabled]="arrayvalue?.length==0"
@@ -41,10 +41,10 @@
 
   </div>
   <div class="as-header mb-4">
-    <h2 class="h2-sub">
+    <h2 class="h2-sub" *ngIf="itemhistorykit.length!=0">
       Kitting Sets
     </h2>
-    <div class=" as-color-1">
+    <div class=" as-color-1" *ngIf="itemhistorykit.length!=0">
 
       <div class="text-center">
         <button type="button" class="btn btn-round btn-outline-info"
@@ -194,7 +194,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <div class="as-bold as-color-4 as-font-24">Return</div>
-          <button type="button" class="close" #closebutton data-dismiss="modal" (click)="close()">&times;</button>
+          <button type="button" class="close" #closebutton data-dismiss="modal" (click)="close()" >&times;</button>
         </div>
         <hr class="as-width-93">
         <div class="modal-body text-center">
@@ -249,7 +249,7 @@
           <div class="d-flex mb-3">
             <div class="as-color-4 as-font-24 line-h-12">Are you sure, do you want to return the item?</div>
             <button class="btn btn-lg btn-primary btn-login  fw-bold mb-2" type="button"
-            (click)="returnItem('cart')">Confirm</button>
+            (click)="returnItem('cart')" [disabled]="!this.add">Confirm</button>
           </div>
         </div>
 
@@ -259,4 +259,12 @@
 
 
 
+</div>
+
+<div class="container-fluid as-mt-main i-history" *ngIf="!this.view">
+  <div class="as-header">
+    <div class="as-title">
+      View Access Denied
+    </div>
+  </div>
 </div>

@@ -13,7 +13,7 @@ enum appModels {
     updateCart = 'cart/update',
     listCart = 'cart/myCart',
     LAN='region/language',
-    CHANGEPWD='employee/changePassword/id',
+    CHANGEPWD='employee/changePassword/',
     RETURNCART='cart/return',
     RETURNKIT='kits/return',
     TAKENOW='machine',

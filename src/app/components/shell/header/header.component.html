@@ -58,10 +58,10 @@
           <span class="as-dropdown-toggle"></span>
         </li>
         <li class="as-menu-mega-blog">
-          <a [routerLink]="'/pages/itemhistory'">Item History</a>
+          <a [routerLink]="'/pages/itemhistory'" routerLinkActive="active">Item History</a>
         </li>
         <li class="as-menu-mega-blog">
-          <a [routerLink]="'/pages/productslist'">Kitting</a>
+          <a [routerLink]="'/pages/productslist'" routerLinkActive="active">Kitting</a>
         </li>
       </ul>
     </div>
@@ -176,7 +176,8 @@
             </button>
           </div> -->
 <form autocomplete="off" [formGroup]="myform">
-  <input type="search" placeholder="Search" class="form-control" formControlName="searchvalue" (keyup)="searching($event)" >
+  <i class="fa fa-search srch_ic" aria-hidden="true"></i>
+  <input type="search" placeholder="Search" class="form-control top_srch" formControlName="searchvalue" (keyup)="searching($event)" >
  
 </form>
           
@@ -190,7 +191,7 @@
           </a>
         </li>
         <li class="nav-item relative as-nav" [routerLink]="'/pages/mycart'" (click)="this.selectedItem=''">
-          <a class="nav-link">
+          <a class="nav-link" routerLinkActive="active">
             <div class="addtocart-icon"></div>
           </a>
           <div class="shop-count"><span [innerHTML]="cartProductCount"></span></div>
