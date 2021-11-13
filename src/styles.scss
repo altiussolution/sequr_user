@@ -1167,8 +1167,12 @@ input.pop {
   }
 
   .mycart .form-group.form-check {
-    margin-top: 2.3rem;
+    margin-top: 0.5rem;
   }
+
+  .as-details-txt .as-font-18.as-bold {
+    margin-bottom: 10px;
+}
 
   .mycart .mr-5 {
     margin-top: 2.3rem;
@@ -1256,6 +1260,10 @@ input.pop {
   .header-top {
     height: 120px;
   }
+  .mb-3.mt-1.text-left.as-bold.as-color-4.as-card-width2.as-font-30 {
+    margin-top: 30px !important;
+    text-align:center !important;
+}
 
   ul.as-menu>li>a {
     font-size: 1.4rem;
@@ -1303,7 +1311,7 @@ input.pop {
     line-height: 1.2;
   }
   .as-card .row.mx-0 {
-    justify-content: center;
+    justify-content: space-between;
 }
 
   .as-font-26 {
