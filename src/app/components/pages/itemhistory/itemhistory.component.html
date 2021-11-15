@@ -48,7 +48,7 @@
 
       <div class="text-center">
         <button type="button" class="btn btn-round btn-outline-info"
-          [disabled]="arrayvalue1?.length==0" (click)="returnItem('kit')">Return Kits</button>
+          [disabled]="arrayvalue1?.length==0" (click)="returnItem('kit',mymodal)">Return Kits</button>
       </div>
     </div>
   </div>
@@ -210,7 +210,7 @@
                 {{data?.item?.item_name}}
               </div>
               <div class="d-flex align-items-center as-mr-det">
-                <label class="mr-2">Qty :</label>
+                <label class="mr-2">QTY :</label>
                 <input type="number" id="quantity{{i}}" class="form-control quantity" placeholder="2" name="quantity"
                   min="1" max="5" (keyup)="myFunction($event,i)">
               </div>
@@ -249,7 +249,7 @@
           <div class="d-flex mb-3">
             <div class="as-color-4 as-font-24 line-h-12">Are you sure, do you want to return the item?</div>
             <button class="btn btn-lg btn-primary btn-login  fw-bold mb-2" type="button"
-            (click)="returnItem('cart')" [disabled]="!this.add">Confirm</button>
+            (click)="returnItem('cart',mymodal)" [disabled]="!this.add">Confirm</button>
           </div>
         </div>
 
@@ -263,8 +263,54 @@
 
 <div class="container-fluid as-mt-main i-history" *ngIf="!this.view">
   <div class="as-header">
-    <div class="as-title">
-      View Access Denied
-    </div>
+     <div class="no_data_msg w-100 text-center as-nodata ">View Access Denied</div>
   </div>
 </div>
+
+<ng-template #mymodal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title"></h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+      <table class="table table-striped">
+      
+          <tbody>
+            <tr>
+              <td>Cube ID :</td>
+              <td>{{machineCubeID}}</td>
+              
+            </tr>
+            <tr>
+              <td>Colomn ID :</td>
+              <td>{{machineColumnID}}</td>
+              
+            </tr>
+            <tr>
+              <td>Draw ID :</td>
+              <td>{{machineDrawID}}</td>
+              
+            </tr>
+            <tr>
+              <td>compartment ID :</td>
+              <td>{{machineCompartmentID}}</td>
+              
+            </tr>
+            <tr>
+              <td>Status :</td>
+              <td>{{machineStatus}}</td>
+              
+            </tr>
+          </tbody>
+        </table>
+        <div class="details text-center" style="background-color: #ddd; padding: 15px; margin: auto;"> 
+        <p><strong style="color: rgb(23, 167, 23);">{{msg}}</strong></p>
+      <p><strong style="color: rgb(23, 167, 23);">{{msgg}}</strong></p>
+  </div>
+  </div>
+  <!-- <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Ok</button>
+  </div> -->
+</ng-template>
