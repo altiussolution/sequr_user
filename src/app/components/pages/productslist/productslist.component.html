@@ -59,7 +59,7 @@
           </div>
           <div class="bg-white mx-1 my-3 row as-text-flex as-pro-py" *ngFor="let items of data?.kit_data">
             <div class="pr-list-w-100">
-              <img class="as-productlst-img" [src]="items?.item.image_path" onError="this.src='../../../assets/img/errorimage.png'">
+              <img class="as-productlst-img" [src]="items?.item.image_path[0]" onError="this.src='../../../assets/img/errorimage.png'">
 
               <!--<div class="as-productlst-img" style="background-image: url({{items?.item.image_path}});"></div>-->
             </div>
