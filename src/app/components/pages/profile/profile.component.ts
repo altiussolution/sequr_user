@@ -72,16 +72,19 @@ export class ProfileComponent implements OnInit {
     }
     console.log(data)
     if (this.cpForm.valid) {
+    if(this.cpForm.value.oldpassword ==this.cpForm.value.newpassword){
+      this.toast.error('Old password and New password is same,Please enter valid New password')
+    }else{
     this.crud.post(appModels.CHANGEPWD + this.profiledetails._id, data).subscribe(res => {
       console.log(res)
-      if(res['message']=="Password changed successfully"){
-        this.toast.success("Password Changed successfully")
-      }
+        this.toast.success('Password changed successfully')
+      
     },(error:HttpErrorResponse)=>{
       if(error.status === 422){  
         this.toast.error('Current password is incorrect')
       }
     })
+  }
   }
 
   }

@@ -105,6 +105,13 @@ myform: FormGroup;
             
              this.crud.getcarttotal(this.cartList?.length)
       })
+
+      
+      this.crud.get(appModels.COLOMNIDS).pipe(untilDestroyed(this)).subscribe((res:any) => {
+        console.log(res)
+
+      })
+
 this.crud.get(appModels.CATEGORYLIST).pipe(untilDestroyed(this)).subscribe((res:any) => {
     console.log(res)
    this.category=res['data']
