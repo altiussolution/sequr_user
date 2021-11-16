@@ -3,6 +3,7 @@ import { untilDestroyed } from 'ngx-take-until-destroy';
 import { CrudService } from 'src/app/services/crud.service';
 import { appModels } from 'src/app/services/shared/enum/enum.util';
 import { ToastrService } from 'ngx-toastr';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-productslist',
@@ -33,7 +34,7 @@ export class ProductslistComponent implements OnInit {
   kits: any;
   List: any;
   highkitqty: any=[];
-  constructor(public crud: CrudService, private toast: ToastrService) { }
+  constructor(public crud: CrudService, private toast: ToastrService,public modalService: NgbModal) { }
 
   ngOnInit(): void {
     this.crud.get(appModels.KITTINGLIST).pipe(untilDestroyed(this)).subscribe((res: any) => {
@@ -42,7 +43,7 @@ export class ProductslistComponent implements OnInit {
       this.getData({ pageIndex: this.page, pageSize: this.size });
     })
   }
-  addkitcart(_id: any, data) {
+  addkitcart(_id: any, data,modal) {
   console.log(data);
     
     this.highkitqty=[];
@@ -60,7 +61,7 @@ console.log(this.kits)
 this.List = this.kits.filter(item => item === false);
 console.log(this.List)
 if(this.List?.length ==0){
- 
+  this.modalService.open(modal,{backdrop:false});
    this.crud.post(appModels.ADDKITCART + _id).pipe(untilDestroyed(this)).subscribe(async (res: any) => {
       console.log(res)
       if (res != "") {
@@ -74,7 +75,8 @@ if(this.List?.length ==0){
       this.toast.error("Kitting cart added Unsuccessfully")
     })
 }else{
-  this.toast.error("now choosed the kit item quantity for"+this.highkitqty)
+  // this.toast.error("now choosed the kit item quantity for"+this.highkitqty)
+  this.toast.error("Kitting Quantity Was Not Available")
 }
  
   }

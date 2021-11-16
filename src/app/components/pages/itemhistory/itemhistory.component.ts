@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { ToastrService } from 'ngx-toastr';
 import { CrudService } from 'src/app/services/crud.service';
@@ -26,7 +27,14 @@ view:any;
   add: any;
   update: any;
   deleted: any;
-  constructor(public crud: CrudService, private toast: ToastrService) { }
+  machineCubeID: any;
+  machineColumnID: any;
+  machineDrawID: any;
+  machineCompartmentID: any;
+  machineStatus: any;
+  msg: string;
+  msgg: string;
+  constructor(public crud: CrudService, private toast: ToastrService, public modalService: NgbModal) { }
   ngOnInit(): void {
     this.permissions=JSON.parse(localStorage.getItem("personal"))
 console.log(this.permissions.role_id.permission)
@@ -256,9 +264,10 @@ this.deleted = this.permissions.role_id.permission.find(temp=>temp=="return_dele
   // Take Items form machine  
   TakeOrReturnItems: any[] = []
   machinesList = []
-  async returnItem(item: string) {
+  async returnItem(item: string,modal) {
     if (confirm(`Are you sure want to return?`)) {
       if(this.add){
+        this.modalService.open(item,{backdrop:false});
         let totalMachinesList = await this.formatMachineData(item)
         console.log(totalMachinesList)
         let machinesList = await this.groupbyData(totalMachinesList)
@@ -283,7 +292,11 @@ this.deleted = this.permissions.role_id.permission.find(temp=>temp=="return_dele
           let status = singleDeviceInfo.details.singledevinfo.column[0]['status'][0]
           console.log('Column : ' + machine.column_id + '' + 'drawer: ' + machine.bin_id + ' ' + 'Compartment: ' + machine.compartment_id)
           console.log(status)
-    
+          this.machineCubeID = machine.cube_id
+          this.machineColumnID = machine.column_id
+          this.machineDrawID = machine.bin_id
+          this.machineCompartmentID = machine.compartment_id
+          this.machineStatus = status
           if (status == 'Locked' || status == 'Closed' || status == 'Unlocked' || status == 'Unknown') {
             // Lock that Column API, machine._id
             if (status == 'Closed' || status == 'Unlocked') {
@@ -304,6 +317,7 @@ this.deleted = this.permissions.role_id.permission.find(temp=>temp=="return_dele
               let singleDeviceInfo = await this.singleDeviceInfo(machine)
               let status = singleDeviceInfo.details.singledevinfo.column[0]['status'][0]
               console.log('inside while loop status bin ' + machine.bin_id + status)
+            
               if (status == 'Closed' || status == 'Locked' || status == 'Unknown') {
                 await this.sleep(9000)
                 await this.crud.post('machine/lockBin', machine).pipe(untilDestroyed(this)).toPromise()
@@ -336,7 +350,9 @@ this.deleted = this.permissions.role_id.permission.find(temp=>temp=="return_dele
           // break for loop if single device info is unknown
           else {
             console.log('Machine status unknown ' + status)
+            this.msg='Machine status unknown ' + status
             console.log('Close all drawers properly and click take now')
+            this.msg='Close all drawers properly and click take now'
             break
           }
         }
@@ -345,12 +361,15 @@ this.deleted = this.permissions.role_id.permission.find(temp=>temp=="return_dele
         console.log(successTake)
         if (successTake.length == 0) {
           console.log('Machine status unknown No Item returned')
+          this.msgg='Machine Status Unknown No Item Returned'
         } else if (successTake.length == totalMachinesList.length) {
           console.log(successTake.length + ' items returned successfully')
+          this.msgg=successTake.length + ' items returned successfully'
           await this.addMachineUsage(totalMachineUsage)
           await this.updateAfterTakeOrReturn(successTake)
         } else if (successTake.length < totalMachinesList.length) {
           console.log(successTake.length + ' items Taken successfully \n' + successTake.length + ' items failed return')
+          this.msgg=successTake.length + ' items Taken successfully \n' + successTake.length + ' items failed return'
           await this.addMachineUsage(totalMachineUsage)
           await this.updateAfterTakeOrReturn(successTake, item)
         }
