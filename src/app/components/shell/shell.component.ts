@@ -16,6 +16,7 @@ export class ShellComponent implements OnInit {
   constructor(public crud:CrudService,public router:Router) { }
 
   ngOnInit(): void {
+    this.setCookie("googtrans", localStorage.getItem("lan"));
     this.googleTranslateElementInit()
   }
   googleTranslateElementInit() {

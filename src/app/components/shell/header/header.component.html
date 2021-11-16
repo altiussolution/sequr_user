@@ -209,13 +209,12 @@
         <ul *ngFor="let data of searchdata">
           <li><a (click)="search(data._id)">
               <span class="as-2">
-                <img class="as-1-img" src="{{data.image_path}}" ></span>
+                <img class="as-1-img" src="{{data.image_path[0]}}" ></span>
               <p class="as-txt">{{data.item_name}}</p>
             </a></li>
         </ul>
         </div>
       </div>
-
     </div>
   </nav>
   <!-- POPUP DESIGN Logout -->
