@@ -350,7 +350,7 @@ ul.as-menu>li>a {
 }
 
 ul.as-menu>li>a:only-child {
-  padding: 0 15px
+  padding: 0 15px 2px;
 }
 
 
@@ -552,7 +552,7 @@ ul.as-menu>li.as-menu-mega-shop>div {
   width: 100%;
   // height: 55vh;
   height: 370px;
-  top: 50px;
+  top: 52px;
   left: 0;
   background: #fff;
   border-top: 4px solid #2a96c7;
@@ -1427,4 +1427,22 @@ button.toggleBtn {
   #search-container .search-fields {
     padding: 0px 0px;
   }
+}
+
+// ------------------san styles-------------------------
+ul.navbar-nav > li.nav-item > a.active,
+ul.as-menu > li.as-menu-mega-blog > a.active {
+  border-bottom: 3px solid #2a96c7;
+}
+.navbar {
+
+  padding: 0 1rem!important;
+}
+.srch_ic {
+  margin-top: 19px;
+  position: absolute;
+}
+.top_srch{
+  margin-top: 7px;
+  padding-left: 24px;
 }

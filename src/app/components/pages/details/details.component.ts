@@ -5,11 +5,12 @@ import { untilDestroyed } from 'ngx-take-until-destroy';
 import { ToastrService } from 'ngx-toastr';
 import { CrudService } from 'src/app/services/crud.service';
 import { appModels } from 'src/app/services/shared/enum/enum.util';
-
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'app-details',
   templateUrl: './details.component.html',
-  styleUrls: ['./details.component.scss']
+  styleUrls: ['./details.component.scss'],
+  providers:[NgbModal]
 })
 export class DetailsComponent implements OnInit {
   items: any = [];
@@ -44,7 +45,8 @@ export class DetailsComponent implements OnInit {
   massage: string;
   msgg: string;
   mainimage: any;
-  constructor(public router: Router, private toast: ToastrService, private fb: FormBuilder, public crud: CrudService) {
+  constructor(public router: Router, private toast: ToastrService, private fb: FormBuilder, public crud: CrudService,
+    public modalService: NgbModal) {
 
 
   }
@@ -108,6 +110,7 @@ export class DetailsComponent implements OnInit {
   }
 
   async addtocart(item?) {
+   
     if (this.qut && this.qut > 0) {
       let cart = {
         "item": this.machine.item,
@@ -117,51 +120,60 @@ export class DetailsComponent implements OnInit {
 
       this.crud.post(appModels.ADDTOCART, cart).subscribe(async res => {
         console.log(res)
+
+        if(res['message']=="Successfully added into cart!"){
+          this.crud.get(appModels.listCart).pipe(untilDestroyed(this)).subscribe(async res => {
+            console.log(res)
+            if (res) {
+              if (!item) {
+                this.toast.success("cart added successfully")
+                this.cartList1 = [];
+                this.crud.get(appModels.listCart).pipe(untilDestroyed(this)).subscribe(async res => {
+  
+                  this.cartdata1 = res[0]
+                  for (let i = 0; i < this.cartdata1?.cart?.length; i++) {
+                    if (this.cartdata1?.cart[i]['cart_status'] == 1) {
+                      this.cartList1.push(this.cartdata1?.cart[i])
+                    }
+                  }
+                  console.log(this.cartList1)
+                  this.crud.getcarttotal(this.cartList1?.length)
+                  this.router.navigate(['pages/details'])
+  
+                })
+              }
+              if (item) { 
+                this.modalService.open(item,{backdrop:false});
+                this.cartList = [];
+                this.crud.get(appModels.listCart).pipe(untilDestroyed(this)).subscribe(async res => {
+                  console.log(res)
+                  this.toast.success("Door open Sucessfully")
+                  this.cartdata = res[0]
+                  for (let i = 0; i < this.cartdata?.cart?.length; i++) {
+                    if (this.cartdata?.cart[i]['cart_status'] == 1 && this.cartdata?.cart[i]['item']['_id'] == this.machine.item) {
+                      this.cartList.push(this.cartdata?.cart[i])
+                    }
+                  }
+                  console.log(this.cartList)
+                  await this.takeItem(item)
+                  this.crud.getcarttotal(this.cartList?.length)
+                }, error => {
+                  this.toast.error(error.message);
+                })
+              }
+              //Arunkumar
+  
+            }
+  
+          }, error => {
+            this.toast.error(error.message);
+          })
+         
+        }else if(res['message']=="Stock Not Yet Allocated"){
+          this.toast.error(res['message'])
+        }
         //this.toast.success("cart added successfully")
-        this.crud.get(appModels.listCart).pipe(untilDestroyed(this)).subscribe(async res => {
-          console.log(res)
-          if (res) {
-            if (!item) {
-              this.toast.success("cart added successfully")
-              this.cartList1 = [];
-              this.crud.get(appModels.listCart).pipe(untilDestroyed(this)).subscribe(async res => {
-                this.cartdata1 = res[0]
-                for (let i = 0; i < this.cartdata1?.cart?.length; i++) {
-                  if (this.cartdata1?.cart[i]['cart_status'] == 1) {
-                    this.cartList1.push(this.cartdata1?.cart[i])
-                  }
-                }
-                console.log(this.cartList1)
-                this.crud.getcarttotal(this.cartList1?.length)
-                this.router.navigate(['pages/details'])
-
-              })
-            }
-            if (item) {
-              this.cartList = [];
-              this.crud.get(appModels.listCart).pipe(untilDestroyed(this)).subscribe(async res => {
-                console.log(res)
-                this.toast.success("Door open Sucessfully")
-                this.cartdata = res[0]
-                for (let i = 0; i < this.cartdata?.cart?.length; i++) {
-                  if (this.cartdata?.cart[i]['cart_status'] == 1 && this.cartdata?.cart[i]['item']['_id'] == this.machine.item) {
-                    this.cartList.push(this.cartdata?.cart[i])
-                  }
-                }
-                console.log(this.cartList)
-                await this.takeItem(item)
-                this.crud.getcarttotal(this.cartList?.length)
-              }, error => {
-                this.toast.error(error.message);
-              })
-            }
-            //Arunkumar
-
-          }
-
-        }, error => {
-          this.toast.error(error.message);
-        })
+  
       })
     } else {
       this.toast.error("Please Enter Valid QTY")

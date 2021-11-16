@@ -44,21 +44,25 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.profiledetails = JSON.parse(localStorage.getItem('personal'))
-    console.log(this.profiledetails)
+    console.log(this.profiledetails._id)
     this.crud.get(appModels.USERPROFILE + this.profiledetails._id).pipe(untilDestroyed(this)).subscribe((res: any) => {
       console.log(res)
       this.profile = res['data']
+      console.log(this.profile['language_prefered'])
+      this.crud.get(appModels.LAN).pipe(untilDestroyed(this)).subscribe((res: any) => {
+        console.log(res)
+        this.language = res['list']
+          console.log(this.profile['language_prefered'])
+        for (let i = 0; i < this.language.length; i++) {
+          if (this.language[i]._id == this.profile['language_prefered']) {
+           this.lan = this.language[i]
+          }
+        }
+        console.log(this.lan)
+      })
     })
  
-    this.crud.get(appModels.LAN).pipe(untilDestroyed(this)).subscribe((res: any) => {
-      console.log(res)
-      this.language = res['list']
-      for (let i = 0; i < this.language.length; i++) {
-        if (this.language[i]?._id == this.profile.language_prefered) {
-          this.lan = this.language[i]
-        }
-      }
-    })
+   
 
   }
   changepwd() {
@@ -68,16 +72,19 @@ export class ProfileComponent implements OnInit {
     }
     console.log(data)
     if (this.cpForm.valid) {
-    this.crud.post(appModels.CHANGEPWD, data).subscribe(res => {
+    if(this.cpForm.value.oldpassword ==this.cpForm.value.newpassword){
+      this.toast.error('Old password and New password is same,Please enter valid New password')
+    }else{
+    this.crud.post(appModels.CHANGEPWD + this.profiledetails._id, data).subscribe(res => {
       console.log(res)
-      if(res['message']=="Password changed successfully"){
-        this.toast.success("Password Change successfully")
-      }
+        this.toast.success('Password changed successfully')
+      
     },(error:HttpErrorResponse)=>{
       if(error.status === 422){  
         this.toast.error('Current password is incorrect')
       }
     })
+  }
   }
 
   }

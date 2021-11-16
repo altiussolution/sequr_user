@@ -16,7 +16,7 @@ declare var google
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
- 
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   message: any=[];
   categoryName: any;
   subcategories1: any=[];
@@ -30,7 +30,7 @@ export class HomeComponent implements OnInit {
   selectedGroup: any;
   profiledetails: any=[];
   constructor(public crud:CrudService,public router:Router,public fb:FormBuilder) { 
- 
+
   }
 
   ngOnInit() {
@@ -140,3 +140,4 @@ ngOnDestroy(){
     asgridl.classList.remove('view-active')
   }
 }
+

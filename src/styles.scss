@@ -12,6 +12,7 @@ body,
   // height: 100vh;
   // color: #717171;
   color: #3b3b3b;
+  background: #fcfcfc;
 }
 
 h1,
@@ -61,12 +62,12 @@ textarea {
   // margin-top: 90px;
   // width: 80%;
   // margin-left: 236px;
-  margin-top: 90px;
-  width: 80%;
+  margin-top: 50px;
+  width: 82%;
   // width: 87%;
 
   float: right;
-  padding-right: 50px;
+  padding-right: 0px;
   // padding-left: 50px;
   transition: all .3s linear;
   padding-bottom: 60px;
@@ -177,13 +178,14 @@ input:-webkit-autofill {
 }
 
 .navbar-expand-lg .navbar-nav.side-nav .nav-link.as-active {
-  color: #2e2e2e !important;
+  color: #2a96c7 !important;
   cursor: pointer;
 }
 
 .header-top {
-  box-shadow: 0 3px 5px rgba(0, 0, 0, .1)
-}
+  //box-shadow: 0 3px 5px rgba(0, 0, 0, .1);
+  border-bottom: 1px solid #ebebeb;
+  }
 
 .leftmenutrigger,
 .blocker {
@@ -227,11 +229,11 @@ input:-webkit-autofill {
     /* background: #585f66; */
     box-shadow: 2px 1px 2px rgba(0, 0, 0, .1);
     position: fixed;
-    top: 94px;
+    top: 60px;
     flex-direction: column !important;
     // left: -220px;
     left: 0;
-    width: 274px;
+    width: 272px;
     overflow-y: auto;
     bottom: 0;
     overflow-x: hidden;
@@ -261,17 +263,17 @@ input:-webkit-autofill {
 
 .shop-count {
   position: absolute;
-  top: 14px;
+  top: 5px;
   font-size: 13px;
-  width: 14px;
-  height: 14px;
+  width: 22px;
+  height: 22px;
   background: black;
   color: white;
   text-align: center;
   border-radius: 100%;
   font-weight: 800;
   right: 5px;
-  line-height: 1;
+  line-height: 21px;
 }
 
 .relative {
@@ -298,7 +300,7 @@ input:-webkit-autofill {
   position: relative;
   padding-right: 15px;
   padding-left: 15px;
-
+  background: #fff;
 }
 
 // .activemenu .as-card {
@@ -478,9 +480,10 @@ input {
   padding: 10px 15px;
   border: 1px solid #adc2d6;
   margin-bottom: 2rem;
-  max-height: 70vh;
+  // max-height: 70vh;
   overflow: overlay;
-  min-height: 70vh;
+  // min-height: 70vh;
+  height: auto;
 }
 
 .search-icon {
@@ -520,7 +523,7 @@ input {
   width: 40px;
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 33px;
+  background-size: 40px;
   cursor: pointer;
 }
 
@@ -768,7 +771,7 @@ input:-webkit-autofill::first-line {
   /* border: 1px solid lightgray; */
   width: 33%;
   max-width: 286px;
-  padding: 1.5rem;
+  padding: 1rem;
 }
 
 .activemenu .as-mt-main.i-history {
@@ -930,6 +933,11 @@ button:focus {
 .as-card-width2,
 .as-card-width3 {
   width: auto;
+  justify-content: space-between;
+}
+
+.my-2.text-left.as-bold.as-color-4.as-card-width2 {
+  text-align: center;
 }
 
 .footer {
@@ -979,6 +987,10 @@ button:focus {
 
 .as-list .as-card-width3 {
   width: 33%;
+}
+
+.as-details-txt .as-font-18.as-bold {
+  margin-bottom: 10px;
 }
 
 .activemenu .as-list .as-card-width1 {
@@ -1161,8 +1173,10 @@ input.pop {
   }
 
   .mycart .form-group.form-check {
-    margin-top: 2.3rem;
+    margin-top: 0.5rem;
   }
+
+
 
   .mycart .mr-5 {
     margin-top: 2.3rem;
@@ -1228,10 +1242,10 @@ input.pop {
     width: 17%;
   }
 
-  .as-item-box {
-    max-height: 47vh;
-    min-height: 47vh;
-  }
+  // .as-item-box {
+  //   max-height: 47vh;
+  //   min-height: 47vh;
+  // }
 
   // .i-history .as-card {
   //   width: 27%;
@@ -1250,6 +1264,10 @@ input.pop {
   .header-top {
     height: 120px;
   }
+  .mb-3.mt-1.text-left.as-bold.as-color-4.as-card-width2.as-font-30 {
+    margin-top: 30px !important;
+    text-align:center !important;
+}
 
   ul.as-menu>li>a {
     font-size: 1.4rem;
@@ -1291,13 +1309,17 @@ input.pop {
   }
 
   .title-b {
-    font-size: 1.9rem;
+    font-size: 24px;
+    text-align: center !important;
     margin-top: 40px;
     line-height: 1.2;
   }
+  .as-card .row.mx-0 {
+    justify-content: space-between;
+}
 
   .as-font-26 {
-    font-size: 26px;
+    font-size: 20px;
   }
 
   .ic_lrg {
@@ -1345,11 +1367,11 @@ input.pop {
   }
 
   .as-font-30 {
-    font-size: 30px;
+    font-size: 24px;
   }
 
   .as-font-25 {
-    font-size: 25px;
+    font-size: 20px;
     line-height: 35px;
   }
 
@@ -1793,4 +1815,18 @@ main.primary .ngxImageZoomContainer {
 img.ngxImageZoomThumbnail {
   width: 410px;
   margin: inherit;
+}
+.navbar .sidebar a {
+  color: #2d2d2d;
+  font-weight: 100;
+}
+.navbar .sidebar a.as-active {
+  color: #2a96c7;
+  font-weight: 500;
+}
+.mat-paginator-container {
+  background: #fcfcfc;
+}
+.title-b{
+  margin-top: 20px;
 }

@@ -16,10 +16,13 @@ import { CookieService } from 'ngx-cookie-service';
 import { CrudService } from './services/crud.service';
 import {AutocompleteLibModule} from 'angular-ng-autocomplete';
 import { NgxImageZoomModule } from 'ngx-image-zoom';
+import { ForgotpasswordComponent } from './forgotpassword/forgotpassword.component';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent
+    LoginComponent,
+    ForgotpasswordComponent
   ],
   imports: [
     BrowserModule,
@@ -36,7 +39,8 @@ import { NgxImageZoomModule } from 'ngx-image-zoom';
       tapToDismiss: true
     }), // ToastrModule added
     MatSelectModule,
-    AutocompleteLibModule
+    AutocompleteLibModule,
+    NgbModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },CookieService,CrudService

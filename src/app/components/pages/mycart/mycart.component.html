@@ -3,7 +3,7 @@
     <div class="as-title">
       My Cart
     </div>
-    <div class="row as-color-1" *ngIf="cartList.length !=0">
+    <div class="row as-color-1" *ngIf="cartList.length !=0" style="align-items: baseline;">
       <div class="form-group form-check mr-3">
         <mat-checkbox class="example-margin" [checked]="isChecked()==true && this.cartList.length==0?false:isChecked()" [indeterminate]="isIndeterminate()"
           (change)="$event ? toggleAll($event) : null">Select All</mat-checkbox>
@@ -29,14 +29,17 @@
         <!-- <div class="as-product-img" style="background-image: url({{cart?.item?.image_path}});" onError="this.src='../../../assets/img/tools.png'"></div> -->
       </div>
 
-      <div class="my-2 text-left as-bold as-color-4 as-card-width2">{{cart?.item?.item_name}}</div>
+      <div class="my-2 as-bold as-color-4 as-card-width2">{{cart?.item?.item_name}}</div>
       <div class="row align-items-center mx-0 as-card-width3">
         <div class="dropdown1 as-width-60 mr-3">
           <!-- <div type="button" class=" dropdown-toggle btn btn-round btn-light" data-toggle="dropdown"> -->
           <!-- <input style="width: 50px;" type="number" min="1" [value]="cart?.qty" #qty> -->
-          <input type="number" class="as-width-60" id="quantity" class="form-control" placeholder="Qty" min="1" max="{{cart?.item_details.quantity}}"
+          <div class="t0-fl">
+            <label class="mb-0">QTY</label>
+          <input type="number" class="as-width-60" id="quantity" class="form-control" min="1" max="{{cart?.item_details.quantity}}"
             [value]="cart?.qty" name="quantity" #qty (change)="updateCart(cart,qty.value,cart?.item_details.quantity)" (keyup)="updateCart(cart,qty.value,cart?.item_details.quantity)">
-          <!-- </div> -->
+          </div>
+            <!-- </div> -->
           <!-- <div class="dropdown-menu">
                   <a class="dropdown-item" href="#">1</a>
                   <a class="dropdown-item" href="#">2</a>
@@ -66,35 +69,108 @@
   
   <div class="text-right mb-5 mt-3  ">
     <button type="button" class="btn as-btn btn-primary mr-3" (click)="Addmore()">Add More</button>
-    <button type="button" class="btn as-btn btn-secondary "  data-toggle="modal" data-target="#myModal" (click)="takeItems()" *ngIf="cartList.length !=0">Take Now</button>
+    <button type="button" class="btn as-btn btn-secondary " (click)="takeItems(mymodal)" *ngIf="cartList.length !=0">Take Now</button>
        <!-- Modal -->
-       <div class="text-left mb-5 mt-3  ">
+       <!-- <div class="text-left mb-5 mt-3  ">
 
        <div class="modal fade" id="myModal" role="dialog" data-backdrop="static">
         <div class="modal-dialog">
 
-            <!-- Modal content-->
+    
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <!-- <h4 class="modal-title">Modal Header</h4> -->
+               
                 </div>
                 <div class="modal-body">
-                    <p>Cube ID :{{machineCubeID}} </p>
-                    <p>Colomn ID :{{machineColumnID}} </p>
-                    <p>Draw ID :{{machineDrawID}} </p>
-                    <p>compartment ID :{{machineCompartmentID}} </p>
-                    <p>Status :{{machineStatus}}</p>
-                    <p>{{msg}}</p>
-                    <p>{{msgg}}</p>
+               
+                    
+                    <table class="table table-striped">
+    
+                      <tbody>
+                        <tr>
+                          <td>Cube ID :</td>
+                          <td>{{machineCubeID}}</td>
+                          
+                        </tr>
+                        <tr>
+                          <td>Colomn ID :</td>
+                          <td>{{machineColumnID}}</td>
+                          
+                        </tr>
+                        <tr>
+                          <td>Draw ID :</td>
+                          <td>{{machineDrawID}}</td>
+                          
+                        </tr>
+                        <tr>
+                          <td>compartment ID :</td>
+                          <td>{{machineCompartmentID}}</td>
+                          
+                        </tr>
+                        <tr>
+                          <td>Status :</td>
+                          <td>{{machineStatus}}</td>
+                          
+                        </tr>
+                      </tbody>
+                    </table>
+                    <div class="details text-center" style="background-color: #ddd; padding: 15px; margin: auto;"> 
+                      <p><strong style="color: rgb(23, 167, 23);">{{msg}}</strong></p>
+                    <p><strong style="color: rgb(23, 167, 23);">{{msgg}}</strong></p>
                 </div>
-                 <!--<div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">OK</button>
-                   <button type="button" class="btn btn-default" data-dismiss="modal" (click)="yes()">Yes</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal" (click)="close()">Close</button>
-                </div>-->
+                </div>
+            
             </div>
             </div>
   </div>
+</div> -->
 </div>
-</div>
+
+<ng-template #mymodal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title"></h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+      <table class="table table-striped">
+      
+        <tbody>
+          <tr>
+            <td>Cube ID :</td>
+            <td>{{machineCubeID}}</td>
+            
+          </tr>
+          <tr>
+            <td>Colomn ID :</td>
+            <td>{{machineColumnID}}</td>
+            
+          </tr>
+          <tr>
+            <td>Draw ID :</td>
+            <td>{{machineDrawID}}</td>
+            
+          </tr>
+          <tr>
+            <td>compartment ID :</td>
+            <td>{{machineCompartmentID}}</td>
+            
+          </tr>
+          <tr>
+            <td>Status :</td>
+            <td>{{machineStatus}}</td>
+            
+          </tr>
+        </tbody>
+        </table>
+        <div class="details text-center" style="background-color: #ddd; padding: 15px; margin: auto;"> 
+          <p><strong style="color: rgb(23, 167, 23);">{{msg}}</strong></p>
+        <p><strong style="color: rgb(23, 167, 23);">{{msgg}}</strong></p>
+    </div>
+  </div>
+  <!-- <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Ok</button>
+  </div> -->
+</ng-template>

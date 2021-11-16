@@ -28,18 +28,16 @@
             <div class="as-font-24">{{data?.kit_name}}</div>
             <div class="row align-items-center mx-0">
               <div class="mr-3">
-                <!-- data-target="#myModal" -->
-                <button type="button" class="btn bg-white btn-round btn-light"  data-toggle="modal" (click)="addkitcart(data._id, data)" data-target="#myModal" >Take Now</button>
-                <!-- <button type="button" class="btn bg-white btn-round btn-light"  data-toggle="modal"  (click)="addkitcart(data._id, data)">Take Now</button> -->
-                   <!-- Modal -->
-                   <div class="modal fade" id="myModal" role="dialog" data-backdrop="static">
+                <button type="button" class="btn bg-white btn-round btn-light"   (click)="addkitcart(data._id, data,mymodal)" >Take Now</button>
+              
+                   <!-- <div class="modal fade" id="myModal" role="dialog" data-backdrop="static">
                     <div class="modal-dialog">
 
-                        <!-- Modal content-->
+                   
                         <div class="modal-content">
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                <!-- <h4 class="modal-title">Modal Header</h4> -->
+                               
                             </div>
                             <div class="modal-body">
                                 <p>Cube ID :{{machineCubeID}} </p>
@@ -50,20 +48,13 @@
                                 <p>{{msg}}</p>
                                 <p>{{msgg}}</p>
                             </div>
-                            <!--<div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">OK</button>
-                                <button type="button" class="btn btn-default" data-dismiss="modal" (click)="yes()">Yes</button>
-              <button type="button" class="btn btn-default" data-dismiss="modal" (click)="close()">Close</button>
-                            </div>-->
+                      
                         </div>
 
                     </div>
-                </div>
+                </div> -->
               </div>
-              <!--<div class="">
-
-                <button type="button" class="btn bg-white btn-round btn-light addtocart-icon addtocart-btn" (click)="addkitcart(data._id, data)"></button>
-              </div>-->
+          
             </div>
           </div>
           <div class="bg-white mx-1 my-3 row as-text-flex as-pro-py" *ngFor="let items of data?.kit_data">
@@ -98,6 +89,50 @@
       </ng-container>
       
    
+      <ng-template #mymodal let-modal>
+        <div class="modal-header">
+          <h4 class="modal-title" id="modal-basic-title"></h4>
+          <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <table class="table table-striped">
+              <tbody>
+                <tr>
+                  <td>Cube ID :</td>
+                  <td>{{machineCubeID}}</td>
+                  
+                </tr>
+                <tr>
+                  <td>Colomn ID :</td>
+                  <td>{{machineColumnID}}</td>
+                  
+                </tr>
+                <tr>
+                  <td>Draw ID :</td>
+                  <td>{{machineDrawID}}</td>
+                  
+                </tr>
+                <tr>
+                  <td>compartment ID :</td>
+                  <td>{{machineCompartmentID}}</td>
+                  
+                </tr>
+                <tr>
+                  <td>Status :</td>
+                  <td>{{machineStatus}}</td>
+                  
+                </tr>
+              </tbody>
+              </table>
+              <div class="details text-center" style="background-color: #ddd; padding: 15px; margin: auto;"> 
+                <p><strong style="color: rgb(23, 167, 23);">{{msg}}</strong></p>
+              <p><strong style="color: rgb(23, 167, 23);">{{msgg}}</strong></p>
+          </div>
+        </div>
+     
+      </ng-template>
    <!--   <div class="col-md-6 ">
         <div class="as-item-box">
           <div class="d-flex justify-content-between align-items-center">

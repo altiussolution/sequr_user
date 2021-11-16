@@ -7,6 +7,7 @@ import { CrudService } from 'src/app/services/crud.service';
 import { appModels } from 'src/app/services/shared/enum/enum.util';
 import { CookieService } from 'ngx-cookie-service'
 import { Router } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-mycart',
@@ -40,8 +41,8 @@ export class MycartComponent implements OnInit {
   msg: string;
   category: any;
   constructor(private crudService: CrudService,
-    private toast: ToastrService, public cookie: CookieService,public router:Router
-  ) { }
+    private toast: ToastrService, public cookie: CookieService,public router:Router,
+    public modalService: NgbModal) { }
 
   ngOnInit(): void {
 
@@ -49,13 +50,13 @@ export class MycartComponent implements OnInit {
     // this.takeItems()
   }
   getCartItems() {
-    this.cartList = [];
+  
     this.crudService.get(appModels.listCart).pipe(untilDestroyed(this)).subscribe(res => {
       console.log(res)
       this.item_details = res.item_details
       console.log(this.item_details)
-
       this.cartdata = res[0]
+      this.cartList = [];
       for (let i = 0; i < this.cartdata?.cart?.length; i++) {
         if (this.cartdata?.cart[i]['cart_status'] == 1) {
           this.cartList.push(this.cartdata?.cart[i])
@@ -354,7 +355,8 @@ Addmore(){
   // Take Items form machine  
   TakeOrReturnItems: any[] = []
   machinesList = []
-  async takeItems() {
+  async takeItems(item) {
+    this.modalService.open(item,{backdrop:false});
     let totalMachinesList = await this.formatMachineData()
     let machinesList = await this.groupbyData(totalMachinesList)
     console.log(machinesList)
