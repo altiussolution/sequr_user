@@ -43,6 +43,17 @@ export class LoginComponent implements OnInit {
       })
      }
   ngOnInit(): void {
+    this.method()
+  
+  }
+  method() {
+    if(!localStorage.getItem("langucagess")){
+      new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
+      this.delete_cookie("googtrans")
+      this.setCookie("googtrans", "/en/en");
+      localStorage.setItem("langucagess","data")
+      window.location.reload();
+    }
   }
   signin(){
     let data={
@@ -70,12 +81,17 @@ export class LoginComponent implements OnInit {
               let data= this.language.find(x => x._id === this.profiledetails?.language_prefered)
               console.log(data?.code)
               this.setCookie("googtrans", "/en/"+data?.code);
+              this.toast.success("Logged in Successfully")
+              localStorage.setItem("lan","/en/"+data?.code)
+              this.router.navigate(['/pages/home'])
             }else{
+              localStorage.setItem("lan","/en/en")
               this.setCookie("googtrans", "/en/en");
+              this.toast.success("Logged in Successfully")
+              this.router.navigate(['/pages/home'])
             }
            
-            this.toast.success("Logged in Successfully")
-            this.router.navigate(['/pages/home'])
+           
         })
        }else {
          this.toast.error("Permission Denied,Please Contact Admin")

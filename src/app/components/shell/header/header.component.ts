@@ -6,6 +6,7 @@ import { CrudService } from 'src/app/services/crud.service';
 import { appModels } from 'src/app/services/shared/enum/enum.util';
 import { CookieService } from 'ngx-cookie-service'
 import { FormControl, FormGroup } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-header',
@@ -65,7 +66,7 @@ myform: FormGroup;
   typed: any;
   
 
- constructor(public router: Router,public crud:CrudService,private cookie: CookieService) {
+ constructor(public router: Router,public crud:CrudService,private cookie: CookieService,private toast: ToastrService) {
 
   this.crud.get(appModels.ITEM).pipe(untilDestroyed(this)).subscribe((res:any) => {
     console.log(res)
@@ -223,6 +224,9 @@ searching(event){
     this.crud.get1(appModels.ITEM, { params }).pipe(untilDestroyed(this)).subscribe(res => {
     console.log(res)
     this.searchdata=res['item']
+    if(res['item'].length==0){
+      this.toast.error("No Data Found")
+    }
     })
   }else{
     this.searchdata=[]
