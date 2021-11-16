@@ -45,13 +45,10 @@ export class DetailsComponent implements OnInit {
   massage: string;
   msgg: string;
   mainimage: any;
-<<<<<<< HEAD
   img: boolean=true;
-  constructor(public router: Router, private toast: ToastrService, private fb: FormBuilder, public crud: CrudService) {
-=======
+  
   constructor(public router: Router, private toast: ToastrService, private fb: FormBuilder, public crud: CrudService,
     public modalService: NgbModal) {
->>>>>>> 37605ed89bd533bd7318f5f67eae481f89871417
 
 
   }
