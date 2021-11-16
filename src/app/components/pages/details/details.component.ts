@@ -44,6 +44,7 @@ export class DetailsComponent implements OnInit {
   massage: string;
   msgg: string;
   mainimage: any;
+  img: boolean=true;
   constructor(public router: Router, private toast: ToastrService, private fb: FormBuilder, public crud: CrudService) {
 
 
@@ -190,6 +191,7 @@ export class DetailsComponent implements OnInit {
   //}
 showimg(value){
   console.log(value)
+  this.img=true
   this.mainimage=value
 }
   //************   Arunkumar  ***********************/
@@ -440,6 +442,7 @@ showimg(value){
   //   videoplayer.nativeElement.play();
   // }
   toggleVideo(){
+    this.img=false;
     this.videoplayer.nativeElement.play();
   }
   ngOnDestroy() {

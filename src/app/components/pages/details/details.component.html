@@ -36,7 +36,7 @@
                     <div class="as-font-24">{{machine?.quantity}}</div>
                 </div>
                 <!-- <img  src="{{items?.image_path}}" > -->
-                    <lib-ngx-image-zoom
+                    <lib-ngx-image-zoom *ngIf="img"
                         [thumbImage]=mainimage
                         [fullImage]=mainimage
                         [magnification]="1"
@@ -45,7 +45,9 @@
                         [lensWidth]="200"
                      
                     ></lib-ngx-image-zoom>
-
+                    <video  id="video" controls  *ngIf="!img"
+                    #videoPlayer  [src]="videoSource" type="video/mp4" data-setup='{ "aspectRatio":"640:267", "playbackRates": [1, 1.5, 2] }'>
+                       </video>
                 </main>
                 
        
