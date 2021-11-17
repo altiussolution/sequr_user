@@ -22,7 +22,7 @@
 
                   </a>-->
 
-                  <a class="thumbnail" *ngIf="videoSource != ''" (click)="toggleVideo()">
+                  <a class="thumbnail" *ngIf="videoSource" (click)="toggleVideo()">
                    <video    class="thumbnail-image" id="video" controls (click)="toggleVideo()"
               #videoPlayer  [src]="videoSource" type="video/mp4" data-setup='{ "aspectRatio":"640:267", "playbackRates": [1, 1.5, 2] }'>
                  </video>
@@ -177,7 +177,7 @@
 <ng-template #mymodal let-modal>
     <div class="modal-header">
       <h4 class="modal-title" id="modal-basic-title"></h4>
-      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')"  (click)="modaldismiss()">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild,ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { untilDestroyed } from 'ngx-take-until-destroy';
@@ -10,7 +10,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
   selector: 'app-details',
   templateUrl: './details.component.html',
   styleUrls: ['./details.component.scss'],
-  providers:[NgbModal]
+  providers: [NgbModal]
 })
 export class DetailsComponent implements OnInit {
   items: any = [];
@@ -39,14 +39,14 @@ export class DetailsComponent implements OnInit {
   machineColumnID: any;
   machineStatus: any;
   machineCompartmentID: any;
-  myThumbnail="https://wittlock.github.io/ngx-image-zoom/assets/thumb.jpg";
-  myFullresImage="https://wittlock.github.io/ngx-image-zoom/assets/fullres.jpg";
+  myThumbnail = "https://wittlock.github.io/ngx-image-zoom/assets/thumb.jpg";
+  myFullresImage = "https://wittlock.github.io/ngx-image-zoom/assets/fullres.jpg";
   msg: string;
   massage: string;
   msgg: string;
   mainimage: any;
-  img: boolean=true;
-  
+  img: boolean = true;
+
   constructor(public router: Router, private toast: ToastrService, private fb: FormBuilder, public crud: CrudService,
     public modalService: NgbModal) {
 
@@ -77,7 +77,7 @@ export class DetailsComponent implements OnInit {
 
         })
       }
-      else{
+      else {
 
         this.crud.get(appModels.DETAILS + localStorage.getItem("ids")).pipe(untilDestroyed(this)).subscribe((res: any) => {
           console.log(res)
@@ -110,9 +110,11 @@ export class DetailsComponent implements OnInit {
       this.toast.error("You have reached maximum quantity of the item.")
     }
   }
-
+  modaldismiss() {
+    this.ngOnInit()
+  }
   async addtocart(item?) {
-   
+
     if (this.qut && this.qut > 0) {
       let cart = {
         "item": this.machine.item,
@@ -123,7 +125,7 @@ export class DetailsComponent implements OnInit {
       this.crud.post(appModels.ADDTOCART, cart).subscribe(async res => {
         console.log(res)
 
-        if(res['message']=="Successfully added into cart!"){
+        if (res['message'] == "Successfully added into cart!") {
           this.crud.get(appModels.listCart).pipe(untilDestroyed(this)).subscribe(async res => {
             console.log(res)
             if (res) {
@@ -131,7 +133,7 @@ export class DetailsComponent implements OnInit {
                 this.toast.success("cart added successfully")
                 this.cartList1 = [];
                 this.crud.get(appModels.listCart).pipe(untilDestroyed(this)).subscribe(async res => {
-  
+
                   this.cartdata1 = res[0]
                   for (let i = 0; i < this.cartdata1?.cart?.length; i++) {
                     if (this.cartdata1?.cart[i]['cart_status'] == 1) {
@@ -141,11 +143,11 @@ export class DetailsComponent implements OnInit {
                   console.log(this.cartList1)
                   this.crud.getcarttotal(this.cartList1?.length)
                   this.router.navigate(['pages/details'])
-  
+
                 })
               }
-              if (item) { 
-                this.modalService.open(item,{backdrop:false});
+              if (item) {
+                this.modalService.open(item, { backdrop: false });
                 this.cartList = [];
                 this.crud.get(appModels.listCart).pipe(untilDestroyed(this)).subscribe(async res => {
                   console.log(res)
@@ -164,18 +166,18 @@ export class DetailsComponent implements OnInit {
                 })
               }
               //Arunkumar
-  
+
             }
-  
+
           }, error => {
             this.toast.error(error.message);
           })
-         
-        }else if(res['message']=="Stock Not Yet Allocated"){
+
+        } else if (res['message'] == "Stock Not Yet Allocated") {
           this.toast.error(res['message'])
         }
         //this.toast.success("cart added successfully")
-  
+
       })
     } else {
       this.toast.error("Please Enter Valid QTY")
@@ -202,11 +204,11 @@ export class DetailsComponent implements OnInit {
   // }
 
   //}
-showimg(value){
-  console.log(value)
-  this.img=true
-  this.mainimage=value
-}
+  showimg(value) {
+    console.log(value)
+    this.img = true
+    this.mainimage = value
+  }
   //************   Arunkumar  ***********************/
   async allDeviceInfo() {
     let response = await this.crud.get('machine/allDeviceInfo').pipe(untilDestroyed(this)).toPromise()
@@ -361,7 +363,7 @@ showimg(value){
           //Drawer current status, (opening, opened, closing, closed)
           else if (status !== 'Closed' && status !== 'Locked' && status != 'Unknown') {
             console.log('please close properly, Current Status = ' + status)
-            this.msg='please close properly, Current Status = ' + status
+            this.msg = 'please close properly, Current Status = ' + status
             // ColumnActionStatus = singleDeviceInfo
           }
           //set delay time
@@ -384,9 +386,9 @@ showimg(value){
       // break for loop if single device info is unknown
       else {
         console.log('Machine status unknown ' + status)
-        this.msg='Machine status unknown ' + status
+        this.msg = 'Machine status unknown ' + status
         console.log('Close all drawers properly and click take now')
-        this.msg='Close all drawers properly and click take now'
+        this.msg = 'Close all drawers properly and click take now'
         break
       }
     }
@@ -395,15 +397,15 @@ showimg(value){
     console.log(successTake)
     if (successTake.length == 0) {
       console.log('Machine status unknown No Item taken')
-      this.msgg='Machine status unknown No Item taken'
+      this.msgg = 'Machine status unknown No Item taken'
     } else if (successTake.length == totalMachinesList.length) {
       console.log(successTake.length + ' items Taken successfully')
-      this.msgg=successTake.length + ' items Taken successfully'
+      this.msgg = successTake.length + ' items Taken successfully'
       await this.addMachineUsage(totalMachineUsage)
       await this.updateAfterTakeOrReturn(successTake)
     } else if (successTake.length < totalMachinesList.length) {
       console.log(successTake.length + ' items Taken successfully \n' + successTake.length + ' items failed return')
-      this.msgg=successTake.length + ' items Taken successfully \n' + successTake.length + ' items failed return'
+      this.msgg = successTake.length + ' items Taken successfully \n' + successTake.length + ' items failed return'
       await this.addMachineUsage(totalMachineUsage)
       await this.updateAfterTakeOrReturn(successTake, item)
 
@@ -445,8 +447,8 @@ showimg(value){
         this.show = !this.show;
       }
     }, 5000);
-  
-  
+
+
   }
 
 
@@ -454,8 +456,8 @@ showimg(value){
   //   this.show = !this.show;
   //   videoplayer.nativeElement.play();
   // }
-  toggleVideo(){
-    this.img=false;
+  toggleVideo() {
+    this.img = false;
     this.videoplayer.nativeElement.play();
   }
   ngOnDestroy() {

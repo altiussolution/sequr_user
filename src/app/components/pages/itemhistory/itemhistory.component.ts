@@ -92,6 +92,9 @@ this.deleted = this.permissions.role_id.permission.find(temp=>temp=="return_dele
   close() {
     this.ngOnInit();
   }
+  modaldismiss() {
+    this.ngOnInit()
+  }
   returnproduct() {
     if (this.arrayvalue.length != 0) {
       var result = this.arrayvalue.map(function (a) { return a?._id; });
