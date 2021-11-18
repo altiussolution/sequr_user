@@ -90,13 +90,13 @@
         <div class="col-md-6 ">
           <div class="form-floating mb-3">
             <input type="Password"  #password1 class="form-control" id="floatingInput" placeholder="Old Password" formControlName="oldpassword">
-             <i (click)="changeType(password1)" class="as-eye pointer" [ngClass]="toggle1 ? 'fa fa-eye' : 'fa fa-eye-slash'"></i>
+             <i (click)="changeType1(password1)" class="as-eye pointer" [ngClass]="toggle1 ? 'fa fa-eye' : 'fa fa-eye-slash'"></i>
           </div>
         </div>
         <div class="col-md-6 ">
           <div class="form-floating mb-3">
             <input type="Password"  #password2 class="form-control" id="floatingInput" placeholder="New Password" formControlName="newpassword">
-            <i (click)="changeType(password2)" class="as-eye pointer" [ngClass]="toggle1 ? 'fa fa-eye' : 'fa fa-eye-slash'"></i>
+            <i (click)="changeType2(password2)" class="as-eye pointer" [ngClass]="toggle2 ? 'fa fa-eye' : 'fa fa-eye-slash'"></i>
           </div>
         </div>
 

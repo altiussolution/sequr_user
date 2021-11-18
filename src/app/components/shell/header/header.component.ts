@@ -111,8 +111,10 @@ myform: FormGroup;
         console.log(res)
 
       })
+//let [params]=["1305167547307745"]
+//this.crud.get(appModels.CATEGORYLIST+[params]).pipe(untilDestroyed(this)).subscribe((res:any) => {
+  this.crud.get(appModels.CATEGORYLIST).pipe(untilDestroyed(this)).subscribe((res:any) => {
 
-this.crud.get(appModels.CATEGORYLIST).pipe(untilDestroyed(this)).subscribe((res:any) => {
     console.log(res)
    this.category=res['data']
    localStorage.removeItem("allow") 
