@@ -43,6 +43,9 @@ export class ProductslistComponent implements OnInit {
       this.getData({ pageIndex: this.page, pageSize: this.size });
     })
   }
+  modaldismiss() {
+    this.ngOnInit()
+  }
   addkitcart(_id: any, data,modal) {
   console.log(data);
     

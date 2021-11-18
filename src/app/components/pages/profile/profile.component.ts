@@ -6,6 +6,7 @@ import { untilDestroyed } from 'ngx-take-until-destroy';
 import { ToastrService } from 'ngx-toastr';
 import { CrudService } from 'src/app/services/crud.service';
 import { appModels } from 'src/app/services/shared/enum/enum.util';
+//import { NgxSpinnerService } from "ngx-spinner";  
 
 
 @Component({
@@ -34,7 +35,7 @@ export class ProfileComponent implements OnInit {
   }
   constructor(public crud: CrudService, public router: Router,
     private fb: FormBuilder,
-    private toast: ToastrService,
+    private toast: ToastrService,//private spinner: NgxSpinnerService
   ) {
     this.cpForm = this.fb.group({
       oldpassword: ['', Validators.required],
@@ -66,6 +67,7 @@ export class ProfileComponent implements OnInit {
 
   }
   changepwd() {
+   // this.spinner.show();
     let data = {
       "oldpassword": this.cpForm.value.oldpassword,
       "newpassword": this.cpForm.value.newpassword
@@ -86,7 +88,7 @@ export class ProfileComponent implements OnInit {
     })
   }
   }
-
+  //this.spinner.hide();
   }
   ngOnDestroy() { }
 

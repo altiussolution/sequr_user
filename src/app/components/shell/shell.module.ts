@@ -17,6 +17,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { MatCardModule } from '@angular/material/card';
 import {AutocompleteLibModule} from 'angular-ng-autocomplete';
+//import { NgxSpinnerModule } from "ngx-spinner/ngx-spinner";
 
 /** Custom Material Module */
 /** Shell Module */
@@ -41,6 +42,8 @@ import {AutocompleteLibModule} from 'angular-ng-autocomplete';
     MatCardModule,
     NgxImageZoomModule,
     AutocompleteLibModule,
+   // NgxSpinnerModule,
+
     ],
   exports: [HeaderComponent,FooterComponent,MenuComponent,ShellComponent,
     RouterModule,
@@ -54,7 +57,8 @@ import {AutocompleteLibModule} from 'angular-ng-autocomplete';
     MatSortModule,
     MatCardModule,
     AutocompleteLibModule,
-    
+   // NgxSpinnerModule,
+
   ],
 })
 export class ShellModule { }

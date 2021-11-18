@@ -105,7 +105,9 @@ export class MycartComponent implements OnInit {
       })
     }
   }
-
+  modaldismiss() {
+    this.ngOnInit()
+  }
   close() {
     console.log("hi")
   }

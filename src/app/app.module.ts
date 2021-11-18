@@ -18,6 +18,8 @@ import {AutocompleteLibModule} from 'angular-ng-autocomplete';
 import { NgxImageZoomModule } from 'ngx-image-zoom';
 import { ForgotpasswordComponent } from './forgotpassword/forgotpassword.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+//import { NgxSpinnerModule } from "ngx-spinner/ngx-spinner";
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -33,6 +35,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
     ReactiveFormsModule,
     FormsModule,
     HttpClientModule,
+    //NgxSpinnerModule,
     ToastrModule.forRoot({
       timeOut: 2000,
       positionClass: 'toast-top-right',
