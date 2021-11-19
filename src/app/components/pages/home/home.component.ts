@@ -58,10 +58,13 @@ home(){
 
    }
  })
+console.log(localStorage.getItem("lan"))
   console.log(this.readCookie('googtrans'));
   if(!localStorage.getItem("language")){
     // if (confirm(`Language has been updated for you please refresh the page.`)) {
    localStorage.setItem("language","lang")
+   this.setCookie("googtrans",localStorage.getItem("lan") );
+ 
     window.location.reload()
     
   }
@@ -103,7 +106,10 @@ home(){
      
     })
 }
+setCookie(name,value,) {
+  document.cookie = name + "=" + value;
 
+}
    readCookie(name) {
      console.log(document.cookie)
     var c = document.cookie.split('; '),
