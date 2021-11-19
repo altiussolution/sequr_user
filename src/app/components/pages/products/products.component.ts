@@ -19,12 +19,31 @@ export class ProductsComponent implements OnInit {
   data: any=[];
   page = 0;
   size = 4;
+  d: any=[];
+  dataa=[{
+    "details":
+    {"alldevinfo":
+    {"List":
+    [{"assigned":
+    [{"column":
+    [{"uid":["1305167547307745"],"lid":["1"]},{"uid":["1305167547316427"],"lid":["2"]}]}]}]}}}]
+  coloumid: any=[];
+  coloumids: any=[];
   constructor(public crud:CrudService,public router:Router,private toast: ToastrService) {
     
    }
 
   ngOnInit(): void {
-    
+      this.crud.get(appModels.COLOMNIDS).pipe(untilDestroyed(this)).subscribe((res:any) => {
+    console.log(res)
+   this.coloumid=res.details.alldevinfo.List[0].assigned[0].column
+   console.log(this.coloumid,"cid")
+   for(let i=0; i<this.coloumid?.length;i++){
+     this.coloumids.push(this.coloumid[i].uid[0])
+     console.log(this.coloumids,"uid")
+
+   }
+ })
     this.crud.CurrentMessage2.subscribe(message=>{
       if(message !=""){
         this.routername=message
@@ -39,7 +58,10 @@ export class ProductsComponent implements OnInit {
           this.product=JSON.parse(message)
           localStorage.setItem("subid",JSON.stringify(this.product))
           console.log(this.product)
-          this.crud.get('item/getItemByCategory/'+this.product?.category_id+'/'+this.product?._id).pipe(untilDestroyed(this)).subscribe((res:any) => {
+          this.d=JSON.stringify(this.coloumids)
+          let params: any = {};
+            params['column_ids'] = this.d;
+          this.crud.get1(appModels.ITEMS+this.product?.category_id+'/'+this.product?._id,{params}).pipe(untilDestroyed(this)).subscribe((res:any) => {
           localStorage.setItem("allow1","data")
           console.log(res)
           this.items=res['data']
@@ -47,7 +69,10 @@ export class ProductsComponent implements OnInit {
           })
       }else{
         this.product=JSON.parse(localStorage.getItem("subid"))
-        this.crud.get('item/getItemByCategory/'+this.product?.category_id+'/'+this.product?._id).pipe(untilDestroyed(this)).subscribe((res:any) => {
+        this.d=JSON.stringify(this.coloumids)
+        let params: any = {};
+          params['column_ids'] = this.d;
+        this.crud.get1(appModels.ITEMS+this.product?.category_id+'/'+this.product?._id,{params}).pipe(untilDestroyed(this)).subscribe((res:any) => {
         localStorage.setItem("allow1","data")
         console.log(res)
         this.items=res['data']

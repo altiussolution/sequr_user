@@ -62,6 +62,9 @@ getcarttotal(cart:any) {
   get1(model: string, params:any): Observable<any> {
     return this.http.get(model,params);
   }
+  get2(model: string, params:any): Observable<any> {
+    return this.http.get(`${model}/${params}`);
+  }
   post(model: string, params?: any): Observable<any> {
     return this.http.post(model, params);
   }

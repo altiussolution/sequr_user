@@ -64,7 +64,19 @@ myform: FormGroup;
    ];
   searchdata: any=[];
   typed: any;
-  
+  d: any=[];
+  subcategories: any=[];
+  subcatlength: any=[];
+  catid: any=[];
+  data=[{
+    "details":
+    {"alldevinfo":
+    {"List":
+    [{"assigned":
+    [{"column":
+    [{"uid":["1305167547307745"],"lid":["1"]},{"uid":["1305167547316427"],"lid":["2"]}]}]}]}}}]
+  coloumid: any=[];
+  coloumids: any=[];
 
  constructor(public router: Router,public crud:CrudService,private cookie: CookieService,private toast: ToastrService) {
 
@@ -80,7 +92,18 @@ myform: FormGroup;
  
 
  ngOnInit():void {
- 
+  this.crud.get(appModels.COLOMNIDS).pipe(untilDestroyed(this)).subscribe((res:any) => {
+    console.log(res)
+   this.coloumid=res.details.alldevinfo.List[0].assigned[0].column
+   console.log(this.coloumid,"cid")
+    for(let i=0; i<this.coloumid?.length;i++){
+      this.coloumids.push(this.coloumid[i].uid[0])
+      console.log(this.coloumids,"uid")
+
+    }
+
+
+  })
   this.profiledetails = JSON.parse(localStorage.getItem('personal'))
   console.log(this.profiledetails)
   this.crud.get(appModels.USERPROFILE + this.profiledetails._id).pipe(untilDestroyed(this)).subscribe((res: any) => {
@@ -106,17 +129,29 @@ myform: FormGroup;
              this.crud.getcarttotal(this.cartList?.length)
       })
 
-      
-      this.crud.get(appModels.COLOMNIDS).pipe(untilDestroyed(this)).subscribe((res:any) => {
-        console.log(res)
-
-      })
-//let [params]=["1305167547307745"]
-//this.crud.get(appModels.CATEGORYLIST+[params]).pipe(untilDestroyed(this)).subscribe((res:any) => {
-  this.crud.get(appModels.CATEGORYLIST).pipe(untilDestroyed(this)).subscribe((res:any) => {
-
+      this.d=JSON.stringify(this.coloumids)
+      let params: any = {};
+        params['column_ids'] = this.d;
+this.crud.get1(appModels.CATEGORYLIST,{params}).pipe(untilDestroyed(this)).subscribe((res:any) => {
     console.log(res)
-   this.category=res['data']
+   this.category=res['data']  
+   console.log(this.category,"oii")
+for(let i=0; i<this.category?.length;i++){
+  this.catid.push(this.category[i]._id)
+  console.log(this.catid,"id")
+  this.d=JSON.stringify(this.coloumids)
+  let params: any = {};
+    params['column_ids'] = this.d;
+  this.crud.get1(appModels.SUBCATEGORY+this.catid,{params}).pipe(untilDestroyed(this)).subscribe((res:any) => {
+    console.log(res)
+    this.subcategories=res['data']
+    this.subcatlength.push( this.subcategories)
+    console.log(this.subcatlength)
+  })
+}
+
+
+
    localStorage.removeItem("allow") 
    this.crud.changemessage(JSON.stringify(this.category[0]))
    this.selectedItem = this.category[0];
@@ -292,6 +327,13 @@ else {
 }  
 }
 selectcategory(val:any,category:any){
+  this.d=JSON.stringify(this.coloumids)
+  let params: any = {};
+    params['column_ids'] = this.d;
+  this.crud.get1(appModels.SUBCATEGORY+this.category._id,{params}).pipe(untilDestroyed(this)).subscribe((res:any) => {
+    console.log(res)
+    this.subcategories=res['data']
+  })
     localStorage.removeItem("allow1") 
     this.category1=category
     this.subcategory=val

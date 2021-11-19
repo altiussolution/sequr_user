@@ -29,6 +29,16 @@ export class HomeComponent implements OnInit {
   selectedValue: any;
   selectedGroup: any;
   profiledetails: any=[];
+  d: any=[];
+  dataa=[{
+    "details":
+    {"alldevinfo":
+    {"List":
+    [{"assigned":
+    [{"column":
+    [{"uid":["1305167547307745"],"lid":["1"]},{"uid":["1305167547316427"],"lid":["2"]}]}]}]}}}]
+  coloumid: any=[];
+  coloumids: any=[];
   constructor(public crud:CrudService,public router:Router,public fb:FormBuilder) { 
 
   }
@@ -38,7 +48,16 @@ export class HomeComponent implements OnInit {
   }
 
 home(){
+   this.crud.get(appModels.COLOMNIDS).pipe(untilDestroyed(this)).subscribe((res:any) => {
+    console.log(res)
+   this.coloumid=res.details.alldevinfo.List[0].assigned[0].column
+   console.log(this.coloumid,"cid")
+   for(let i=0; i<this.coloumid?.length;i++){
+     this.coloumids.push(this.coloumid[i].uid[0])
+     console.log(this.coloumids,"uid")
 
+   }
+ })
   console.log(this.readCookie('googtrans'));
   if(!localStorage.getItem("language")){
     // if (confirm(`Language has been updated for you please refresh the page.`)) {
@@ -51,10 +70,13 @@ home(){
       if(message !="" && !localStorage.getItem("allow")){
       
         this.message=JSON.parse(message)
-        this.categoryName=this.message?.category?.category_name
-        localStorage.setItem("catname",this.message?.category?.category_name)
-        localStorage.setItem("catid",this.message?.category?._id)
-        this.crud.get(appModels.SUBCATEGORY+this.message?.category?._id).pipe(untilDestroyed(this)).subscribe((res:any) => {
+        this.categoryName=this.message?.category_name
+        localStorage.setItem("catname",this.message?.category_name)
+        localStorage.setItem("catid",this.message?._id)
+        this.d=JSON.stringify(this.coloumids)
+        let params: any = {};
+          params['column_ids'] = this.d;
+        this.crud.get1(appModels.SUBCATEGORY+this.message?._id,{params}).pipe(untilDestroyed(this)).subscribe((res:any) => {
           localStorage.setItem("allow","data")
           console.log(res)
        
@@ -65,8 +87,10 @@ home(){
         })
       }else{
         this.categoryName=localStorage.getItem("catname")
-      
-        this.crud.get(appModels.SUBCATEGORY+localStorage.getItem("catid")).pipe(untilDestroyed(this)).subscribe((res:any) => {
+        this.d=JSON.stringify(this.coloumids)
+        let params: any = {};
+          params['column_ids'] = this.d;
+        this.crud.get1(appModels.SUBCATEGORY+localStorage.getItem("catid"),{params}).pipe(untilDestroyed(this)).subscribe((res:any) => {
           localStorage.setItem("allow","data")
           console.log(res)
        
