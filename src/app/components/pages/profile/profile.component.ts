@@ -99,7 +99,8 @@ console.log(this.citylist)
     this.crud.post(appModels.CHANGEPWD + this.profiledetails._id, data).subscribe(res => {
       console.log(res)
         this.toast.success('Password changed successfully')
-      
+      localStorage.clear();
+      this.router.navigate(['/login'])
     },(error:HttpErrorResponse)=>{
       if(error.status === 422){  
         this.toast.error('Current password is incorrect')
