@@ -1,5 +1,5 @@
 .image-gallery {
-  margin: 0 auto;
+  margin: 0;
   display: table;
 }
 
@@ -13,10 +13,14 @@
 
 }
 
-.primary {
-  width: 600px;
-  height: 400px;
+.col-md-5.pr-0.ml-left {
+  margin-left: -100px;
+}
 
+.primary {
+  width: 440px;
+  height: 330px;
+max-height:330px;
   background-size: contain;
   background-position: center center;
   background-repeat: no-repeat;
@@ -102,7 +106,7 @@ img {
 }
 
 .as-details-btn .btn {
-  padding: 10px 35px;
+  padding: 10px 15px;
 }
 
 .addtocart-btn {
@@ -192,4 +196,22 @@ aside.thumbnails.thumb_left ul li {
   border: 1px  solid #e1e1e1;
   width: 80%;
   margin-bottom: 10px;
+}
+
+@media only screen and (min-width : 1920px){
+  .primary{
+    width: 500px;
+  }
+
+  .as-details-btn .btn {
+    padding: 10px 35px;
+  }
+
+  .as-details-txt {
+    margin: 16px 30px 16px 10px;
+  }
+  .col-md-5.pr-0.ml-left {
+    margin-left: -120px;
+  }
+
 }
