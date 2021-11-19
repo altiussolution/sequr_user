@@ -60,6 +60,15 @@ export class ProfileComponent implements OnInit {
       console.log(res)
       this.profile = res['data']
       console.log(this.profile['language_prefered'])
+      console.log(this.profile['country_id'])
+      // 618e885163d6f1fed0dfdb9f
+      console.log(this.profile['state_id'])
+      // 618e885263d6f1fed0dfedc0
+      this.crud.get(appModels.CITYLIST + "618e885163d6f1fed0dfdb9f" + "/" + "618e885263d6f1fed0dfedc0").pipe(untilDestroyed(this)).subscribe((res: any) => {
+        console.log(res)
+     this.citylist = res['list']
+console.log(this.citylist)
+      })
       this.crud.get(appModels.LAN).pipe(untilDestroyed(this)).subscribe((res: any) => {
         console.log(res)
         this.language = res['list']

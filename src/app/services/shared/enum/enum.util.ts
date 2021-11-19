@@ -11,6 +11,7 @@ enum appModels {
     ITEMLIST='cart/itemHistory',//'getItemMachine/617021b82d9256f547185a83/6170223c2d9256f547185a93/["1305167547307745"]',
     COLOMNIDS='machine/assignedColumns',
     KITTINGLIST='kitting/get',
+    CITYLIST='region/city/',
     ADDKITCART='kitting/addKitToCart/',
     updateCart = 'cart/update',
     listCart = 'cart/myCart',
