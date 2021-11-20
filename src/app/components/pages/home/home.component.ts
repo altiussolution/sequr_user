@@ -38,6 +38,10 @@ export class HomeComponent implements OnInit {
   }
 
 home(){
+  this.crud.get("api").pipe(untilDestroyed(this)).subscribe((res:any) => {
+    console.log(res)
+})
+
 console.log(localStorage.getItem("lan"))
   console.log(this.readCookie('googtrans'));
   if(!localStorage.getItem("language")){
