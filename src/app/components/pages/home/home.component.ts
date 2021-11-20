@@ -8,7 +8,7 @@ import { untilDestroyed } from 'ngx-take-until-destroy';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { CrudService } from 'src/app/services/crud.service';
 import { appModels } from 'src/app/services/shared/enum/enum.util';
-
+import { MatPaginatorIntl } from '@angular/material/paginator';
 declare var google
 @Component({
   selector: 'app-home',
