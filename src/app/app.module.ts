@@ -19,7 +19,8 @@ import { NgxImageZoomModule } from 'ngx-image-zoom';
 import { ForgotpasswordComponent } from './forgotpassword/forgotpassword.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 //import { NgxSpinnerModule } from "ngx-spinner/ngx-spinner";
-
+import { CustomPaginator } from '../app/custompagination';
+import { MatPaginatorIntl } from '@angular/material/paginator';
 @NgModule({
   declarations: [
     AppComponent,
@@ -46,7 +47,8 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
     NgbModule
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },CookieService,CrudService
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },CookieService,CrudService,
+    {provide: MatPaginatorIntl, useValue: CustomPaginator() }
   ],
   bootstrap: [AppComponent]
 })
