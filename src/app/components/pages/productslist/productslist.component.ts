@@ -91,7 +91,7 @@ if(this.List?.length ==0){
   async itemHistory(data) {
     this.crud.get(appModels.ITEMLIST).pipe(untilDestroyed(this)).subscribe(async (res: any) => {
       console.log(res)
-      this.id = res['Cart'][0]['_id']
+      this.id = res?.Cart[0]['_id']
       this.itemhistorykit = res['Kits']
       for await (let kit of this.itemhistorykit) {
         if (kit.kit_status == 1 && kit.kit_id._id == data._id) {

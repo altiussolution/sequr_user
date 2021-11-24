@@ -51,14 +51,19 @@ this.deleted = this.permissions.role_id.permission.find(temp=>temp=="return_dele
     this.crud.get1(appModels.ITEMLIST,{params}).pipe(untilDestroyed(this)).subscribe((res: any) => {
       console.log(res)
       this.itemhistorycart = []
-      this.cartdata = res['Cart'][0]['cart']
+      if(res['status']==true){
+        this.cartdata = res['Cart'][0]['cart']
+      }
+     
       for (let i = 0; i < this.cartdata?.length; i++) {
         if (this.cartdata[i]['cart_status'] == 2) {
           this.itemhistorycart.push(this.cartdata[i])
         }
       }
+      if(res['status']==true){
       this.id = res['Cart'][0]['_id']
       this.date = res['Cart'][0]['updated_at']
+      }
       this.itemhistorykit = res['Kits']
     })
   }
