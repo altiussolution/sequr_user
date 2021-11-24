@@ -34,10 +34,14 @@ export class ProductslistComponent implements OnInit {
   kits: any;
   List: any;
   highkitqty: any=[];
+  permissions:any=[];
   constructor(public crud: CrudService, private toast: ToastrService,public modalService: NgbModal) { }
 
   ngOnInit(): void {
-    this.crud.get(appModels.KITTINGLIST).pipe(untilDestroyed(this)).subscribe((res: any) => {
+    this.permissions=JSON.parse(localStorage.getItem("personal"))
+    let params: any = {};
+    params['company_id']=this.permissions.company_id._id
+    this.crud.get1(appModels.KITTINGLIST,{params}).pipe(untilDestroyed(this)).subscribe((res: any) => {
       console.log(res)
       this.kit = res.data
       this.getData({ pageIndex: this.page, pageSize: this.size });
@@ -299,6 +303,7 @@ if(this.List?.length ==0){
         }
         let t1 = performance.now();
         eachColumnUsage['column_usage'] = t1 - t0
+        eachColumnUsage['company_id'] = this.permissions.company_id._id
         totalMachineUsage.push(eachColumnUsage)
         await this.sleep(5000)
       }
