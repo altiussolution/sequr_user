@@ -29,11 +29,14 @@ export class HomeComponent implements OnInit {
   selectedValue: any;
   selectedGroup: any;
   profiledetails: any=[];
+permissions : any=[];
   constructor(public crud:CrudService,public router:Router,public fb:FormBuilder) { 
 
   }
 
   ngOnInit() {
+  this.permissions=JSON.parse(localStorage.getItem("personal"))
+
   this.home();
   }
 
@@ -57,10 +60,11 @@ console.log(localStorage.getItem("lan"))
       if(message !="" && !localStorage.getItem("allow")){
       
         this.message=JSON.parse(message)
-        this.categoryName=this.message?.category?.category_name
-        localStorage.setItem("catname",this.message?.category?.category_name)
-        localStorage.setItem("catid",this.message?.category?._id)
-        this.crud.get(appModels.SUBCATEGORY+this.message?.category?._id).pipe(untilDestroyed(this)).subscribe((res:any) => {
+        console.log(this.message['category']['_id'])
+        this.categoryName=this.message['category']['category_name']
+        localStorage.setItem("catname",this.message['category']['category_name'])
+        localStorage.setItem("catid",this.message['category']['_id'])
+        this.crud.get(appModels.SUBCATEGORY+this.message['category']['_id']).pipe(untilDestroyed(this)).subscribe((res:any) => {
           localStorage.setItem("allow","data")
           console.log(res)
        

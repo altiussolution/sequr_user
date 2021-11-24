@@ -59,27 +59,18 @@ export class ProfileComponent implements OnInit {
     this.crud.get(appModels.USERPROFILE + this.profiledetails._id).pipe(untilDestroyed(this)).subscribe((res: any) => {
       console.log(res)
       this.profile = res['data']
-      console.log(this.profile['language_prefered'])
-      console.log(this.profile['country_id'])
-      // 618e885163d6f1fed0dfdb9f
-      console.log(this.profile['state_id'])
-      // 618e885263d6f1fed0dfedc0
-      this.crud.get(appModels.CITYLIST + "618e885163d6f1fed0dfdb9f" + "/" + "618e885263d6f1fed0dfedc0").pipe(untilDestroyed(this)).subscribe((res: any) => {
-        console.log(res)
-     this.citylist = res['list']
-console.log(this.citylist)
-      })
-      this.crud.get(appModels.LAN).pipe(untilDestroyed(this)).subscribe((res: any) => {
-        console.log(res)
-        this.language = res['list']
-          console.log(this.profile['language_prefered'])
-        for (let i = 0; i < this.language.length; i++) {
-          if (this.language[i]._id == this.profile['language_prefered']) {
-           this.lan = this.language[i]
-          }
-        }
-        console.log(this.lan)
-      })
+      console.log(this.profile['language_prefered']['language'])
+      // this.crud.get(appModels.LAN).pipe(untilDestroyed(this)).subscribe((res: any) => {
+      //   console.log(res)
+      //   this.language = res['list']
+      //     console.log(this.profile['language_prefered'])
+      //   for (let i = 0; i < this.language.length; i++) {
+      //     if (this.language[i]._id == this.profile['language_prefered']) {
+      //      this.lan = this.language[i]
+      //     }
+      //   }
+      //   console.log(this.lan)
+      // })
     })
  
    
