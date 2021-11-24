@@ -40,18 +40,21 @@ export class MycartComponent implements OnInit {
   msgg: string;
   msg: string;
   category: any;
+  permissions : any=[];
   constructor(private crudService: CrudService,
     private toast: ToastrService, public cookie: CookieService,public router:Router,
     public modalService: NgbModal) { }
 
   ngOnInit(): void {
-
+    this.permissions=JSON.parse(localStorage.getItem("personal"))
     this.getCartItems();
     // this.takeItems()
   }
   getCartItems() {
-  
-    this.crudService.get(appModels.listCart).pipe(untilDestroyed(this)).subscribe(res => {
+    let params: any = {};
+    params['company_id']=this.permissions.company_id._id
+    params['user_id']=this.permissions._id
+    this.crudService.get1(appModels.listCart,{params}).pipe(untilDestroyed(this)).subscribe(res => {
       console.log(res)
       this.item_details = res.item_details
       console.log(this.item_details)
@@ -79,7 +82,8 @@ export class MycartComponent implements OnInit {
       "item": cart.item._id,
       "allocation": cart.allocation,
       "qty": qty==0?1:qty,
-      "cart_id": this.cartdata['_id']
+      "cart_id": this.cartdata['_id'],
+      "company_id":this.permissions.company_id._id
     }
     this.crudService.update2(appModels.updateCart, data).pipe(untilDestroyed(this)).subscribe(res => {
       console.log(res)
@@ -95,6 +99,7 @@ export class MycartComponent implements OnInit {
       let data = {
         "cart_id": this.cartdata['_id'],
         "item_id": [cart.item._id],
+        "company_id": this.permissions.company_id._id
       }
       this.crudService.update2('cart/deleteItemFromCart', data).pipe(untilDestroyed(this)).subscribe(res => {
         console.log(res)
@@ -160,7 +165,9 @@ export class MycartComponent implements OnInit {
   };
 
 Addmore(){
-  this.crudService.get(appModels.CATEGORYLIST).pipe(untilDestroyed(this)).subscribe((res:any) => {
+  let params: any = {};
+params['company_id']=this.permissions.company_id._id
+  this.crudService.get1(appModels.CATEGORYLIST,{params}).pipe(untilDestroyed(this)).subscribe((res:any) => {
     console.log(res)
    this.category=res['data']
    localStorage.removeItem("allow") 

@@ -11,7 +11,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         const currentToken = localStorage.getItem("JWTokens");
-        console.log(environment.API_URL)
+        // console.log(environment.API_URL)
         let headers: HttpHeaders = new HttpHeaders({
             Authorization: `${currentToken}`
         });
