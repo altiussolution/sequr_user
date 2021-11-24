@@ -4,10 +4,12 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
+//import { error } from 'console';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { CrudService } from 'src/app/services/crud.service';
 import { appModels } from 'src/app/services/shared/enum/enum.util';
+import { ToastrService } from 'ngx-toastr';
 
 declare var google
 @Component({
@@ -30,16 +32,16 @@ export class HomeComponent implements OnInit {
   selectedGroup: any;
   profiledetails: any=[];
   d: any=[];
-  dataa=[{
+  /*dataa=[{
     "details":
     {"alldevinfo":
     {"List":
     [{"assigned":
     [{"column":
-    [{"uid":["1305167547307745"],"lid":["1"]},{"uid":["1305167547316427"],"lid":["2"]}]}]}]}}}]
+    [{"uid":["1305167547307745"],"lid":["1"]},{"uid":["1305167547316427"],"lid":["2"]}]}]}]}}}]*/
   coloumid: any=[];
   coloumids: any=[];
-  constructor(public crud:CrudService,public router:Router,public fb:FormBuilder) { 
+  constructor(public crud:CrudService,public router:Router,public fb:FormBuilder,private toast: ToastrService) { 
 
   }
 
@@ -57,7 +59,9 @@ home(){
      console.log(this.coloumids,"uid")
 
    }
- })
+ },error=>{
+  this.toast.error("Please connect the mechine")
+})
 console.log(localStorage.getItem("lan"))
   console.log(this.readCookie('googtrans'));
   if(!localStorage.getItem("language")){

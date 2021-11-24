@@ -99,11 +99,10 @@ myform: FormGroup;
     for(let i=0; i<this.coloumid?.length;i++){
       this.coloumids.push(this.coloumid[i].uid[0])
       console.log(this.coloumids,"uid")
-
     }
-
-
-  })
+   }/*,error=>{
+    this.toast.error("Please connect the mechine")
+  }*/)
   this.profiledetails = JSON.parse(localStorage.getItem('personal'))
   console.log(this.profiledetails)
   this.crud.get(appModels.USERPROFILE + this.profiledetails._id).pipe(untilDestroyed(this)).subscribe((res: any) => {

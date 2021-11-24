@@ -41,9 +41,10 @@ export class ProductsComponent implements OnInit {
    for(let i=0; i<this.coloumid?.length;i++){
      this.coloumids.push(this.coloumid[i].uid[0])
      console.log(this.coloumids,"uid")
-
    }
- })
+  },error=>{
+    this.toast.error("Please connect the mechine")
+  })
     this.crud.CurrentMessage2.subscribe(message=>{
       if(message !=""){
         this.routername=message
