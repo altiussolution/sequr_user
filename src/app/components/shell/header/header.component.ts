@@ -66,6 +66,8 @@ myform: FormGroup;
   typed: any;
   dooropens: any=[];
   dooropenss: any=[];
+  coloumid: any=[];
+  coloumids: any=[];
   @ViewChild('modal') closebutton;
 
  constructor(public router: Router,public crud:CrudService,private cookie: CookieService,private toast: ToastrService) {
@@ -82,6 +84,16 @@ myform: FormGroup;
  
 
  ngOnInit():void {
+     
+  this.crud.get(appModels.COLOMNIDS).pipe(untilDestroyed(this)).subscribe((res:any) => {
+    console.log(res)
+    this.coloumid=res.details.alldevinfo.List[0].assigned[0].column
+    console.log(this.coloumid,"cid")
+    for(let i=0; i<this.coloumid?.length;i++){
+      this.coloumids.push(this.coloumid[i].uid[0])
+      console.log(this.coloumids,"uid")
+    }
+  })
  
   this.profiledetails = JSON.parse(localStorage.getItem('personal'))
   console.log(this.profiledetails)
@@ -107,11 +119,7 @@ myform: FormGroup;
             
              this.crud.getcarttotal(this.cartList?.length)
       })
-           
-      this.crud.get(appModels.COLOMNIDS).pipe(untilDestroyed(this)).subscribe((res:any) => {
-        console.log(res)
-
-      })
+         
 this.crud.get(appModels.CATEGORYLIST).pipe(untilDestroyed(this)).subscribe((res:any) => {
     console.log(res)
    this.category=res['data']
@@ -135,7 +143,7 @@ setval(val:any){
 }
 
   logout(){ 
-    this.closebutton.nativeElement.click();
+    
     localStorage.clear();
     this.router.navigate(['./login']);
 // this.dooropens=[];
