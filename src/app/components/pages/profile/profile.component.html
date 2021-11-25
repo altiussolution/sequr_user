@@ -17,7 +17,7 @@
           {{profiledetails?.created_at | date:" h:mm a"}}<!--{{profiledetails?.created_at| date:'shortTime'}}-->
           </span> </div>
         <div><i class="fa fa-map-marker"></i> <span class="as-color-2 mt-3 as-font-16  mr-2 ml-1">
-            {{profiledetails?.city_id?.name || profiledetails?.state_id?.name || profiledetails?.country_id?.name  }}
+          {{profiledetails?.city_id?.name || profiledetails?.state_id?.name || profiledetails?.country_id?.name  }}
           </span> </div>
         <div class="mr-2 as-calendar"><i class="fa fa-calendar"></i> <span class="as-color-2 mt-3 as-font-16  mr-2 ml-1">
             Joined {{profiledetails?.created_at| date:'yyyy'}}
@@ -59,7 +59,7 @@
               <label>Language</label>
             </div>
            <div class="as-font-16">
-            <label>{{lan?.language}}</label>
+            <label>{{this.profile?.language_prefered?.language}}</label>
            </div>
            
             <!-- <input type="email" class="form-control" id="floatingInput" placeholder="Language"> -->

@@ -105,6 +105,8 @@ myform: FormGroup;
   }*/)
   this.profiledetails = JSON.parse(localStorage.getItem('personal'))
   console.log(this.profiledetails)
+  let params: any = {};
+params['company_id']=this.profiledetails.company_id._id
   this.crud.get(appModels.USERPROFILE + this.profiledetails._id).pipe(untilDestroyed(this)).subscribe((res: any) => {
     console.log(res)
     this.profile = res['data']
@@ -116,7 +118,10 @@ myform: FormGroup;
     console.log(this.cartProductCount)
   })
   this.cartList=[];
-  this.crud.get(appModels.listCart).pipe(untilDestroyed(this)).subscribe(res => {
+  let params2: any = {};
+  params2['company_id']=this.profiledetails.company_id._id
+  params2['user_id']=this.profiledetails._id
+  this.crud.get1(appModels.listCart,{params2}).pipe(untilDestroyed(this)).subscribe(res => {
     console.log(res)
     this.cartdata=res[0]
   for(let i=0;i< this.cartdata?.cart?.length;i++){
@@ -129,7 +134,6 @@ myform: FormGroup;
       })
 
       this.d=JSON.stringify(this.coloumids)
-      let params: any = {};
         params['column_ids'] = this.d;
 this.crud.get1(appModels.CATEGORYLIST,{params}).pipe(untilDestroyed(this)).subscribe((res:any) => {
     console.log(res)
@@ -155,7 +159,7 @@ for(let i=0; i<this.category?.length;i++){
    this.crud.changemessage(JSON.stringify(this.category[0]))
    this.selectedItem = this.category[0];
   })
-  this.crud.get(appModels.ITEMLIST).pipe(untilDestroyed(this)).subscribe((res:any) => {
+  this.crud.get1(appModels.ITEMLIST,{params}).pipe(untilDestroyed(this)).subscribe((res:any) => {
     console.log(res)
     this.itemhistorykit=res['Kits']
   })
@@ -241,6 +245,7 @@ private searchInput: ElementRef;
     let params: any = {};
     if (this.codeValue) {
       params['searchString'] = this.codeValue;
+      params['company_id']=this.profiledetails.company_id._id
     }
     console.log(this.codeValue)
     this.crud.get1(appModels.ITEM, { params }).pipe(untilDestroyed(this)).subscribe((res:any) => {
@@ -263,6 +268,7 @@ searching(event){
     let params: any = {};
     if (this.searchValue) {
       params['searchString'] = event.target.value;
+      params['company_id']=this.profiledetails.company_id._id
     }
     this.crud.get1(appModels.ITEM, { params }).pipe(untilDestroyed(this)).subscribe(res => {
     console.log(res)

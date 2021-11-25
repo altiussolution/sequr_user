@@ -21,7 +21,6 @@ enum appModels {
     RETURNKIT='kits/return',
     TAKENOW='machine',
     ITEM='item/get',
-    TAKENOWQTY='log/getUserTakenQuantity'
 
 }
 //614993f607f4ce431244b852

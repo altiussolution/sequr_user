@@ -42,11 +42,15 @@ export class HomeComponent implements OnInit {
     [{"uid":["1305167547307745"],"lid":["1"]},{"uid":["1305167547316427"],"lid":["2"]}]}]}]}}}]*/
   coloumid: any=[];
   coloumids: any=[];
+  permissions : any=[];
+
   constructor(public crud:CrudService,public router:Router,public fb:FormBuilder,private toast: ToastrService) { 
 
   }
 
   ngOnInit() {
+  this.permissions=JSON.parse(localStorage.getItem("personal"))
+
   this.home();
   }
 
@@ -83,12 +87,14 @@ console.log(localStorage.getItem("lan"))
       
         this.message=JSON.parse(message)
         this.categoryName=this.message?.category_name
-        localStorage.setItem("catname",this.message?.category_name)
-        localStorage.setItem("catid",this.message?._id)
-        this.d=JSON.stringify(this.coloumids)
+    
         let params: any = {};
           params['column_ids'] = this.d;
-        this.crud.get1(appModels.SUBCATEGORY+this.message?._id,{params}).pipe(untilDestroyed(this)).subscribe((res:any) => {
+        console.log(this.message['category']['_id'])
+        this.categoryName=this.message['category']['category_name']
+        localStorage.setItem("catname",this.message['category']['category_name'])
+        localStorage.setItem("catid",this.message['category']['_id'])
+        this.crud.get1(appModels.SUBCATEGORY+this.message['category']['_id'],{params}).pipe(untilDestroyed(this)).subscribe((res:any) => {
           localStorage.setItem("allow","data")
           console.log(res)
        

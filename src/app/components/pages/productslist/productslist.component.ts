@@ -34,10 +34,14 @@ export class ProductslistComponent implements OnInit {
   kits: any;
   List: any;
   highkitqty: any=[];
+  permissions:any=[];
   constructor(public crud: CrudService, private toast: ToastrService,public modalService: NgbModal) { }
 
   ngOnInit(): void {
-    this.crud.get(appModels.KITTINGLIST).pipe(untilDestroyed(this)).subscribe((res: any) => {
+    this.permissions=JSON.parse(localStorage.getItem("personal"))
+    let params: any = {};
+    params['company_id']=this.permissions.company_id._id
+    this.crud.get1(appModels.KITTINGLIST,{params}).pipe(untilDestroyed(this)).subscribe((res: any) => {
       console.log(res)
       this.kit = res.data
       this.getData({ pageIndex: this.page, pageSize: this.size });
@@ -87,7 +91,7 @@ if(this.List?.length ==0){
   async itemHistory(data) {
     this.crud.get(appModels.ITEMLIST).pipe(untilDestroyed(this)).subscribe(async (res: any) => {
       console.log(res)
-      this.id = res['Cart'][0]['_id']
+      this.id = res?.Cart[0]['_id']
       this.itemhistorykit = res['Kits']
       for await (let kit of this.itemhistorykit) {
         if (kit.kit_status == 1 && kit.kit_id._id == data._id) {
@@ -299,6 +303,7 @@ if(this.List?.length ==0){
         }
         let t1 = performance.now();
         eachColumnUsage['column_usage'] = t1 - t0
+        eachColumnUsage['company_id'] = this.permissions.company_id._id
         totalMachineUsage.push(eachColumnUsage)
         await this.sleep(5000)
       }

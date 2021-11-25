@@ -46,20 +46,24 @@ export class DetailsComponent implements OnInit {
   msgg: string;
   mainimage: any;
   img: boolean = true;
-
+permissions:any;
   constructor(public router: Router, private toast: ToastrService, private fb: FormBuilder, public crud: CrudService,
     public modalService: NgbModal) {
 
 
   }
   ngOnInit(): void {
+    this.permissions=JSON.parse(localStorage.getItem("personal"))
     this.crud.CurrentMessage3.subscribe((message: any) => {
       console.log(message)
       //console.log(localStorage.getItem("_id"))
       if (message != "" && !localStorage.getItem("hlo")) {
+        
+let params: any = {};
+params['company_id']=this.permissions.company_id._id
         this.message = message
         console.log(this.message)
-        this.crud.get(appModels.DETAILS + this.message).pipe(untilDestroyed(this)).subscribe((res: any) => {
+        this.crud.get1(appModels.DETAILS + this.message,{params}).pipe(untilDestroyed(this)).subscribe((res: any) => {
           console.log(res)
           this.status = res.status
           localStorage.setItem("hlo", "data")
@@ -79,7 +83,9 @@ export class DetailsComponent implements OnInit {
       }
       else {
 
-        this.crud.get(appModels.DETAILS + localStorage.getItem("ids")).pipe(untilDestroyed(this)).subscribe((res: any) => {
+        let params: any = {};
+        params['company_id']=this.permissions.company_id._id
+        this.crud.get1(appModels.DETAILS + localStorage.getItem("ids"),{params}).pipe(untilDestroyed(this)).subscribe((res: any) => {
           console.log(res)
           this.status = res.status
           localStorage.setItem("hlo", "data")
@@ -98,9 +104,7 @@ export class DetailsComponent implements OnInit {
         })
       }
     })
-    this.crud.get(appModels.TAKENOWQTY).pipe(untilDestroyed(this)).subscribe((res: any) => {
-      console.log(res,"oi")
-    })
+
 
   }
   changing(event) {
@@ -123,7 +127,7 @@ export class DetailsComponent implements OnInit {
       let cart = {
         "item": this.machine.item,
         "total_quantity": Number(this.qut),
-
+        "company_id":this.permissions.company_id._id
       }
 
       this.crud.post(appModels.ADDTOCART, cart).subscribe(async res => {
@@ -384,6 +388,7 @@ export class DetailsComponent implements OnInit {
         }
         let t1 = performance.now();
         eachColumnUsage['column_usage'] = t1 - t0
+        eachColumnUsage['company_id'] = this.permissions.company_id._id
         totalMachineUsage.push(eachColumnUsage)
         await this.sleep(5000)
       }
