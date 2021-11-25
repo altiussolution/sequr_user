@@ -25,6 +25,7 @@ import { ProductsComponent } from './products/products.component';
 import { ProductslistComponent } from './productslist/productslist.component';
 import { ProfileComponent } from './profile/profile.component';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+//import { NgxSpinnerModule } from "ngx-spinner/ngx-spinner";
 
 
 
@@ -49,7 +50,8 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     FormsModule,
     ReactiveFormsModule, MatDatepickerModule, MatInputModule, MatNativeDateModule,
     MatRippleModule, MatIconModule, MatSidenavModule, MatSlideToggleModule, MatListModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+   // NgxSpinnerModule
   ]
 })
 export class PageModule { }

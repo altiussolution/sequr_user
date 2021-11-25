@@ -209,13 +209,12 @@
         <ul *ngFor="let data of searchdata">
           <li><a (click)="search(data._id)">
               <span class="as-2">
-                <img class="as-1-img" src="{{data.image_path}}" ></span>
+                <img class="as-1-img" src="{{data.image_path[0]}}" ></span>
               <p class="as-txt">{{data.item_name}}</p>
             </a></li>
         </ul>
         </div>
       </div>
-
     </div>
   </nav>
   <!-- POPUP DESIGN Logout -->
@@ -227,7 +226,7 @@
         </div>
         <div class="modal-body text-center">
           <div class="logout-popup"></div>
-          <div class="as-font-24 as-color-5 my-3">Are you sure you want to logout?</div>
+          <div class="as-font-24 as-color-5 my-3">Are you sure, you want to signout?</div>
 
           <div class="d-grid mb-3 as-mt-2">
             <button class="btn btn-lg btn-primary btn-login  fw-bold mb-2 mr-2" type="button" data-toggle="modal"

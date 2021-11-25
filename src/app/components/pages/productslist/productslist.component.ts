@@ -3,6 +3,7 @@ import { untilDestroyed } from 'ngx-take-until-destroy';
 import { CrudService } from 'src/app/services/crud.service';
 import { appModels } from 'src/app/services/shared/enum/enum.util';
 import { ToastrService } from 'ngx-toastr';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-productslist',
@@ -33,16 +34,23 @@ export class ProductslistComponent implements OnInit {
   kits: any;
   List: any;
   highkitqty: any=[];
-  constructor(public crud: CrudService, private toast: ToastrService) { }
+  permissions:any=[];
+  constructor(public crud: CrudService, private toast: ToastrService,public modalService: NgbModal) { }
 
   ngOnInit(): void {
-    this.crud.get(appModels.KITTINGLIST).pipe(untilDestroyed(this)).subscribe((res: any) => {
+    this.permissions=JSON.parse(localStorage.getItem("personal"))
+    let params: any = {};
+    params['company_id']=this.permissions.company_id._id
+    this.crud.get1(appModels.KITTINGLIST,{params}).pipe(untilDestroyed(this)).subscribe((res: any) => {
       console.log(res)
       this.kit = res.data
       this.getData({ pageIndex: this.page, pageSize: this.size });
     })
   }
-  addkitcart(_id: any, data) {
+  modaldismiss() {
+    this.ngOnInit()
+  }
+  addkitcart(_id: any, data,modal) {
   console.log(data);
     
     this.highkitqty=[];
@@ -60,7 +68,7 @@ console.log(this.kits)
 this.List = this.kits.filter(item => item === false);
 console.log(this.List)
 if(this.List?.length ==0){
- 
+  this.modalService.open(modal,{backdrop:false});
    this.crud.post(appModels.ADDKITCART + _id).pipe(untilDestroyed(this)).subscribe(async (res: any) => {
       console.log(res)
       if (res != "") {
@@ -74,7 +82,8 @@ if(this.List?.length ==0){
       this.toast.error("Kitting cart added Unsuccessfully")
     })
 }else{
-  this.toast.error("now choosed the kit item quantity for"+this.highkitqty)
+  // this.toast.error("now choosed the kit item quantity for"+this.highkitqty)
+  this.toast.error("Kitting Quantity Was Not Available")
 }
  
   }
@@ -82,7 +91,7 @@ if(this.List?.length ==0){
   async itemHistory(data) {
     this.crud.get(appModels.ITEMLIST).pipe(untilDestroyed(this)).subscribe(async (res: any) => {
       console.log(res)
-      this.id = res['Cart'][0]['_id']
+      this.id = res?.Cart[0]['_id']
       this.itemhistorykit = res['Kits']
       for await (let kit of this.itemhistorykit) {
         if (kit.kit_status == 1 && kit.kit_id._id == data._id) {
@@ -278,8 +287,8 @@ if(this.List?.length ==0){
           }
           //Drawer current status, (opening, opened, closing, closed)
           else if (status !== 'Closed' && status !== 'Locked' && status == 'Unknown') {
-            console.log('please close properly, Current Status = ' + status)
-            this.msg='please close properly, Current Status = ' + status
+            console.log('Current Status = ' + status)
+            this.msg='Current Status = ' + status
 
             // ColumnActionStatus = singleDeviceInfo
           }
@@ -297,6 +306,7 @@ if(this.List?.length ==0){
         }
         let t1 = performance.now();
         eachColumnUsage['column_usage'] = t1 - t0
+        eachColumnUsage['company_id'] = this.permissions.company_id._id
         totalMachineUsage.push(eachColumnUsage)
         await this.sleep(5000)
       }

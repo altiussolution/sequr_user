@@ -1,15 +1,16 @@
-import { Component, OnInit, ViewChild,ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { ToastrService } from 'ngx-toastr';
 import { CrudService } from 'src/app/services/crud.service';
 import { appModels } from 'src/app/services/shared/enum/enum.util';
-
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'app-details',
   templateUrl: './details.component.html',
-  styleUrls: ['./details.component.scss']
+  styleUrls: ['./details.component.scss'],
+  providers: [NgbModal]
 })
 export class DetailsComponent implements OnInit {
   items: any = [];
@@ -38,24 +39,31 @@ export class DetailsComponent implements OnInit {
   machineColumnID: any;
   machineStatus: any;
   machineCompartmentID: any;
-  myThumbnail="https://wittlock.github.io/ngx-image-zoom/assets/thumb.jpg";
-  myFullresImage="https://wittlock.github.io/ngx-image-zoom/assets/fullres.jpg";
+  myThumbnail = "https://wittlock.github.io/ngx-image-zoom/assets/thumb.jpg";
+  myFullresImage = "https://wittlock.github.io/ngx-image-zoom/assets/fullres.jpg";
   msg: string;
   massage: string;
   msgg: string;
   mainimage: any;
-  constructor(public router: Router, private toast: ToastrService, private fb: FormBuilder, public crud: CrudService) {
+  img: boolean = true;
+permissions:any;
+  constructor(public router: Router, private toast: ToastrService, private fb: FormBuilder, public crud: CrudService,
+    public modalService: NgbModal) {
 
 
   }
   ngOnInit(): void {
+    this.permissions=JSON.parse(localStorage.getItem("personal"))
     this.crud.CurrentMessage3.subscribe((message: any) => {
       console.log(message)
       //console.log(localStorage.getItem("_id"))
       if (message != "" && !localStorage.getItem("hlo")) {
+        
+let params: any = {};
+params['company_id']=this.permissions.company_id._id
         this.message = message
         console.log(this.message)
-        this.crud.get(appModels.DETAILS + this.message).pipe(untilDestroyed(this)).subscribe((res: any) => {
+        this.crud.get1(appModels.DETAILS + this.message,{params}).pipe(untilDestroyed(this)).subscribe((res: any) => {
           console.log(res)
           this.status = res.status
           localStorage.setItem("hlo", "data")
@@ -73,9 +81,11 @@ export class DetailsComponent implements OnInit {
 
         })
       }
-      else{
+      else {
 
-        this.crud.get(appModels.DETAILS + localStorage.getItem("ids")).pipe(untilDestroyed(this)).subscribe((res: any) => {
+        let params: any = {};
+        params['company_id']=this.permissions.company_id._id
+        this.crud.get1(appModels.DETAILS + localStorage.getItem("ids"),{params}).pipe(untilDestroyed(this)).subscribe((res: any) => {
           console.log(res)
           this.status = res.status
           localStorage.setItem("hlo", "data")
@@ -106,62 +116,77 @@ export class DetailsComponent implements OnInit {
       this.toast.error("You have reached maximum quantity of the item.")
     }
   }
-
+  modaldismiss() {
+    this.ngOnInit()
+  }
   async addtocart(item?) {
+
     if (this.qut && this.qut > 0) {
       let cart = {
+       
         "item": this.machine.item,
         "total_quantity": Number(this.qut),
-
+        "company_id":this.permissions.company_id._id
       }
 
       this.crud.post(appModels.ADDTOCART, cart).subscribe(async res => {
         console.log(res)
+
+        if (res['message'] == "Successfully added into cart!") {
+          let params: any = {};
+          params['user_id']=this.permissions?._id
+          this.crud.get1(appModels.listCart,{params}).pipe(untilDestroyed(this)).subscribe(async res => {
+            console.log(res)
+            if (res) {
+              if (!item) {
+                this.toast.success("cart added successfully")
+                this.cartList1 = [];
+                this.crud.get1(appModels.listCart,{params}).pipe(untilDestroyed(this)).subscribe(async res => {
+console.log(res,"cart")
+                  this.cartdata1 = res[0]
+                  for (let i = 0; i < this.cartdata1?.cart?.length; i++) {
+                    if (this.cartdata1?.cart[i]['cart_status'] == 1) {
+                      this.cartList1.push(this.cartdata1?.cart[i])
+                    }
+                  }
+                  console.log(this.cartList1)
+                  this.crud.getcarttotal(this.cartList1?.length)
+                  this.router.navigate(['pages/details'])
+
+                })
+              }
+              if (item) {
+                this.modalService.open(item, { backdrop: false });
+                this.cartList = [];
+                this.crud.get1(appModels.listCart,{params}).pipe(untilDestroyed(this)).subscribe(async res => {
+                  console.log(res)
+                  this.toast.success("Door open Sucessfully")
+                  this.cartdata = res[0]
+                  for (let i = 0; i < this.cartdata?.cart?.length; i++) {
+                    if (this.cartdata?.cart[i]['cart_status'] == 1 && this.cartdata?.cart[i]['item']['_id'] == this.machine.item) {
+                      this.cartList.push(this.cartdata?.cart[i])
+                    }
+                  }
+                  console.log(this.cartList)
+                  await this.takeItem(item)
+                  this.crud.getcarttotal(this.cartList?.length)
+                }, error => {
+                  this.toast.error(error.message);
+                })
+              }
+              //Arunkumar
+
+            }
+
+          }, error => {
+            this.toast.error(error.message);
+          })
+
+        } else if (res['message'] == "Stock Not Yet Allocated") {
+          this.toast.error(res['message'])
+        }
         //this.toast.success("cart added successfully")
-        this.crud.get(appModels.listCart).pipe(untilDestroyed(this)).subscribe(async res => {
-          console.log(res)
-          if (res) {
-            if (!item) {
-              this.toast.success("cart added successfully")
-              this.cartList1 = [];
-              this.crud.get(appModels.listCart).pipe(untilDestroyed(this)).subscribe(async res => {
-                this.cartdata1 = res[0]
-                for (let i = 0; i < this.cartdata1?.cart?.length; i++) {
-                  if (this.cartdata1?.cart[i]['cart_status'] == 1) {
-                    this.cartList1.push(this.cartdata1?.cart[i])
-                  }
-                }
-                console.log(this.cartList1)
-                this.crud.getcarttotal(this.cartList1?.length)
-                this.router.navigate(['pages/details'])
 
-              })
-            }
-            if (item) {
-              this.cartList = [];
-              this.crud.get(appModels.listCart).pipe(untilDestroyed(this)).subscribe(async res => {
-                console.log(res)
-                this.toast.success("Door open Sucessfully")
-                this.cartdata = res[0]
-                for (let i = 0; i < this.cartdata?.cart?.length; i++) {
-                  if (this.cartdata?.cart[i]['cart_status'] == 1 && this.cartdata?.cart[i]['item']['_id'] == this.machine.item) {
-                    this.cartList.push(this.cartdata?.cart[i])
-                  }
-                }
-                console.log(this.cartList)
-                await this.takeItem(item)
-                this.crud.getcarttotal(this.cartList?.length)
-              }, error => {
-                this.toast.error(error.message);
-              })
-            }
-            //Arunkumar
-
-          }
-
-        }, error => {
-          this.toast.error(error.message);
-        })
       })
     } else {
       this.toast.error("Please Enter Valid QTY")
@@ -188,10 +213,11 @@ export class DetailsComponent implements OnInit {
   // }
 
   //}
-showimg(value){
-  console.log(value)
-  this.mainimage=value
-}
+  showimg(value) {
+    console.log(value)
+    this.img = true
+    this.mainimage = value
+  }
   //************   Arunkumar  ***********************/
   async allDeviceInfo() {
     let response = await this.crud.get('machine/allDeviceInfo').pipe(untilDestroyed(this)).toPromise()
@@ -282,6 +308,8 @@ showimg(value){
   TakeOrReturnItems: any[] = []
   machinesList = []
   async takeItem(item: string) {
+    console.log('******** Machine Into *********')
+
     // await this.addtocart()
     // await this.getCartItems()
     let totalMachinesList = await this.formatMachineData(item)
@@ -295,6 +323,7 @@ showimg(value){
     // Record Total Machine Usage
     let totalMachineUsage = []
     for await (let machine of machinesList) {
+      console.log('******** Machine Into *********')
       // Record Total Machine Usage
       let eachColumnUsage = {}
       eachColumnUsage['cube_id'] = machine.cube_id
@@ -345,8 +374,8 @@ showimg(value){
           }
           //Drawer current status, (opening, opened, closing, closed)
           else if (status !== 'Closed' && status !== 'Locked' && status != 'Unknown') {
-            console.log('please close properly, Current Status = ' + status)
-            this.msg='please close properly, Current Status = ' + status
+            console.log('Current Status = ' + status)
+            this.msg = 'Current Status = ' + status
             // ColumnActionStatus = singleDeviceInfo
           }
           //set delay time
@@ -363,15 +392,16 @@ showimg(value){
         }
         let t1 = performance.now();
         eachColumnUsage['column_usage'] = t1 - t0
+        eachColumnUsage['company_id'] = this.permissions.company_id._id
         totalMachineUsage.push(eachColumnUsage)
         await this.sleep(5000)
       }
       // break for loop if single device info is unknown
       else {
         console.log('Machine status unknown ' + status)
-        this.msg='Machine status unknown ' + status
+        this.msg = 'Machine status unknown ' + status
         console.log('Close all drawers properly and click take now')
-        this.msg='Close all drawers properly and click take now'
+        this.msg = 'Close all drawers properly and click take now'
         break
       }
     }
@@ -380,15 +410,15 @@ showimg(value){
     console.log(successTake)
     if (successTake.length == 0) {
       console.log('Machine status unknown No Item taken')
-      this.msgg='Machine status unknown No Item taken'
+      this.msgg = 'Machine status unknown No Item taken'
     } else if (successTake.length == totalMachinesList.length) {
       console.log(successTake.length + ' items Taken successfully')
-      this.msgg=successTake.length + ' items Taken successfully'
+      this.msgg = successTake.length + ' items Taken successfully'
       await this.addMachineUsage(totalMachineUsage)
       await this.updateAfterTakeOrReturn(successTake)
     } else if (successTake.length < totalMachinesList.length) {
       console.log(successTake.length + ' items Taken successfully \n' + successTake.length + ' items failed return')
-      this.msgg=successTake.length + ' items Taken successfully \n' + successTake.length + ' items failed return'
+      this.msgg = successTake.length + ' items Taken successfully \n' + successTake.length + ' items failed return'
       await this.addMachineUsage(totalMachineUsage)
       await this.updateAfterTakeOrReturn(successTake, item)
 
@@ -430,8 +460,8 @@ showimg(value){
         this.show = !this.show;
       }
     }, 5000);
-  
-  
+
+
   }
 
 
@@ -439,7 +469,8 @@ showimg(value){
   //   this.show = !this.show;
   //   videoplayer.nativeElement.play();
   // }
-  toggleVideo(){
+  toggleVideo() {
+    this.img = false;
     this.videoplayer.nativeElement.play();
   }
   ngOnDestroy() {

@@ -11,4 +11,4 @@ import { ProductslistComponent } from './productslist.component';
 
   ]
 })
-export class ProductslistModule { }
+export class ProductslistModule { } 

@@ -8,7 +8,7 @@ import { untilDestroyed } from 'ngx-take-until-destroy';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { CrudService } from 'src/app/services/crud.service';
 import { appModels } from 'src/app/services/shared/enum/enum.util';
-
+import { MatPaginatorIntl } from '@angular/material/paginator';
 declare var google
 @Component({
   selector: 'app-home',
@@ -16,7 +16,7 @@ declare var google
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
- 
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   message: any=[];
   categoryName: any;
   subcategories1: any=[];
@@ -29,20 +29,29 @@ export class HomeComponent implements OnInit {
   selectedValue: any;
   selectedGroup: any;
   profiledetails: any=[];
+permissions : any=[];
   constructor(public crud:CrudService,public router:Router,public fb:FormBuilder) { 
- 
+
   }
 
   ngOnInit() {
+  this.permissions=JSON.parse(localStorage.getItem("personal"))
+
   this.home();
   }
 
 home(){
+  this.crud.get("api").pipe(untilDestroyed(this)).subscribe((res:any) => {
+    console.log(res)
+})
 
+console.log(localStorage.getItem("lan"))
   console.log(this.readCookie('googtrans'));
   if(!localStorage.getItem("language")){
     // if (confirm(`Language has been updated for you please refresh the page.`)) {
    localStorage.setItem("language","lang")
+   this.setCookie("googtrans",localStorage.getItem("lan") );
+ 
     window.location.reload()
     
   }
@@ -51,10 +60,11 @@ home(){
       if(message !="" && !localStorage.getItem("allow")){
       
         this.message=JSON.parse(message)
-        this.categoryName=this.message?.category?.category_name
-        localStorage.setItem("catname",this.message?.category?.category_name)
-        localStorage.setItem("catid",this.message?.category?._id)
-        this.crud.get(appModels.SUBCATEGORY+this.message?.category?._id).pipe(untilDestroyed(this)).subscribe((res:any) => {
+        console.log(this.message['category']['_id'])
+        this.categoryName=this.message['category']['category_name']
+        localStorage.setItem("catname",this.message['category']['category_name'])
+        localStorage.setItem("catid",this.message['category']['_id'])
+        this.crud.get(appModels.SUBCATEGORY+this.message['category']['_id']).pipe(untilDestroyed(this)).subscribe((res:any) => {
           localStorage.setItem("allow","data")
           console.log(res)
        
@@ -79,7 +89,10 @@ home(){
      
     })
 }
+setCookie(name,value,) {
+  document.cookie = name + "=" + value;
 
+}
    readCookie(name) {
      console.log(document.cookie)
     var c = document.cookie.split('; '),
@@ -140,3 +153,4 @@ ngOnDestroy(){
     asgridl.classList.remove('view-active')
   }
 }
+

@@ -22,7 +22,7 @@
 
                   </a>-->
 
-                  <a class="thumbnail" *ngIf="videoSource != ''" (click)="toggleVideo()">
+                  <a class="thumbnail" *ngIf="videoSource" (click)="toggleVideo()">
                    <video    class="thumbnail-image" id="video" controls (click)="toggleVideo()"
               #videoPlayer  [src]="videoSource" type="video/mp4" data-setup='{ "aspectRatio":"640:267", "playbackRates": [1, 1.5, 2] }'>
                  </video>
@@ -36,7 +36,7 @@
                     <div class="as-font-24">{{machine?.quantity}}</div>
                 </div>
                 <!-- <img  src="{{items?.image_path}}" > -->
-                    <lib-ngx-image-zoom
+                    <lib-ngx-image-zoom *ngIf="img"
                         [thumbImage]=mainimage
                         [fullImage]=mainimage
                         [magnification]="1"
@@ -45,7 +45,9 @@
                         [lensWidth]="200"
                      
                     ></lib-ngx-image-zoom>
-
+                    <video  id="video" controls  *ngIf="!img"
+                    #videoPlayer  [src]="videoSource" type="video/mp4" data-setup='{ "aspectRatio":"640:267", "playbackRates": [1, 1.5, 2] }'>
+                       </video>
                 </main>
                 
        
@@ -53,7 +55,7 @@
        
             
         </div>
-        <div class="col-md-5 pr-0">
+        <div class="col-md-5 pr-0 ml-left">
             <div class="as-details-title">{{items?.item_name}}
             </div>
             <div class="row mx-0 as-details-border">
@@ -90,69 +92,62 @@
 
                     </div>
                     <div class="as-mr-det">
-                        <button class="btn  btn-primary fw-bold mb-2"  data-toggle="modal" data-target="#myModal" type="button" (click)="addtocart('cart')">Take
+                        <!-- data-toggle="modal" data-target="#myModal" -->
+                        <button class="btn  btn-primary fw-bold mb-2"  type="button" (click)="addtocart(mymodal)">Take
                             Now</button>
-                        <!-- Modal -->
-                        <div class="modal fade" id="myModal" role="dialog" data-backdrop="static">
-                            <div class="modal-dialog">
-
-                                <!-- Modal content-->
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                        <!-- <h4 class="modal-title">Modal Header</h4> -->
-                                    </div>
-                                    <div class="modal-body">
-                                        <!-- <p>Cube ID :{{machineCubeID}} </p>
-                                        <p>Colomn ID :{{machineColumnID}} </p>
-                                        <p>Draw ID :{{machineDrawID}} </p>
-                                        <p>compartment ID :{{machineCompartmentID}} </p>
-                                        <p>Status :{{machineStatus}}</p> -->
-                                        
-                                        <table class="table table-striped">
+                          <!-- <div class="modal fade" id="myModal" role="dialog" data-backdrop="static"> 
+                                <div class="modal-dialog">
     
-                                            <tbody>
-                                              <tr>
-                                                <td>Cube ID :</td>
-                                                <td>{{machineCubeID}}</td>
-                                                
-                                              </tr>
-                                              <tr>
-                                                <td>Colomn ID :</td>
-                                                <td>{{machineColumnID}}</td>
-                                                
-                                              </tr>
-                                              <tr>
-                                                <td>Draw ID :</td>
-                                                <td>{{machineDrawID}}</td>
-                                                
-                                              </tr>
-                                              <tr>
-                                                <td>compartment ID :</td>
-                                                <td>{{machineCompartmentID}}</td>
-                                                
-                                              </tr>
-                                              <tr>
-                                                <td>Status :</td>
-                                                <td>{{machineStatus}}</td>
-                                                
-                                              </tr>
-                                            </tbody>
-                                          </table>
-                                          <div class="details text-center" style="background-color: #ddd; padding: 15px; margin: auto;"> 
-                                          <p><strong style="color: rgb(23, 167, 23);">{{msg}}</strong></p>
-                                        <p><strong style="color: rgb(23, 167, 23);">{{msgg}}</strong></p>
+                                   
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                          
+                                        </div>
+                                        <div class="modal-body">
+                                            
+                                            
+                                            <table class="table table-striped">
+        
+                                                <tbody>
+                                                  <tr>
+                                                    <td>Cube ID :</td>
+                                                    <td>{{machineCubeID}}</td>
+                                                    
+                                                  </tr>
+                                                  <tr>
+                                                    <td>Colomn ID :</td>
+                                                    <td>{{machineColumnID}}</td>
+                                                    
+                                                  </tr>
+                                                  <tr>
+                                                    <td>Draw ID :</td>
+                                                    <td>{{machineDrawID}}</td>
+                                                    
+                                                  </tr>
+                                                  <tr>
+                                                    <td>compartment ID :</td>
+                                                    <td>{{machineCompartmentID}}</td>
+                                                    
+                                                  </tr>
+                                                  <tr>
+                                                    <td>Status :</td>
+                                                    <td>{{machineStatus}}</td>
+                                                    
+                                                  </tr>
+                                                </tbody>
+                                              </table>
+                                              <div class="details text-center" style="background-color: #ddd; padding: 15px; margin: auto;"> 
+                                              <p><strong style="color: rgb(23, 167, 23);">{{msg}}</strong></p>
+                                            <p><strong style="color: rgb(23, 167, 23);">{{msgg}}</strong></p>
+                                        </div>
+                                        </div>
+                                        
                                     </div>
-                                    </div>
-                                    <!--<div class="modal-footer">
-                                        <button type="button" class="btn btn-default" data-dismiss="modal">OK</button>
-                                        <button type="button" class="btn btn-default" data-dismiss="modal" (click)="yes()">Yes</button>
-                      <button type="button" class="btn btn-default" data-dismiss="modal" (click)="close()">Close</button>
-                                    </div>-->
                                 </div>
-                            </div>
-
-                        </div>
+    
+                            </div>  -->
+                            
                     </div>
                 
                 <div class="as-mr-or">
@@ -160,7 +155,7 @@
                 </div>
                 <div class="as-mr-det">
                     <button class="btn  btn-secondary   fw-bold mb-2" type="button" (click)="addtocart()">Add to
-                        cart</button>
+                        Cart</button>
                 </div>
                 </div>
 
@@ -179,6 +174,53 @@
         </div>
 
 </div>
+<ng-template #mymodal let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title"></h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')"  (click)="modaldismiss()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+        <table class="table table-striped">
+        
+            <tbody>
+              <tr>
+                <td>Cube ID :</td>
+                <td>{{machineCubeID}}</td>
+                
+              </tr>
+              <tr>
+                <td>Colomn ID :</td>
+                <td>{{machineColumnID}}</td>
+                
+              </tr>
+              <tr>
+                <td>Draw ID :</td>
+                <td>{{machineDrawID}}</td>
+                
+              </tr>
+              <tr>
+                <td>compartment ID :</td>
+                <td>{{machineCompartmentID}}</td>
+                
+              </tr>
+              <tr>
+                <td>Status :</td>
+                <td>{{machineStatus}}</td>
+                
+              </tr>
+            </tbody>
+          </table>
+          <div class="details text-center" style="background-color: #ddd; padding: 15px; margin: auto;"> 
+          <p><strong style="color: rgb(23, 167, 23);">{{msg}}</strong></p>
+        <p><strong style="color: rgb(23, 167, 23);">{{msgg}}</strong></p>
+    </div>
+    </div>
+    <!-- <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Ok</button>
+    </div> -->
+  </ng-template>
 <!-- <video     id="video" controls (click)="toggleVideo()" 
 #videoPlayer  [src]="videoSource" type="video/mp4" data-setup='{ "aspectRatio":"640:267", "playbackRates": [1, 1.5, 2] }'>
 </video> -->
@@ -280,7 +322,5 @@
 
     </div> -->
 
-
-
-
-
+  
+      

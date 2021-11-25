@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { ToastrService } from 'ngx-toastr';
 import { CrudService } from 'src/app/services/crud.service';
@@ -21,32 +22,48 @@ export class ItemhistoryComponent implements OnInit {
   arrayvalue1: any = [];
   id: any;
   cartdata: any = [];
-  permissions:any;
+  permissions:any=[];
 view:any;
   add: any;
   update: any;
   deleted: any;
-  constructor(public crud: CrudService, private toast: ToastrService) { }
+  machineCubeID: any;
+  machineColumnID: any;
+  machineDrawID: any;
+  machineCompartmentID: any;
+  machineStatus: any;
+  msg: string;
+  msgg: string;
+  constructor(public crud: CrudService, private toast: ToastrService, public modalService: NgbModal) { }
   ngOnInit(): void {
     this.permissions=JSON.parse(localStorage.getItem("personal"))
 console.log(this.permissions.role_id.permission)
+console.log(this.permissions.company_id._id)
 this.view=this.permissions.role_id.permission.find(temp=>temp=="return_get")
 this.add =this.permissions.role_id.permission.find(temp=>temp=="return_add")
 this.update = this.permissions.role_id.permission.find(temp=>temp=="return_update")
 this.deleted = this.permissions.role_id.permission.find(temp=>temp=="return_delete")
     this.arrayvalue1 = [];
     this.arrayvalue = [];
-    this.crud.get(appModels.ITEMLIST).pipe(untilDestroyed(this)).subscribe((res: any) => {
+    let params: any = {};
+    params['company_id']=this.permissions.company_id._id
+    params['user_id']=this.permissions._id
+    this.crud.get1(appModels.ITEMLIST,{params}).pipe(untilDestroyed(this)).subscribe((res: any) => {
       console.log(res)
       this.itemhistorycart = []
-      this.cartdata = res['Cart'][0]['cart']
+      if(res['status']==true){
+        this.cartdata = res['Cart'][0]['cart']
+      }
+     
       for (let i = 0; i < this.cartdata?.length; i++) {
         if (this.cartdata[i]['cart_status'] == 2) {
           this.itemhistorycart.push(this.cartdata[i])
         }
       }
+      if(res['status']==true){
       this.id = res['Cart'][0]['_id']
       this.date = res['Cart'][0]['updated_at']
+      }
       this.itemhistorykit = res['Kits']
     })
   }
@@ -84,6 +101,9 @@ this.deleted = this.permissions.role_id.permission.find(temp=>temp=="return_dele
   close() {
     this.ngOnInit();
   }
+  modaldismiss() {
+    this.ngOnInit()
+  }
   returnproduct() {
     if (this.arrayvalue.length != 0) {
       var result = this.arrayvalue.map(function (a) { return a?._id; });
@@ -92,7 +112,7 @@ this.deleted = this.permissions.role_id.permission.find(temp=>temp=="return_dele
         "cart_id": this.id,
         "return_items": result,
         "cart_status": 3,
-
+"company_id":this.permissions.company_id._id
       }
       this.crud.update2(appModels.RETURNCART, data).pipe(untilDestroyed(this)).subscribe((res: any) => {
         this.closebutton.nativeElement.click();
@@ -128,6 +148,7 @@ this.deleted = this.permissions.role_id.permission.find(temp=>temp=="return_dele
           "cart_id": cartid,
           "return_items": kitids,
           "kit_status": 3,
+          "company_id":this.permissions.company_id._id
         }
         this.crud.update2(appModels.RETURNCART, data).pipe(untilDestroyed(this)).subscribe((res: any) => {
           this.closebutton.nativeElement.click();
@@ -256,9 +277,10 @@ this.deleted = this.permissions.role_id.permission.find(temp=>temp=="return_dele
   // Take Items form machine  
   TakeOrReturnItems: any[] = []
   machinesList = []
-  async returnItem(item: string) {
+  async returnItem(item: string,modal) {
     if (confirm(`Are you sure want to return?`)) {
       if(this.add){
+        this.modalService.open(item,{backdrop:false});
         let totalMachinesList = await this.formatMachineData(item)
         console.log(totalMachinesList)
         let machinesList = await this.groupbyData(totalMachinesList)
@@ -283,7 +305,11 @@ this.deleted = this.permissions.role_id.permission.find(temp=>temp=="return_dele
           let status = singleDeviceInfo.details.singledevinfo.column[0]['status'][0]
           console.log('Column : ' + machine.column_id + '' + 'drawer: ' + machine.bin_id + ' ' + 'Compartment: ' + machine.compartment_id)
           console.log(status)
-    
+          this.machineCubeID = machine.cube_id
+          this.machineColumnID = machine.column_id
+          this.machineDrawID = machine.bin_id
+          this.machineCompartmentID = machine.compartment_id
+          this.machineStatus = status
           if (status == 'Locked' || status == 'Closed' || status == 'Unlocked' || status == 'Unknown') {
             // Lock that Column API, machine._id
             if (status == 'Closed' || status == 'Unlocked') {
@@ -304,6 +330,7 @@ this.deleted = this.permissions.role_id.permission.find(temp=>temp=="return_dele
               let singleDeviceInfo = await this.singleDeviceInfo(machine)
               let status = singleDeviceInfo.details.singledevinfo.column[0]['status'][0]
               console.log('inside while loop status bin ' + machine.bin_id + status)
+            
               if (status == 'Closed' || status == 'Locked' || status == 'Unknown') {
                 await this.sleep(9000)
                 await this.crud.post('machine/lockBin', machine).pipe(untilDestroyed(this)).toPromise()
@@ -312,7 +339,7 @@ this.deleted = this.permissions.role_id.permission.find(temp=>temp=="return_dele
               }
               //Drawer current status, (opening, opened, closing, closed)
               else if (status !== 'Closed' && status !== 'Locked' && status !== 'Unknown') {
-                console.log('please close properly, Current Status = ' + status)
+                console.log('Current Status = ' + status)
                 // ColumnActionStatus = singleDeviceInfo
               }
               //set delay time
@@ -329,6 +356,7 @@ this.deleted = this.permissions.role_id.permission.find(temp=>temp=="return_dele
             }
             let t1 = performance.now();
             eachColumnUsage['column_usage'] = t1 - t0
+            eachColumnUsage['company_id'] = this.permissions.company_id._id
             totalMachineUsage.push(eachColumnUsage)
             await this.sleep(5000)
             
@@ -336,7 +364,9 @@ this.deleted = this.permissions.role_id.permission.find(temp=>temp=="return_dele
           // break for loop if single device info is unknown
           else {
             console.log('Machine status unknown ' + status)
+            this.msg='Machine status unknown ' + status
             console.log('Close all drawers properly and click take now')
+            this.msg='Close all drawers properly and click take now'
             break
           }
         }
@@ -345,12 +375,15 @@ this.deleted = this.permissions.role_id.permission.find(temp=>temp=="return_dele
         console.log(successTake)
         if (successTake.length == 0) {
           console.log('Machine status unknown No Item returned')
+          this.msgg='Machine Status Unknown No Item Returned'
         } else if (successTake.length == totalMachinesList.length) {
           console.log(successTake.length + ' items returned successfully')
+          this.msgg=successTake.length + ' items returned successfully'
           await this.addMachineUsage(totalMachineUsage)
           await this.updateAfterTakeOrReturn(successTake)
         } else if (successTake.length < totalMachinesList.length) {
           console.log(successTake.length + ' items Taken successfully \n' + successTake.length + ' items failed return')
+          this.msgg=successTake.length + ' items Taken successfully \n' + successTake.length + ' items failed return'
           await this.addMachineUsage(totalMachineUsage)
           await this.updateAfterTakeOrReturn(successTake, item)
         }
@@ -385,6 +418,8 @@ this.deleted = this.permissions.role_id.permission.find(temp=>temp=="return_dele
 
   async addMachineUsage(data) {
     console.log(data)
+   
+
     this.crud.post(`dashboard/machineUsageAdd`, data).pipe().subscribe(async (res) => {
       console.log(res)
       if (res) {

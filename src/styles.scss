@@ -483,7 +483,7 @@ input {
   // max-height: 70vh;
   overflow: overlay;
   // min-height: 70vh;
-  height: auto;
+  height: 44vh;
 }
 
 .search-icon {
@@ -549,9 +549,10 @@ input {
 }
 
 .as-details-txt {
-  margin: 16px 30px 16px 10px;
+  margin: 16px 10px 15px 10px;
   border-right: 2px solid #d6d6d6;
   padding-right: 16px;
+  text-align: center;
   color: #1e1e1e;
 }
 
@@ -1235,7 +1236,7 @@ input.pop {
   }
 
   .as-drop-img {
-    right: 35.5vw;
+    right: 35.2vw;
   }
 
   .as-card {

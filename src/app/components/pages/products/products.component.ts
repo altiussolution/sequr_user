@@ -19,11 +19,13 @@ export class ProductsComponent implements OnInit {
   data: any=[];
   page = 0;
   size = 4;
+  permissions : any=[];
   constructor(public crud:CrudService,public router:Router,private toast: ToastrService) {
     
    }
 
   ngOnInit(): void {
+    this.permissions=JSON.parse(localStorage.getItem("personal"))
     
     this.crud.CurrentMessage2.subscribe(message=>{
       if(message !=""){
@@ -36,18 +38,22 @@ export class ProductsComponent implements OnInit {
    this.crud.CurrentMessage1.subscribe(message=>{
      console.log(message)
     if(message !="" && !localStorage.getItem("allow1")){
+      let params: any = {};
+params['company_id']=this.permissions.company_id._id
           this.product=JSON.parse(message)
           localStorage.setItem("subid",JSON.stringify(this.product))
           console.log(this.product)
-          this.crud.get('item/getItemByCategory/'+this.product?.category_id+'/'+this.product?._id).pipe(untilDestroyed(this)).subscribe((res:any) => {
+          this.crud.get1('item/getItemByCategory/'+this.product['category_id']+'/'+this.product['_id'],{params}).pipe(untilDestroyed(this)).subscribe((res:any) => {
           localStorage.setItem("allow1","data")
           console.log(res)
           this.items=res['data']
           this.getData({pageIndex: this.page, pageSize: this.size});
           })
       }else{
+        let params: any = {};
+        params['company_id']=this.permissions.company_id._id
         this.product=JSON.parse(localStorage.getItem("subid"))
-        this.crud.get('item/getItemByCategory/'+this.product?.category_id+'/'+this.product?._id).pipe(untilDestroyed(this)).subscribe((res:any) => {
+        this.crud.get1('item/getItemByCategory/'+this.product?.category_id+'/'+this.product?._id,{params}).pipe(untilDestroyed(this)).subscribe((res:any) => {
         localStorage.setItem("allow1","data")
         console.log(res)
         this.items=res['data']
