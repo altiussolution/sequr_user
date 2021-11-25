@@ -28,9 +28,12 @@ export class ForgotpasswordComponent implements OnInit {
         "new_pass_req" : true
       }
       this.authendication.update2(`employee/updateForgotpassword/${this.loginForm.value.username}`, data).pipe(untilDestroyed(this)).subscribe(res=>{
-console.log(res)
-      })
+       console.log(res)
       this.toast.success("Forgot password request sent to admin")
+      },error=>{
+      this.toast.error(error.message)
+      })
+      
     }else{
       this.toast.warning("please enter username")
     }

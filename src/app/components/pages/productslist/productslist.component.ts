@@ -35,6 +35,9 @@ export class ProductslistComponent implements OnInit {
   List: any;
   highkitqty: any=[];
   permissions:any=[];
+  totalquantity: any=[];
+  kitdatas1: any;
+  qtyss: number;
   constructor(public crud: CrudService, private toast: ToastrService,public modalService: NgbModal) { }
 
   ngOnInit(): void {
@@ -51,40 +54,60 @@ export class ProductslistComponent implements OnInit {
     this.ngOnInit()
   }
   addkitcart(_id: any, data,modal) {
-  console.log(data);
-    
-    this.highkitqty=[];
-   console.log(data)
-    this.kitdatas=data
-    console.log(this.kitdatas.kit_data)
-    this.kits = this.kitdatas.kit_data.map(m => { 
-   if(m.kit_item_qty > m.qty) { 
-    this.highkitqty.push(m?.kit_item_qty+'>'+m?.qty)
-      return false;
-  }
- return true;
-})
-console.log(this.kits)
-this.List = this.kits.filter(item => item === false);
-console.log(this.List)
-if(this.List?.length ==0){
-  this.modalService.open(modal,{backdrop:false});
-   this.crud.post(appModels.ADDKITCART + _id).pipe(untilDestroyed(this)).subscribe(async (res: any) => {
+    let params: any = {};
+    params['company_id']=this.permissions?.company_id?._id
+    params['user_id']=this.permissions?._id
+    this.crud.get1("log/getUserTakenQuantity",{params}).pipe(untilDestroyed(this)).subscribe(async res => {
       console.log(res)
-      if (res != "") {
-        if (res['message'] == "Successfully added into cart!") {
-          this.toast.success("Kitting cart added successfully")
-          await this.itemHistory(data)
-
+      if(res?.data?.length!=0){
+        this.totalquantity=res['data']
+        this.totalquantity.trasaction_qty
+        this.kitdatas1=data
+        this.qtyss=0
+        for(let j=0;j<this.kitdatas1?.kit_data?.length;j++){
+          this.qtyss +=this.kitdatas1?.kit_data[j]?.kit_item_qty;
+          console.log(this.qtyss)
         }
+      if(this.permissions?.item_max_quantity>=this.totalquantity[0]?.trasaction_qty + this.qtyss){
+            this.highkitqty=[];
+            console.log(data)
+             this.kitdatas=data
+             console.log(this.kitdatas.kit_data)
+             this.kits = this.kitdatas.kit_data.map(m => { 
+            if(m.kit_item_qty > m.quantity) { 
+             this.highkitqty.push(m?.kit_item_qty+'>'+m?.qty)
+               return false;
+           }
+          return true;
+             })
+         console.log(this.kits)
+         this.List = this.kits.filter(item => item === false);
+         console.log(this.List)
+         if(this.List?.length ==0){
+           this.modalService.open(modal,{backdrop:false});
+            this.crud.post(appModels.ADDKITCART + _id).pipe(untilDestroyed(this)).subscribe(async (res: any) => {
+               console.log(res)
+               if (res != "") {
+                 if (res['message'] == "Successfully added into cart!") {
+                   this.toast.success("Kitting cart added successfully")
+                   await this.itemHistory(data)
+         
+                 }
+               }
+             }, error => {
+               this.toast.error("Kitting cart added Unsuccessfully")
+             })
+         }else{
+           // this.toast.error("now choosed the kit item quantity for"+this.highkitqty)
+           this.toast.error("Kitting Quantity Was Not Available")
+         }
+       
+          }
+      }else{
+        this.toast.error("Today's Maximum Quantity not assigned, Please contact admin")
       }
-    }, error => {
-      this.toast.error("Kitting cart added Unsuccessfully")
+      
     })
-}else{
-  // this.toast.error("now choosed the kit item quantity for"+this.highkitqty)
-  this.toast.error("Kitting Quantity Was Not Available")
-}
  
   }
   

@@ -20,6 +20,8 @@ export class ProductsComponent implements OnInit {
   page = 0;
   size = 4;
   permissions : any=[];
+  machine: any=[];
+  qty: any;
   constructor(public crud:CrudService,public router:Router,private toast: ToastrService) {
     
    }
@@ -101,26 +103,40 @@ params['company_id']=this.permissions.company_id._id
     this.router.navigate(['pages/details'])
   }
   addtocart(it: any, qty: number) {
-    let cart = {
-        "item" : it,
-        "total_quantity" : Number(qty),
-        
-    }
-    console.log(cart)
-    this.crud.post(appModels.ADDTOCART,cart).pipe(untilDestroyed(this)).subscribe((res:any) => {
+    let params: any = {};
+    params['company_id']=this.permissions.company_id._id
+    this.crud.get1(appModels.DETAILS + it,{params}).pipe(untilDestroyed(this)).subscribe((res: any) => {
       console.log(res)
-      if (res != "") {
-        if(res['message']=="Successfully added into cart!"){
-          this.toast.success("cart added successfully")
-            this.router.navigate(['pages/mycart'])
-          // this.router.navigate(['pages/mycart'])
-        }else if(res['message']=="Stock Not Yet Allocated"){
-          this.toast.error(res['message'])
-        }
-       }
-    },error=>{
-      this.toast.error("cart added Unsuccessfully")
+      this.machine=[];
+      this.machine = res.machine
+      this.qty = this.machine.quantity
+      if(this.qty>=qty){
+
+        let cart = {
+          "item" : it,
+          "total_quantity" : Number(qty),
+          
+      }
+      console.log(cart)
+      this.crud.post(appModels.ADDTOCART,cart).pipe(untilDestroyed(this)).subscribe((res:any) => {
+        console.log(res)
+        if (res != "") {
+          if(res['message']=="Successfully added into cart!"){
+            this.toast.success("cart added successfully")
+              this.router.navigate(['pages/mycart'])
+            // this.router.navigate(['pages/mycart'])
+          }else if(res['message']=="Stock Not Yet Allocated"){
+            this.toast.error(res['message'])
+          }
+         }
+      },error=>{
+        this.toast.error("cart added Unsuccessfully")
+      })
+      }else{
+        this.toast.error("You have exceeded maximum quantity")
+      }
     })
+
   }
   ngOnDestroy(){
     localStorage.removeItem("allow")
