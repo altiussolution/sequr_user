@@ -16,7 +16,7 @@ export class AuthInterceptor implements HttpInterceptor {
             Authorization: `${currentToken}`
         });
         if (request.url == 'machine/allDeviceInfo' || request.url == 'machine/singleDeviceInfo' || request.url == 'machine/lockBin' ||
-            request.url == 'machine/unlockBin') {
+            request.url == 'machine/unlockBin' || request.url == 'machine/wasfullopen' || request.url == 'machine/isfullopen' || request.url == 'machine/assignedColumns') {
             var request = request.clone({
                 url: environment.LOCAL_API + request.url,
                 headers

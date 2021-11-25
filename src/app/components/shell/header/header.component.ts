@@ -77,6 +77,10 @@ myform: FormGroup;
     [{"uid":["1305167547307745"],"lid":["1"]},{"uid":["1305167547316427"],"lid":["2"]}]}]}]}}}]
   coloumid: any=[];
   coloumids: any=[];
+  dooropens: any=[];
+  dooropenss: any=[];
+  
+  @ViewChild('modal') closebutton;
 
  constructor(public router: Router,public crud:CrudService,private cookie: CookieService,private toast: ToastrService) {
 
@@ -100,9 +104,8 @@ myform: FormGroup;
       this.coloumids.push(this.coloumid[i].uid[0])
       console.log(this.coloumids,"uid")
     }
-   }/*,error=>{
-    this.toast.error("Please connect the mechine")
-  }*/)
+  })
+ 
   this.profiledetails = JSON.parse(localStorage.getItem('personal'))
   console.log(this.profiledetails)
   let params: any = {};
@@ -175,8 +178,27 @@ setval(val:any){
 }
 
   logout(){ 
+    
     localStorage.clear();
     this.router.navigate(['./login']);
+// this.dooropens=[];
+// this.dooropenss=[];
+// this.crud.get('machine/wasfullopen').pipe(untilDestroyed(this)).subscribe((res:any) => {
+// console.log(res)
+// this.dooropens=res?.details?.alldevinfo?.Count
+// this.crud.get('machine/isfullopen').pipe(untilDestroyed(this)).subscribe((res:any) => {
+//   console.log(res)
+//   this.dooropenss=res?.details?.alldevinfo?.Count
+// if(this.dooropens.length==0 && this.dooropenss.length==0){
+//   this.closebutton.nativeElement.click();
+//     localStorage.clear();
+//     this.router.navigate(['./login']);
+// }else{
+//   this.toast.error("Please Close The Door")
+// }
+//   })
+// })
+
 }
 @ViewChild('searchInput', { read: ElementRef })
 private searchInput: ElementRef;
