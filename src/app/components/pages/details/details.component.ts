@@ -133,13 +133,15 @@ permissions:any;
             console.log(res)
     
             if (res['message'] == "Successfully added into cart!") {
-              this.crud.get(appModels.listCart).pipe(untilDestroyed(this)).subscribe(async res => {
+              let params: any = {};
+              params['user_id']=this.permissions?._id
+              this.crud.get1(appModels.listCart,{params}).pipe(untilDestroyed(this)).subscribe(async res => {
                 console.log(res)
                 if (res) {
                   if (!item) {
                     this.toast.success("cart added successfully")
                     this.cartList1 = [];
-                    this.crud.get(appModels.listCart).pipe(untilDestroyed(this)).subscribe(async res => {
+                    this.crud.get1(appModels.listCart,{params}).pipe(untilDestroyed(this)).subscribe(async res => {
     
                       this.cartdata1 = res[0]
                       for (let i = 0; i < this.cartdata1?.cart?.length; i++) {
@@ -326,6 +328,8 @@ permissions:any;
   TakeOrReturnItems: any[] = []
   machinesList = []
   async takeItem(item: string) {
+    console.log('******** Machine Into *********')
+
     // await this.addtocart()
     // await this.getCartItems()
     let totalMachinesList = await this.formatMachineData(item)
@@ -339,6 +343,7 @@ permissions:any;
     // Record Total Machine Usage
     let totalMachineUsage = []
     for await (let machine of machinesList) {
+      console.log('******** Machine Into *********')
       // Record Total Machine Usage
       let eachColumnUsage = {}
       eachColumnUsage['cube_id'] = machine.cube_id

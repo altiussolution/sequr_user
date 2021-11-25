@@ -64,7 +64,11 @@ myform: FormGroup;
    ];
   searchdata: any=[];
   typed: any;
-  
+  dooropens: any=[];
+  dooropenss: any=[];
+  coloumid: any=[];
+  coloumids: any=[];
+  @ViewChild('modal') closebutton;
 
  constructor(public router: Router,public crud:CrudService,private cookie: CookieService,private toast: ToastrService) {
 
@@ -80,6 +84,16 @@ myform: FormGroup;
  
 
  ngOnInit():void {
+     
+  this.crud.get(appModels.COLOMNIDS).pipe(untilDestroyed(this)).subscribe((res:any) => {
+    console.log(res)
+    this.coloumid=res.details.alldevinfo.List[0].assigned[0].column
+    console.log(this.coloumid,"cid")
+    for(let i=0; i<this.coloumid?.length;i++){
+      this.coloumids.push(this.coloumid[i].uid[0])
+      console.log(this.coloumids,"uid")
+    }
+  })
  
   this.profiledetails = JSON.parse(localStorage.getItem('personal'))
   console.log(this.profiledetails)
@@ -144,8 +158,27 @@ setval(val:any){
 }
 
   logout(){ 
+    
     localStorage.clear();
     this.router.navigate(['./login']);
+// this.dooropens=[];
+// this.dooropenss=[];
+// this.crud.get('machine/wasfullopen').pipe(untilDestroyed(this)).subscribe((res:any) => {
+// console.log(res)
+// this.dooropens=res?.details?.alldevinfo?.Count
+// this.crud.get('machine/isfullopen').pipe(untilDestroyed(this)).subscribe((res:any) => {
+//   console.log(res)
+//   this.dooropenss=res?.details?.alldevinfo?.Count
+// if(this.dooropens.length==0 && this.dooropenss.length==0){
+//   this.closebutton.nativeElement.click();
+//     localStorage.clear();
+//     this.router.navigate(['./login']);
+// }else{
+//   this.toast.error("Please Close The Door")
+// }
+//   })
+// })
+
 }
 @ViewChild('searchInput', { read: ElementRef })
 private searchInput: ElementRef;
