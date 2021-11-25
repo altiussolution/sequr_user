@@ -11,6 +11,7 @@ enum appModels {
     ITEMLIST='cart/itemHistory',//'getItemMachine/617021b82d9256f547185a83/6170223c2d9256f547185a93/["1305167547307745"]',
     COLOMNIDS='machine/assignedColumns',
     KITTINGLIST='kitting/get',
+    CITYLIST='region/city/',
     ADDKITCART='kitting/addKitToCart/',
     updateCart = 'cart/update',
     listCart = 'cart/myCart',
@@ -20,11 +21,11 @@ enum appModels {
     RETURNKIT='kits/return',
     TAKENOW='machine',
     ITEM='item/get',
-  
+    TAKENOWQTY='log/getUserTakenQuantity'
 
 }
 //614993f607f4ce431244b852
-//6149b8ec74e1d5ef4317a9b1       1305167547316427 
+//6149b8ec74e1d5ef4317a9b1       1305167547316427 ///log/getUserTakenQuantity?user_id&item_id
 
 
 export { appModels}

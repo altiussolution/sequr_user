@@ -11,6 +11,7 @@ import { CrudService } from 'src/app/services/crud.service';
 import { appModels } from 'src/app/services/shared/enum/enum.util';
 import { ToastrService } from 'ngx-toastr';
 
+import { MatPaginatorIntl } from '@angular/material/paginator';
 declare var google
 @Component({
   selector: 'app-home',
@@ -62,6 +63,10 @@ home(){
  },error=>{
   this.toast.error("Please connect the mechine")
 })
+  this.crud.get("api").pipe(untilDestroyed(this)).subscribe((res:any) => {
+    console.log(res)
+})
+
 console.log(localStorage.getItem("lan"))
   console.log(this.readCookie('googtrans'));
   if(!localStorage.getItem("language")){
