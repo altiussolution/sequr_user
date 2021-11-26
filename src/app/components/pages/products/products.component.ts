@@ -63,7 +63,7 @@ export class ProductsComponent implements OnInit {
      console.log(message)
     if(message !="" && !localStorage.getItem("allow1")){
       let params: any = {};
-params['company_id']=this.permissions.company_id._id
+params['company_id']=this.permissions?.company_id?._id
           this.product=JSON.parse(message)
           localStorage.setItem("subid",JSON.stringify(this.product))
           console.log(this.product)
@@ -77,7 +77,7 @@ params['company_id']=this.permissions.company_id._id
           })
       }else{
         let params: any = {};
-        params['company_id']=this.permissions.company_id._id
+        params['company_id']=this.permissions?.company_id?._id
         this.product=JSON.parse(localStorage.getItem("subid"))
         this.d=JSON.stringify(this.coloumids)
           params['column_ids'] = this.d;
@@ -130,7 +130,7 @@ params['company_id']=this.permissions.company_id._id
   }
   addtocart(it: any, qty: number) {
     let params: any = {};
-    params['company_id']=this.permissions.company_id._id
+    params['company_id']=this.permissions?.company_id?._id
     this.crud.get1(appModels.DETAILS + it,{params}).pipe(untilDestroyed(this)).subscribe((res: any) => {
       console.log(res)
       this.machine=[];

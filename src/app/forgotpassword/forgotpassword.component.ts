@@ -31,7 +31,7 @@ export class ForgotpasswordComponent implements OnInit {
        console.log(res)
       this.toast.success("Forgot password request sent to admin")
       },error=>{
-      this.toast.error(error.message)
+      this.toast.error(error.error.message)
       })
       
     }else{

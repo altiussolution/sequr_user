@@ -43,7 +43,7 @@ export class ProductslistComponent implements OnInit {
   ngOnInit(): void {
     this.permissions=JSON.parse(localStorage.getItem("personal"))
     let params: any = {};
-    params['company_id']=this.permissions.company_id._id
+    params['company_id']=this.permissions?.company_id?._id
     this.crud.get1(appModels.KITTINGLIST,{params}).pipe(untilDestroyed(this)).subscribe((res: any) => {
       console.log(res)
       this.kit = res.data
@@ -99,12 +99,53 @@ export class ProductslistComponent implements OnInit {
              })
          }else{
            // this.toast.error("now choosed the kit item quantity for"+this.highkitqty)
-           this.toast.error("Kitting Quantity Was Not Available")
+           this.toast.error("Requested Quantity Was Not Available")
          }
        
           }
       }else{
-        this.toast.error("Today's Maximum Quantity not assigned, Please contact admin")
+      
+        this.kitdatas1=data
+        this.qtyss=0
+        for(let j=0;j<this.kitdatas1?.kit_data?.length;j++){
+          this.qtyss +=this.kitdatas1?.kit_data[j]?.kit_item_qty;
+          console.log(this.qtyss)
+        }
+      if(this.permissions?.item_max_quantity>= 0 + this.qtyss){
+            this.highkitqty=[];
+            console.log(data)
+             this.kitdatas=data
+             console.log(this.kitdatas.kit_data)
+             this.kits = this.kitdatas.kit_data.map(m => { 
+            if(m.kit_item_qty > m.quantity) { 
+             this.highkitqty.push(m?.kit_item_qty+'>'+m?.qty)
+               return false;
+           }
+          return true;
+             })
+         console.log(this.kits)
+         this.List = this.kits.filter(item => item === false);
+         console.log(this.List)
+         if(this.List?.length ==0){
+           this.modalService.open(modal,{backdrop:false});
+            this.crud.post(appModels.ADDKITCART + _id).pipe(untilDestroyed(this)).subscribe(async (res: any) => {
+               console.log(res)
+               if (res != "") {
+                 if (res['message'] == "Successfully added into cart!") {
+                   this.toast.success("Kitting cart added successfully")
+                   await this.itemHistory(data)
+         
+                 }
+               }
+             }, error => {
+               this.toast.error("Kitting cart added Unsuccessfully")
+             })
+         }else{
+           // this.toast.error("now choosed the kit item quantity for"+this.highkitqty)
+           this.toast.error("Requested Quantity Was Not Available")
+         }
+       
+          }
       }
       
     })
@@ -329,7 +370,7 @@ export class ProductslistComponent implements OnInit {
         }
         let t1 = performance.now();
         eachColumnUsage['column_usage'] = t1 - t0
-        eachColumnUsage['company_id'] = this.permissions.company_id._id
+        eachColumnUsage['company_id'] = this.permissions?.company_id?._id
         totalMachineUsage.push(eachColumnUsage)
         await this.sleep(5000)
       }
