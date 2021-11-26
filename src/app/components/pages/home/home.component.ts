@@ -49,9 +49,10 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.home();
+
   this.permissions=JSON.parse(localStorage.getItem("personal"))
 
-  this.home();
   }
 
 home(){
@@ -67,9 +68,9 @@ home(){
  },error=>{
   this.toast.error("Please connect the mechine")
 })
-  this.crud.get("api").pipe(untilDestroyed(this)).subscribe((res:any) => {
-    console.log(res)
-})
+  //this.crud.get("api").pipe(untilDestroyed(this)).subscribe((res:any) => {
+  //  console.log(res)
+//})
 
 console.log(localStorage.getItem("lan"))
   console.log(this.readCookie('googtrans'));
@@ -90,7 +91,7 @@ console.log(localStorage.getItem("lan"))
     
         let params: any = {};
           params['column_ids'] = this.d;
-        console.log(this.message['category']['_id'])
+        console.log("id",this.message['category']['_id'])
         this.categoryName=this.message['category']['category_name']
         localStorage.setItem("catname",this.message['category']['category_name'])
         localStorage.setItem("catid",this.message['category']['_id'])
@@ -106,6 +107,7 @@ console.log(localStorage.getItem("lan"))
       }else{
         this.categoryName=localStorage.getItem("catname")
         this.d=JSON.stringify(this.coloumids)
+        console.log(this.d)
         let params: any = {};
           params['column_ids'] = this.d;
         this.crud.get1(appModels.SUBCATEGORY+localStorage.getItem("catid"),{params}).pipe(untilDestroyed(this)).subscribe((res:any) => {
