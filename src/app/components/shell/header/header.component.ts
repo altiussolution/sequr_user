@@ -84,7 +84,14 @@ myform: FormGroup;
  
 
  ngOnInit():void {
-     
+  let assidebar = document.querySelector('.sidenav');
+  let body = document.querySelector('body');
+  if(assidebar.classList.contains('sidenav'))    
+      {
+        assidebar.classList.add('sidebar-hidden');
+        body.classList.add('activemenu');
+        assidebar.classList.add('sidebar');
+      }
   this.crud.get(appModels.COLOMNIDS).pipe(untilDestroyed(this)).subscribe((res:any) => {
     console.log(res)
     this.coloumid=res.details.alldevinfo.List[0].assigned[0].column
@@ -98,7 +105,7 @@ myform: FormGroup;
   this.profiledetails = JSON.parse(localStorage.getItem('personal'))
   console.log(this.profiledetails)
   let params: any = {};
-params['company_id']=this.profiledetails.company_id._id
+params['company_id']=this.profiledetails?.company_id?._id
   this.crud.get(appModels.USERPROFILE + this.profiledetails._id).pipe(untilDestroyed(this)).subscribe((res: any) => {
     console.log(res)
     this.profile = res['data']
@@ -111,7 +118,7 @@ params['company_id']=this.profiledetails.company_id._id
   })
   this.cartList=[];
   let params2: any = {};
-  params2['company_id']=this.profiledetails.company_id._id
+  params2['company_id']=this.profiledetails?.company_id?._id
   params2['user_id']=this.profiledetails._id
   this.crud.get1(appModels.listCart,{params2}).pipe(untilDestroyed(this)).subscribe(res => {
     console.log(res)
@@ -247,7 +254,7 @@ private searchInput: ElementRef;
     let params: any = {};
     if (this.codeValue) {
       params['searchString'] = this.codeValue;
-      params['company_id']=this.profiledetails.company_id._id
+      params['company_id']=this.profiledetails?.company_id?._id
     }
     console.log(this.codeValue)
     this.crud.get1(appModels.ITEM, { params }).pipe(untilDestroyed(this)).subscribe((res:any) => {
@@ -270,7 +277,7 @@ searching(event){
     let params: any = {};
     if (this.searchValue) {
       params['searchString'] = event.target.value;
-      params['company_id']=this.profiledetails.company_id._id
+      params['company_id']=this.profiledetails?.company_id?._id
     }
     this.crud.get1(appModels.ITEM, { params }).pipe(untilDestroyed(this)).subscribe(res => {
     console.log(res)

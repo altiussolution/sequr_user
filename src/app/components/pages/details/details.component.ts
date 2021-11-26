@@ -61,7 +61,7 @@ permissions:any;
       if (message != "" && !localStorage.getItem("hlo")) {
         
         let params: any = {};
-        params['company_id']=this.permissions.company_id._id
+        params['company_id']=this.permissions?.company_id?._id
         this.message = message
         console.log(this.message)
         this.crud.get1(appModels.DETAILS + this.message,{params}).pipe(untilDestroyed(this)).subscribe((res: any) => {
@@ -85,7 +85,7 @@ permissions:any;
       else {
 
         let params: any = {};
-        params['company_id']=this.permissions.company_id._id
+        params['company_id']=this.permissions?.company_id?._id
         this.crud.get1(appModels.DETAILS + localStorage.getItem("ids"),{params}).pipe(untilDestroyed(this)).subscribe((res: any) => {
           console.log(res)
           this.status = res.status
@@ -126,7 +126,7 @@ permissions:any;
           let cart = {
             "item": this.machine.item,
             "total_quantity": Number(this.qut),
-            "company_id":this.permissions.company_id._id
+            "company_id":this.permissions?.company_id?._id
           }
     
           this.crud.post(appModels.ADDTOCART, cart).subscribe(async res => {
@@ -162,32 +162,60 @@ permissions:any;
                     params['user_id']=this.permissions?._id
                     this.crud.get1("log/getUserTakenQuantity",{params}).pipe(untilDestroyed(this)).subscribe(async res => {
                       console.log(res)
-                      this.totalquantity=res['data']
-                      this.totalquantity.trasaction_qty
-                     
-                        if(this.permissions?.item_max_quantity>=this.totalquantity[0]?.trasaction_qty + this.qut){
-
-                          this.modalService.open(item, { backdrop: false });
-                          this.cartList = [];
-                          this.crud.get(appModels.listCart).pipe(untilDestroyed(this)).subscribe(async res => {
-                            console.log(res)
-                            this.toast.success("Door open Sucessfully")
-                            this.cartdata = res[0]
-                            for (let i = 0; i < this.cartdata?.cart?.length; i++) {
-                              if (this.cartdata?.cart[i]['cart_status'] == 1 && this.cartdata?.cart[i]['item']['_id'] == this.machine.item) {
-                                this.cartList.push(this.cartdata?.cart[i])
+                      if(res?.data?.length!=0){
+                        this.totalquantity=res['data']
+                        this.totalquantity.trasaction_qty
+                       
+                          if(this.permissions?.item_max_quantity>=this.totalquantity[0]?.trasaction_qty + this.qut){
+  
+                            this.modalService.open(item, { backdrop: false });
+                            this.cartList = [];
+                            this.crud.get(appModels.listCart).pipe(untilDestroyed(this)).subscribe(async res => {
+                              console.log(res)
+                              this.toast.success("Door open Sucessfully")
+                              this.cartdata = res[0]
+                              for (let i = 0; i < this.cartdata?.cart?.length; i++) {
+                                if (this.cartdata?.cart[i]['cart_status'] == 1 && this.cartdata?.cart[i]['item']['_id'] == this.machine.item) {
+                                  this.cartList.push(this.cartdata?.cart[i])
+                                }
                               }
-                            }
-                            console.log(this.cartList)
-                            await this.takeItem(item)
-                            this.crud.getcarttotal(this.cartList?.length)
-                          }, error => {
-                            this.toast.error(error.message);
-                          })
-                        }else{
-                         this.toast.error("You have exceeded item maximum quantity taken per day.")
-                        }
-
+                              console.log(this.cartList)
+                              await this.takeItem(item)
+                              this.crud.getcarttotal(this.cartList?.length)
+                            }, error => {
+                              this.toast.error(error.message);
+                            })
+                          }else{
+                           this.toast.error("You have exceeded item maximum quantity taken per day.")
+                          }
+  
+                      }else{
+                       
+                       if(this.permissions?.item_max_quantity>= 0 + this.qut){
+  
+                            this.modalService.open(item, { backdrop: false });
+                            this.cartList = [];
+                            this.crud.get(appModels.listCart).pipe(untilDestroyed(this)).subscribe(async res => {
+                              console.log(res)
+                              this.toast.success("Door open Sucessfully")
+                              this.cartdata = res[0]
+                              for (let i = 0; i < this.cartdata?.cart?.length; i++) {
+                                if (this.cartdata?.cart[i]['cart_status'] == 1 && this.cartdata?.cart[i]['item']['_id'] == this.machine.item) {
+                                  this.cartList.push(this.cartdata?.cart[i])
+                                }
+                              }
+                              console.log(this.cartList)
+                              await this.takeItem(item)
+                              this.crud.getcarttotal(this.cartList?.length)
+                            }, error => {
+                              this.toast.error(error.message);
+                            })
+                          }else{
+                           this.toast.error("You have exceeded item maximum quantity taken per day.")
+                          }
+  
+                      }
+                    
                     })
 
                   }
@@ -412,7 +440,7 @@ permissions:any;
         }
         let t1 = performance.now();
         eachColumnUsage['column_usage'] = t1 - t0
-        eachColumnUsage['company_id'] = this.permissions.company_id._id
+        eachColumnUsage['company_id'] = this.permissions?.company_id?._id
         totalMachineUsage.push(eachColumnUsage)
         await this.sleep(5000)
       }

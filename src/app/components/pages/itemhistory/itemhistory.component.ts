@@ -38,7 +38,7 @@ view:any;
   ngOnInit(): void {
     this.permissions=JSON.parse(localStorage.getItem("personal"))
 console.log(this.permissions.role_id.permission)
-console.log(this.permissions.company_id._id)
+console.log(this.permissions?.company_id?._id)
 this.view=this.permissions.role_id.permission.find(temp=>temp=="return_get")
 this.add =this.permissions.role_id.permission.find(temp=>temp=="return_add")
 this.update = this.permissions.role_id.permission.find(temp=>temp=="return_update")
@@ -46,8 +46,8 @@ this.deleted = this.permissions.role_id.permission.find(temp=>temp=="return_dele
     this.arrayvalue1 = [];
     this.arrayvalue = [];
     let params: any = {};
-    params['company_id']=this.permissions.company_id._id
-    params['user_id']=this.permissions._id
+    params['company_id']=this.permissions?.company_id?._id
+    params['user_id']=this.permissions?._id
     this.crud.get1(appModels.ITEMLIST,{params}).pipe(untilDestroyed(this)).subscribe((res: any) => {
       console.log(res)
       this.itemhistorycart = []
@@ -112,7 +112,7 @@ this.deleted = this.permissions.role_id.permission.find(temp=>temp=="return_dele
         "cart_id": this.id,
         "return_items": result,
         "cart_status": 3,
-"company_id":this.permissions.company_id._id
+"company_id":this.permissions?.company_id?._id
       }
       this.crud.update2(appModels.RETURNCART, data).pipe(untilDestroyed(this)).subscribe((res: any) => {
         this.closebutton.nativeElement.click();
@@ -148,7 +148,7 @@ this.deleted = this.permissions.role_id.permission.find(temp=>temp=="return_dele
           "cart_id": cartid,
           "return_items": kitids,
           "kit_status": 3,
-          "company_id":this.permissions.company_id._id
+          "company_id":this.permissions?.company_id?._id
         }
         this.crud.update2(appModels.RETURNCART, data).pipe(untilDestroyed(this)).subscribe((res: any) => {
           this.closebutton.nativeElement.click();
@@ -356,7 +356,7 @@ this.deleted = this.permissions.role_id.permission.find(temp=>temp=="return_dele
             }
             let t1 = performance.now();
             eachColumnUsage['column_usage'] = t1 - t0
-            eachColumnUsage['company_id'] = this.permissions.company_id._id
+            eachColumnUsage['company_id'] = this.permissions?.company_id?._id
             totalMachineUsage.push(eachColumnUsage)
             await this.sleep(5000)
             

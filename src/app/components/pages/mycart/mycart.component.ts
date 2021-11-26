@@ -54,7 +54,7 @@ export class MycartComponent implements OnInit {
   }
   getCartItems() {
     let params: any = {};
-    params['company_id']=this.permissions.company_id._id
+    params['company_id']=this.permissions?.company_id?._id
     params['user_id']=this.permissions._id
     this.crudService.get1(appModels.listCart,{params}).pipe(untilDestroyed(this)).subscribe(res => {
       console.log(res)
@@ -85,7 +85,7 @@ export class MycartComponent implements OnInit {
       "allocation": cart.allocation,
       "qty": qty==0?1:qty,
       "cart_id": this.cartdata['_id'],
-      "company_id":this.permissions.company_id._id
+      "company_id":this.permissions?.company_id?._id
     }
     this.crudService.update2(appModels.updateCart, data).pipe(untilDestroyed(this)).subscribe(res => {
       console.log(res)
@@ -101,7 +101,7 @@ export class MycartComponent implements OnInit {
       let data = {
         "cart_id": this.cartdata['_id'],
         "item_id": [cart.item._id],
-        "company_id": this.permissions.company_id._id
+        "company_id": this.permissions?.company_id?._id
       }
       this.crudService.update2('cart/deleteItemFromCart', data).pipe(untilDestroyed(this)).subscribe(res => {
         console.log(res)
@@ -168,7 +168,7 @@ export class MycartComponent implements OnInit {
 
 Addmore(){
   let params: any = {};
-params['company_id']=this.permissions.company_id._id
+params['company_id']=this.permissions?.company_id?._id
   this.crudService.get1(appModels.CATEGORYLIST,{params}).pipe(untilDestroyed(this)).subscribe((res:any) => {
     console.log(res)
    this.category=res['data']
@@ -372,6 +372,246 @@ params['company_id']=this.permissions.company_id._id
     params['user_id']=this.permissions?._id
     this.crudService.get1("log/getUserTakenQuantity",{params}).pipe(untilDestroyed(this)).subscribe(async res => {
       console.log(res)
+      if(res?.data.length!=0){
+        this.totalquantity=res['data']
+        this.totalquantity.trasaction_qty
+        console.log(this.totalquantity)
+       this.qtys=0
+       for(let i=0;i<this.cartList?.length;i++){
+        this.qtys +=this.cartList[i]?.qty
+         }
+      console.log(this.qtys)
+          if(this.permissions?.item_max_quantity>=this.totalquantity[0]?.trasaction_qty + this.qtys){
+            this.modalService.open(item,{backdrop:false});
+            let totalMachinesList = await this.formatMachineData()
+            let machinesList = await this.groupbyData(totalMachinesList)
+            console.log(machinesList)
+            //call allDevInfo once
+            // await this.allDeviceInfo()
+            // for loop for all machines lids
+            let totalMachineUsage = []
+            for await (let machine of machinesList) {
+        
+              // Record Total Machine Usage
+              let eachColumnUsage = {}
+              eachColumnUsage['cube_id'] = machine.cube_id
+              eachColumnUsage['column_id'] = machine.column_id
+              eachColumnUsage['bin_id'] = machine.bin_id
+              eachColumnUsage['compartment_id'] = machine.compartment_id
+              // Record Total Machine Usage
+              let maxCompartmentNo = Math.max(...machine.compartment_id)
+              machine['compartment_id'] = maxCompartmentNo
+              console.log('maxCompartmentNo')
+              console.log(maxCompartmentNo)
+              let singleDeviceInfo = await this.singleDeviceInfo(machine)
+              let status = singleDeviceInfo.details.singledevinfo.column[0]['status'][0]
+              console.log('Column : ' + machine.column_id + '' + 'drawer: ' + machine.bin_id + ' ' + 'Compartment: ' + machine.compartment_id)
+              console.log(status)
+              this.machineCubeID = machine.cube_id
+              this.machineColumnID = machine.column_id
+              this.machineDrawID = machine.bin_id
+              this.machineCompartmentID = machine.compartment_id
+              this.machineStatus = status
+              if (status == 'Locked' || status == 'Closed' || status == 'Unlocked' || status == 'Unknown') {
+                // Lock that Column API, machine._id
+                if (status == 'Closed' || status == 'Unlocked') {
+                  await this.crudService.post('machine/lockBin', machine).pipe(untilDestroyed(this)).toPromise()
+                  await this.sleep(1000)
+                }
+        
+                // unlock Column API, machine._id, machine.column_id, machine.compartment_id
+                await this.crudService.post('machine/unlockBin', machine).pipe(untilDestroyed(this)).toPromise()
+                // Record Total Machine Usage
+                let t0 = performance.now();
+                await this.sleep(10000)
+                let apiHitTimes = 0
+                let machineColumnStatus = false
+                while (apiHitTimes < 15 && !machineColumnStatus) {
+                  console.log('********************* API Hit Times ************** ' + machineColumnStatus)
+                  console.log(' Machine Status : ' + machineColumnStatus)
+                  let singleDeviceInfo = await this.singleDeviceInfo(machine)
+                  let status = singleDeviceInfo.details.singledevinfo.column[0]['status'][0]
+                  console.log('inside while loop status bin ' + machine.bin_id + status)
+                  if (status == 'Closed' || status == 'Locked' || status == 'Unknown') {
+                    await this.sleep(9000)
+                    await this.crudService.post('machine/lockBin', machine).pipe(untilDestroyed(this)).toPromise()
+                    machineColumnStatus = true
+                    await this.TakeOrReturnItems.push(machine)
+                  }
+                  //Drawer current status, (opening, opened, closing, closed)
+                  else if (status !== 'Closed' && status !== 'Locked' && status == 'Unknown') {
+                    console.log('Current Status = ' + status)
+                    this.msg='Current Status = ' + status
+                    // ColumnActionStatus = singleDeviceInfo
+                  }
+                  //set delay time
+                  await this.sleep(10000)
+                  if (status == 'Unlocked' && apiHitTimes == 14) {
+                    await this.crudService.post('machine/lockBin', machine).pipe(untilDestroyed(this)).toPromise()
+                  }
+                  apiHitTimes++
+                }
+                // if user does not closed after ceratin count of times API hit
+                if (apiHitTimes == 10 && machineColumnStatus !== true) {
+                  console.log('Application waiting time over for bin ' + machine.bin_id + 'in column ' + machine.column_id)
+        
+                }
+                let t1 = performance.now();
+                eachColumnUsage['column_usage'] = t1 - t0
+                totalMachineUsage.push(eachColumnUsage)
+                await this.sleep(5000)
+              }
+              // break for loop if single device info is unknown
+              else {
+                console.log('Machine status unknown ' + status)
+                this.msg='Machine status unknown ' + status
+                console.log('Close all drawers properly and click take now')
+                this.msg='Close all drawers properly and click take now'
+        
+                break
+              }
+            }
+            const successTake = await totalMachinesList.filter(array => this.TakeOrReturnItems.some(filter => filter.column_id === array.column_id && filter.bin_id === array.bin_id));
+        
+            console.log(successTake)
+            if (successTake.length == 0) {
+              console.log('Machine status unknown No Item taken')
+              this.msgg='Machine status unknown No Item taken'
+            } else if (successTake.length == totalMachinesList.length) {
+              console.log(successTake.length + ' items Taken successfully')
+              this.msgg=successTake.length + ' items Taken successfully'
+              await this.addMachineUsage(totalMachineUsage)
+        
+              await this.updateAfterTakeOrReturn(successTake)
+            } else if (successTake.length < totalMachinesList.length) {
+              console.log(successTake.length + ' items Taken successfully \n' + (totalMachinesList.length - successTake.length) + ' items failed return')
+              this.msgg=successTake.length + ' items Taken successfully \n' + successTake.length + ' items failed return'
+              await this.addMachineUsage(totalMachineUsage)
+        
+              await this.updateAfterTakeOrReturn(successTake)
+            }
+          }else{
+            this.toast.error("You have exceeded item maximum quantity taken per day.")
+          }
+      }else{
+       this.qtys=0
+       for(let i=0;i<this.cartList?.length;i++){
+        this.qtys +=this.cartList[i]?.qty
+         }
+         console.log(this.qtys)
+          if(this.permissions?.item_max_quantity>= 0 + this.qtys){
+            this.modalService.open(item,{backdrop:false});
+            let totalMachinesList = await this.formatMachineData()
+            let machinesList = await this.groupbyData(totalMachinesList)
+            console.log(machinesList)
+            //call allDevInfo once
+            // await this.allDeviceInfo()
+            // for loop for all machines lids
+            let totalMachineUsage = []
+            for await (let machine of machinesList) {
+        
+              // Record Total Machine Usage
+              let eachColumnUsage = {}
+              eachColumnUsage['cube_id'] = machine.cube_id
+              eachColumnUsage['column_id'] = machine.column_id
+              eachColumnUsage['bin_id'] = machine.bin_id
+              eachColumnUsage['compartment_id'] = machine.compartment_id
+              // Record Total Machine Usage
+              let maxCompartmentNo = Math.max(...machine.compartment_id)
+              machine['compartment_id'] = maxCompartmentNo
+              console.log('maxCompartmentNo')
+              console.log(maxCompartmentNo)
+              let singleDeviceInfo = await this.singleDeviceInfo(machine)
+              let status = singleDeviceInfo.details.singledevinfo.column[0]['status'][0]
+              console.log('Column : ' + machine.column_id + '' + 'drawer: ' + machine.bin_id + ' ' + 'Compartment: ' + machine.compartment_id)
+              console.log(status)
+              this.machineCubeID = machine.cube_id
+              this.machineColumnID = machine.column_id
+              this.machineDrawID = machine.bin_id
+              this.machineCompartmentID = machine.compartment_id
+              this.machineStatus = status
+              if (status == 'Locked' || status == 'Closed' || status == 'Unlocked' || status == 'Unknown') {
+                // Lock that Column API, machine._id
+                if (status == 'Closed' || status == 'Unlocked') {
+                  await this.crudService.post('machine/lockBin', machine).pipe(untilDestroyed(this)).toPromise()
+                  await this.sleep(1000)
+                }
+        
+                // unlock Column API, machine._id, machine.column_id, machine.compartment_id
+                await this.crudService.post('machine/unlockBin', machine).pipe(untilDestroyed(this)).toPromise()
+                // Record Total Machine Usage
+                let t0 = performance.now();
+                await this.sleep(10000)
+                let apiHitTimes = 0
+                let machineColumnStatus = false
+                while (apiHitTimes < 15 && !machineColumnStatus) {
+                  console.log('********************* API Hit Times ************** ' + machineColumnStatus)
+                  console.log(' Machine Status : ' + machineColumnStatus)
+                  let singleDeviceInfo = await this.singleDeviceInfo(machine)
+                  let status = singleDeviceInfo.details.singledevinfo.column[0]['status'][0]
+                  console.log('inside while loop status bin ' + machine.bin_id + status)
+                  if (status == 'Closed' || status == 'Locked' || status == 'Unknown') {
+                    await this.sleep(9000)
+                    await this.crudService.post('machine/lockBin', machine).pipe(untilDestroyed(this)).toPromise()
+                    machineColumnStatus = true
+                    await this.TakeOrReturnItems.push(machine)
+                  }
+                  //Drawer current status, (opening, opened, closing, closed)
+                  else if (status !== 'Closed' && status !== 'Locked' && status == 'Unknown') {
+                    console.log('Current Status = ' + status)
+                    this.msg='Current Status = ' + status
+                    // ColumnActionStatus = singleDeviceInfo
+                  }
+                  //set delay time
+                  await this.sleep(10000)
+                  if (status == 'Unlocked' && apiHitTimes == 14) {
+                    await this.crudService.post('machine/lockBin', machine).pipe(untilDestroyed(this)).toPromise()
+                  }
+                  apiHitTimes++
+                }
+                // if user does not closed after ceratin count of times API hit
+                if (apiHitTimes == 10 && machineColumnStatus !== true) {
+                  console.log('Application waiting time over for bin ' + machine.bin_id + 'in column ' + machine.column_id)
+        
+                }
+                let t1 = performance.now();
+                eachColumnUsage['column_usage'] = t1 - t0
+                totalMachineUsage.push(eachColumnUsage)
+                await this.sleep(5000)
+              }
+              // break for loop if single device info is unknown
+              else {
+                console.log('Machine status unknown ' + status)
+                this.msg='Machine status unknown ' + status
+                console.log('Close all drawers properly and click take now')
+                this.msg='Close all drawers properly and click take now'
+        
+                break
+              }
+            }
+            const successTake = await totalMachinesList.filter(array => this.TakeOrReturnItems.some(filter => filter.column_id === array.column_id && filter.bin_id === array.bin_id));
+        
+            console.log(successTake)
+            if (successTake.length == 0) {
+              console.log('Machine status unknown No Item taken')
+              this.msgg='Machine status unknown No Item taken'
+            } else if (successTake.length == totalMachinesList.length) {
+              console.log(successTake.length + ' items Taken successfully')
+              this.msgg=successTake.length + ' items Taken successfully'
+              await this.addMachineUsage(totalMachineUsage)
+        
+              await this.updateAfterTakeOrReturn(successTake)
+            } else if (successTake.length < totalMachinesList.length) {
+              console.log(successTake.length + ' items Taken successfully \n' + (totalMachinesList.length - successTake.length) + ' items failed return')
+              this.msgg=successTake.length + ' items Taken successfully \n' + successTake.length + ' items failed return'
+              await this.addMachineUsage(totalMachineUsage)
+        
+              await this.updateAfterTakeOrReturn(successTake)
+            }
+          }else{
+            this.toast.error("You have exceeded item maximum quantity taken per day.")
+          }
+      }
     // let data=  {
     //     "success": true,
     //     "data": [
@@ -381,125 +621,7 @@ params['company_id']=this.permissions.company_id._id
     //         }
     //     ]
     // }
-      this.totalquantity=res['data']
-      this.totalquantity.trasaction_qty
-     this.qtys=0
-     for(let i=0;i<this.cartList?.length;i++){
-      this.qtys +=this.cartList[i]?.qty
-       }
-    console.log(this.qtys)
-        if(this.permissions?.item_max_quantity>=this.totalquantity[0]?.trasaction_qty + this.qtys){
-          this.modalService.open(item,{backdrop:false});
-          let totalMachinesList = await this.formatMachineData()
-          let machinesList = await this.groupbyData(totalMachinesList)
-          console.log(machinesList)
-          //call allDevInfo once
-          // await this.allDeviceInfo()
-          // for loop for all machines lids
-          let totalMachineUsage = []
-          for await (let machine of machinesList) {
-      
-            // Record Total Machine Usage
-            let eachColumnUsage = {}
-            eachColumnUsage['cube_id'] = machine.cube_id
-            eachColumnUsage['column_id'] = machine.column_id
-            eachColumnUsage['bin_id'] = machine.bin_id
-            eachColumnUsage['compartment_id'] = machine.compartment_id
-            // Record Total Machine Usage
-            let maxCompartmentNo = Math.max(...machine.compartment_id)
-            machine['compartment_id'] = maxCompartmentNo
-            console.log('maxCompartmentNo')
-            console.log(maxCompartmentNo)
-            let singleDeviceInfo = await this.singleDeviceInfo(machine)
-            let status = singleDeviceInfo.details.singledevinfo.column[0]['status'][0]
-            console.log('Column : ' + machine.column_id + '' + 'drawer: ' + machine.bin_id + ' ' + 'Compartment: ' + machine.compartment_id)
-            console.log(status)
-            this.machineCubeID = machine.cube_id
-            this.machineColumnID = machine.column_id
-            this.machineDrawID = machine.bin_id
-            this.machineCompartmentID = machine.compartment_id
-            this.machineStatus = status
-            if (status == 'Locked' || status == 'Closed' || status == 'Unlocked' || status == 'Unknown') {
-              // Lock that Column API, machine._id
-              if (status == 'Closed' || status == 'Unlocked') {
-                await this.crudService.post('machine/lockBin', machine).pipe(untilDestroyed(this)).toPromise()
-                await this.sleep(1000)
-              }
-      
-              // unlock Column API, machine._id, machine.column_id, machine.compartment_id
-              await this.crudService.post('machine/unlockBin', machine).pipe(untilDestroyed(this)).toPromise()
-              // Record Total Machine Usage
-              let t0 = performance.now();
-              await this.sleep(10000)
-              let apiHitTimes = 0
-              let machineColumnStatus = false
-              while (apiHitTimes < 15 && !machineColumnStatus) {
-                console.log('********************* API Hit Times ************** ' + machineColumnStatus)
-                console.log(' Machine Status : ' + machineColumnStatus)
-                let singleDeviceInfo = await this.singleDeviceInfo(machine)
-                let status = singleDeviceInfo.details.singledevinfo.column[0]['status'][0]
-                console.log('inside while loop status bin ' + machine.bin_id + status)
-                if (status == 'Closed' || status == 'Locked' || status == 'Unknown') {
-                  await this.sleep(9000)
-                  await this.crudService.post('machine/lockBin', machine).pipe(untilDestroyed(this)).toPromise()
-                  machineColumnStatus = true
-                  await this.TakeOrReturnItems.push(machine)
-                }
-                //Drawer current status, (opening, opened, closing, closed)
-                else if (status !== 'Closed' && status !== 'Locked' && status == 'Unknown') {
-                  console.log('Current Status = ' + status)
-                  this.msg='Current Status = ' + status
-                  // ColumnActionStatus = singleDeviceInfo
-                }
-                //set delay time
-                await this.sleep(10000)
-                if (status == 'Unlocked' && apiHitTimes == 14) {
-                  await this.crudService.post('machine/lockBin', machine).pipe(untilDestroyed(this)).toPromise()
-                }
-                apiHitTimes++
-              }
-              // if user does not closed after ceratin count of times API hit
-              if (apiHitTimes == 10 && machineColumnStatus !== true) {
-                console.log('Application waiting time over for bin ' + machine.bin_id + 'in column ' + machine.column_id)
-      
-              }
-              let t1 = performance.now();
-              eachColumnUsage['column_usage'] = t1 - t0
-              totalMachineUsage.push(eachColumnUsage)
-              await this.sleep(5000)
-            }
-            // break for loop if single device info is unknown
-            else {
-              console.log('Machine status unknown ' + status)
-              this.msg='Machine status unknown ' + status
-              console.log('Close all drawers properly and click take now')
-              this.msg='Close all drawers properly and click take now'
-      
-              break
-            }
-          }
-          const successTake = await totalMachinesList.filter(array => this.TakeOrReturnItems.some(filter => filter.column_id === array.column_id && filter.bin_id === array.bin_id));
-      
-          console.log(successTake)
-          if (successTake.length == 0) {
-            console.log('Machine status unknown No Item taken')
-            this.msgg='Machine status unknown No Item taken'
-          } else if (successTake.length == totalMachinesList.length) {
-            console.log(successTake.length + ' items Taken successfully')
-            this.msgg=successTake.length + ' items Taken successfully'
-            await this.addMachineUsage(totalMachineUsage)
-      
-            await this.updateAfterTakeOrReturn(successTake)
-          } else if (successTake.length < totalMachinesList.length) {
-            console.log(successTake.length + ' items Taken successfully \n' + (totalMachinesList.length - successTake.length) + ' items failed return')
-            this.msgg=successTake.length + ' items Taken successfully \n' + successTake.length + ' items failed return'
-            await this.addMachineUsage(totalMachineUsage)
-      
-            await this.updateAfterTakeOrReturn(successTake)
-          }
-        }else{
-          this.toast.error("You have exceeded item maximum quantity taken per day.")
-        }
+  
       })
    
   }
