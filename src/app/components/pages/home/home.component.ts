@@ -43,31 +43,86 @@ export class HomeComponent implements OnInit {
   coloumid: any=[];
   coloumids: any=[];
   permissions : any=[];
+  coloumidss: any=[];
 
   constructor(public crud:CrudService,public router:Router,public fb:FormBuilder,private toast: ToastrService) { 
 
   }
 
   ngOnInit() {
+    this.coloumidss = JSON.parse(localStorage.getItem('coloumid'))
     this.home();
-
   this.permissions=JSON.parse(localStorage.getItem("personal"))
 
   }
 
 home(){
-   this.crud.get(appModels.COLOMNIDS).pipe(untilDestroyed(this)).subscribe((res:any) => {
-    console.log(res)
-   this.coloumid=res.details.alldevinfo.List[0].assigned[0].column
-   console.log(this.coloumid,"cid")
-   for(let i=0; i<this.coloumid?.length;i++){
-     this.coloumids.push(this.coloumid[i].uid[0])
-     console.log(this.coloumids,"uid")
+  this.profiledetails = JSON.parse(localStorage.getItem('personal'))
+  console.log(this.profiledetails)
+  let params: any = {};
+params['company_id']=this.profiledetails?.company_id?._id
+this.coloumidss = JSON.parse(localStorage.getItem('coloumid'))
 
-   }
- },error=>{
-  this.toast.error("Please connect the mechine")
-})
+console.log(this.profiledetails?.company_id?._id,this.coloumidss)
+   //this.crud.get(appModels.COLOMNIDS).pipe(untilDestroyed(this)).subscribe((res:any) => {
+    //console.log(res)
+   //this.coloumid=res.details.alldevinfo?.List[0].assigned[0].column
+   //console.log(this.coloumid,"cid")
+   //for(let i=0; i<this.coloumid?.length;i++){
+     //this.coloumids.push(this.coloumid[i].uid[0])
+     //console.log(this.coloumids,"uid")
+
+   //}
+   if(this.coloumidss !=""){
+
+
+   this.crud.CurrentMessage.subscribe(message=>{
+
+    if(message !="" && !localStorage.getItem("allow")){
+    
+      this.message=JSON.parse(message)
+      this.categoryName=this.message?.category_name
+      this.d=JSON.stringify(this.coloumidss)
+
+      let params: any = {};
+        params['column_ids'] = this.d ;
+        params['company_id']=this.profiledetails?.company_id?._id
+
+      console.log("id",this.message['category']['_id'])
+      this.categoryName=this.message['category']['category_name']
+      localStorage.setItem("catname",this.message['category']['category_name'])
+      localStorage.setItem("catid",this.message['category']['_id'])
+      this.crud.get1(appModels.SUBCATEGORY+this.message['category']['_id'],{params}).pipe(untilDestroyed(this)).subscribe((res:any) => {
+        localStorage.setItem("allow","data")
+        console.log(res)
+     
+        this.subcategories=res['data']
+        
+        this.getData({pageIndex: this.page, pageSize: this.size});
+ 
+      })
+    }else{
+      this.categoryName=localStorage.getItem("catname")
+      this.d=JSON.stringify(this.coloumidss)
+      console.log(this.d)
+      let params: any = {};
+      params['company_id']=this.profiledetails?.company_id?._id
+        params['column_ids'] = this.d ;
+        console.log(params)
+      this.crud.get1(appModels.SUBCATEGORY+localStorage.getItem("catid"),{params}).pipe(untilDestroyed(this)).subscribe((res:any) => {
+        localStorage.setItem("allow","data")
+        console.log(res)
+     
+        this.subcategories=res['data']
+        
+        this.getData({pageIndex: this.page, pageSize: this.size});
+ 
+      })
+    }
+  
+  })
+ }
+//})
   //this.crud.get("api").pipe(untilDestroyed(this)).subscribe((res:any) => {
   //  console.log(res)
 //})
@@ -82,46 +137,7 @@ console.log(localStorage.getItem("lan"))
     window.location.reload()
     
   }
-    this.crud.CurrentMessage.subscribe(message=>{
-
-      if(message !="" && !localStorage.getItem("allow")){
-      
-        this.message=JSON.parse(message)
-        this.categoryName=this.message?.category_name
-    
-        let params: any = {};
-          params['column_ids'] = this.d;
-        console.log("id",this.message['category']['_id'])
-        this.categoryName=this.message['category']['category_name']
-        localStorage.setItem("catname",this.message['category']['category_name'])
-        localStorage.setItem("catid",this.message['category']['_id'])
-        this.crud.get1(appModels.SUBCATEGORY+this.message['category']['_id'],{params}).pipe(untilDestroyed(this)).subscribe((res:any) => {
-          localStorage.setItem("allow","data")
-          console.log(res)
-       
-          this.subcategories=res['data']
-          
-          this.getData({pageIndex: this.page, pageSize: this.size});
    
-        })
-      }else{
-        this.categoryName=localStorage.getItem("catname")
-        this.d=JSON.stringify(this.coloumids)
-        console.log(this.d)
-        let params: any = {};
-          params['column_ids'] = this.d;
-        this.crud.get1(appModels.SUBCATEGORY+localStorage.getItem("catid"),{params}).pipe(untilDestroyed(this)).subscribe((res:any) => {
-          localStorage.setItem("allow","data")
-          console.log(res)
-       
-          this.subcategories=res['data']
-          
-          this.getData({pageIndex: this.page, pageSize: this.size});
-   
-        })
-      }
-     
-    })
 }
 setCookie(name,value,) {
   document.cookie = name + "=" + value;

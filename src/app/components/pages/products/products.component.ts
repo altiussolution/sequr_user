@@ -20,26 +20,28 @@ export class ProductsComponent implements OnInit {
   page = 0;
   size = 4;
   d: any=[];
-  dataa=[{
+ /* dataa=[{
     "details":
     {"alldevinfo":
     {"List":
     [{"assigned":
     [{"column":
-    [{"uid":["1305167547307745"],"lid":["1"]},{"uid":["1305167547316427"],"lid":["2"]}]}]}]}}}]
+    [{"uid":["1305167547307745"],"lid":["1"]},{"uid":["1305167547316427"],"lid":["2"]}]}]}]}}}]*/
   coloumid: any=[];
   coloumids: any=[];
   permissions : any=[];
   machine: any=[];
   qty: any;
+  coloumidss: any;
   constructor(public crud:CrudService,public router:Router,private toast: ToastrService) {
     
    }
 
   ngOnInit(): void {
     this.permissions=JSON.parse(localStorage.getItem("personal"))
+    this.coloumidss = JSON.parse(localStorage.getItem('coloumid'))
 
-      this.crud.get(appModels.COLOMNIDS).pipe(untilDestroyed(this)).subscribe((res:any) => {
+     /* this.crud.get(appModels.COLOMNIDS).pipe(untilDestroyed(this)).subscribe((res:any) => {
     console.log(res)
    this.coloumid=res.details.alldevinfo.List[0].assigned[0].column
    console.log(this.coloumid,"cid")
@@ -49,7 +51,7 @@ export class ProductsComponent implements OnInit {
    }
   },error=>{
     this.toast.error("Please connect the mechine")
-  })
+  })*/
     
     this.crud.CurrentMessage2.subscribe(message=>{
       if(message !=""){
@@ -67,8 +69,10 @@ params['company_id']=this.permissions?.company_id?._id
           this.product=JSON.parse(message)
           localStorage.setItem("subid",JSON.stringify(this.product))
           console.log(this.product)
-          this.d=JSON.stringify(this.coloumids)
-            params['column_ids'] = this.d;
+          this.d=JSON.stringify(this.coloumidss)
+          params['column_ids'] = this.d;
+          params['category_id']=this.product?.category_id
+          params['subcategory_id']=this.product?._id
           this.crud.get1(appModels.ITEMS+this.product?.category_id+'/'+this.product?._id,{params}).pipe(untilDestroyed(this)).subscribe((res:any) => {
           localStorage.setItem("allow1","data")
           console.log(res)
@@ -79,9 +83,11 @@ params['company_id']=this.permissions?.company_id?._id
         let params: any = {};
         params['company_id']=this.permissions?.company_id?._id
         this.product=JSON.parse(localStorage.getItem("subid"))
-        this.d=JSON.stringify(this.coloumids)
+        this.d=JSON.stringify(this.coloumidss)
           params['column_ids'] = this.d;
-        this.crud.get1(appModels.ITEMS+this.product?.category_id+'/'+this.product?._id,{params}).pipe(untilDestroyed(this)).subscribe((res:any) => {
+          params['category_id']=this.product?.category_id
+          params['subcategory_id']=this.product?._id
+        this.crud.get1(appModels.ITEMS,{params}).pipe(untilDestroyed(this)).subscribe((res:any) => {
         localStorage.setItem("allow1","data")
         console.log(res)
         this.items=res['data']

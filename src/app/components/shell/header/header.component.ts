@@ -81,6 +81,7 @@ myform: FormGroup;
   dooropenss: any=[];
   
   @ViewChild('modal') closebutton;
+  hlo: any=[];
 
  constructor(public router: Router,public crud:CrudService,private cookie: CookieService,private toast: ToastrService) {
 
@@ -106,14 +107,17 @@ myform: FormGroup;
       }
   this.crud.get(appModels.COLOMNIDS).pipe(untilDestroyed(this)).subscribe((res:any) => {
     console.log(res)
-   this.coloumid=res.details.alldevinfo.List[0].assigned[0].column
+   this.coloumid=res.details.alldevinfo?.List[0]?.assigned[0]?.column
    console.log(this.coloumid,"cid")
     for(let i=0; i<this.coloumid?.length;i++){
       this.coloumids.push(this.coloumid[i].uid[0])
       console.log(this.coloumids,"uid")
     }
+    localStorage.setItem("coloumid",this.coloumids)
+
+console.log(JSON.stringify(this.coloumids))
   })
- 
+
   this.profiledetails = JSON.parse(localStorage.getItem('personal'))
   console.log(this.profiledetails)
   let params: any = {};
@@ -143,7 +147,7 @@ params['company_id']=this.profiledetails?.company_id?._id
             
              this.crud.getcarttotal(this.cartList?.length)
       })
-
+//this.hlo=['1305167547307745', '1305167547316427']
       this.d=JSON.stringify(this.coloumids)
         params['column_ids'] = this.d;
 this.crud.get1(appModels.CATEGORYLIST,{params}).pipe(untilDestroyed(this)).subscribe((res:any) => {
