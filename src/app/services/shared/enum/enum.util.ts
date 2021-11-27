@@ -4,7 +4,7 @@ enum appModels {
     ADDTOCART='cart/add',
     USERPROFILE='employee/userProfile/',
     CATEGORYLIST='category/getCategoryMachine',
-    SUBCATEGORY='subCategory/getSubCategoryMachine/',
+    SUBCATEGORY='subCategory/getSubCategoryMachine',
     ITEMS='item/getItemMachine/',
     //CATEGORYLIST='category/getCategorylist',//category/getCategoryMachine/["1305167547307745"]',
     //SUBCATEGORY='subCategory/get?category_id=',//'subCategory/getSubCategoryMachine/617021b82d9256f547185a83/["1305167547307745"]',
