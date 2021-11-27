@@ -5,7 +5,7 @@ enum appModels {
     USERPROFILE='employee/userProfile/',
     CATEGORYLIST='category/getCategoryMachine',
     SUBCATEGORY='subCategory/getSubCategoryMachine',
-    ITEMS='item/getItemMachine/',
+    ITEMS='item/getItemMachine',
     //CATEGORYLIST='category/getCategorylist',//category/getCategoryMachine/["1305167547307745"]',
     //SUBCATEGORY='subCategory/get?category_id=',//'subCategory/getSubCategoryMachine/617021b82d9256f547185a83/["1305167547307745"]',
     ITEMLIST='cart/itemHistory',//'getItemMachine/617021b82d9256f547185a83/6170223c2d9256f547185a93/["1305167547307745"]',

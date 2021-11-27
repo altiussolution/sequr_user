@@ -183,15 +183,16 @@ if(!localStorage.getItem("onetimecall")){
   };
 
 Addmore(){
-  let params: any = {};
-params['company_id']=this.permissions?.company_id?._id
-  this.crudService.get1(appModels.CATEGORYLIST,{params}).pipe(untilDestroyed(this)).subscribe((res:any) => {
-    console.log(res)
-   this.category=res['data']
-   localStorage.removeItem("allow") 
-   this.crudService.changemessage(JSON.stringify(this.category[0]))
-   this.router.navigate(['/pages/home'])
-  })
+  this.router.navigate(['/pages/home'])
+
+//   let params: any = {};
+// params['company_id']=this.permissions?.company_id?._id
+//   this.crudService.get1(appModels.CATEGORYLIST,{params}).pipe(untilDestroyed(this)).subscribe((res:any) => {
+//     console.log(res)
+//    this.category=res['data']
+//    localStorage.removeItem("allow") 
+//    this.crudService.changemessage(JSON.stringify(this.category[0]))
+//   })
 }
   toggleAll(event: MatCheckboxChange) {
     if (event.checked) {

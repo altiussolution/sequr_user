@@ -138,6 +138,8 @@ permissions:any;
             if (res['message'] == "Successfully added into cart!") {
               let params: any = {};
               params['user_id']=this.permissions?._id
+              params['company_id']=this.permissions?.company_id?._id
+
               this.crud.get1(appModels.listCart,{params}).pipe(untilDestroyed(this)).subscribe(async res => {
                 console.log(res)
                 if (res) {

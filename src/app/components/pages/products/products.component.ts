@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { ToastrService } from 'ngx-toastr';
 import { BehaviorSubject } from 'rxjs';
@@ -32,14 +32,17 @@ export class ProductsComponent implements OnInit {
   permissions : any=[];
   machine: any=[];
   qty: any;
-  coloumidss: any;
-  constructor(public crud:CrudService,public router:Router,private toast: ToastrService) {
+  coloumidss: any=[];
+  constructor(public crud:CrudService,public router:Router,private toast: ToastrService,public route:ActivatedRoute) {
     
    }
 
   ngOnInit(): void {
+  let data= this.route.snapshot.paramMap.get('data')
+  console.log(data)
+      this.route.data.subscribe(data => console.log(data));
     this.permissions=JSON.parse(localStorage.getItem("personal"))
-    this.coloumidss = JSON.parse(localStorage.getItem('coloumid'))
+    this.coloumidss = localStorage.getItem('coloumid')
 
      /* this.crud.get(appModels.COLOMNIDS).pipe(untilDestroyed(this)).subscribe((res:any) => {
     console.log(res)
@@ -69,20 +72,21 @@ params['company_id']=this.permissions?.company_id?._id
           this.product=JSON.parse(message)
           localStorage.setItem("subid",JSON.stringify(this.product))
           console.log(this.product)
-          this.d=JSON.stringify(this.coloumidss)
+          this.d=this.coloumidss
           params['column_ids'] = this.d;
           params['category_id']=this.product?.category_id
-          params['subcategory_id']=this.product?._id
-          this.crud.get1(appModels.ITEMS+this.product?.category_id+'/'+this.product?._id,{params}).pipe(untilDestroyed(this)).subscribe((res:any) => {
+          params['sub_category_id']=this.product?._id
+          this.crud.get1(appModels.ITEMS,{params}).pipe(untilDestroyed(this)).subscribe((res:any) => {
           localStorage.setItem("allow1","data")
           console.log(res)
           this.items=res['data']
           this.getData({pageIndex: this.page, pageSize: this.size});
           })
-      }else{
+      }/*else{
         let params: any = {};
         params['company_id']=this.permissions?.company_id?._id
         this.product=JSON.parse(localStorage.getItem("subid"))
+        console.log(this.product)
         this.d=JSON.stringify(this.coloumidss)
           params['column_ids'] = this.d;
           params['category_id']=this.product?.category_id
@@ -93,7 +97,7 @@ params['company_id']=this.permissions?.company_id?._id
         this.items=res['data']
         this.getData({pageIndex: this.page, pageSize: this.size});
         })
-      }
+      }*/
     
     })
   }
