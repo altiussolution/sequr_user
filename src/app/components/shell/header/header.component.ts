@@ -69,10 +69,14 @@ myform: FormGroup;
   coloumid: any=[];
   coloumids: any=[];
   @ViewChild('modal') closebutton;
+  permissions: any=[];
 
  constructor(public router: Router,public crud:CrudService,private cookie: CookieService,private toast: ToastrService) {
-
-  this.crud.get(appModels.ITEM).pipe(untilDestroyed(this)).subscribe((res:any) => {
+  this.permissions=JSON.parse(localStorage.getItem("personal"))
+  this.profiledetails = JSON.parse(localStorage.getItem('personal'))
+  let params: any = {};
+  params['company_id']=this.permissions?.company_id?._id
+  this.crud.get1(appModels.ITEM,{params}).pipe(untilDestroyed(this)).subscribe((res:any) => {
     console.log(res)
     this.item=res.item
   })
@@ -102,7 +106,7 @@ myform: FormGroup;
     }
   })
  
-  this.profiledetails = JSON.parse(localStorage.getItem('personal'))
+  
   console.log(this.profiledetails)
   let params: any = {};
 params['company_id']=this.profiledetails?.company_id?._id
@@ -116,30 +120,8 @@ params['company_id']=this.profiledetails?.company_id?._id
     this.cartProductCount = data;
     console.log(this.cartProductCount)
   })
-  this.cartList=[];
-  let params2: any = {};
-  params2['company_id']=this.profiledetails?.company_id?._id
-  params2['user_id']=this.profiledetails._id
-  this.crud.get1(appModels.listCart,{params2}).pipe(untilDestroyed(this)).subscribe(res => {
-    console.log(res)
-    this.cartdata=res[0]
-  for(let i=0;i< this.cartdata?.cart?.length;i++){
-      if( this.cartdata?.cart[i]['cart_status']==1){
-      this.cartList.push(this.cartdata?.cart[i])
-      // this.cartListlength=this.cartList.length
-       }}
-            
-             this.crud.getcarttotal(this.cartList?.length)
-      })
+ 
 
-      
-      this.crud.get1(appModels.COLOMNIDS,{params}).pipe(untilDestroyed(this)).subscribe((res:any) => {
-        console.log(res)
-
-      })
-//let [params]=["1305167547307745"]
-//this.crud.get(appModels.CATEGORYLIST+[params]).pipe(untilDestroyed(this)).subscribe((res:any) => {
-  
 
   this.crud.get1(appModels.CATEGORYLIST,{params}).pipe(untilDestroyed(this)).subscribe((res:any) => {
 
@@ -153,7 +135,26 @@ params['company_id']=this.profiledetails?.company_id?._id
     console.log(res)
     this.itemhistorykit=res['Kits']
   })
+  this.methods()
  }
+  methods() {
+    
+    this.cartList=[];
+    let params: any = {};
+    params['company_id']=this.profiledetails?.company_id?._id
+  params['user_id']=this.profiledetails._id
+  this.crud.get1(appModels.listCart,{params}).pipe(untilDestroyed(this)).subscribe(res => {
+    console.log(res)
+    this.cartdata=res[0]
+  for(let i=0;i< this.cartdata?.cart?.length;i++){
+      if( this.cartdata?.cart[i]['cart_status']==1){
+      this.cartList.push(this.cartdata?.cart[i])
+      // this.cartListlength=this.cartList.length
+       }}
+            
+             this.crud.getcarttotal(this.cartList?.length)
+      })
+  }
 
 setval(val:any){
   localStorage.removeItem("allow") 

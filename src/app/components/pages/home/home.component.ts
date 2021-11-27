@@ -31,7 +31,8 @@ export class HomeComponent implements OnInit {
   profiledetails: any=[];
 permissions : any=[];
   constructor(public crud:CrudService,public router:Router,public fb:FormBuilder) { 
-
+    this.permissions=JSON.parse(localStorage.getItem("personal"))
+    
   }
 
   ngOnInit() {
@@ -47,24 +48,18 @@ home(){
 
 console.log(localStorage.getItem("lan"))
   console.log(this.readCookie('googtrans'));
-  if(!localStorage.getItem("language")){
-    // if (confirm(`Language has been updated for you please refresh the page.`)) {
-   localStorage.setItem("language","lang")
-   this.setCookie("googtrans",localStorage.getItem("lan") );
- 
-    window.location.reload()
-    
-  }
+  
     this.crud.CurrentMessage.subscribe(message=>{
 
       if(message !="" && !localStorage.getItem("allow")){
-      
+        let params: any = {};
+        params['company_id']=this.permissions?.company_id?._id
         this.message=JSON.parse(message)
         console.log(this.message['category']['_id'])
         this.categoryName=this.message['category']['category_name']
         localStorage.setItem("catname",this.message['category']['category_name'])
         localStorage.setItem("catid",this.message['category']['_id'])
-        this.crud.get(appModels.SUBCATEGORY+this.message['category']['_id']).pipe(untilDestroyed(this)).subscribe((res:any) => {
+        this.crud.get1(appModels.SUBCATEGORY+this.message['category']['_id'],{params}).pipe(untilDestroyed(this)).subscribe((res:any) => {
           localStorage.setItem("allow","data")
           console.log(res)
        
@@ -75,8 +70,9 @@ console.log(localStorage.getItem("lan"))
         })
       }else{
         this.categoryName=localStorage.getItem("catname")
-      
-        this.crud.get(appModels.SUBCATEGORY+localStorage.getItem("catid")).pipe(untilDestroyed(this)).subscribe((res:any) => {
+        let params: any = {};
+        params['company_id']=this.permissions?.company_id?._id
+        this.crud.get1(appModels.SUBCATEGORY+localStorage.getItem("catid"),{params}).pipe(untilDestroyed(this)).subscribe((res:any) => {
           localStorage.setItem("allow","data")
           console.log(res)
        
@@ -88,7 +84,17 @@ console.log(localStorage.getItem("lan"))
       }
      
     })
+    if(!localStorage.getItem("language")){
+      setTimeout(() => {
+        localStorage.setItem("language","lang")
+        this.setCookie("googtrans",localStorage.getItem("lan") );
+       window.location.reload()
+      }, 3000);
+      // if (confirm(`Language has been updated for you please refresh the page.`)) {
+    
+     }
 }
+
 setCookie(name,value,) {
   document.cookie = name + "=" + value;
 

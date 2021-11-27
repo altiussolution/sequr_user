@@ -55,6 +55,7 @@ permissions:any;
   }
   ngOnInit(): void {
     this.permissions=JSON.parse(localStorage.getItem("personal"))
+
     this.crud.CurrentMessage3.subscribe((message: any) => {
       console.log(message)
       //console.log(localStorage.getItem("_id"))
