@@ -50,7 +50,7 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.coloumidss = JSON.parse(localStorage.getItem('coloumid'))
+    this.coloumidss = localStorage.getItem('coloumid')
     this.home();
   this.permissions=JSON.parse(localStorage.getItem("personal"))
 
@@ -59,9 +59,9 @@ export class HomeComponent implements OnInit {
 home(){
   this.profiledetails = JSON.parse(localStorage.getItem('personal'))
   console.log(this.profiledetails)
+
   let params: any = {};
 params['company_id']=this.profiledetails?.company_id?._id
-this.coloumidss = JSON.parse(localStorage.getItem('coloumid'))
 
 console.log(this.profiledetails?.company_id?._id,this.coloumidss)
    //this.crud.get(appModels.COLOMNIDS).pipe(untilDestroyed(this)).subscribe((res:any) => {
@@ -79,37 +79,46 @@ console.log(this.profiledetails?.company_id?._id,this.coloumidss)
    this.crud.CurrentMessage.subscribe(message=>{
 
     if(message !="" && !localStorage.getItem("allow")){
-    
+    console.log(message)
       this.message=JSON.parse(message)
+     if(this.message?.length !=0){
       this.categoryName=this.message?.category_name
       this.d=JSON.stringify(this.coloumidss)
 
       let params: any = {};
         params['column_ids'] = this.d ;
         params['company_id']=this.profiledetails?.company_id?._id
+        params['category_id']=this.message?._id
 
-      console.log("id",this.message['category']['_id'])
-      this.categoryName=this.message['category']['category_name']
-      localStorage.setItem("catname",this.message['category']['category_name'])
-      localStorage.setItem("catid",this.message['category']['_id'])
-      this.crud.get1(appModels.SUBCATEGORY+this.message['category']['_id'],{params}).pipe(untilDestroyed(this)).subscribe((res:any) => {
+      this.categoryName=this.message?.category_name
+      console.log("id",this.categoryName)
+
+      localStorage.setItem("catname",this.message?.category_name)
+      localStorage.setItem("catid",this.message?._id)
+
+      this.crud.get1(appModels.SUBCATEGORY,{params}).pipe(untilDestroyed(this)).subscribe((res:any) => {
         localStorage.setItem("allow","data")
         console.log(res)
      
         this.subcategories=res['data']
         
         this.getData({pageIndex: this.page, pageSize: this.size});
- 
       })
+     }
+ 
+    
     }else{
       this.categoryName=localStorage.getItem("catname")
+
       this.d=JSON.stringify(this.coloumidss)
       console.log(this.d)
       let params: any = {};
       params['company_id']=this.profiledetails?.company_id?._id
         params['column_ids'] = this.d ;
+        params['category_id']=localStorage.getItem("catid")
+
         console.log(params)
-      this.crud.get1(appModels.SUBCATEGORY+localStorage.getItem("catid"),{params}).pipe(untilDestroyed(this)).subscribe((res:any) => {
+      this.crud.get1(appModels.SUBCATEGORY,{params}).pipe(untilDestroyed(this)).subscribe((res:any) => {
         localStorage.setItem("allow","data")
         console.log(res)
      
@@ -165,6 +174,7 @@ setCookie(name,value,) {
       index++;
       return (index > startingIndex && index <= endingIndex) ? true : false;
     });
+    console.log(this.data)
   }
 selectcategory(val:any){
     localStorage.removeItem("allow1")

@@ -116,7 +116,6 @@ myform: FormGroup;
     localStorage.setItem("coloumid",this.coloumids)
 
 console.log(JSON.stringify(this.coloumids))
-  })
 
   this.profiledetails = JSON.parse(localStorage.getItem('personal'))
   console.log(this.profiledetails)
@@ -132,53 +131,64 @@ params['company_id']=this.profiledetails?.company_id?._id
     this.cartProductCount = data;
     console.log(this.cartProductCount)
   })
-  this.cartList=[];
-  let params2: any = {};
-  params2['company_id']=this.profiledetails?.company_id?._id
-  params2['user_id']=this.profiledetails._id
-  this.crud.get1(appModels.listCart,{params2}).pipe(untilDestroyed(this)).subscribe(res => {
-    console.log(res)
-    this.cartdata=res[0]
-  for(let i=0;i< this.cartdata?.cart?.length;i++){
-      if( this.cartdata?.cart[i]['cart_status']==1){
-      this.cartList.push(this.cartdata?.cart[i])
-      // this.cartListlength=this.cartList.length
-       }}
-            
-             this.crud.getcarttotal(this.cartList?.length)
-      })
 //this.hlo=['1305167547307745', '1305167547316427']
       this.d=JSON.stringify(this.coloumids)
         params['column_ids'] = this.d;
 this.crud.get1(appModels.CATEGORYLIST,{params}).pipe(untilDestroyed(this)).subscribe((res:any) => {
     console.log(res)
    this.category=res['data']  
+   localStorage.removeItem("allow") 
+   this.crud.changemessage(JSON.stringify(this.category[0]))
+   this.selectedItem = this.category[0];
    console.log(this.category,"oii")
 for(let i=0; i<this.category?.length;i++){
   this.catid.push(this.category[i]._id)
+  
   console.log(this.catid,"id")
   this.d=JSON.stringify(this.coloumids)
   let params: any = {};
     params['column_ids'] = this.d;
-  this.crud.get1(appModels.SUBCATEGORY+this.catid,{params}).pipe(untilDestroyed(this)).subscribe((res:any) => {
+    params["category_id"]=this.catid;
+    params['company_id']=this.profiledetails?.company_id?._id
+  this.crud.get1(appModels.SUBCATEGORY,{params}).pipe(untilDestroyed(this)).subscribe((res:any) => {
     console.log(res)
     this.subcategories=res['data']
     this.subcatlength.push( this.subcategories)
     console.log(this.subcatlength)
   })
+  
 }
 
+// category_id
+// sub_category_id,
 
 
-   localStorage.removeItem("allow") 
-   this.crud.changemessage(JSON.stringify(this.category[0]))
-   this.selectedItem = this.category[0];
+
   })
   this.crud.get1(appModels.ITEMLIST,{params}).pipe(untilDestroyed(this)).subscribe((res:any) => {
     console.log(res)
     this.itemhistorykit=res['Kits']
   })
+})
+  this.method()
  }
+  method() {
+    this.cartList=[];
+    let params2: any = {};
+    params2['company_id']=this.profiledetails?.company_id?._id
+    params2['user_id']=this.profiledetails._id
+    this.crud.get1(appModels.listCart,{params2}).pipe(untilDestroyed(this)).subscribe(res => {
+      console.log(res)
+      this.cartdata=res[0]
+    for(let i=0;i< this.cartdata?.cart?.length;i++){
+        if( this.cartdata?.cart[i]['cart_status']==1){
+        this.cartList.push(this.cartdata?.cart[i])
+        // this.cartListlength=this.cartList.length
+         }}
+              
+               this.crud.getcarttotal(this.cartList?.length)
+        })
+  }
 
 setval(val:any){
   localStorage.removeItem("allow") 
