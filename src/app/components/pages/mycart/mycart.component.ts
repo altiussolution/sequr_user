@@ -43,6 +43,8 @@ export class MycartComponent implements OnInit {
   permissions : any=[];
   totalquantity: any=[];
   qtys: number;
+  val1: any;
+  val2: any;
   constructor(private crudService: CrudService,
     private toast: ToastrService, public cookie: CookieService,public router:Router,
     public modalService: NgbModal) { }
@@ -76,25 +78,39 @@ export class MycartComponent implements OnInit {
     
   }
   
+  
   updateCart(cart, qty,maxqty) {
-    if(qty>=maxqty){
-      qty = maxqty
-    }
-    let data = {
-      "item": cart.item._id,
-      "allocation": cart.allocation,
-      "qty": qty==0?1:qty,
-      "cart_id": this.cartdata['_id'],
-      "company_id":this.permissions?.company_id?._id
-    }
-    this.crudService.update2(appModels.updateCart, data).pipe(untilDestroyed(this)).subscribe(res => {
-      console.log(res)
-      this.toast.success(res.message);
-      this.getCartItems();
-    }, error => {
-      this.toast.error(error.message);
-    })
-  }
+    localStorage.removeItem("onetimecall")
+    this.val1=maxqty
+    this.val2=qty
+    setTimeout(() => {
+      if(this.val2>=this.val1){
+        this.val2 = this.val1
+      }
+ 
+      let data = {
+        "item": cart.item._id,
+        "allocation": cart.allocation,
+        "qty":this.val2==0?1:this.val2,
+        "cart_id": this.cartdata['_id'],
+        "company_id":this.permissions?.company_id?._id
+      }
+      this.method(data)
+    
+    }, 3000);
+     }
+  method(data) {
+if(!localStorage.getItem("onetimecall")){
+  localStorage.setItem("onetimecall","val")
+  this.crudService.update2(appModels.updateCart, data).pipe(untilDestroyed(this)).subscribe(res => {
+    console.log(res)
+    this.toast.success(res.message);
+    this.getCartItems();
+  }, error => {
+    this.toast.error(error.message);
+  })
+}
+}
 
   deleteCart(cart) {
     if (confirm(`Are you sure, you want to Delete?`)) {

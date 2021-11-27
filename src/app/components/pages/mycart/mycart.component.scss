@@ -10,6 +10,13 @@
 .qty.as-btn {
   padding: 4px 10px;
 }
+.t0-fl input#quantity {
+  width: 130%;
+}
+
+.row.mx-0.as-grid.as-list .as-card.py-3 {
+  width: 100%;
+}
 
 @media (min-width:1920px) {
   .qty.as-btn {

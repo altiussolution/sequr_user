@@ -82,10 +82,14 @@ myform: FormGroup;
   
   @ViewChild('modal') closebutton;
   hlo: any=[];
+  permissions: any=[];
 
  constructor(public router: Router,public crud:CrudService,private cookie: CookieService,private toast: ToastrService) {
-
-  this.crud.get(appModels.ITEM).pipe(untilDestroyed(this)).subscribe((res:any) => {
+  this.permissions=JSON.parse(localStorage.getItem("personal"))
+  this.profiledetails = JSON.parse(localStorage.getItem('personal'))
+  let params: any = {};
+  params['company_id']=this.permissions?.company_id?._id
+  this.crud.get1(appModels.ITEM,{params}).pipe(untilDestroyed(this)).subscribe((res:any) => {
     console.log(res)
     this.item=res.item
   })
@@ -201,25 +205,25 @@ setval(val:any){
 
   logout(){ 
     
-    localStorage.clear();
-    this.router.navigate(['./login']);
-// this.dooropens=[];
-// this.dooropenss=[];
-// this.crud.get('machine/wasfullopen').pipe(untilDestroyed(this)).subscribe((res:any) => {
-// console.log(res)
-// this.dooropens=res?.details?.alldevinfo?.Count
-// this.crud.get('machine/isfullopen').pipe(untilDestroyed(this)).subscribe((res:any) => {
-//   console.log(res)
-//   this.dooropenss=res?.details?.alldevinfo?.Count
-// if(this.dooropens.length==0 && this.dooropenss.length==0){
-//   this.closebutton.nativeElement.click();
-//     localStorage.clear();
-//     this.router.navigate(['./login']);
-// }else{
-//   this.toast.error("Please Close The Door")
-// }
-//   })
-// })
+    this.dooropens=[];
+    this.dooropenss=[];
+    this.crud.get('machine/wasfullopen').pipe(untilDestroyed(this)).subscribe((res:any) => {
+    console.log(res)
+    this.dooropens=res?.details?.alldevinfo?.Count[0].wasfullopen[0]
+    console.log(this.dooropens)
+    this.crud.get('machine/isfullopen').pipe(untilDestroyed(this)).subscribe((res:any) => {
+      console.log(res)
+      this.dooropenss=res?.details?.alldevinfo?.Count[0].isfullopen[0]
+    if(this.dooropens=="0" && this.dooropenss=="0"){
+      // this.closebutton.nativeElement.click();
+        localStorage.clear();
+        this.router.navigate(['./login']);
+    }else{
+      this.toast.error("Please Close The Door")
+    }
+      })
+    })
+
 
 }
 @ViewChild('searchInput', { read: ElementRef })

@@ -4,7 +4,6 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
-//import { error } from 'console';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { CrudService } from 'src/app/services/crud.service';
@@ -33,26 +32,20 @@ export class HomeComponent implements OnInit {
   selectedGroup: any;
   profiledetails: any=[];
   d: any=[];
-  /*dataa=[{
-    "details":
-    {"alldevinfo":
-    {"List":
-    [{"assigned":
-    [{"column":
-    [{"uid":["1305167547307745"],"lid":["1"]},{"uid":["1305167547316427"],"lid":["2"]}]}]}]}}}]*/
+
   coloumid: any=[];
   coloumids: any=[];
   permissions : any=[];
   coloumidss: any=[];
 
   constructor(public crud:CrudService,public router:Router,public fb:FormBuilder,private toast: ToastrService) { 
+    this.permissions=JSON.parse(localStorage.getItem("personal"))
 
   }
 
   ngOnInit() {
     this.coloumidss = localStorage.getItem('coloumid')
     this.home();
-  this.permissions=JSON.parse(localStorage.getItem("personal"))
 
   }
 
@@ -64,15 +57,7 @@ home(){
 params['company_id']=this.profiledetails?.company_id?._id
 
 console.log(this.profiledetails?.company_id?._id,this.coloumidss)
-   //this.crud.get(appModels.COLOMNIDS).pipe(untilDestroyed(this)).subscribe((res:any) => {
-    //console.log(res)
-   //this.coloumid=res.details.alldevinfo?.List[0].assigned[0].column
-   //console.log(this.coloumid,"cid")
-   //for(let i=0; i<this.coloumid?.length;i++){
-     //this.coloumids.push(this.coloumid[i].uid[0])
-     //console.log(this.coloumids,"uid")
-
-   //}
+   
    if(this.coloumidss !=""){
 
 
@@ -131,23 +116,21 @@ console.log(this.profiledetails?.company_id?._id,this.coloumidss)
   
   })
  }
-//})
-  //this.crud.get("api").pipe(untilDestroyed(this)).subscribe((res:any) => {
-  //  console.log(res)
-//})
+
 
 console.log(localStorage.getItem("lan"))
   console.log(this.readCookie('googtrans'));
-  if(!localStorage.getItem("language")){
-    // if (confirm(`Language has been updated for you please refresh the page.`)) {
-   localStorage.setItem("language","lang")
-   this.setCookie("googtrans",localStorage.getItem("lan") );
- 
-    window.location.reload()
-    
-  }
    
+if(!localStorage.getItem("language")){
+  setTimeout(() => {
+    localStorage.setItem("language","lang")
+    this.setCookie("googtrans",localStorage.getItem("lan") );
+   window.location.reload()
+  }, 3000);
+
+ }
 }
+
 setCookie(name,value,) {
   document.cookie = name + "=" + value;
 

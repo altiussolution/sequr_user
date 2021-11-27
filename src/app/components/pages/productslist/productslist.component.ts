@@ -103,6 +103,9 @@ export class ProductslistComponent implements OnInit {
          }
        
           }
+          else{
+            this.toast.error("You have exceeded item maximum quantity taken per day.")
+          }
       }else{
       
         this.kitdatas1=data
@@ -145,6 +148,8 @@ export class ProductslistComponent implements OnInit {
            this.toast.error("Requested Quantity Was Not Available")
          }
        
+          }else{
+            this.toast.error("You have exceeded item maximum quantity taken per day.")
           }
       }
       

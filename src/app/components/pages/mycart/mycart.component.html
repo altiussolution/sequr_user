@@ -36,8 +36,9 @@
           <!-- <input style="width: 50px;" type="number" min="1" [value]="cart?.qty" #qty> -->
           <div class="t0-fl">
             <label class="mb-0">QTY</label>
-          <input type="number" class="as-width-60" id="quantity" class="form-control" min="1" max="{{cart?.item_details.quantity}}"
-            [value]="cart?.qty" name="quantity" #qty (change)="updateCart(cart,qty.value,cart?.item_details.quantity)" (keyup)="updateCart(cart,qty.value,cart?.item_details.quantity)">
+          <input type="number" class="as-width-60" id="quantity" class="form-control" min="1" max="{{cart?.item_details.quantity}}" 
+            [value]="cart?.qty" name="quantity" #qty   (change)="updateCart(cart,qty.value,cart?.item_details.quantity)" (keyup)="updateCart(cart,qty.value,cart?.item_details.quantity)">
+          
           </div>
             <!-- </div> -->
           <!-- <div class="dropdown-menu">
@@ -46,10 +47,12 @@
                   <a class="dropdown-item" href="#">3</a>
               </div> -->
         </div>
-        <!--<div>
-          <button type="button" class="btn qty as-btn btn-primary mr-3" (click)="updateCart(cart, qty.value)"><i
+        <!-- <div>
+          <button type="button" class="btn qty as-btn btn-primary mr-3" ><i
+            class="fa fa-minus"></i></button>
+          <button type="button" class="btn qty as-btn btn-primary mr-3" ><i
               class="fa fa-plus"></i></button>
-        </div>-->
+        </div> -->
         <div class="">
           <button type="button" class="btn btn-round btn-light " (click)="deleteCart(cart)"><i
               class="fa fa-trash-o as-font-20" aria-hidden="true"></i></button>
