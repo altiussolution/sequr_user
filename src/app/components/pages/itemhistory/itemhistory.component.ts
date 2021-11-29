@@ -34,8 +34,12 @@ view:any;
   machineStatus: any;
   msg: string;
   msgg: string;
+  arrayvalue2: any=[];
+  arrayvaluess: any;
+  invalid: any=[];
   constructor(public crud: CrudService, private toast: ToastrService, public modalService: NgbModal) { }
   ngOnInit(): void {
+   
     this.permissions=JSON.parse(localStorage.getItem("personal"))
 console.log(this.permissions.role_id.permission)
 console.log(this.permissions?.company_id?._id)
@@ -70,11 +74,16 @@ this.deleted = this.permissions.role_id.permission.find(temp=>temp=="return_dele
   passParams(event: any, val: any) {
     if (event.target.checked) {
       this.arrayvalue.push(val);
+      this.arrayvalue2.push(val)
     }
     if (!event.target.checked) {
       let index = this.arrayvalue.indexOf(val);
+      let index1 = this.arrayvalue2.indexOf(val);
       if (index > -1) {
         this.arrayvalue.splice(index, 1);
+      }
+      if (index1 > -1) {
+        this.arrayvalue2.splice(index, 1);
       }
     }
     console.log(this.arrayvalue)
@@ -83,25 +92,37 @@ this.deleted = this.permissions.role_id.permission.find(temp=>temp=="return_dele
     if (confirm(`Are you sure want to delete?`)) {
     if (i > -1) {
       this.arrayvalue.splice(i, 1);
+      this.arrayvalue2.splice(i, 1);
       this.toast.success("Item deleted from choosed list")
     }
     }else {
      
     }
   }
+
   myFunction(event, i) {
     console.log(event.target.id)
-    if (this.arrayvalue[i].qty >= event.target.value) {
-
-    } else {
+    if(event.target.value !=0){
+      if (this.arrayvalue2[i].qty >= event.target.value) {
+        this.arrayvalue[i].qty=event.target.value
+       } else {
+         (<HTMLInputElement>document.getElementById(event.target.id)).value = "";
+         this.toast.error("You have reached Item max quantity")
+       }
+    }else{
+      this.toast.error("Please enter valid quantity");
+      this.arrayvalue2[i].qty=" ";
       (<HTMLInputElement>document.getElementById(event.target.id)).value = "";
     }
   }
+  
+
 
   close() {
     this.ngOnInit();
   }
   modaldismiss() {
+    this.closebutton.nativeElement.click();
     this.ngOnInit()
   }
   returnproduct() {
@@ -277,10 +298,35 @@ this.deleted = this.permissions.role_id.permission.find(temp=>temp=="return_dele
   // Take Items form machine  
   TakeOrReturnItems: any[] = []
   machinesList = []
-  async returnItem(item: string,modal) {
-    if (confirm(`Are you sure want to return?`)) {
+
+   returnItem1(item: string,modal) {
+
+    if(item=="cart"){
+      this.invalid=[];
+      for(let j=0;j<this.arrayvalue?.length;j++){
+      if(this.arrayvalue[j].qty===" "){
+        this.invalid.push(this.arrayvalue[j])
+        }
+      }
+      console.log(this.invalid)
+      if(this.invalid?.length==0){
+       
+        this.modalService.open(modal,{backdrop:false});
+      this.returnItem("cart")
+      }else{
+        this.toast.error("Please enter valid quantity")
+      }
+    }else{
+      this.modalService.open(modal,{backdrop:false});
+      this.returnItem("kit")
+    }
+   
+}
+
+ async returnItem(item: string) {
+  if (confirm(`Are you sure want to return?`)) {
       if(this.add){
-        this.modalService.open(item,{backdrop:false});
+     
         let totalMachinesList = await this.formatMachineData(item)
         console.log(totalMachinesList)
         let machinesList = await this.groupbyData(totalMachinesList)
@@ -340,6 +386,7 @@ this.deleted = this.permissions.role_id.permission.find(temp=>temp=="return_dele
               //Drawer current status, (opening, opened, closing, closed)
               else if (status !== 'Closed' && status !== 'Locked' && status !== 'Unknown') {
                 console.log('Current Status = ' + status)
+                this.machineStatus = status
                 // ColumnActionStatus = singleDeviceInfo
               }
               //set delay time
@@ -390,10 +437,8 @@ this.deleted = this.permissions.role_id.permission.find(temp=>temp=="return_dele
       }else {
         this.toast.warning("Permission denied")
       }
-   
-  }else {
+    }
 
-  }
   }
 
   //Update Cart and Stock Allocation documents after item Take/Return

@@ -48,7 +48,7 @@
 
       <div class="text-center">
         <button type="button" class="btn btn-round btn-outline-info"
-          [disabled]="arrayvalue1?.length==0" (click)="returnItem('kit',mymodal)">Return Kits</button>
+          [disabled]="arrayvalue1?.length==0" (click)="returnItem1('kit',mymodal)">Return Kits</button>
       </div>
     </div>
   </div>
@@ -211,7 +211,7 @@
               </div>
               <div class="d-flex align-items-center as-mr-det">
                 <label class="mr-2">QTY :</label>
-                <input type="number" id="quantity{{i}}" class="form-control quantity" placeholder="2" name="quantity"
+                <input type="number" id="quantity{{i}}" class="form-control quantity" placeholder="QTY" name="quantity"
                   min="1" max="5" (keyup)="myFunction($event,i)">
               </div>
             </div>
@@ -249,7 +249,7 @@
           <div class="d-flex mb-3">
             <div class="as-color-4 as-font-24 line-h-12">Are you sure, do you want to return the item?</div>
             <button class="btn btn-lg btn-primary btn-login  fw-bold mb-2" type="button"
-            (click)="returnItem('cart',mymodal)" [disabled]="!this.add">Confirm</button>
+            (click)="returnItem1('cart',mymodal)" [disabled]="!this.add">Confirm</button>
           </div>
         </div>
 

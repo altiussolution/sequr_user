@@ -167,6 +167,7 @@ for(let i=0; i<this.category?.length;i++){
     if(this.subcatlength?.length !=0 && this.catid?.length -1==i){  
       this.crud.changemessage(JSON.stringify(this.subcatlength[0][0]))
       console.log(JSON.stringify(this.subcatlength[0][0]))
+      localStorage.setItem("categname",this.category[0]?.category_name)
       this.selectedItem = this.category[0];
         this.router.navigate(['pages/home'])
     }
@@ -181,19 +182,21 @@ for(let i=0; i<this.category?.length;i++){
 
 
   })
-  this.crud.get1(appModels.ITEMLIST,{params}).pipe(untilDestroyed(this)).subscribe((res:any) => {
-    console.log(res)
-    this.itemhistorykit=res['Kits']
-  })
+
+
 })
   this.method()
  }
   method() {
     this.cartList=[];
-    let params2: any = {};
-    params2['company_id']=this.profiledetails?.company_id?._id
-    params2['user_id']=this.profiledetails._id
-    this.crud.get1(appModels.listCart,{params2}).pipe(untilDestroyed(this)).subscribe(res => {
+    let params: any = {};
+    params['company_id']=this.profiledetails?.company_id?._id
+    params['user_id']=this.profiledetails._id
+    this.crud.get1(appModels.ITEMLIST,{params}).pipe(untilDestroyed(this)).subscribe((res:any) => {
+      console.log(res)
+      this.itemhistorykit=res['Kits']
+    })
+    this.crud.get1(appModels.listCart,{params}).pipe(untilDestroyed(this)).subscribe(res => {
       console.log(res)
       this.cartdata=res[0]
     for(let i=0;i< this.cartdata?.cart?.length;i++){
@@ -328,11 +331,21 @@ private searchInput: ElementRef;
   })
 }
 searching(event){
-  console.log(event)
-  if(event.target.value){
+  localStorage.removeItem("onetimecall")
+  let data=event.target.value
+  setTimeout(() => {
+    this.callmethod(data)
+  
+  }, 3000);
+ 
+}
+  callmethod(data) {
+if(!localStorage.getItem("onetimecall")){
+  localStorage.setItem("onetimecall","val")
+  if(data){
     let params: any = {};
     if (this.searchValue) {
-      params['searchString'] = event.target.value;
+      params['searchString'] = data;
       params['company_id']=this.profiledetails?.company_id?._id
     }
     this.crud.get1(appModels.ITEM, { params }).pipe(untilDestroyed(this)).subscribe(res => {
@@ -345,8 +358,10 @@ searching(event){
   }else{
     this.searchdata=[]
   }
- 
 }
+    
+    
+  }
 
 test(){
   let assidebar = document.querySelector('.sidenav');
@@ -411,14 +426,15 @@ selectcategory(val:any,category:any){
   //   this.crud.changemessage2(data)
   //   this.crud.changemessage1(JSON.stringify(val))
   localStorage.removeItem("allow1")
-  this.categoryid=localStorage.getItem("categid")
+  // this.categoryid=localStorage.getItem("categid")
+  this.categoryid=category?._id
 
 this.subcategories1=val
 let data1={
   "category_id": this.categoryid,
   "_id":this.subcategories1._id
 }
-this.categoryName=localStorage.getItem("categname")
+this.categoryName=category?.category_name
 
 let data=this.categoryName+">"+this.subcategories1?.sub_category_name
 this.crud.changemessage2(data)
