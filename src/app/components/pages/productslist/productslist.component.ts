@@ -158,7 +158,10 @@ export class ProductslistComponent implements OnInit {
   }
   
   async itemHistory(data) {
-    this.crud.get(appModels.ITEMLIST).pipe(untilDestroyed(this)).subscribe(async (res: any) => {
+    let params: any = {};
+    params['company_id']=this.permissions?.company_id?._id
+    params['user_id']=this.permissions?._id
+    this.crud.get1(appModels.ITEMLIST,{params}).pipe(untilDestroyed(this)).subscribe(async (res: any) => {
       console.log(res)
       this.id = res?.Cart[0]['_id']
       this.itemhistorykit = res['Kits']
