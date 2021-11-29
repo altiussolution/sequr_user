@@ -149,29 +149,32 @@ for(let i=0; i<this.category?.length;i++){
   this.catid.push(this.category[i]._id)
   
   this.catname.push(this.category[i].category_name)
+}
   console.log(this.catid,"id")
   
   this.d=JSON.stringify(this.coloumids)
-  let params: any = {};
+
+  for(let i=0; i<this.catid?.length;i++){
+    let params: any = {};
     params['column_ids'] = this.d;
-    params["category_id"]=this.catid;
+    params["category_id"]=this.catid[i];
     params['company_id']=this.profiledetails?.company_id?._id
   this.crud.get1(appModels.SUBCATEGORY,{params}).pipe(untilDestroyed(this)).subscribe((res:any) => {
     console.log(res)
     this.subcategories=res['data']
     this.subcatlength.push( this.subcategories)
     console.log(this.subcatlength)
-    if(this.subcatlength[0]?.length !=0){  
-      this.crud.changemessage(JSON.stringify(this.subcatlength[0][i]))
-      console.log(JSON.stringify(this.subcatlength[0][i]))
+    if(this.subcatlength?.length !=0 && this.catid?.length -1==i){  
+      this.crud.changemessage(JSON.stringify(this.subcatlength[0][0]))
+      console.log(JSON.stringify(this.subcatlength[0][0]))
+      this.selectedItem = this.category[0];
         this.router.navigate(['pages/home'])
-        this.selectedItem = this.category[0];
     }
-   
-  })
-  
-}
 
+  })
+
+  }
+ 
 // category_id
 // sub_category_id,
 
@@ -209,12 +212,12 @@ setval(val:any,i:any){
 //  this.crud.changemessage3(this.id)
 localStorage.setItem('categid',this.catid[i])
   localStorage.setItem('categname',this.catname[i])
+  this.selectedItem = val;
 
 //this.crud.changemessage(JSON.stringify(this.catid[i]))
-  this.crud.changemessage(JSON.stringify(this.subcatlength[0][i]))
-console.log(JSON.stringify(this.subcatlength[0][i]))
+  this.crud.changemessage(JSON.stringify(this.subcatlength[i][0]))
+console.log(JSON.stringify(this.subcatlength[i][0]))
   this.router.navigate(['pages/home'])
-  this.selectedItem = val;
 }
 
   logout(){ 

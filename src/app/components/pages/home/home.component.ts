@@ -20,7 +20,7 @@ declare var google
 export class HomeComponent implements OnInit {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   message: any=[];
-  categoryName: any;
+  categoryName: any=[];
   subcategories1: any=[];
 
 
@@ -46,6 +46,7 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.categoryName=localStorage.getItem("categname")
     this.coloumidss = localStorage.getItem('coloumid')
     this.home();
 
@@ -151,6 +152,8 @@ selectcategory(val:any){
   let data=this.categoryName+">"+this.subcategories1?.sub_category_name
   this.crud.changemessage2(data)
   this.crud.changemessage1(JSON.stringify(data1))
+  this.router.navigate(['/pages/products'])
+
   // let params: any = {};
   // params['column_ids'] = this.d;
   // params['category_id']=this.categoryid
