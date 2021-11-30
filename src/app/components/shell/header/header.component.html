@@ -81,7 +81,8 @@
           <a *ngFor="let Categories of category;let i=index" class="nav-link "
             [ngClass]="{'as-active': selectedItem === Categories}"
             (click)="setval(Categories,i)">{{ Categories.category_name }}({{subcatlength[i]?.length==''?0:subcatlength[i]?.length }})</a>
-          <!-- <a class="nav-link">Gage(14)</a>
+            <a *ngIf="category?.length ==0">No Data Available</a>
+            <!-- <a class="nav-link">Gage(14)</a>
           <a class="nav-link">Kitting(32)</a>
           <a class="nav-link">Assembly(21)</a>
           <a class="nav-link">Key(15)</a>
@@ -94,7 +95,8 @@
           <hr>
           <a *ngFor="let kitting of itemhistorykit" class="nav-link as-color-9"
             [routerLink]="'itemhistory'">{{ kitting?.kit_name }}({{ kitting?.kit_item_details?.length===''?'0':kitting?.kit_item_details?.length }})</a>
-        </li>
+            <a *ngIf="itemhistorykit?.length ==0">No Data Available</a>
+          </li>
         <!-- <li class="nav-item mt-3">
           <div class="nav-link nav-title as-bold as-color-8" href="#">Similar Products</div>
           <hr>
