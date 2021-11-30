@@ -8,7 +8,7 @@
       <ul class="as-menu">
 
         <li class="as-menu-mega-blog"><a>Category</a>
-          <div class="d-flex as-menu-w as-category-scroll">
+          <div class="d-flex as-menu-w as-category-scroll" *ngIf="category?.length!=0">
             <ul class="as-menu-mega-blog-nav as-drop-head">
 
               <li class="as-active-menu-item1" *ngFor="let Categories of category;let i=index">
@@ -49,10 +49,10 @@
 
 
             </ul>
-            <div class="as-drop-head">
+            <!--<div class="as-drop-head">
               <div class="as-drop-img">
               </div>
-            </div>
+            </div>-->
           </div>
 
           <span class="as-dropdown-toggle"></span>
