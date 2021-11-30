@@ -272,12 +272,23 @@ private searchInput: ElementRef;
    
   })
 }
+
 searching(event){
-  console.log(event)
-  if(event.target.value){
+  localStorage.removeItem("onetimecall")
+  let data=event.target.value
+  setTimeout(() => {
+    this.callmethod(data)
+  
+  }, 3000);
+ 
+}
+  callmethod(data) {
+if(!localStorage.getItem("onetimecall")){
+  localStorage.setItem("onetimecall","val")
+  if(data){
     let params: any = {};
     if (this.searchValue) {
-      params['searchString'] = event.target.value;
+      params['searchString'] = data;
       params['company_id']=this.profiledetails?.company_id?._id
     }
     this.crud.get1(appModels.ITEM, { params }).pipe(untilDestroyed(this)).subscribe(res => {
@@ -290,9 +301,10 @@ searching(event){
   }else{
     this.searchdata=[]
   }
- 
 }
-
+    
+    
+  }
 test(){
   let assidebar = document.querySelector('.sidenav');
   let body = document.querySelector('body');
