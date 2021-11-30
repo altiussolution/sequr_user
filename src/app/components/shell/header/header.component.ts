@@ -131,6 +131,7 @@ params['company_id']=this.profiledetails?.company_id?._id
    this.crud.changemessage(JSON.stringify(this.category[0]))
    this.selectedItem = this.category[0];
   })
+  params['user_id']=this.permissions?._id
   this.crud.get1(appModels.ITEMLIST,{params}).pipe(untilDestroyed(this)).subscribe((res:any) => {
     console.log(res)
     this.itemhistorykit=res['Kits']
