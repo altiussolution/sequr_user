@@ -5,7 +5,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { untilDestroyed } from 'ngx-take-until-destroy';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { CrudService } from 'src/app/services/crud.service';
 import { appModels } from 'src/app/services/shared/enum/enum.util';
 import { ToastrService } from 'ngx-toastr';
@@ -39,6 +39,7 @@ export class HomeComponent implements OnInit {
   coloumidss: any=[];
   categoryid: string;
   item: any=[];
+  unsub: Subscription;
 
   constructor(public crud:CrudService,public router:Router,public fb:FormBuilder,private toast: ToastrService) { 
     this.permissions=JSON.parse(localStorage.getItem("personal"))
@@ -62,18 +63,21 @@ params['company_id']=this.profiledetails?.company_id?._id
 console.log(this.profiledetails?.company_id?._id,this.coloumidss)
    
    if(this.coloumidss !=""){
-
-
+this.message=[]
+this.data=[]
+this.subcategories=[]
    this.crud.CurrentMessage.subscribe(message=>{
 
     if(message !="" && !localStorage.getItem("allow")){
+      localStorage.setItem("allow","ddjdj")
+      this.message=[];
     console.log(message)
-      this.message=JSON?.parse(message)
+    this.data=[]
+      this.message=JSON.parse(message)
      if(this.message?.length !=0){
       this.categoryName=localStorage.getItem("categname")
-
        this.subcategories=[];
-       this.subcategories.push(this.message)
+       this.subcategories.push(this.message[0])
        console.log(this.subcategories)
        localStorage.setItem("categoryid",JSON.stringify(this.subcategories))
       //  this.subcategories=this.message
@@ -84,12 +88,12 @@ console.log(this.profiledetails?.company_id?._id,this.coloumidss)
  
     
     }else{
-      this.subcategories=[]
-      this.categoryName=localStorage.getItem("categname")
+//       this.subcategories=[]
+//       this.categoryName=localStorage.getItem("categname")
 
-this.subcategories.push(JSON?.parse(localStorage.getItem("categoryid")))
-console.log(this.subcategories)
-        this.getData({pageIndex: this.page, pageSize: this.size});
+// this.subcategories.push(JSON?.parse(localStorage.getItem("categoryid")))
+// console.log(this.subcategories)
+//         this.getData({pageIndex: this.page, pageSize: this.size});
  
       
     }
@@ -167,7 +171,10 @@ selectcategory(val:any){
  
 }
 ngOnDestroy(){
+ this.unsub = this.crud.CurrentMessage.subscribe(res=>{
 
+ })
+ this.unsub.unsubscribe();
 }
   
   listview(){
