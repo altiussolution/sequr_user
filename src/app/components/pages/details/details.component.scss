@@ -1,12 +1,12 @@
 .image-gallery {
   margin: 0;
-  display: table;
+  display: flex;
 }
 
-.primary,
-.thumbnails {
-  display: table-cell;
-}
+// .primary,
+// .thumbnails {
+//   display: table-cell;
+// }
 
 .thumbnails {
   width: 150px;
@@ -21,6 +21,7 @@
   width: 440px;
   height: 330px;
 max-height:330px;
+margin-left: 15px;
   background-size: contain;
   background-position: center center;
   background-repeat: no-repeat;
@@ -190,11 +191,16 @@ img {
   margin: 0;
 }
 
+aside.thumbnails.thumb_left {
+  height: 48vh !important;
+  overflow: auto;
+}
+
 aside.thumbnails.thumb_left ul li {
   list-style: none;
   padding: 6px;
   border: 1px  solid #e1e1e1;
-  width: 80%;
+  margin-right: 10px;
   margin-bottom: 10px;
 }
 
