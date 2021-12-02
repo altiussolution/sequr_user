@@ -103,13 +103,13 @@ categories: any = [];
   ngOnInit(): void {
   
     this.columnid();
-    let assidebar = document.querySelector('.sidenav');
-    let body = document.querySelector('body');
-    if (assidebar.classList.contains('sidenav')) {
-      assidebar.classList.add('sidebar-hidden');
-      body.classList.add('activemenu');
-      assidebar.classList.add('sidebar');
-    }
+    // let assidebar = document.querySelector('.sidenav');
+    // let body = document.querySelector('body');
+    // if (assidebar.classList.contains('sidenav')) {
+    //   assidebar.classList.add('sidebar-hidden');
+    //   body.classList.add('activemenu');
+    //   assidebar.classList.add('sidebar');
+    // }
 
     this.profiledetails = JSON.parse(localStorage.getItem('personal'))
     console.log(this.profiledetails)
