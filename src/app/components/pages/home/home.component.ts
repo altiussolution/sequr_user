@@ -26,6 +26,7 @@ export class HomeComponent implements OnInit {
 
   subcategories: any=[];
   data: any=[];
+  selectdata:any=[];
   page = 0;
   size = 4;
   selectedValue: any;
@@ -40,14 +41,15 @@ export class HomeComponent implements OnInit {
   categoryid: string;
   item: any=[];
   unsub: Subscription;
-
+category: any=[];
+selectcat:any=[];
   constructor(public crud:CrudService,public router:Router,public fb:FormBuilder,private toast: ToastrService) { 
     this.permissions=JSON.parse(localStorage.getItem("personal"))
 
   }
 
   ngOnInit() {
-    this.categoryName=localStorage.getItem("categname")
+    // this.categoryName=localStorage.getItem("categname")
     this.coloumidss = localStorage.getItem('coloumid')
     this.home();
 
@@ -55,48 +57,77 @@ export class HomeComponent implements OnInit {
 
 home(){
   this.profiledetails = JSON.parse(localStorage.getItem('personal'))
-  console.log(this.profiledetails)
 
-  let params: any = {};
-params['company_id']=this.profiledetails?.company_id?._id
-
-console.log(this.profiledetails?.company_id?._id,this.coloumidss)
    
    if(this.coloumidss !=""){
-this.message=[]
-this.data=[]
-this.subcategories=[]
+
    this.crud.CurrentMessage.subscribe(message=>{
 
-    if(message !="" && !localStorage.getItem("allow")){
-      localStorage.setItem("allow","ddjdj")
-      this.message=[];
+    if(message !="" ){  
     console.log(message)
-    this.data=[]
+    this.subcategories=[]
       this.message=JSON.parse(message)
      if(this.message?.length !=0){
-      this.categoryName=localStorage.getItem("categname")
-       this.subcategories=[];
-       this.subcategories.push(this.message[0])
-       console.log(this.subcategories)
-       localStorage.setItem("categoryid",JSON.stringify(this.subcategories))
+      let params: any = {};
+      this.categoryName=this.message['category']['category_name']
+      localStorage.setItem("catname",this.message['category']['category_name'])
+      localStorage.setItem("catid",this.message['category']['_id'])
+      params['column_ids'] = this.coloumidss;
+      params["category_id"] = this.message['category']['_id'];
+      params['company_id'] = this.profiledetails?.company_id?._id
+      this.crud.get1(appModels.SUBCATEGORY,{params}).pipe(untilDestroyed(this)).subscribe((res:any) => {
+        localStorage.setItem("allow","data")
+     
+        console.log(res)
+     if(res){
+      this.subcategories=res['data']
+        
+      this.getData({pageIndex: this.page, pageSize: this.size},this.subcategories);
+     }
+      
+ 
+      })
+      //  this.selectcat=this.message
+       console.log(this.selectcat)
+      //  localStorage.setItem("categoryid",JSON.stringify(this.subcategories))
       //  this.subcategories=this.message
-      this.getData({pageIndex: this.page, pageSize: this.size});
+     
 
      
      }
  
     
-    }else{
-//       this.subcategories=[]
-//       this.categoryName=localStorage.getItem("categname")
-
-// this.subcategories.push(JSON?.parse(localStorage.getItem("categoryid")))
-// console.log(this.subcategories)
-//         this.getData({pageIndex: this.page, pageSize: this.size});
- 
-      
     }
+//     else{
+//        this.subcategories=[]
+  
+// if(localStorage.getItem("coloumid")){
+  
+//   let params: any = {};
+//   params['company_id'] = this.profiledetails?.company_id?._id
+ 
+//   params['column_ids'] = this.coloumidss;
+//   this.crud.get1(appModels.CATEGORYLIST, { params }).pipe(untilDestroyed(this)).subscribe((res: any) => {
+//     console.log(res)
+  
+//     this.category = res['data']
+//     this.categoryName=this.category[0].category_name
+//     let params: any = {};
+//   params['column_ids'] = this.coloumidss;
+//     params["category_id"] = this.category[0]._id;
+//     params['company_id'] = this.profiledetails?.company_id?._id
+//     this.crud.get1(appModels.SUBCATEGORY, { params }).pipe(untilDestroyed(this)).subscribe((res: any) => {
+//       console.log(res)
+//       this.subcategories = res['data']
+//       this.getData({pageIndex: this.page, pageSize: this.size});
+//     })
+//   })
+// }else {
+//   alert("no col id")
+// }
+
+      
+//     }
   
   })
  }
@@ -132,28 +163,31 @@ setCookie(name,value,) {
      return cookies[name];
 }
  
-  getData(obj) {
+  getData(obj,data) {
     let index=0,
         startingIndex=obj.pageIndex * obj.pageSize,
         endingIndex=startingIndex + obj.pageSize;
 
-    this.data = this.subcategories.filter(() => {
+    this.data = data.filter(() => {
       index++;
       return (index > startingIndex && index <= endingIndex) ? true : false;
     });
     console.log(this.data)
   }
+  
+
 selectcategory(val:any){
+  console.log(val)
     localStorage.removeItem("allow1")
     this.categoryid=localStorage.getItem("categid")
 
   this.subcategories1=val
   let data1={
-    "category_id": this.categoryid,
+    "category_id": val.category_id._id,
     "_id":this.subcategories1._id
   }
 
-  let data=this.categoryName+">"+this.subcategories1?.sub_category_name
+  let data=val.category_id.category_name+">"+this.subcategories1?.sub_category_name
   this.crud.changemessage2(data)
   this.crud.changemessage1(JSON.stringify(data1))
   this.router.navigate(['/pages/products'])

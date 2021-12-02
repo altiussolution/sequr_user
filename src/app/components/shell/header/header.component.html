@@ -11,15 +11,15 @@
           <div class="d-flex as-menu-w as-category-scroll" *ngIf="category?.length!=0">
             <ul class="as-menu-mega-blog-nav as-drop-head">
 
-              <li class="as-active-menu-item1" *ngFor="let Categories of category;let i=index">
-                <a>{{ Categories.category_name}}({{subcatlength[i]?.length==''?0:subcatlength[i]?.length }})</a>
+              <li class="as-active-menu-item1" *ngFor="let Categories of categories;let i=index">
+                <a>{{Categories.category.category_name}}({{Categories?.sub_category?.length==''?0:Categories?.sub_category?.length}})</a>
                 <div class="as-grid as-grid-lined">
                   <div class="row">
                     <div class="as-drop-head">
 
-                      <div class="as-item pointer" *ngFor="let subcategory of subcatlength[i]"
-                        (click)="selectcategory(subcategory,Categories)"><i
-                          class="fa fa-chevron-right mr-3 as-color-7"></i>{{ subcategory?.sub_category_name }}</div>
+                      <div class="as-item pointer" 
+                        (click)="selectcategory(Categories,i)"><i
+                          class="fa fa-chevron-right mr-3 as-color-7"></i>{{ Categories.sub_category[0].sub_category_name }}</div>
                       <!-- <div class="as-item"><i class="fa fa-chevron-right mr-3 as-color-7"></i>Spot Drills(20)</div>
                       <div class="as-item"><i class="fa fa-chevron-right mr-3 as-color-7"></i>Carbide Drills(20)</div>
                       <div class="as-item"><i class="fa fa-chevron-right mr-3 as-color-7"></i>Had Tools(20)</div>
@@ -78,9 +78,9 @@
         <li class="nav-item">
           <div class="nav-link nav-title as-bold as-color-9">Category </div>
           <hr>
-          <a *ngFor="let Categories of category;let i=index" class="nav-link "
+          <a *ngFor="let Categories of categories;let i=index" class="nav-link "
             [ngClass]="{'as-active': selectedItem === Categories}"
-            (click)="setval(Categories,i)">{{ Categories.category_name }}({{subcatlength[i]?.length==''?0:subcatlength[i]?.length }})</a>
+            (click)="setval(Categories,i)">{{ Categories.category.category_name }}({{Categories?.sub_category?.length==''?0:Categories?.sub_category?.length }})</a>
             <a *ngIf="category?.length ==0">No Data Available</a>
             <!-- <a class="nav-link">Gage(14)</a>
           <a class="nav-link">Kitting(32)</a>

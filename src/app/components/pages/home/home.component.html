@@ -4,7 +4,7 @@
     </ngx-spinner>   -->
 <div class="container-fluid as-mt-main">
     <div class="as-header">
-        <div class="as-title" *ngIf="categoryName">
+        <div class="as-title">
             {{categoryName}} 
         </div>
         <div class="row as-color-1">
@@ -28,7 +28,7 @@
 
    
     <div class="row ml-0 as-grid" *ngIf="data">
-      <div class="as-card " *ngFor="let category of data ">
+      <div class="as-card " *ngFor="let category of data">
         <!--<div class="as-home-img" style="background: url({{category?.image_path}});"  (click)="selectcategory(category)"></div>-->
          <img class="as-home-img" src="{{category?.image_path}}" (click)="selectcategory(category)" onError="this.src='../../../assets/img/errorimage.png'"> 
         <a class="as-crd-title-new" (click)="selectcategory(category)">{{category?.sub_category_name}}</a>  
@@ -40,6 +40,7 @@
         <div class="no_data_msg ">No Data Avaliable</div>
       </ng-container>-->
     </div>
+  
  
     <!-- <div id="google_translate_element" class="d-none"></div> -->
 
