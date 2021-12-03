@@ -368,13 +368,13 @@ permissions:any;
   TakeOrReturnItems: any[] = []
   machinesList = []
   async takeItem(item: string) {
-    this.machineCubeID = []
-    this.machineColumnID =[]
-    this.machineDrawID =[]
-    this.machineCompartmentID = []
-    this.machineStatus = []
-    this.msg=""
-    this.msgg=""
+    // this.machineCubeID = []
+    // this.machineColumnID =[]
+    // this.machineDrawID =[]
+    // this.machineCompartmentID = []
+    // this.machineStatus = []
+    // this.msg=""
+    // this.msgg=""
     console.log('******** Machine Into *********')
 
     // await this.addtocart()
