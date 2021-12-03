@@ -123,6 +123,13 @@ this.deleted = this.permissions.role_id.permission.find(temp=>temp=="return_dele
   }
   modaldismiss() {
     this.closebutton.nativeElement.click();
+    this.machineCubeID = []
+    this.machineColumnID =[]
+    this.machineDrawID = []
+    this.machineCompartmentID =[]
+    this.machineStatus=[]
+    this.msg="";
+    this.msgg="";
     this.ngOnInit()
   }
   returnproduct() {
@@ -326,7 +333,13 @@ this.deleted = this.permissions.role_id.permission.find(temp=>temp=="return_dele
  async returnItem(item: string) {
   if (confirm(`Are you sure want to return?`)) {
       if(this.add){
-     
+        this.machineCubeID = []
+        this.machineColumnID =[]
+        this.machineDrawID =[]
+        this.machineCompartmentID = []
+        this.machineStatus = []
+        this.msg=""
+        this.msgg=""
         let totalMachinesList = await this.formatMachineData(item)
         console.log(totalMachinesList)
         let machinesList = await this.groupbyData(totalMachinesList)
@@ -349,6 +362,7 @@ this.deleted = this.permissions.role_id.permission.find(temp=>temp=="return_dele
           console.log(maxCompartmentNo)
           let singleDeviceInfo = await this.singleDeviceInfo(machine)
           let status = singleDeviceInfo.details.singledevinfo.column[0]['status'][0]
+          this.machineStatus=status
           console.log('Column : ' + machine.column_id + '' + 'drawer: ' + machine.bin_id + ' ' + 'Compartment: ' + machine.compartment_id)
           console.log(status)
           this.machineCubeID = machine.cube_id

@@ -97,7 +97,7 @@ export class MycartComponent implements OnInit {
       }
       this.method(data)
     
-    }, 3000);
+    }, 10000);
      }
   method(data) {
 if(!localStorage.getItem("onetimecall")){
@@ -129,6 +129,13 @@ if(!localStorage.getItem("onetimecall")){
     }
   }
   modaldismiss() {
+    this.machineCubeID = []
+    this.machineColumnID =[]
+    this.machineDrawID = []
+    this.machineCompartmentID =[]
+    this.machineStatus=[]
+    this.msg="";
+    this.msgg="";
     this.ngOnInit()
   }
   close() {
@@ -399,6 +406,14 @@ Addmore(){
          }
       console.log(this.qtys)
           if(this.permissions?.item_max_quantity>=this.totalquantity[0]?.trasaction_qty + this.qtys){
+            this.machineCubeID = []
+            this.machineColumnID =[]
+            this.machineDrawID =[]
+            this.machineCompartmentID = []
+            this.machineStatus = []
+            this.msg=""
+            this.msgg=""
+
             this.modalService.open(item,{backdrop:false});
             let totalMachinesList = await this.formatMachineData()
             let machinesList = await this.groupbyData(totalMachinesList)
@@ -422,6 +437,7 @@ Addmore(){
               console.log(maxCompartmentNo)
               let singleDeviceInfo = await this.singleDeviceInfo(machine)
               let status = singleDeviceInfo.details.singledevinfo.column[0]['status'][0]
+              this.machineStatus=status
               console.log('Column : ' + machine.column_id + '' + 'drawer: ' + machine.bin_id + ' ' + 'Compartment: ' + machine.compartment_id)
               console.log(status)
               this.machineCubeID = machine.cube_id
@@ -448,7 +464,8 @@ Addmore(){
                   console.log(' Machine Status : ' + machineColumnStatus)
                   let singleDeviceInfo = await this.singleDeviceInfo(machine)
                   let status = singleDeviceInfo.details.singledevinfo.column[0]['status'][0]
-                  console.log('inside while loop status bin ' + machine.bin_id + status)
+                  this.machineStatus=status
+                  console.log('inside while loop status bin ' + machine.bin_id +" "+ status)
                   if (status == 'Closed' || status == 'Locked' || status == 'Unknown') {
                     await this.sleep(9000)
                     await this.crudService.post('machine/lockBin', machine).pipe(untilDestroyed(this)).toPromise()
@@ -517,6 +534,13 @@ Addmore(){
          }
          console.log(this.qtys)
           if(this.permissions?.item_max_quantity>= 0 + this.qtys){
+            this.machineCubeID = []
+            this.machineColumnID =[]
+            this.machineDrawID =[]
+            this.machineCompartmentID = []
+            this.machineStatus = []
+            this.msg=""
+            this.msgg=""
             this.modalService.open(item,{backdrop:false});
             let totalMachinesList = await this.formatMachineData()
             let machinesList = await this.groupbyData(totalMachinesList)
@@ -540,6 +564,7 @@ Addmore(){
               console.log(maxCompartmentNo)
               let singleDeviceInfo = await this.singleDeviceInfo(machine)
               let status = singleDeviceInfo.details.singledevinfo.column[0]['status'][0]
+              this.machineStatus=status
               console.log('Column : ' + machine.column_id + '' + 'drawer: ' + machine.bin_id + ' ' + 'Compartment: ' + machine.compartment_id)
               console.log(status)
               this.machineCubeID = machine.cube_id

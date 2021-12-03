@@ -27,8 +27,10 @@ import {AutocompleteLibModule} from 'angular-ng-autocomplete';
     HeaderComponent,
     FooterComponent,
     ShellComponent,
-    MenuComponent
+    MenuComponent,
+    
   ],
+
   imports: [
     MatSortModule,
     CommonModule,

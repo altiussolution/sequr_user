@@ -82,7 +82,7 @@ home(){
      if(res){
       this.subcategories=res['data']
         
-      this.getData({pageIndex: this.page, pageSize: this.size},this.subcategories);
+      this.getData({pageIndex: this.page, pageSize: this.size});
      }
       
  
@@ -163,12 +163,12 @@ setCookie(name,value,) {
      return cookies[name];
 }
  
-  getData(obj,data) {
+  getData(obj) {
     let index=0,
         startingIndex=obj.pageIndex * obj.pageSize,
         endingIndex=startingIndex + obj.pageSize;
 
-    this.data = data.filter(() => {
+    this.data = this.subcategories.filter(() => {
       index++;
       return (index > startingIndex && index <= endingIndex) ? true : false;
     });

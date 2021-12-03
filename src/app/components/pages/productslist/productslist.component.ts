@@ -51,6 +51,13 @@ export class ProductslistComponent implements OnInit {
     })
   }
   modaldismiss() {
+    this.machineCubeID = []
+    this.machineColumnID =[]
+    this.machineDrawID = []
+    this.machineCompartmentID =[]
+    this.machineStatus=[]
+    this.msg="";
+    this.msgg="";
     this.ngOnInit()
   }
   addkitcart(_id: any, data,modal) {
@@ -158,6 +165,13 @@ export class ProductslistComponent implements OnInit {
   }
   
   async itemHistory(data) {
+    this.machineCubeID = []
+    this.machineColumnID =[]
+    this.machineDrawID = []
+    this.machineCompartmentID =[]
+    this.machineStatus=[]
+    this.msg="";
+    this.msgg="";
     let params: any = {};
     params['company_id']=this.permissions?.company_id?._id
     params['user_id']=this.permissions?._id
@@ -301,6 +315,7 @@ export class ProductslistComponent implements OnInit {
   TakeOrReturnItems: any[] = []
   machinesList = []
   async takeKit(item: string) {
+
     console.log(item)
     let totalMachinesList = await this.formatMachineData(item)
     console.log(totalMachinesList)
@@ -350,7 +365,8 @@ export class ProductslistComponent implements OnInit {
           console.log(' Machine Status : ' + machineColumnStatus)
           let singleDeviceInfo = await this.singleDeviceInfo(machine)
           let status = singleDeviceInfo.details.singledevinfo.column[0]['status'][0]
-          console.log('inside while loop status bin ' + machine.bin_id + status)
+          this.machineStatus=status
+          console.log('inside while loop status bin ' + machine.bin_id +" "+ status)
           if (status == 'Closed' || status == 'Locked' || status == 'Unknown') {
             await this.sleep(9000)
             await this.crud.post('machine/lockBin', machine).pipe(untilDestroyed(this)).toPromise()

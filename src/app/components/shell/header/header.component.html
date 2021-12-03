@@ -1,7 +1,7 @@
 <div id="navbar">
   <nav class="navbar header-top fixed-top navbar-expand-lg  navbar-light bg-white">
 
-    <div class="navbar-brand logo-img " [routerLink]="'/pages/home'" (click)="ngOnInit()"></div>
+    <div class="navbar-brand logo-img "></div>
     <span class="navbar-toggler-icon leftmenutrigger" (click)="toggleSidebar()" id="sidebarCollapse"></span>
 
     <div class="as-menu-as-drophover-header">
@@ -11,7 +11,7 @@
           <div class="d-flex as-menu-w as-category-scroll" *ngIf="category?.length!=0">
             <ul class="as-menu-mega-blog-nav as-drop-head">
 
-              <li class="as-active-menu-item1" *ngFor="let Categories of categories;let i=index">
+              <li class="as-active-menu-item1" *ngFor="let Categories of categories ;let i=index">
                 <a>{{Categories.category.category_name}}({{Categories?.sub_category?.length==''?0:Categories?.sub_category?.length}})</a>
                 <div class="as-grid as-grid-lined">
                   <div class="row">

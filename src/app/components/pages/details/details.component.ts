@@ -121,6 +121,13 @@ permissions:any;
     }
   }
   modaldismiss() {
+    this.machineCubeID = []
+    this.machineColumnID =[]
+    this.machineDrawID = []
+    this.machineCompartmentID =[]
+    this.machineStatus=[]
+    this.msg="";
+    this.msgg="";
     this.ngOnInit()
   }
   async addtocart(item?) {
@@ -361,6 +368,13 @@ permissions:any;
   TakeOrReturnItems: any[] = []
   machinesList = []
   async takeItem(item: string) {
+    this.machineCubeID = []
+    this.machineColumnID =[]
+    this.machineDrawID =[]
+    this.machineCompartmentID = []
+    this.machineStatus = []
+    this.msg=""
+    this.msgg=""
     console.log('******** Machine Into *********')
 
     // await this.addtocart()
@@ -418,6 +432,7 @@ permissions:any;
           console.log(' Machine Status : ' + machineColumnStatus)
           let singleDeviceInfo = await this.singleDeviceInfo(machine)
           let status = singleDeviceInfo.details.singledevinfo.column[0]['status'][0]
+          this.machineStatus=status
           console.log('inside while loop status bin ' + machine.bin_id + status)
           if (status == 'Closed' || status == 'Locked' || status == 'Unknown') {
             await this.sleep(9000)

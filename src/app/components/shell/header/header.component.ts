@@ -7,6 +7,7 @@ import { appModels } from 'src/app/services/shared/enum/enum.util';
 import { CookieService } from 'ngx-cookie-service'
 import { FormControl, FormGroup } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import {  VERSION } from '@angular/core';
 
 @Component({
   selector: 'app-header',
@@ -82,7 +83,7 @@ export class HeaderComponent implements OnInit {
   categoryName: any = [];
   subcatlengths: any = [];
   subcatlengths1: any = [];
-
+  category_name = 'Angular ' + VERSION.major;
 categories: any = [];
   constructor(public router: Router, public crud: CrudService, private cookie: CookieService, private toast: ToastrService) {
     this.permissions = JSON.parse(localStorage.getItem("personal"))
@@ -156,10 +157,13 @@ categories: any = [];
     params['company_id'] = this.profiledetails?.company_id?._id
     this.d = JSON.stringify(this.coloumids)
     params['column_ids'] = this.d;
-    this.crud.get1(appModels.CATEGORYLIST, { params }).pipe(untilDestroyed(this)).subscribe((res: any) => {
+    this.crud.get1(appModels.CATEGORYLIST, { params }).pipe(untilDestroyed(this)).subscribe(async (res: any) => {
       console.log(res)
 
       this.category = res['data']
+      console.log(this.category)
+    
+   
       //  this.crud.changemessage(JSON.stringify(this.category[0]))
       this.selectedItem = this.category[0];
 
@@ -175,13 +179,14 @@ categories: any = [];
       //   })
    
       localStorage.removeItem("firsttime")
-        for (let cat of this.category) {
+      let i = 0
+        for await(let cat of this.category) {
 
           let params: any = {};
           params['column_ids'] = this.d;
           params["category_id"] = cat._id;
           params['company_id'] = this.profiledetails?.company_id?._id
-          this.crud.get1(appModels.SUBCATEGORY, { params }).pipe(untilDestroyed(this)).subscribe((res: any) => {
+          this.crud.get1(appModels.SUBCATEGORY, { params }).pipe(untilDestroyed(this)).subscribe(async (res: any) => {
             console.log(res)
             let subCategory = res['data']
                
@@ -189,6 +194,7 @@ categories: any = [];
               ...{ category: cat },
               ...{ sub_category: subCategory }
             })
+           
             if(!localStorage.getItem("firsttime")){
               localStorage.setItem("firsttime","data")
               console.log(this.categories)
@@ -199,10 +205,31 @@ categories: any = [];
           
          
           })
+          // i++
+          // if(i == this.category.length-1){
+          //   this.sortingfunc();
+          // }
+         
 
+          
+        
         }
+    
 
-      
+    // let das= this.sortRecursive(this.categories)
+
+    //  let das= this.categories.sort(this.dynamicSort("category_name"));
+    
+     
+        // let da=this.categories.sort((a, b) => (a.category.category_name > b.category.category_name) ? 1 : -1)
+
+        // console.log(da);
+        
+        
+        // this.categories.sort((one, two) => (one.category.category_name > two.category.category_name ? -1 : 1));
+        // console.log(this.categories)
+        // const sortedArr = this.sortPipe.transform(this.categories, "desc", "category_name");
+        // console.log(JSON.stringify(sortedArr) )
         // params['column_ids'] = this.d;
         // params["category_id"] = this.category[0]._id;
         // params['company_id'] = this.profiledetails?.company_id?._id
@@ -240,6 +267,38 @@ categories: any = [];
 
     })
   }
+  sortingfunc(){
+   let sortDataA = this.categories.sort(function(a, b){
+      if(a.category.category_name < b.category.category_name) { return -1; }
+      if(a.category.category_name > b.category.category_name) { return 1; }
+      return 0;
+    })
+    console.log(sortDataA)
+  }
+  sortRecursive(data) {
+    if (data[0]) {
+      data.forEach( (element) => {
+        if (element.category) {
+          element.category.sort((a, b) =>  a.category_name - b.category_name);
+          this.sortRecursive(element.category);
+        }
+      });
+    }
+  }
+   dynamicSort(property) {
+    var sortOrder = 1;
+    if(property[0] === "-") {
+        sortOrder = -1;
+        property = property.substr(1);
+    }
+    return function (a,b) {
+        /* next line works with strings and numbers, 
+         * and you may want to customize it to your needs
+         */
+        var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
+        return result * sortOrder;
+    }
+}
 
   pagemove() {
 
