@@ -8,7 +8,7 @@
       <ul class="as-menu">
 
         <li class="as-menu-mega-blog"><a>Category</a>
-          <div class="d-flex as-menu-w as-category-scroll" *ngIf="category?.length!=0">
+          <div class="d-flex as-menu-w as-category-scroll" *ngIf="category.length!=0">
             <ul class="as-menu-mega-blog-nav as-drop-head">
 
               <li class="as-active-menu-item1" *ngFor="let Categories of categories ;let i=index">
@@ -74,11 +74,14 @@
     </button>
     <div class="collapse navbar-collapse " id="navbarText">
       <ul class="navbar-nav animate side-nav sidenav">
-
-        <li class="nav-item">
-          <div class="nav-link nav-title as-bold as-color-9">Category </div>
+        <li class="nav-item" *ngIf="!category">
+          <div class="nav-link nav-title as-bold as-color-9" >Category </div>
+          <a *ngIf="category?.length ==0">No Data Available</a>
+          </li>
+        <li class="nav-item" *ngIf="category">
+          <div class="nav-link nav-title as-bold as-color-9" >Category </div>
           <hr>
-          <a *ngFor="let Categories of categories;let i=index" class="nav-link "
+          <a  *ngFor="let Categories of categories;let i=index" class="nav-link "
             [ngClass]="{'as-active': selectedItem === Categories}"
             (click)="setval(Categories,i)">{{ Categories.category.category_name }}({{Categories?.sub_category?.length==''?0:Categories?.sub_category?.length }})</a>
             <a *ngIf="category?.length ==0">No Data Available</a>
@@ -90,7 +93,7 @@
           <a class="nav-link">Gage(21)</a>
           <a class="nav-link">Kit(29)</a> -->
         </li>
-        <li class="nav-item mt-3" *ngIf="itemhistorykit?.length !=0">
+        <li class="nav-item mt-3" >
           <div class="nav-link nav-title as-bold as-color-9" [routerLink]="'itemhistory'">Item History</div>
           <hr>
           <a *ngFor="let kitting of itemhistorykit" class="nav-link as-color-9"

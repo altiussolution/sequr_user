@@ -313,6 +313,9 @@ categories: any = [];
     this.crud.get1(appModels.ITEMLIST, { params }).pipe(untilDestroyed(this)).subscribe((res: any) => {
       console.log(res)
       this.itemhistorykit = res['Kits']
+      if(this.itemhistorykit==undefined){
+         this.itemhistorykit=[]
+      }
     })
     this.crud.get1(appModels.listCart, { params }).pipe(untilDestroyed(this)).subscribe(res => {
       console.log(res)
@@ -356,18 +359,24 @@ categories: any = [];
       this.crud.get('machine/isfullopen').pipe(untilDestroyed(this)).subscribe((res: any) => {
         console.log(res)
         this.dooropenss = res?.details?.alldevinfo?.Count[0].isfullopen[0]
-        if (this.dooropens == "0" && this.dooropenss == "0") {
-          // this.closebutton.nativeElement.click();
-          localStorage.clear();
-          this.router.navigate(['./login']);
-        } else {
-          this.toast.error("Please Close The Door")
-        }
+        this.alerts()
       })
     })
 
 
   }
+
+alerts(){
+  if (this.dooropens == "0" && this.dooropenss == "0") {
+    // this.closebutton.nativeElement.click();
+    localStorage.clear();
+    this.router.navigate(['./login']);
+  } else {
+    this.toast.error("Please Ensure Door Is Closed Properly!")
+  }
+}
+
+
   @ViewChild('searchInput', { read: ElementRef })
   private searchInput: ElementRef;
 

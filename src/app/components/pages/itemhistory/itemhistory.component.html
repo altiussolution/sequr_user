@@ -1,4 +1,4 @@
-<div class="container-fluid as-mt-main i-history" *ngIf="this.view">
+<div class="container-fluid as-mt-main i-history" >
   <div class="as-header">
     <div class="as-title">
       Item History
@@ -6,7 +6,7 @@
     <div class="as-color-1" *ngIf="itemhistorycart?.length!=0">
 
       <div class="text-center">
-        <button type="button" [disabled]="arrayvalue?.length==0"
+        <button type="button" [disabled]="arrayvalue?.length==0"  *ngIf="view"
           class="btn btn-round btn-outline-info" data-toggle="modal" data-target="#myModal" 
           >Return
           Products</button>
@@ -47,7 +47,7 @@
     <div class=" as-color-1" *ngIf="itemhistorykit?.length!=0">
 
       <div class="text-center">
-        <button type="button" class="btn btn-round btn-outline-info"
+        <button type="button" class="btn btn-round btn-outline-info" *ngIf="view"
           [disabled]="arrayvalue1?.length==0" (click)="returnItem1('kit',mymodal)">Return Kits</button>
       </div>
     </div>
@@ -249,7 +249,7 @@
           <div class="d-flex mb-3">
             <div class="as-color-4 as-font-24 line-h-12">Are you sure, do you want to return the item?</div>
             <button class="btn btn-lg btn-primary btn-login  fw-bold mb-2" type="button"
-            (click)="returnItem1('cart',mymodal)" [disabled]="!this.add">Confirm</button>
+            (click)="returnItem1('cart',mymodal)" >Confirm</button>
           </div>
         </div>
 
@@ -261,11 +261,11 @@
 
 </div>
 
-<div class="container-fluid as-mt-main i-history" *ngIf="!this.view">
+<!-- <div class="container-fluid as-mt-main i-history" *ngIf="!this.view">
   <div class="as-header">
      <div class="no_data_msg w-100 text-center as-nodata ">View Access Denied</div>
   </div>
-</div>
+</div> -->
 
 <ng-template #mymodal let-modal>
   <div class="modal-header">

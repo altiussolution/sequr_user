@@ -39,14 +39,13 @@ view:any;
   invalid: any=[];
   constructor(public crud: CrudService, private toast: ToastrService, public modalService: NgbModal) { }
   ngOnInit(): void {
-   
+
     this.permissions=JSON.parse(localStorage.getItem("personal"))
+    this.view=this.permissions.role_id.permission.find(temp=>temp=="return_permission")
 console.log(this.permissions.role_id.permission)
 console.log(this.permissions?.company_id?._id)
-this.view=this.permissions.role_id.permission.find(temp=>temp=="return_get")
-this.add =this.permissions.role_id.permission.find(temp=>temp=="return_add")
-this.update = this.permissions.role_id.permission.find(temp=>temp=="return_update")
-this.deleted = this.permissions.role_id.permission.find(temp=>temp=="return_delete")
+
+
     this.arrayvalue1 = [];
     this.arrayvalue = [];
     let params: any = {};
@@ -69,6 +68,11 @@ this.deleted = this.permissions.role_id.permission.find(temp=>temp=="return_dele
       this.date = res['Cart'][0]['updated_at']
       }
       this.itemhistorykit = res['Kits']
+      console.log(this.itemhistorykit)
+      if(this.itemhistorykit==undefined){
+        this.itemhistorykit=[]
+
+      }
     })
   }
   passParams(event: any, val: any) {
@@ -332,7 +336,7 @@ this.deleted = this.permissions.role_id.permission.find(temp=>temp=="return_dele
 
  async returnItem(item: string) {
   if (confirm(`Are you sure want to return?`)) {
-      if(this.add){
+    
         this.machineCubeID = []
         this.machineColumnID =[]
         this.machineDrawID =[]
@@ -441,16 +445,14 @@ this.deleted = this.permissions.role_id.permission.find(temp=>temp=="return_dele
           console.log(successTake.length + ' items returned successfully')
           this.msgg=successTake.length + ' items returned successfully'
           await this.addMachineUsage(totalMachineUsage)
-          await this.updateAfterTakeOrReturn(successTake)
+          await this.updateAfterTakeOrReturn(successTake, item)
         } else if (successTake.length < totalMachinesList.length) {
           console.log(successTake.length + ' items Taken successfully \n' + successTake.length + ' items failed return')
           this.msgg=successTake.length + ' items Taken successfully \n' + successTake.length + ' items failed return'
           await this.addMachineUsage(totalMachineUsage)
           await this.updateAfterTakeOrReturn(successTake, item)
         }
-      }else {
-        this.toast.warning("Permission denied")
-      }
+  
     }
 
   }
