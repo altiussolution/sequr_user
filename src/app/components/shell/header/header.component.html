@@ -81,7 +81,7 @@
           <hr>
           <a *ngFor="let Categories of category" class="nav-link "
             [ngClass]="{'as-active': selectedItem === Categories}"
-            (click)="setval(Categories)">{{ Categories.category.category_name }}({{ Categories?.sub_category?.length==''?'0':Categories?.sub_category?.length }})</a>
+            (click)="setval(Categories)" style="margin-top: 8px;">{{ Categories.category.category_name }}({{ Categories?.sub_category?.length==''?'0':Categories?.sub_category?.length }})</a>
             <a *ngIf="category?.length ==0">No Data Available</a>
             <!-- <a class="nav-link">Gage(14)</a>
           <a class="nav-link">Kitting(32)</a>
@@ -91,7 +91,7 @@
           <a class="nav-link">Gage(21)</a>
           <a class="nav-link">Kit(29)</a> -->
         </li>
-        <li class="nav-item mt-3" *ngIf="itemhistorykit?.length !=0">
+        <li class="nav-item mt-3" *ngIf="itemhistorykit?.length !=0" style="margin-top: 8px;">
           <div class="nav-link nav-title as-bold as-color-9" [routerLink]="'itemhistory'">Item History</div>
           <hr>
           <a *ngFor="let kitting of itemhistorykit" class="nav-link as-color-9"
