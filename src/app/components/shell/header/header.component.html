@@ -74,17 +74,17 @@
     </button>
     <div class="collapse navbar-collapse " id="navbarText">
       <ul class="navbar-nav animate side-nav sidenav">
-        <li class="nav-item" *ngIf="!category" style="margin-top: 8px;">
+        <!-- <li class="nav-item" *ngIf="!category" style="margin-top: 10px;">
           <div class="nav-link nav-title as-bold as-color-9" >Category </div>
-          <a *ngIf="category?.length ==0">No Data Available</a>
-          </li>
+          <a class="mt-10" *ngIf="category?.length ==0">No Data Available</a>
+          </li> -->
         <li class="nav-item" *ngIf="category">
           <div class="nav-link nav-title as-bold as-color-9" >Category </div>
           <hr>
           <a  *ngFor="let Categories of categories;let i=index" class="nav-link "
             [ngClass]="{'as-active': selectedItem === Categories}"
             (click)="setval(Categories)">{{ Categories.category.category_name }}({{Categories?.sub_category?.length==''?0:Categories?.sub_category?.length }})</a>
-            <a *ngIf="category?.length ==0">No Data Available</a>
+            <h6 *ngIf="category?.length ==0" style="margin-top: 20px; font-size: 16px; opacity: 75%;">No Data Available</h6>
             <!-- <a class="nav-link">Gage(14)</a>
           <a class="nav-link">Kitting(32)</a>
           <a class="nav-link">Assembly(21)</a>
@@ -98,7 +98,7 @@
           <hr>
           <a *ngFor="let kitting of itemhistorykit" class="nav-link as-color-9"
             [routerLink]="'itemhistory'">{{ kitting?.kit_name }}({{ kitting?.kit_item_details?.length===''?'0':kitting?.kit_item_details?.length }})</a>
-            <a *ngIf="itemhistorykit?.length ==0">No Data Available</a>
+            <h6 *ngIf="itemhistorykit?.length ==0" style="margin-top: 20px; font-size: 16px; opacity: 75%;">No Data Available</h6>
           </li>
         <!-- <li class="nav-item mt-3">
           <div class="nav-link nav-title as-bold as-color-8" href="#">Similar Products</div>

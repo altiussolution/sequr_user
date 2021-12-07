@@ -146,7 +146,7 @@ categories: any = [];
       localStorage.setItem("coloumid", JSON.stringify(this.coloumids))
 
       console.log(JSON.stringify(this.coloumids))
-      this.categoryss();
+      // this.categoryss();
 
     })
   }
