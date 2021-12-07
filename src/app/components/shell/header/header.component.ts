@@ -331,7 +331,7 @@ categories: any = [];
     })
   }
 
-  setval(val: any, i: any) {
+  setval(val: any) {
     console.log(val)
     this.subcatlengths1 = []
    

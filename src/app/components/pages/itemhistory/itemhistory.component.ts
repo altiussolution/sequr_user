@@ -37,6 +37,7 @@ view:any;
   arrayvalue2: any=[];
   arrayvaluess: any;
   invalid: any=[];
+  kitdata: any=[];
   constructor(public crud: CrudService, private toast: ToastrService, public modalService: NgbModal) { }
   ngOnInit(): void {
 
@@ -56,6 +57,7 @@ console.log(this.permissions?.company_id?._id)
       this.itemhistorycart = []
       if(res['status']==true){
         this.cartdata = res['Cart'][0]['cart']
+        this.kitdata=res['Kits']
       }
      
       for (let i = 0; i < this.cartdata?.length; i++) {
@@ -67,8 +69,15 @@ console.log(this.permissions?.company_id?._id)
       this.id = res['Cart'][0]['_id']
       this.date = res['Cart'][0]['updated_at']
       }
-      this.itemhistorykit = res['Kits']
+      // this.itemhistorykit = res['Kits']
+
       console.log(this.itemhistorykit)
+      this.itemhistorykit=[]
+      for (let i = 0; i < this.kitdata?.length; i++) {
+        if (this.kitdata[i]['kit_status'] == 2) {
+          this.itemhistorykit.push(this.kitdata[i])
+        }
+      }
       if(this.itemhistorykit==undefined){
         this.itemhistorykit=[]
 
@@ -244,7 +253,7 @@ console.log(this.permissions?.company_id?._id)
         eachItemForMachines['qty'] = this.arrayvalue1[0].kit_id.kit_data[i].qty
         eachItemForMachines['qty'] = 1
         eachItemForMachines['stock_allocation_id'] = item._id
-        eachItemForMachines['cube_id'] = item.cube._id
+        eachItemForMachines['cube_id'] = item.cube.cube_id
         eachItemForMachines['column_id'] = item.bin.bin_id
         eachItemForMachines['bin_id'] = item.compartment.compartment_id
         eachItemForMachines['compartment_id'] = item.compartment_number

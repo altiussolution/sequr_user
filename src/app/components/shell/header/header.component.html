@@ -74,7 +74,7 @@
     </button>
     <div class="collapse navbar-collapse " id="navbarText">
       <ul class="navbar-nav animate side-nav sidenav">
-        <li class="nav-item" *ngIf="!category">
+        <li class="nav-item" *ngIf="!category" style="margin-top: 8px;">
           <div class="nav-link nav-title as-bold as-color-9" >Category </div>
           <a *ngIf="category?.length ==0">No Data Available</a>
           </li>
@@ -83,7 +83,7 @@
           <hr>
           <a  *ngFor="let Categories of categories;let i=index" class="nav-link "
             [ngClass]="{'as-active': selectedItem === Categories}"
-            (click)="setval(Categories,i)">{{ Categories.category.category_name }}({{Categories?.sub_category?.length==''?0:Categories?.sub_category?.length }})</a>
+            (click)="setval(Categories)">{{ Categories.category.category_name }}({{Categories?.sub_category?.length==''?0:Categories?.sub_category?.length }})</a>
             <a *ngIf="category?.length ==0">No Data Available</a>
             <!-- <a class="nav-link">Gage(14)</a>
           <a class="nav-link">Kitting(32)</a>
