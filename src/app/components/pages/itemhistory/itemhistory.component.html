@@ -32,7 +32,7 @@
         </div>
       </div>
       <div class="form-group form-check as-check">
-        <input type="checkbox" class="form-check-input" id="Check1" (change)="passParams($event,cart)">
+        <input type="checkbox" class="form-check-input" id="Check1" (change)="passParams($event,cart)" (change)="passParams12($event,cart)">
       </div>
     </div>
     <!-- <ng-container class="ng-star-inserted w-100 text-center as-nodata" *ngIf="itemhistorycart?.length == 0">
@@ -46,14 +46,14 @@
     </h2>
     <div class=" as-color-1" *ngIf="itemhistorykit?.length!=0">
 
-      <div class="text-center">
+      <!-- <div class="text-center">
         <button type="button" class="btn btn-round btn-outline-info" *ngIf="view"
-          [disabled]="arrayvalue1?.length==0" (click)="returnItem1('kit',mymodal)">Return Kits</button>
-      </div>
+          [disabled]="arrayvalue1?.length==0" (click)="returnItem1('kit',mymodal)">Return Kit</button>
+      </div> -->
     </div>
   </div>
   <div class="row mx-0">
-    <div class="col-md-6 " *ngFor="let kitting of itemhistorykit">
+    <div class="col-md-6 " *ngFor="let kitting of itemhistorykit;let i=index">
       <div class="as-item-box">
         <div class="d-flex justify-content-between align-items-center">
           <div class="as-font-34">{{kitting?.kit_name}}</div>
@@ -66,9 +66,11 @@
                   {{kitting?.updated_at| date:"hh:mm a"}}
                 </span> </div>
             </div>
-            <div class="form-group form-check ">
+
+            <button type="button" class="btn btn-round btn-outline-info" (click)="returnItem1('kit',mymodal,kitting)" >Return Kit</button>
+            <!-- <div class="form-group form-check ">
               <input type="checkbox" class="form-check-input cb-kit" id="Check1" (change)="passParams1($event,kitting)">
-            </div>
+            </div> -->
 
 
           </div>
@@ -80,9 +82,11 @@
           </div>
           <div>
             <div class="as-font-18 as-bold as-color-4 as-font-30">
-              {{item?.item?.item_name}}({{item?.quantity}})
+              {{item?.item?.item_name}}({{item?.alloted_item_qty_in_kit}})
+              <!-- {{itemhistorykit[i].kit_item_details[k].qty}} -->
             </div>
             <div class="as-color-2 mt-3 as-font-16 as-font-25">
+            
               Machine: {{item?.cube?.cube_name}} Column ID: {{item?.bin?.bin_id}} Draw:
               {{item?.compartment?.compartment_id}}
             </div>
@@ -212,7 +216,7 @@
               <div class="d-flex align-items-center as-mr-det">
                 <label class="mr-2">QTY :</label>
                 <input type="number" id="quantity{{i}}" class="form-control quantity" placeholder="QTY" name="quantity"
-                  min="1" max="5" (keyup)="myFunction($event,i)">
+                  min="1" max="{{this.array[i]?.qty}}" (keyup)="myFunction($event,i)" (change)="myFunction($event,i)">
               </div>
             </div>
             <div class="as-w-15">
@@ -249,7 +253,7 @@
           <div class="d-flex mb-3">
             <div class="as-color-4 as-font-24 line-h-12">Are you sure, do you want to return the item?</div>
             <button class="btn btn-lg btn-primary btn-login  fw-bold mb-2" type="button"
-            (click)="returnItem1('cart',mymodal)" >Confirm</button>
+            (click)="returnItem1('cart',mymodal,'')" >Confirm</button>
           </div>
         </div>
 

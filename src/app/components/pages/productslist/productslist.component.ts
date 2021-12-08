@@ -423,7 +423,7 @@ export class ProductslistComponent implements OnInit {
       console.log(successTake.length + ' items Taken successfully \n' + successTake.length + ' items failed return')
       await this.addMachineUsage(totalMachineUsage)
       await this.updateAfterTakeOrReturn(successTake, item)
-      this.msgg=successTake.length + ' items Taken successfully \n' + successTake.length + ' items failed return'
+      this.msgg=successTake.length + ' items Taken successfully \n'
 
     }
   }

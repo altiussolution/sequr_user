@@ -38,6 +38,7 @@ view:any;
   arrayvaluess: any;
   invalid: any=[];
   kitdata: any=[];
+  array: any=[];
   constructor(public crud: CrudService, private toast: ToastrService, public modalService: NgbModal) { }
   ngOnInit(): void {
 
@@ -87,54 +88,103 @@ console.log(this.permissions?.company_id?._id)
   passParams(event: any, val: any) {
     if (event.target.checked) {
       this.arrayvalue.push(val);
-      this.arrayvalue2.push(val)
+   
     }
     if (!event.target.checked) {
       let index = this.arrayvalue.indexOf(val);
-      let index1 = this.arrayvalue2.indexOf(val);
+     
+      console.log(this.arrayvalue)
       if (index > -1) {
         this.arrayvalue.splice(index, 1);
       }
-      if (index1 > -1) {
-        this.arrayvalue2.splice(index, 1);
-      }
+    
     }
     console.log(this.arrayvalue)
+  }
+  passParams12(event: any, val: any) {
+    if (event.target.checked) {
+    
+      this.array.push(val)
+    }
+    if (!event.target.checked) {
+     
+      let index = this.array.indexOf(val);
+      console.log(this.arrayvalue)
+     
+      if (index > -1) {
+        this.array.splice(index, 1);
+      }
+    }
+    console.log(this.array)
   }
   delete(i: any) {
     if (confirm(`Are you sure want to delete?`)) {
     if (i > -1) {
       this.arrayvalue.splice(i, 1);
-      this.arrayvalue2.splice(i, 1);
+      this.array.splice(i, 1);
       this.toast.success("Item deleted from choosed list")
     }
     }else {
      
     }
   }
+  // changing(event) {
+
+  //   console.log(event.target.value)
+  //   if (this.arrayvalue2[i].qty >= event.target.value) {
+  //     this.qut = event.target.value
+  //   } else {
+  //     (<HTMLInputElement>document.getElementById(event.target.id)).value = "";
+  //     this.qut = 0
+  //     this.toast.error("You have reached maximum quantity of the item.")
+  //   }
+  // }
 
   myFunction(event, i) {
-    console.log(event.target.id)
-    if(event.target.value !=0){
-      if (this.arrayvalue2[i].qty >= event.target.value) {
-        this.arrayvalue[i].qty=event.target.value
-       } else {
-         (<HTMLInputElement>document.getElementById(event.target.id)).value = "";
-         this.toast.error("You have reached Item max quantity")
-       }
-    }else{
-      this.toast.error("Please enter valid quantity");
-      this.arrayvalue2[i].qty=" ";
-      (<HTMLInputElement>document.getElementById(event.target.id)).value = "";
+    // console.log(typeof parseInt(event.target.value) + '' + parseInt(event.target.value))
+    console.log((this.array[i].qty))
+    console.log(event.target.value)
+    this.Methodl(this.array[i].qty,event.target.value,i,event.target.id)
+  //   if(parseInt(event.target.value) !=0){
+  //     console.log('****** Inside if ********')
+  //    const nvals=this.arrayvalue2[i]?.qty
+  //     if (parseInt(nvals) > parseInt(event.target.value)) {
+  //       console.log('****** Inside if 2 ********')
+
+  //       this.arrayvalue[i].qty=parseInt(event.target.value)
+  //      } else {
+  //        (<HTMLInputElement>document.getElementById(event.target.id)).value = "";
+  //        this.toast.error("You have reached Item max quantity")
+  //      }
+  //   }else{
+  //     this.toast.error("Please enter valid quantity");
+  //     this.arrayvalue[i].qty=0;
+  //     (<HTMLInputElement>document.getElementById(event.target.id)).value = "";
+  //   }
+
+  }
+  Methodl(qtys,val,i,id) {
+    if (Number(qtys) >= Number(val)) {
+      // qtys = Number(val)
+
+      // this.arrayvalue[i].qty=Number(qtys)
+    } else {
+      (<HTMLInputElement>document.getElementById(id)).value = "";
+      qtys= 0
+      this.toast.error("You have reached maximum quantity of the item.")
     }
   }
   
 
 
   close() {
+    this.arrayvalue=[]
+    this.array=[]
     this.ngOnInit();
   }
   modaldismiss() {
+    this.arrayvalue=[]
+    this.array=[]
     this.closebutton.nativeElement.click();
     this.machineCubeID = []
     this.machineColumnID =[]
@@ -319,24 +369,29 @@ console.log(this.permissions?.company_id?._id)
   TakeOrReturnItems: any[] = []
   machinesList = []
 
-   returnItem1(item: string,modal) {
+   returnItem1(item: string,modal,kitting) {
 
     if(item=="cart"){
-      this.invalid=[];
-      for(let j=0;j<this.arrayvalue?.length;j++){
-      if(this.arrayvalue[j].qty===" "){
-        this.invalid.push(this.arrayvalue[j])
-        }
+this.invalid=[]
+      for(let k=0;k<this.arrayvalue?.length;k++){
+       if((<HTMLInputElement>document.getElementById('quantity'+k)).value==''){
+      this.invalid.push(this.arrayvalue[k])
       }
+      }
+      console.log(this.arrayvalue)
       console.log(this.invalid)
       if(this.invalid?.length==0){
-       
+       for(let j=0;j<this.arrayvalue?.length;j++){
+        this.arrayvalue[j].qty=(<HTMLInputElement>document.getElementById('quantity'+j)).value
+       }
         this.modalService.open(modal,{backdrop:false});
       this.returnItem("cart")
       }else{
         this.toast.error("Please enter valid quantity")
       }
     }else{
+      this.arrayvalue1=[]
+      this.arrayvalue1.push(kitting)
       this.modalService.open(modal,{backdrop:false});
       this.returnItem("kit")
     }
@@ -457,7 +512,7 @@ console.log(this.permissions?.company_id?._id)
           await this.updateAfterTakeOrReturn(successTake, item)
         } else if (successTake.length < totalMachinesList.length) {
           console.log(successTake.length + ' items Taken successfully \n' + successTake.length + ' items failed return')
-          this.msgg=successTake.length + ' items Taken successfully \n' + successTake.length + ' items failed return'
+          this.msgg=successTake.length + ' items Taken successfully'
           await this.addMachineUsage(totalMachineUsage)
           await this.updateAfterTakeOrReturn(successTake, item)
         }

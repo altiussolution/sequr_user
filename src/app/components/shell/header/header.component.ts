@@ -85,6 +85,7 @@ export class HeaderComponent implements OnInit {
   subcatlengths1: any = [];
   category_name = 'Angular ' + VERSION.major;
 categories: any = [];
+  kitdata: any=[];
   constructor(public router: Router, public crud: CrudService, private cookie: CookieService, private toast: ToastrService) {
     this.permissions = JSON.parse(localStorage.getItem("personal"))
     this.profiledetails = JSON.parse(localStorage.getItem('personal'))
@@ -146,7 +147,7 @@ categories: any = [];
       localStorage.setItem("coloumid", JSON.stringify(this.coloumids))
 
       console.log(JSON.stringify(this.coloumids))
-      // this.categoryss();
+      this.categoryss();
 
     })
   }
@@ -312,7 +313,13 @@ categories: any = [];
     params['user_id'] = this.profiledetails._id
     this.crud.get1(appModels.ITEMLIST, { params }).pipe(untilDestroyed(this)).subscribe((res: any) => {
       console.log(res)
-      this.itemhistorykit = res['Kits']
+      this.kitdata=[]
+      this.kitdata = res['Kits']
+      for (let i = 0; i < this.kitdata?.length; i++) {
+        if (this.kitdata[i]['kit_status'] == 2) {
+          this.itemhistorykit.push(this.kitdata[i])
+        }
+      }
       if(this.itemhistorykit==undefined){
          this.itemhistorykit=[]
       }
