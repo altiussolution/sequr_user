@@ -193,9 +193,9 @@
   </ng-container>
 
   <!-- POPUP DESIGN Return -->
-  <div class="modal" id="myModal">
+  <div class="modal" id="myModal" >
     <div class="modal-dialog">
-      <div class="modal-content">
+      <div class="modal-content" style="margin-left: 2px;">
         <div class="modal-header">
           <div class="as-bold as-color-4 as-font-24">Return</div>
           <button type="button" class="close" #closebutton data-dismiss="modal" (click)="close()" >&times;</button>
@@ -271,7 +271,8 @@
   </div>
 </div> -->
 
-<ng-template #mymodal let-modal>
+<ng-template #mymodal let-modal >
+
   <div class="modal-header">
     <h4 class="modal-title" id="modal-basic-title"></h4>
     <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')" (click)="modaldismiss()">
@@ -317,4 +318,5 @@
   <!-- <div class="modal-footer">
     <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Ok</button>
   </div> -->
+
 </ng-template>
