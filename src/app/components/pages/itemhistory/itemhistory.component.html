@@ -67,7 +67,7 @@
                 </span> </div>
             </div>
 
-            <button type="button" class="btn btn-round btn-outline-info" (click)="returnItem1('kit',mymodal,kitting)" >Return Kit</button>
+            <button type="button" class="btn btn-round btn-outline-info" (click)="returnItem1('kit',mymodal,kitting)"  *ngIf="view">Return Kit</button>
             <!-- <div class="form-group form-check ">
               <input type="checkbox" class="form-check-input cb-kit" id="Check1" (change)="passParams1($event,kitting)">
             </div> -->
@@ -299,7 +299,7 @@
               
             </tr>
             <tr>
-              <td>compartment ID :</td>
+              <td>Compartment ID :</td>
               <td>{{machineCompartmentID}}</td>
               
             </tr>

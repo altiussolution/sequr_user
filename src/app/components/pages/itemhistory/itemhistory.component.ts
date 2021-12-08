@@ -384,23 +384,23 @@ this.invalid=[]
        for(let j=0;j<this.arrayvalue?.length;j++){
         this.arrayvalue[j].qty=(<HTMLInputElement>document.getElementById('quantity'+j)).value
        }
-        this.modalService.open(modal,{backdrop:false});
-      this.returnItem("cart")
+        // this.modalService.open(modal,{backdrop:false});
+      this.returnItem("cart",modal)
       }else{
         this.toast.error("Please enter valid quantity")
       }
     }else{
       this.arrayvalue1=[]
       this.arrayvalue1.push(kitting)
-      this.modalService.open(modal,{backdrop:false});
-      this.returnItem("kit")
+      // this.modalService.open(modal,{backdrop:false});
+      this.returnItem("kit",modal)
     }
    
 }
 
- async returnItem(item: string) {
+ async returnItem(item: string,modal) {
   if (confirm(`Are you sure want to return?`)) {
-    
+    this.modalService.open(modal,{backdrop:false});
         this.machineCubeID = []
         this.machineColumnID =[]
         this.machineDrawID =[]
