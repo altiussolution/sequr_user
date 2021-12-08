@@ -30,3 +30,23 @@
     margin: auto;
 }
 }
+
+button.btn.btn-lg.btn-primary.btn-login.fw-bold.mb-2 {
+    width: min-content;
+    margin: auto;
+    margin-top: 10px;
+}
+
+.modal-footer {
+    justify-content: center;
+}
+
+.d-flex.mb-3 {
+    flex-direction: column;
+}
+
+.modal-body.height.text-center {
+   
+    height: 90px;
+    overflow: auto;
+}
