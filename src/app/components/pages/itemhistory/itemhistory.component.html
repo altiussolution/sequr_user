@@ -221,7 +221,7 @@
             </div>
             <div class="as-w-15">
 
-              <button (click)="delete(i)" type="button" class="btn btn-round btn-light "><i
+              <button *ngIf="arrayvalue.length>1" (click)="delete(i)" type="button" class="btn btn-round btn-light "><i
                   class="fa fa-trash-o as-font-20" aria-hidden="true"></i></button>
             </div>
             <hr class="w-100">

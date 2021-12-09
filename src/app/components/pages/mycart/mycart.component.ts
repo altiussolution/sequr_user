@@ -475,7 +475,8 @@ Addmore(){
                   //Drawer current status, (opening, opened, closing, closed)
                   else if (status !== 'Closed' && status !== 'Locked' && status == 'Unknown') {
                     console.log('Current Status = ' + status)
-                    this.msg='Current Status = ' + status
+                    // this.msg='Current Status = ' + status
+                    this.machineStatus=status
                     // ColumnActionStatus = singleDeviceInfo
                   }
                   //set delay time

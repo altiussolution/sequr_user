@@ -400,7 +400,7 @@ this.invalid=[]
 
  async returnItem(item: string,modal) {
   if (confirm(`Are you sure want to return?`)) {
-    this.modalService.open(modal,{backdrop:false});
+  
         this.machineCubeID = []
         this.machineColumnID =[]
         this.machineDrawID =[]
@@ -408,6 +408,7 @@ this.invalid=[]
         this.machineStatus = []
         this.msg=""
         this.msgg=""
+        this.modalService.open(modal,{backdrop:false});
         let totalMachinesList = await this.formatMachineData(item)
         console.log(totalMachinesList)
         let machinesList = await this.groupbyData(totalMachinesList)
@@ -457,6 +458,7 @@ this.invalid=[]
               console.log(' Machine Status : ' + machineColumnStatus)
               let singleDeviceInfo = await this.singleDeviceInfo(machine)
               let status = singleDeviceInfo.details.singledevinfo.column[0]['status'][0]
+              this.machineStatus=status
               console.log('inside while loop status bin ' + machine.bin_id + status)
             
               if (status == 'Closed' || status == 'Locked' || status == 'Unknown') {
