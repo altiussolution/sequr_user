@@ -268,6 +268,14 @@ categories: any = [];
 
     })
   }
+
+  datas(event){
+    console.log("changed")
+    let data = event.target.value
+    if(!data){
+     this.searchdata=[]
+    }
+  }
   sortingfunc(){
    let sortDataA = this.categories.sort(function(a, b){
       if(a.category.category_name < b.category.category_name) { return -1; }

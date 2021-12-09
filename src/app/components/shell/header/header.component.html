@@ -182,7 +182,7 @@
           </div> -->
 <form autocomplete="off" [formGroup]="myform">
   <i class="fa fa-search srch_ic" aria-hidden="true"></i>
-  <input type="search" placeholder="Search" class="form-control top_srch" formControlName="searchvalue" (keyup)="searching($event)" >
+  <input type="search" placeholder="Search" class="form-control top_srch" formControlName="searchvalue" (keyup)="searching($event)" (change)="datas($event)">
  
 </form>
           

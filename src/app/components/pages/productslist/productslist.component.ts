@@ -96,13 +96,13 @@ export class ProductslistComponent implements OnInit {
                console.log(res)
                if (res != "") {
                  if (res['message'] == "Successfully added into cart!") {
-                   this.toast.success("Kitting cart added successfully")
+                  //  this.toast.success("Kitting cart added successfully")
                    await this.itemHistory(data)
          
                  }
                }
              }, error => {
-               this.toast.error("Kitting cart added Unsuccessfully")
+              //  this.toast.error("Kitting cart added Unsuccessfully")
              })
          }else{
            // this.toast.error("now choosed the kit item quantity for"+this.highkitqty)
@@ -142,13 +142,13 @@ export class ProductslistComponent implements OnInit {
                console.log(res)
                if (res != "") {
                  if (res['message'] == "Successfully added into cart!") {
-                   this.toast.success("Kitting cart added successfully")
+                  //  this.toast.success("Kitting cart added successfully")
                    await this.itemHistory(data)
          
                  }
                }
              }, error => {
-               this.toast.error("Kitting cart added Unsuccessfully")
+              //  this.toast.error("Kitting cart added Unsuccessfully")
              })
          }else{
            // this.toast.error("now choosed the kit item quantity for"+this.highkitqty)
@@ -443,7 +443,7 @@ export class ProductslistComponent implements OnInit {
     this.crud.post(`cart/updateReturnTake`, data).pipe().subscribe(async (res) => {
       console.log(res)
       if (res.status) {
-        this.toast.success('Cart Updated Successfully');
+        // this.toast.success('Cart Updated Successfully');
       }
     })
   }

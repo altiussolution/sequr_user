@@ -164,15 +164,21 @@ console.log(this.permissions?.company_id?._id)
 
   }
   Methodl(qtys,val,i,id) {
-    if (Number(qtys) >= Number(val)) {
-      // qtys = Number(val)
-
-      // this.arrayvalue[i].qty=Number(qtys)
-    } else {
+    if(Number(val)>0){
+      if (Number(qtys) >= Number(val)) {
+        // qtys = Number(val)
+  
+        // this.arrayvalue[i].qty=Number(qtys)
+      } else {
+        (<HTMLInputElement>document.getElementById(id)).value = "";
+        qtys= 0
+        this.toast.error("You have reached maximum quantity of the item.")
+      }
+    }else{
       (<HTMLInputElement>document.getElementById(id)).value = "";
-      qtys= 0
-      this.toast.error("You have reached maximum quantity of the item.")
+      this.toast.error("Please Enter Valid Quantity")
     }
+   
   }
   
 
@@ -538,7 +544,7 @@ this.invalid=[]
     this.crud.post(`cart/updateReturnTake`, data).pipe().subscribe(async (res) => {
       console.log(res)
       if (res.status) {
-        this.toast.success('Cart Updated Successfully');
+        this.toast.success('Items Returned Successfully');
       }
     })
   }
