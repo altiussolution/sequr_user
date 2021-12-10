@@ -39,6 +39,8 @@ view:any;
   invalid: any=[];
   kitdata: any=[];
   array: any=[];
+  vals: boolean=false;
+  dooropen:boolean=false;
   constructor(public crud: CrudService, private toast: ToastrService, public modalService: NgbModal) { }
   ngOnInit(): void {
 
@@ -184,9 +186,10 @@ console.log(this.permissions?.company_id?._id)
 
 
   close() {
-    this.arrayvalue=[]
-    this.array=[]
-    this.ngOnInit();
+    if(this.vals==false){
+      this.ngOnInit();
+    }
+  
   }
   modaldismiss() {
     this.arrayvalue=[]
@@ -406,7 +409,7 @@ this.invalid=[]
 
  async returnItem(item: string,modal) {
   if (confirm(`Are you sure want to return?`)) {
-  
+        this.vals=true
         this.machineCubeID = []
         this.machineColumnID =[]
         this.machineDrawID =[]
@@ -414,6 +417,7 @@ this.invalid=[]
         this.machineStatus = []
         this.msg=""
         this.msgg=""
+        this.closebutton.nativeElement.click();
         this.modalService.open(modal,{backdrop:false});
         let totalMachinesList = await this.formatMachineData(item)
         console.log(totalMachinesList)
@@ -520,7 +524,7 @@ this.invalid=[]
           await this.updateAfterTakeOrReturn(successTake, item)
         } else if (successTake.length < totalMachinesList.length) {
           console.log(successTake.length + ' items Taken successfully \n' + successTake.length + ' items failed return')
-          this.msgg=successTake.length + ' items Taken successfully'
+          this.msgg=successTake.length + ' items Returned successfully'
           await this.addMachineUsage(totalMachineUsage)
           await this.updateAfterTakeOrReturn(successTake, item)
         }
@@ -543,6 +547,7 @@ this.invalid=[]
     }
     this.crud.post(`cart/updateReturnTake`, data).pipe().subscribe(async (res) => {
       console.log(res)
+      this.dooropen=true;
       if (res.status) {
         this.toast.success('Items Returned Successfully');
       }

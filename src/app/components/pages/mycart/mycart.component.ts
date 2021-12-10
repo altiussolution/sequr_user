@@ -45,6 +45,7 @@ export class MycartComponent implements OnInit {
   qtys: number;
   val1: any;
   val2: any;
+  dooropen: boolean=false;
   constructor(private crudService: CrudService,
     private toast: ToastrService, public cookie: CookieService,public router:Router,
     public modalService: NgbModal) { }
@@ -679,7 +680,8 @@ Addmore(){
     this.crudService.post(`cart/updateReturnTake`, data).pipe().subscribe(async (res) => {
       console.log(res)
       if (res.status) {
-        this.toast.success('Cart Updated Successfully');
+        this.toast.success('Items Taken Successfully');
+        this.dooropen=true
       }
     })
   }

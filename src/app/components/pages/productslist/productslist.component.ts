@@ -38,6 +38,7 @@ export class ProductslistComponent implements OnInit {
   totalquantity: any=[];
   kitdatas1: any;
   qtyss: number;
+  dooropen: boolean=false;
   constructor(public crud: CrudService, private toast: ToastrService,public modalService: NgbModal) { }
 
   ngOnInit(): void {
@@ -442,8 +443,11 @@ export class ProductslistComponent implements OnInit {
     }
     this.crud.post(`cart/updateReturnTake`, data).pipe().subscribe(async (res) => {
       console.log(res)
+      this.dooropen=true
       if (res.status) {
-        // this.toast.success('Cart Updated Successfully');
+       
+        this.toast.success('Items Taken Successfully');
+      
       }
     })
   }

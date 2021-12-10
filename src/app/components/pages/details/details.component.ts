@@ -48,6 +48,7 @@ export class DetailsComponent implements OnInit {
   img: boolean = true;
 permissions:any;
   totalquantity: any=[];
+  dooropen:boolean=false;
   constructor(public router: Router, private toast: ToastrService, private fb: FormBuilder, public crud: CrudService,
     public modalService: NgbModal) {
 
@@ -504,6 +505,8 @@ permissions:any;
       console.log(res)
       if (res) {
         this.toast.success('Item taken Successfully...');
+        this.dooropen=true
+
       }
     })
   }

@@ -13,6 +13,10 @@
     width: 93%;
 }
 
+hr.w-100 {
+    display: none;
+}
+
 .i-history i {
     color: #909090;
 }
@@ -42,14 +46,14 @@ button.btn.btn-lg.btn-primary.btn-login.fw-bold.mb-2 {
 }
 
 .d-flex.mb-3 {
-    flex-direction: column;
+    align-items: center;
 }
 
-.modal-body.height.text-center {
+// .modal-body.height.text-center {
    
-    height: 85px;
-    overflow: auto;
-}
+//     height: 85px;
+//     overflow: auto;
+// }
 
 .as-color-4.as-font-24.line-h-12 {
     font-size: 16px;

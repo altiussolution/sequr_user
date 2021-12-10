@@ -275,7 +275,7 @@
 
   <div class="modal-header">
     <h4 class="modal-title" id="modal-basic-title"></h4>
-    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')" (click)="modaldismiss()">
+    <button type="button" class="close"  *ngIf="dooropen" aria-label="Close" (click)="modal.dismiss('Cross click')" (click)="modaldismiss()">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
