@@ -181,7 +181,7 @@ permissions:any;
                        
                           if(this.permissions?.item_max_quantity>=this.totalquantity[0]?.trasaction_qty + this.qut){
                             this.dooropen=false;
-                            this.modalService.open(item, { backdrop: false });
+                            this.modalService.open(item, { backdrop: false, keyboard : false });
                             this.cartList = [];
                             this.crud.get1(appModels.listCart,{params}).pipe(untilDestroyed(this)).subscribe(async res => {
                               console.log(res)
@@ -206,7 +206,7 @@ permissions:any;
                        
                        if(this.permissions?.item_max_quantity>= 0 + this.qut){
                              this.dooropen=false;
-                            this.modalService.open(item, { backdrop: false });
+                            this.modalService.open(item, { backdrop: false , keyboard : false});
                             this.cartList = [];
                             this.crud.get1(appModels.listCart,{params}).pipe(untilDestroyed(this)).subscribe(async res => {
                               console.log(res)
