@@ -92,6 +92,7 @@ export class ProductslistComponent implements OnInit {
          this.List = this.kits.filter(item => item === false);
          console.log(this.List)
          if(this.List?.length ==0){
+          this.dooropen=false;
            this.modalService.open(modal,{backdrop:false});
             this.crud.post(appModels.ADDKITCART + _id).pipe(untilDestroyed(this)).subscribe(async (res: any) => {
                console.log(res)
@@ -138,6 +139,7 @@ export class ProductslistComponent implements OnInit {
          this.List = this.kits.filter(item => item === false);
          console.log(this.List)
          if(this.List?.length ==0){
+           this.dooropen=false;
            this.modalService.open(modal,{backdrop:false});
             this.crud.post(appModels.ADDKITCART + _id).pipe(untilDestroyed(this)).subscribe(async (res: any) => {
                console.log(res)

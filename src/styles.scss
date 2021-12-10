@@ -404,13 +404,17 @@ input {
 }
 
 .as-product-img-pop {
-  height: 80px;
+  height: 100px;
   background-size: 78%;
   background-repeat: no-repeat;
   background-position: center;
   border: 1px solid lightgray;
-  width: 80%;
+  width: 100%;
   margin-left: 16px;
+}
+
+.row.py-2.ng-star-inserted {
+  justify-content: space-around;
 }
 
 .as-productlst-img {

@@ -45,15 +45,25 @@ button.btn.btn-lg.btn-primary.btn-login.fw-bold.mb-2 {
     justify-content: center;
 }
 
-.d-flex.mb-3 {
-    align-items: center;
+.as-header {
+    
+    margin: 16px 0px 15px 0 !important;
 }
 
-// .modal-body.height.text-center {
+.d-flex.mb-3 {
+    align-items: center;
+    flex-direction:column;
+}
+
+.modal-body.height.text-center {
    
-//     height: 85px;
-//     overflow: auto;
-// }
+    max-height: 350px;
+    overflow: auto;
+}
+
+.as-w-60.pl-3 {
+    margin-left: 30px;
+}
 
 .as-color-4.as-font-24.line-h-12 {
     font-size: 16px;

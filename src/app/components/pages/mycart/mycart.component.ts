@@ -407,6 +407,7 @@ Addmore(){
          }
       console.log(this.qtys)
           if(this.permissions?.item_max_quantity>=this.totalquantity[0]?.trasaction_qty + this.qtys){
+            this.dooropen=false;
             this.machineCubeID = []
             this.machineColumnID =[]
             this.machineDrawID =[]
@@ -536,6 +537,7 @@ Addmore(){
          }
          console.log(this.qtys)
           if(this.permissions?.item_max_quantity>= 0 + this.qtys){
+            this.dooropen=false;
             this.machineCubeID = []
             this.machineColumnID =[]
             this.machineDrawID =[]
@@ -594,6 +596,7 @@ Addmore(){
                   let singleDeviceInfo = await this.singleDeviceInfo(machine)
                   let status = singleDeviceInfo.details.singledevinfo.column[0]['status'][0]
                   console.log('inside while loop status bin ' + machine.bin_id + status)
+                  this.machineStatus = status
                   if (status == 'Closed' || status == 'Locked' || status == 'Unknown') {
                     await this.sleep(9000)
                     await this.crudService.post('machine/lockBin', machine).pipe(untilDestroyed(this)).toPromise()
@@ -603,6 +606,7 @@ Addmore(){
                   //Drawer current status, (opening, opened, closing, closed)
                   else if (status !== 'Closed' && status !== 'Locked' && status == 'Unknown') {
                     console.log('Current Status = ' + status)
+                    this.machineStatus = status
                     this.msg='Current Status = ' + status
                     // ColumnActionStatus = singleDeviceInfo
                   }

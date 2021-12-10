@@ -409,6 +409,7 @@ this.invalid=[]
 
  async returnItem(item: string,modal) {
   if (confirm(`Are you sure want to return?`)) {
+    this.dooropen=false;
         this.vals=true
         this.machineCubeID = []
         this.machineColumnID =[]
