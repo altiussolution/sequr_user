@@ -4,6 +4,7 @@ import { CrudService } from 'src/app/services/crud.service';
 import { appModels } from 'src/app/services/shared/enum/enum.util';
 import { ToastrService } from 'ngx-toastr';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { type } from 'os';
 
 @Component({
   selector: 'app-productslist',
@@ -183,8 +184,11 @@ export class ProductslistComponent implements OnInit {
       this.id = res?.Cart[0]['_id']
       this.itemhistorykit = res['Kits']
       for await (let kit of this.itemhistorykit) {
-        if (kit.kit_status == 1 && kit.kit_id._id == data._id) {
-          this.takeNowKit.push(kit)
+        console.log(typeof kit.kit_status + ' ' + kit.kit_status)
+        console.log(typeof kit.kit_id._id + ' ' + kit.kit_id._id)
+        console.log(kit)
+        if (kit.kit_status === 1 && kit.kit_id._id === data._id) {
+          await this.takeNowKit.push(kit)
         }
       }
       await this.takeKit('kit')
@@ -247,6 +251,7 @@ export class ProductslistComponent implements OnInit {
 
     let i = 0
     this.takeNowKit[0].kit_item_details.forEach(async item => {
+      if(item.alloted_item_qty_in_kit > 0){
       let eachItemForMachines = {}
       eachItemForMachines['cart_id'] = this.takeNowKit[0].cart_id
       eachItemForMachines['kit_id'] = this.takeNowKit[0].kit_id._id
@@ -254,13 +259,14 @@ export class ProductslistComponent implements OnInit {
       eachItemForMachines['item_id'] = item.item._id
       eachItemForMachines['kit_qty'] = this.takeNowKit[0].qty
       eachItemForMachines['qty'] = this.takeNowKit[0].kit_id.kit_data[i].qty
-      eachItemForMachines['qty'] = 1
+      // eachItemForMachines['qty'] = 1
       eachItemForMachines['stock_allocation_id'] = item._id
       eachItemForMachines['cube_id'] = item.cube.cube_id
       eachItemForMachines['column_id'] = item.bin.bin_id
       eachItemForMachines['bin_id'] = item.compartment.compartment_id
       eachItemForMachines['compartment_id'] = item.compartment_number
       await machineData.push(eachItemForMachines)
+      }
       i++
     })
     return machineData
@@ -412,30 +418,32 @@ export class ProductslistComponent implements OnInit {
       }
     }
     const successTake = await totalMachinesList.filter(array => this.TakeOrReturnItems.some(filter => filter.column_id === array.column_id && filter.bin_id === array.bin_id));
-
+    // const failedTake = await totalMachinesList.filter(array => successTake.some(filter => JSON.stringify(filter.column_id) !== JSON.stringify(array.column_id) && JSON.stringify(filter.bin_id) !== JSON.stringify(array.bin_id)));
+    const failedTake = await totalMachinesList.filter(({ stock_allocation_id: id1 }) => !successTake.some(({ stock_allocation_id: id2 }) => id1 === id2))
     console.log(successTake)
     if (successTake.length == 0) {
       console.log('Machine status unknown No Item taken')
       this.msgg='Machine status unknown No Item taken'
     } else if (successTake.length == totalMachinesList.length) {
-      console.log(successTake.length + ' items Taken successfully')
-      this.msgg=successTake.length + ' items Taken successfully'
+      console.log(successTake.length + ' Items Taken Successfully')
+      this.msgg=successTake.length + ' Items Taken Successfully'
       await this.addMachineUsage(totalMachineUsage)
-      await this.updateAfterTakeOrReturn(successTake)
+      await this.updateAfterTakeOrReturn(successTake, item, failedTake)
     } else if (successTake.length < totalMachinesList.length) {
-      console.log(successTake.length + ' items Taken successfully \n' + successTake.length + ' items failed return')
+      console.log(successTake.length + ' Items Taken Successfully \n' + successTake.length + ' items failed return')
       await this.addMachineUsage(totalMachineUsage)
-      await this.updateAfterTakeOrReturn(successTake, item)
-      this.msgg=successTake.length + ' items Taken successfully \n'
+      await this.updateAfterTakeOrReturn(successTake, item, failedTake)
+      this.msgg=successTake.length + ' Items Taken Successfully \n'
 
     }
   }
 
   //Update Cart and Stock Allocation documents after item Take/Return
-  async updateAfterTakeOrReturn(successTake: any, item?) {
+  async updateAfterTakeOrReturn(successTake: any, item, failedTake : any) {
     let data = {
       cart_id: this.id,
       take_items: successTake,
+      untaken_or_returned_items : failedTake
     }
     if (item == 'cart') {
       data['cart_status'] = 2

@@ -644,14 +644,14 @@ Addmore(){
               console.log('Machine status unknown No Item taken')
               this.msgg='Machine status unknown No Item taken'
             } else if (successTake.length == totalMachinesList.length) {
-              console.log(successTake.length + ' items Taken successfully')
-              this.msgg=successTake.length + ' items Taken successfully'
+              console.log(successTake.length + ' Items Taken Successfully')
+              this.msgg=successTake.length + ' Items Taken Successfully'
               await this.addMachineUsage(totalMachineUsage)
         
               await this.updateAfterTakeOrReturn(successTake)
             } else if (successTake.length < totalMachinesList.length) {
-              console.log(successTake.length + ' items Taken successfully \n' + (totalMachinesList.length - successTake.length) + ' items failed return')
-              this.msgg=successTake.length + ' items Taken successfully \n'
+              console.log(successTake.length + ' Items Taken Successfully \n' + (totalMachinesList.length - successTake.length) + ' items failed return')
+              this.msgg=successTake.length + ' Items Taken Successfully \n'
               await this.addMachineUsage(totalMachineUsage)
         
               await this.updateAfterTakeOrReturn(successTake)

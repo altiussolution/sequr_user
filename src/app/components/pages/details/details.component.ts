@@ -481,13 +481,13 @@ permissions:any;
       console.log('Machine status unknown No Item taken')
       this.msgg = 'Machine status unknown No Item taken'
     } else if (successTake.length == totalMachinesList.length) {
-      console.log(successTake.length + ' items Taken successfully')
-      this.msgg = successTake.length + ' items Taken successfully'
+      console.log(successTake.length + ' Items Taken Successfully')
+      this.msgg = successTake.length + ' Items Taken Successfully'
       await this.addMachineUsage(totalMachineUsage)
       await this.updateAfterTakeOrReturn(successTake, item)
     } else if (successTake.length < totalMachinesList.length) {
-      console.log(successTake.length + ' items Taken successfully \n' + successTake.length + ' items failed return')
-      this.msgg = successTake.length + ' items Taken successfully \n'
+      console.log(successTake.length + ' Items Taken Successfully \n' + successTake.length + ' items failed return')
+      this.msgg = successTake.length + ' Items Taken Successfully \n'
       await this.addMachineUsage(totalMachineUsage)
       await this.updateAfterTakeOrReturn(successTake, item)
 
@@ -504,7 +504,7 @@ permissions:any;
     this.crud.post(`cart/updateReturnTake`, data).pipe().subscribe(async (res) => {
       console.log(res)
       if (res) {
-        this.toast.success('Item taken Successfully...');
+        this.toast.success('Item Taken Successfully...');
         this.dooropen=true
 
       }

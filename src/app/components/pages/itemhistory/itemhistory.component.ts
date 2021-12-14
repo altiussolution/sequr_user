@@ -303,6 +303,7 @@ console.log(this.permissions?.company_id?._id)
     else if (item == 'kit') {
       let i = 0
       this.arrayvalue1[0].kit_item_details.forEach(async item => {
+        if(item.alloted_item_qty_in_kit > 0){
         let eachItemForMachines = {}
         eachItemForMachines['cart_id'] = this.arrayvalue1[0].cart_id
         eachItemForMachines['kit_id'] = this.arrayvalue1[0].kit_id._id
@@ -310,13 +311,14 @@ console.log(this.permissions?.company_id?._id)
         eachItemForMachines['item_id'] = item.item._id
         eachItemForMachines['kit_qty'] = this.arrayvalue1[0].qty
         eachItemForMachines['qty'] = this.arrayvalue1[0].kit_id.kit_data[i].qty
-        eachItemForMachines['qty'] = 1
+        // eachItemForMachines['qty'] = 1
         eachItemForMachines['stock_allocation_id'] = item._id
         eachItemForMachines['cube_id'] = item.cube.cube_id
         eachItemForMachines['column_id'] = item.bin.bin_id
         eachItemForMachines['bin_id'] = item.compartment.compartment_id
         eachItemForMachines['compartment_id'] = item.compartment_number
         await machineData.push(eachItemForMachines)
+      }
         i++
 
       })
@@ -513,21 +515,24 @@ this.invalid=[]
           }
         }
         const successTake = await totalMachinesList.filter(array => this.TakeOrReturnItems.some(filter => filter.column_id === array.column_id && filter.bin_id === array.bin_id));
-    
+        // const failedTake = await totalMachinesList.filter(array => successTake.some(filter => JSON.stringify(filter.column_id) !== JSON.stringify(array.column_id) && JSON.stringify(filter.bin_id) !== JSON.stringify(array.bin_id)));
+        const failedTake = await totalMachinesList.filter(({ stock_allocation_id: id1 }) => !successTake.some(({ stock_allocation_id: id2 }) => id1 === id2))
+
         console.log(successTake)
+        console.log(failedTake)
         if (successTake.length == 0) {
           console.log('Machine status unknown No Item returned')
           this.msgg='Machine Status Unknown No Item Returned'
         } else if (successTake.length == totalMachinesList.length) {
-          console.log(successTake.length + ' items returned successfully')
-          this.msgg=successTake.length + ' items returned successfully'
+          console.log(successTake.length + ' Items Returned Successfully')
+          this.msgg=successTake.length + ' Items Returned Successfully'
           await this.addMachineUsage(totalMachineUsage)
-          await this.updateAfterTakeOrReturn(successTake, item)
+          await this.updateAfterTakeOrReturn(successTake, item, failedTake)
         } else if (successTake.length < totalMachinesList.length) {
-          console.log(successTake.length + ' items Taken successfully \n' + successTake.length + ' items failed return')
-          this.msgg=successTake.length + ' items Returned successfully'
+          console.log(successTake.length + ' Items Taken Successfully \n' + successTake.length + ' items failed return')
+          this.msgg=successTake.length + ' Items Returned Successfully'
           await this.addMachineUsage(totalMachineUsage)
-          await this.updateAfterTakeOrReturn(successTake, item)
+          await this.updateAfterTakeOrReturn(successTake, item, failedTake)
         }
   
     }
@@ -535,10 +540,11 @@ this.invalid=[]
   }
 
   //Update Cart and Stock Allocation documents after item Take/Return
-  async updateAfterTakeOrReturn(successTake: any, item?) {
+  async updateAfterTakeOrReturn(successTake: any, item, failedTake : any) {
     let data = {
       cart_id: this.id,
       take_items: successTake,
+      untaken_or_returned_items : failedTake
     }
     if (item == 'cart') {
       data['cart_status'] = 3
