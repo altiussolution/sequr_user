@@ -348,6 +348,7 @@ categories: any = [];
 
   setval(val: any) {
     console.log(val)
+    this.myform.reset();
     this.subcatlengths1 = []
    
     // let params: any = {};
@@ -570,7 +571,7 @@ alerts(){
     //   this.crud.changemessage1(JSON.stringify(val))
     localStorage.removeItem("allow1")
     // this.categoryid=localStorage.getItem("categid")
-    
+    this.myform.reset();
 
     this.subcategories1 = val
     let data1 = {

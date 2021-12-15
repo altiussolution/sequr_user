@@ -525,7 +525,7 @@ this.invalid=[]
           this.msgg='Machine Status Unknown No Item Returned'
         } else if (successTake.length == totalMachinesList.length) {
           console.log(successTake.length + ' Items Returned Successfully')
-          this.msgg=successTake.length + ' Items Returned Successfully'
+          this.msgg=successTake.length + ' I    tems Returned Successfully'
           await this.addMachineUsage(totalMachineUsage)
           await this.updateAfterTakeOrReturn(successTake, item, failedTake)
         } else if (successTake.length < totalMachinesList.length) {

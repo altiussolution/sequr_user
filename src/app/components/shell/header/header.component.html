@@ -58,10 +58,10 @@
           <span class="as-dropdown-toggle"></span>
         </li>
         <li class="as-menu-mega-blog">
-          <a [routerLink]="'/pages/itemhistory'" routerLinkActive="active">Item History</a>
+          <a [routerLink]="'/pages/itemhistory'" routerLinkActive="active" (click)="this.myform.reset();">Item History</a>
         </li>
         <li class="as-menu-mega-blog">
-          <a [routerLink]="'/pages/productslist'" routerLinkActive="active">Kitting</a>
+          <a [routerLink]="'/pages/productslist'" routerLinkActive="active" (click)="this.myform.reset();">Kitting</a>
         </li>
       </ul>
     </div>
@@ -94,7 +94,7 @@
           <a class="nav-link">Kit(29)</a> -->
         </li>
         <li class="nav-item mt-3" >
-          <div class="nav-link nav-title as-bold as-color-9" [routerLink]="'itemhistory'">Item History</div>
+          <div class="nav-link nav-title as-bold as-color-9" [routerLink]="'itemhistory'"  (click)="this.myform.reset();">Item History</div>
           <hr>
           <a *ngFor="let kitting of itemhistorykit" class="nav-link as-color-9"
             [routerLink]="'itemhistory'">{{ kitting?.kit_name }}({{ kitting?.kit_item_details?.length===''?'0':kitting?.kit_item_details?.length }})</a>
@@ -188,14 +188,14 @@
           
 
         </li>
-        <li (click)="test()" class="nav-item as-nav" [routerLink]="'/pages/profile'">
+        <li (click)="test()" class="nav-item as-nav" [routerLink]="'/pages/profile'"  (click)="this.myform.reset();">
           <a class="nav-link">
             <!-- <div class="user-icon"></div> -->
             <img width="35px" height="35px" class="user-icon1" [src]="profile?.profile_pic" style="border-radius: 25px;"
               onError="this.src='../../../assets/img/profile_user_icon.svg'">
           </a>
         </li>
-        <li class="nav-item relative as-nav" [routerLink]="'/pages/mycart'" (click)="this.selectedItem=''">
+        <li class="nav-item relative as-nav" [routerLink]="'/pages/mycart'" (click)="this.selectedItem=''"  (click)="this.myform.reset();">
           <a class="nav-link" routerLinkActive="active">
             <div class="addtocart-icon"></div>
           </a>
