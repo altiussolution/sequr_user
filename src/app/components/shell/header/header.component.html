@@ -58,10 +58,10 @@
           <span class="as-dropdown-toggle"></span>
         </li>
         <li class="as-menu-mega-blog">
-          <a [routerLink]="'/pages/itemhistory'" routerLinkActive="active" (click)="this.myform.reset();">Item History</a>
+          <a [routerLink]="'/pages/itemhistory'" routerLinkActive="active" (click)="this.myform.reset();" (click)="this.searchdata=[]">Item History</a>
         </li>
         <li class="as-menu-mega-blog">
-          <a [routerLink]="'/pages/productslist'" routerLinkActive="active" (click)="this.myform.reset();">Kitting</a>
+          <a [routerLink]="'/pages/productslist'" routerLinkActive="active" (click)="this.myform.reset();" (click)="this.searchdata=[]">Kitting</a>
         </li>
       </ul>
     </div>
@@ -83,7 +83,7 @@
           <hr>
           <a  *ngFor="let Categories of categories;let i=index" class="nav-link "
             [ngClass]="{'as-active': selectedItem === Categories}"
-            (click)="setval(Categories)">{{ Categories.category.category_name }}({{Categories?.sub_category?.length==''?0:Categories?.sub_category?.length }})</a>
+            (click)="setval(Categories)" >{{ Categories.category.category_name }}({{Categories?.sub_category?.length==''?0:Categories?.sub_category?.length }})</a>
             <h6 *ngIf="category?.length ==0" style="margin-top: 20px; font-size: 16px; opacity: 75%;">No Data Available</h6>
             <!-- <a class="nav-link">Gage(14)</a>
           <a class="nav-link">Kitting(32)</a>
@@ -94,10 +94,10 @@
           <a class="nav-link">Kit(29)</a> -->
         </li>
         <li class="nav-item mt-3" >
-          <div class="nav-link nav-title as-bold as-color-9" [routerLink]="'itemhistory'"  (click)="this.myform.reset();">Item History</div>
+          <div class="nav-link nav-title as-bold as-color-9" [routerLink]="'itemhistory'"  (click)="this.myform.reset();" (click)="this.searchdata=[]">Item History</div>
           <hr>
           <a *ngFor="let kitting of itemhistorykit" class="nav-link as-color-9"
-            [routerLink]="'itemhistory'">{{ kitting?.kit_name }}({{ kitting?.kit_item_details?.length===''?'0':kitting?.kit_item_details?.length }})</a>
+            [routerLink]="'itemhistory'" (click)="this.myform.reset();" (click)="this.searchdata=[]">{{ kitting?.kit_name }}({{ kitting?.kit_item_details?.length===''?'0':kitting?.kit_item_details?.length }})</a>
             <h6 *ngIf="itemhistorykit?.length ==0" style="margin-top: 20px; font-size: 16px; opacity: 75%;">No Data Available</h6>
           </li>
         <!-- <li class="nav-item mt-3">
@@ -182,20 +182,20 @@
           </div> -->
 <form autocomplete="off" [formGroup]="myform">
   <i class="fa fa-search srch_ic" aria-hidden="true"></i>
-  <input type="search" placeholder="Search" class="form-control top_srch" formControlName="searchvalue" (keyup)="searching($event)" (search)="datas($event)">
+  <input type="search" placeholder="Search" class="form-control top_srch" formControlName="searchvalue" (keyup)="searching($event)" [(ngModel)]="datas1" (search)="datas($event)">
  
 </form>
           
 
         </li>
-        <li (click)="test()" class="nav-item as-nav" [routerLink]="'/pages/profile'"  (click)="this.myform.reset();">
+        <li (click)="test()" class="nav-item as-nav" [routerLink]="'/pages/profile'"  (click)="this.myform.reset();" (click)="this.searchdata=[]">
           <a class="nav-link">
             <!-- <div class="user-icon"></div> -->
             <img width="35px" height="35px" class="user-icon1" [src]="profile?.profile_pic" style="border-radius: 25px;"
               onError="this.src='../../../assets/img/profile_user_icon.svg'">
           </a>
         </li>
-        <li class="nav-item relative as-nav" [routerLink]="'/pages/mycart'" (click)="this.selectedItem=''"  (click)="this.myform.reset();">
+        <li class="nav-item relative as-nav" [routerLink]="'/pages/mycart'" (click)="this.selectedItem=''"  (click)="this.myform.reset();" (click)="this.searchdata=[]">
           <a class="nav-link" routerLinkActive="active">
             <div class="addtocart-icon"></div>
           </a>

@@ -18,7 +18,7 @@
   // }
 
 .primary {
-  width: 440px;
+  // width: 440px;
 //   height: 330px;
 // max-height:330px;
 margin-left: 15px;
@@ -27,6 +27,16 @@ margin-left: 15px;
   background-repeat: no-repeat;
   box-shadow: 0 0 8px 1px lightgrey;
   position: relative;
+}
+
+.lib-ngx-image-zoom {
+  position: relative;
+  
+}
+
+main.primary {
+  display: flex !important;
+  align-items: center !important;
 }
 
 img {

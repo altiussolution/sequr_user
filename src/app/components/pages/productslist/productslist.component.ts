@@ -4,7 +4,7 @@ import { CrudService } from 'src/app/services/crud.service';
 import { appModels } from 'src/app/services/shared/enum/enum.util';
 import { ToastrService } from 'ngx-toastr';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { type } from 'os';
+
 
 @Component({
   selector: 'app-productslist',

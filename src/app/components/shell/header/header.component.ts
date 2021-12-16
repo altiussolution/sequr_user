@@ -86,6 +86,7 @@ export class HeaderComponent implements OnInit {
   category_name = 'Angular ' + VERSION.major;
 categories: any = [];
   kitdata: any=[];
+  datas1: any;
   constructor(public router: Router, public crud: CrudService, private cookie: CookieService, private toast: ToastrService) {
     this.permissions = JSON.parse(localStorage.getItem("personal"))
     this.profiledetails = JSON.parse(localStorage.getItem('personal'))
@@ -349,6 +350,8 @@ categories: any = [];
   setval(val: any) {
     console.log(val)
     this.myform.reset();
+    
+this.searchdata=[]
     this.subcatlengths1 = []
    
     // let params: any = {};
@@ -479,11 +482,10 @@ alerts(){
   }
   searching(event) {
     localStorage.removeItem("onetimecall")
-    let data = event.target.value
     setTimeout(() => {
-      this.callmethod(data)
+      this.callmethod(this.datas1)
 
-    }, 3000);
+    }, 5000);
 
   }
   callmethod(data) {
@@ -572,7 +574,7 @@ alerts(){
     localStorage.removeItem("allow1")
     // this.categoryid=localStorage.getItem("categid")
     this.myform.reset();
-
+    this.searchdata = []
     this.subcategories1 = val
     let data1 = {
       "category_id":val?.category._id,
