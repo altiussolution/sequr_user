@@ -20,6 +20,7 @@
                       <div class="as-item pointer" *ngFor="let subcategory of Categories?.sub_category"
                         (click)="selectcategory(Categories,i)"><i
                           class="fa fa-chevron-right mr-3 as-color-7"></i>{{ subcategory?.sub_category_name }}</div>
+
                       <!-- <div class="as-item"><i class="fa fa-chevron-right mr-3 as-color-7"></i>Spot Drills(20)</div>
                       <div class="as-item"><i class="fa fa-chevron-right mr-3 as-color-7"></i>Carbide Drills(20)</div>
                       <div class="as-item"><i class="fa fa-chevron-right mr-3 as-color-7"></i>Had Tools(20)</div>
@@ -83,7 +84,7 @@
           <hr>
           <a  *ngFor="let Categories of categories;let i=index" class="nav-link "
             [ngClass]="{'as-active': selectedItem === Categories}"
-            (click)="setval(Categories)" >{{ Categories.category.category_name }}({{Categories?.sub_category?.length==''?0:Categories?.sub_category?.length }})</a>
+            (click)="setval(Categories)" style="margin-top: 8px;">{{ Categories.category.category_name }}({{ Categories?.sub_category?.length==''?'0':Categories?.sub_category?.length }})</a>
             <h6 *ngIf="category?.length ==0" style="margin-top: 20px; font-size: 16px; opacity: 75%;">No Data Available</h6>
             <!-- <a class="nav-link">Gage(14)</a>
           <a class="nav-link">Kitting(32)</a>
@@ -93,13 +94,20 @@
           <a class="nav-link">Gage(21)</a>
           <a class="nav-link">Kit(29)</a> -->
         </li>
-        <li class="nav-item mt-3" >
+        <!-- <li class="nav-item mt-3" >
           <div class="nav-link nav-title as-bold as-color-9" [routerLink]="'itemhistory'"  (click)="this.myform.reset();" (click)="this.searchdata=[]">Item History</div>
           <hr>
           <a *ngFor="let kitting of itemhistorykit" class="nav-link as-color-9"
             [routerLink]="'itemhistory'" (click)="this.myform.reset();" (click)="this.searchdata=[]">{{ kitting?.kit_name }}({{ kitting?.kit_item_details?.length===''?'0':kitting?.kit_item_details?.length }})</a>
             <h6 *ngIf="itemhistorykit?.length ==0" style="margin-top: 20px; font-size: 16px; opacity: 75%;">No Data Available</h6>
-          </li>
+          </li> -->
+        <li class="nav-item mt-3" *ngIf="itemhistorykit?.length !=0" style="margin-top: 8px;" >
+          <div class="nav-link nav-title as-bold as-color-9" [routerLink]="'itemhistory'" (click)="this.myform.reset();" (click)="this.searchdata=[]">Item History</div>
+          <hr>
+          <a *ngFor="let kitting of itemhistorykit" class="nav-link as-color-9"
+            [routerLink]="'itemhistory'" (click)="this.myform.reset();" (click)="this.searchdata=[]">{{ kitting?.kit_name }}({{ kitting?.kit_item_details?.length===''?'0':kitting?.kit_item_details?.length }})</a>
+            <a *ngIf="itemhistorykit?.length ==0"  style="margin-top: 20px; font-size: 16px; opacity: 75%;">No Data Available</a>
+        </li>
         <!-- <li class="nav-item mt-3">
           <div class="nav-link nav-title as-bold as-color-8" href="#">Similar Products</div>
           <hr>

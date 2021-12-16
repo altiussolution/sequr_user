@@ -1,6 +1,9 @@
 {
     "/machine": {
       "target": "http://localhost:4500",
-      "secure": false
+      "secure": false,
+      "changeOrigin": true,
+      "logLevel": "debug",
+      "pathRewrite": {"^/machine" : ""}
     }
   }
