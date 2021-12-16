@@ -35,8 +35,9 @@ margin-left: 15px;
 }
 
 main.primary {
-  display: flex !important;
-  align-items: center !important;
+  display: flex ;
+  align-items: center ;
+  justify-content: center;
 }
 
 img {
