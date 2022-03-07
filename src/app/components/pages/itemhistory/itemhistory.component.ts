@@ -523,6 +523,7 @@ this.invalid=[]
         if (successTake.length == 0) {
           console.log('Machine status unknown No Item returned')
           this.msgg='Machine Status Unknown No Item Returned'
+          this.dooropen=true
         } else if (successTake.length == totalMachinesList.length) {
           console.log(successTake.length + ' Items Returned Successfully')
           this.msgg=successTake.length + ' Items Returned Successfully'

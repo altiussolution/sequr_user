@@ -424,6 +424,7 @@ export class ProductslistComponent implements OnInit {
     if (successTake.length == 0) {
       console.log('Machine status unknown No Item taken')
       this.msgg='Machine status unknown No Item taken'
+      this.dooropen=true
     } else if (successTake.length == totalMachinesList.length) {
       console.log(successTake.length + ' Items Taken Successfully')
       this.msgg=successTake.length + ' Items Taken Successfully'

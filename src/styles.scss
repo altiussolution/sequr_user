@@ -1150,9 +1150,10 @@ input.pop {
     margin-bottom: 60px !important;
 }
 
-  .as-font-24 {
-    font-size: 2.1rem;
-  }
+.as-font-24 {
+  font-size: 1.7rem;
+  margin-top: 5px;
+}
 
   .as-calendar {
     margin-top: 2rem;
@@ -1843,4 +1844,16 @@ ngb-modal-window.d-block.modal.fade.show {
   background: #0000006b;
   position: absolute;
   top: 0;
+}
+
+
+.ngxImageZoomFullContainer{
+  display: none;
+  top:0;
+}
+
+.ngxImageZoomContainer img {
+  max-width: 80%;
+  width: 100%;
+  
 }

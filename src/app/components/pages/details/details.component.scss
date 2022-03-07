@@ -19,8 +19,8 @@
 
 .primary {
   // width: 440px;
-//   height: 330px;
-// max-height:330px;
+  height: 430px;
+max-height:530px;
 margin-left: 15px;
   background-size: contain;
   background-position: center center;
@@ -29,10 +29,9 @@ margin-left: 15px;
   position: relative;
 }
 
-.lib-ngx-image-zoom {
-  position: relative;
-  
-}
+
+
+
 
 main.primary {
   display: flex ;
@@ -232,4 +231,5 @@ aside.thumbnails.thumb_left ul li {
   }
 
 }
+
 

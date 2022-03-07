@@ -514,6 +514,7 @@ Addmore(){
             if (successTake.length == 0) {
               console.log('Machine status unknown No Item taken')
               this.msgg='Machine status unknown No Item taken'
+              this.dooropen=true
             } else if (successTake.length == totalMachinesList.length) {
               console.log(successTake.length + ' items Taken successfully')
               this.msgg=successTake.length + ' items Taken successfully'
