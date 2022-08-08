@@ -243,7 +243,7 @@ export class MycartComponent implements OnInit {
             const dateTime = new Date();
             //this.mydb.setRemote('http://127.0.0.1:3000');        
              this.mydb = new TurtleDB('example');
-             this.mydb.update('getlistcart', { data: this.cartdata1 , user: this.permissions?._id,company_id:this.permissions?.company_id?._id,cartinfo:1,created_at:dateTime});
+             this.mydb.update('getlistcart', { data: this.cartdata1 , user: this.permissions?._id,company_id:this.permissions?.company_id?._id,cartinfo:2,created_at:dateTime});
              setTimeout(()=>{                           // <<<---using ()=> syntax
               this.getCartItems() 
               this.toast.success("Cart Updated Successfully!")
@@ -321,7 +321,7 @@ console.log(this.newcd)
 
            const dateTime = new Date();
            this.mydb = new TurtleDB('example');
-           this.mydb.update('getlistcart', { data: this.cartdata1 , user: this.permissions?._id,company_id:this.permissions?.company_id?._id,cartinfo:1,created_at:dateTime});
+           this.mydb.update('getlistcart', { data: this.cartdata1 , user: this.permissions?._id,company_id:this.permissions?.company_id?._id,cartinfo:2,created_at:dateTime});
            setTimeout(()=>{                           // <<<---using ()=> syntax
             this.getCartItems() 
             this.toast.success("Successfully item deleted from cart!")
@@ -396,7 +396,7 @@ console.log(this.newcd)
              console.log(this.cartList1)
              const dateTime = new Date();
              this.mydb = new TurtleDB('example');
-            this.mydb.update('getlistcart', { data: this.cartdata1 , user: this.permissions?._id,company_id:this.permissions?.company_id?._id,cartinfo:1,created_at:dateTime});
+            this.mydb.update('getlistcart', { data: this.cartdata1 , user: this.permissions?._id,company_id:this.permissions?.company_id?._id,cartinfo:2,created_at:dateTime});
             setTimeout(()=>{                           
               this.getCartItems() 
               this.toast.success("Successfully item deleted from cart!")
@@ -1239,7 +1239,7 @@ Addmore(){
         const dateTime = new Date();
         //this.mydb.setRemote('http://127.0.0.1:3000');        
          this.mydb = new TurtleDB('example');
-         this.mydb.update('getlistcart', { data: this.cartdata1 , user: this.permissions?._id,company_id:this.permissions?.company_id?._id,cartinfo:1,created_at:dateTime});
+         this.mydb.update('getlistcart', { data: this.cartdata1 , user: this.permissions?._id,company_id:this.permissions?.company_id?._id,cartinfo:2,created_at:dateTime});
          setTimeout(()=>{                           // <<<---using ()=> syntax
           this.getCartItems() 
           this.toast.success('Items Taken Successfully');

@@ -264,7 +264,8 @@ params['company_id']=this.permissions?.company_id?._id
         })
       const dateTime = new Date();
       this.mydb = new TurtleDB('example');
-     this.mydb.update('getlistcart', { data: this.new , user: this.permissions?._id,company_id:this.permissions?.company_id?._id,cartinfo:1,created_at:dateTime});
+     this.mydb.update('getlistcart', { data: this.new , user: this.permissions?._id,company_id:this.permissions?.company_id?._id,cartinfo:2,created_at:dateTime});
+     this.toast.success("cart added successfully")
 
 
         }else {
@@ -300,7 +301,8 @@ params['company_id']=this.permissions?.company_id?._id
         })
           this.mydb = new TurtleDB('example');
            this.mydb.update('getlistcart', { data: this.new , user: this.permissions?._id,company_id:this.permissions?.company_id?._id,cartinfo:2,created_at:dateTime});
-     
+           this.toast.success("cart added successfully")
+
         }
        // let tempArray =[];
       //   for (let i = 0; i < this.cartdata1?.cart?.length; i++) {

@@ -77,14 +77,14 @@ getprofile(){
     console.log(this.profile)
     console.log(this.profile['language_prefered']['language'])
     this.mydb = new TurtleDB('example');
-    this.mydb.setRemote('http://13.232.128.227:3000');
+   // this.mydb.setRemote('http://13.232.128.227:3000');
     this.mydb.create({ _id: 'profile', users: res.data });
     //alert("sync")
-      this.mydb.sync();
-      if(this.mydb.sync()){
-        alert("syncedon")
+      // this.mydb.sync();
+      // if(this.mydb.sync()){
+      //   alert("syncedon")
 
-      }
+      // }
     const img=this.profile.profile_pic
     console.log(img)
     this.getBase64ImageFromURL(img).subscribe(base64data => {    
@@ -170,19 +170,19 @@ return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
       "oldpassword": this.cpForm.value.oldpassword,
       "newpassword": this.cpForm.value.newpassword
     }
-    let dataa={
-      "oldpassword": this.cpForm.value.oldpassword,
-      "newpassword": this.cpForm.value.newpassword,
-      "id": this.profiledetails._id
-    }
-    this.mydb = new TurtleDB('example');
-    this.mydb.create({ _id: 'changepwd', data: dataa });
-    console.log(data)
+    // let dataa={
+    //   "oldpassword": this.cpForm.value.oldpassword,
+    //   "newpassword": this.cpForm.value.newpassword,
+    //   "id": this.profiledetails._id
+    // }
+    // this.mydb = new TurtleDB('example');
+    // this.mydb.create({ _id: 'changepwd', data: dataa });
+    // console.log(data)
     if (this.cpForm.valid) {
     if(this.cpForm.value.oldpassword ==this.cpForm.value.newpassword){
       this.toast.error('Old password and New password is same,Please enter valid New password')
     }else{
-    if(window.navigator.onLine == true){
+   // if(window.navigator.onLine == true){
     this.crud.post(appModels.CHANGEPWD + this.profiledetails._id, data).subscribe(res => {
       console.log(res)
         this.toast.success('Password changed successfully')
@@ -193,13 +193,13 @@ return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
         this.toast.error('Current password is incorrect')
       }
     })
-  }else{
-    this.mydb = new TurtleDB('example');
-      this.mydb.update('changepwd', { data: data });
-      this.toast.success('Password changed successfully')
-     // this.mydb.setRemote('http://127.0.0.1:3000');
-    // this.mydb.sync();
-  }
+  // }else{
+  //   this.mydb = new TurtleDB('example');
+  //     this.mydb.update('changepwd', { data: data });
+  //     this.toast.success('Password changed successfully')
+  //    // this.mydb.setRemote('http://127.0.0.1:3000');
+  //   // this.mydb.sync();
+  // }
 }
   }
   //this.spinner.hide();

@@ -708,7 +708,7 @@ export class ItemhistoryComponent implements OnInit {
           const dateTime = new Date();
       
           this.mydb = new TurtleDB('example');
-          this.mydb.update('getlistcart', { data: this.cartdata1 , user: this.permissions?._id,company_id:this.permissions?.company_id?._id,cartinfo:1,created_at:dateTime});
+          this.mydb.update('getlistcart', { data: this.cartdata1 , user: this.permissions?._id,company_id:this.permissions?.company_id?._id,cartinfo:2,created_at:dateTime});
           this.toast.success('Items Returned Successfully');
 
           // this.newcart = this.cartdata1.cart

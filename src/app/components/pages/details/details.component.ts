@@ -345,7 +345,8 @@ console.log(this.machine)
 console.log(this.new)
               const dateTime = new Date();
               this.mydb = new TurtleDB('example');
-             this.mydb.update('getlistcart', { data: this.new , user: this.permissions?._id,company_id:this.permissions?.company_id?._id,cartinfo:1,created_at:dateTime});
+             this.mydb.update('getlistcart', { data: this.new , user: this.permissions?._id,company_id:this.permissions?.company_id?._id,cartinfo:2,created_at:dateTime});
+             this.toast.success("cart added successfully")
 
 
                 }else {
@@ -382,7 +383,8 @@ console.log(this.new)
                console.log(this.new) 
                   this.mydb = new TurtleDB('example');
                    this.mydb.update('getlistcart', { data: this.new , user: this.permissions?._id,company_id:this.permissions?.company_id?._id,cartinfo:2,created_at:dateTime});
-             
+                   this.toast.success("cart added successfully")
+
                 }
              
            
@@ -464,7 +466,7 @@ console.log(this.new)
                         })
                       const dateTime = new Date();
                       this.mydb = new TurtleDB('example');
-                     this.mydb.update('getlistcart', { data: this.new , user: this.permissions?._id,company_id:this.permissions?.company_id?._id,cartinfo:1,created_at:dateTime});
+                     this.mydb.update('getlistcart', { data: this.new , user: this.permissions?._id,company_id:this.permissions?.company_id?._id,cartinfo:2,created_at:dateTime});
         
         
                         }else {
@@ -500,7 +502,8 @@ let hi=this.cartList1.reduce((accumulator, current) => accumulator + current.qty
                         })
                           this.mydb = new TurtleDB('example');
                            this.mydb.update('getlistcart', { data: this.new , user: this.permissions?._id,company_id:this.permissions?.company_id?._id,cartinfo:2,created_at:dateTime});
-                     
+                           this.toast.success("Door open Sucessfully")
+
                         }
                      
                          console.log(this.cartList1)
@@ -554,7 +557,7 @@ let hi=this.cartList1.reduce((accumulator, current) => accumulator + current.qty
                         }
                       const dateTime = new Date();
                       this.mydb = new TurtleDB('example');
-                     this.mydb.update('getlistcart', { data: this.new , user: this.permissions?._id,company_id:this.permissions?.company_id?._id,cartinfo:1,created_at:dateTime});
+                     this.mydb.update('getlistcart', { data: this.new , user: this.permissions?._id,company_id:this.permissions?.company_id?._id,cartinfo:2,created_at:dateTime});
         
         
                         }else {
@@ -588,7 +591,8 @@ let hi=this.cartList1.reduce((accumulator, current) => accumulator + current.qty
                         }
                           this.mydb = new TurtleDB('example');
                            this.mydb.update('getlistcart', { data: this.new , user: this.permissions?._id,company_id:this.permissions?.company_id?._id,cartinfo:2,created_at:dateTime});
-                     
+                           this.toast.success("Door open Sucessfully")
+
                         }
                      
                          console.log(this.cartList1)
