@@ -8,7 +8,9 @@ import { appModels } from 'src/app/services/shared/enum/enum.util';
 import { CookieService } from 'ngx-cookie-service'
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-
+import TurtleDB from 'turtledb';
+import { Observable, Observer } from 'rxjs';
+declare const window:any;
 @Component({
   selector: 'app-mycart',
   templateUrl: './mycart.component.html',
@@ -46,6 +48,17 @@ export class MycartComponent implements OnInit {
   val1: any;
   val2: any;
   dooropen: boolean=false;
+  mydb: any;
+  cartdata1: any;
+  cartList1: any[];
+  onoff: boolean;
+  cart: any;
+  cartnew: any=[];
+  base64Image: string;
+  new: { cart: any; total_quantity: any; _id: any; };
+  data1: { cart: any; total_quantity: any; _id: any; user: any; company_id: any; cartinfo: number; created_at: Date; };
+  newcd: any=[];
+  clickcart: any;
   constructor(private crudService: CrudService,
     private toast: ToastrService, public cookie: CookieService,public router:Router,
     public modalService: NgbModal) { }
@@ -56,11 +69,62 @@ export class MycartComponent implements OnInit {
     // this.takeItems()
   }
   getCartItems() {
+    if(window.navigator.onLine == true){
+      this.onoff=true
     let params: any = {};
     params['company_id']=this.permissions?.company_id?._id
     params['user_id']=this.permissions._id
     this.crudService.get1(appModels.listCart,{params}).pipe(untilDestroyed(this)).subscribe(res => {
       console.log(res)
+      this.cart=res[0].cart
+     for (let i = 0; i < this.cart.length; i++) {
+              if(this.cart[i].item.image_path[0] == undefined){
+        this.cartnew.push({allocation:this.cart[i].allocation,
+          cart_status:this.cart[i].cart_status,item:{
+            image_path:this.cart[i].item.image_path,
+            item_name:this.cart[i].item.item_name,
+            _id:this.cart[i].item._id,
+            image:[],
+          },
+          item_details:this.cart[i].item_details,
+          qty:this.cart[i].qty,_id:this.cart[i]._id,
+        })
+        console.log(this.cartnew)
+      }
+    this.getBase64ImageFromURL(this.cart[i].item.image_path[0]).subscribe(base64data => {    
+    //  console.log(base64data);
+      this.base64Image = 'data:image/jpg;base64,' + base64data;
+     // console.log(this.base64Image)
+
+        this.cartnew.push(
+          {allocation:this.cart[i].allocation,
+          cart_status:this.cart[i].cart_status,
+          item:{
+            image_path:this.cart[i].item.image_path,
+            item_name:this.cart[i].item.item_name,
+            _id:this.cart[i].item._id,
+            image:this.base64Image,
+          },
+          item_details:this.cart[i].item_details,
+         
+          qty:this.cart[i].qty,_id:this.cart[i]._id,
+        
+        })
+      //  console.log(this.cartnew)
+        this.new=({
+          cart:this.cartnew,
+          total_quantity:res[0].total_quantity,
+          _id:res[0]._id
+        })
+      
+     console.log(this.new)
+      this.mydb = new TurtleDB('example');
+      this.mydb.update('getlistcart', { data: this.new , user: this.permissions?._id,company_id:this.permissions?.company_id?._id});
+
+    });
+
+      }
+
       this.item_details = res.item_details
       console.log(this.item_details)
       this.cartdata = res[0]
@@ -70,20 +134,72 @@ export class MycartComponent implements OnInit {
           this.cartList.push(this.cartdata?.cart[i])
         }
       }
-      console.log(this.cartList[0]?.qty)
+      console.log(this.cartList)
       console.log(this.cartList[0]?.item_details?.quantity)
       this.crudService.getcarttotal(this.cartList?.length)
     }, error => {
       this.toast.error(error.message);
     })
-    
+  }else{
+    this.onoff=false
+   // this.mydb.setRemote('http://13.232.128.227:3000');
+    this.mydb = new TurtleDB('example');
+    this.mydb.read('getlistcart').then((doc) =>{console.log(doc)
+        this.cartdata = doc.data
+        this.cartList = [];
+        for (let i = 0; i < this.cartdata?.cart?.length; i++) {
+          if (this.cartdata?.cart[i]['cart_status'] == 1) {
+            this.cartList.push(this.cartdata?.cart[i])
+          }
+        }
+        console.log(this.cartList)
+        this.crudService.getcarttotal(this.cartList?.length)
+
+      } );
+    //  this.mydb.sync();
+
+  }
   }
   
-  
+  getBase64ImageFromURL(url: string) {
+    console.log("its coming")
+    return Observable.create((observer: Observer<string>) => {
+      // create an image object
+      let img = new Image();
+      img.crossOrigin = 'Anonymous';
+      img.src = url;
+      if (!img.complete) {
+          // This will call another method that will create image from url
+          img.onload = () => {
+          observer.next(this.getBase64Image(img));
+          observer.complete();
+        };
+        img.onerror = (err) => {
+           observer.error(err);
+        };
+      } else {
+          observer.next(this.getBase64Image(img));
+          observer.complete();
+      }
+    });
+  }
+  getBase64Image(img: HTMLImageElement) {
+   // We create a HTML canvas object that will create a 2d image
+   var canvas = document.createElement("canvas");
+   canvas.width = img.width;
+   canvas.height = img.height;
+   var ctx = canvas.getContext("2d");
+   // This will draw image    
+   ctx.drawImage(img, 0, 0);
+   // Convert the drawn image to Data URL
+   var dataURL = canvas.toDataURL("image/png");
+  return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+  }
   updateCart(cart, qty,maxqty) {
     localStorage.removeItem("onetimecall")
     this.val1=maxqty
     this.val2=qty
+    console.log(this.val1,this.val2)
     setTimeout(() => {
       if(this.val2>=this.val1){
         this.val2 = this.val1
@@ -96,8 +212,48 @@ export class MycartComponent implements OnInit {
         "cart_id": this.cartdata['_id'],
         "company_id":this.permissions?.company_id?._id
       }
-      this.method(data)
-    
+      if(window.navigator.onLine == true){
+        this.method(data)
+      }else{
+        this.mydb = new TurtleDB('example');
+        this.mydb.read('getlistcart').then((doc) =>{console.log(doc)              
+              this.cartdata1 = doc.data           
+            this.cartList1 = [];
+            let tempArray =[];
+           
+            for (let i = 0; i < this.cartdata1?.cart?.length; i++) {
+              if(cart.item._id == this.cartdata1?.cart[i].item._id && !tempArray.includes(this.cartdata1?.cart[i].item._id) &&  doc.data.cart[i]['cart_status'] == 1  ){
+                tempArray.push(this.cartdata1?.cart[i].item._id);
+               // doc.cart.cart[i]['cart_status'] =  3
+                doc.data.cart[i]['qty']=Number(this.val2)
+                console.log(this.val2)
+                
+              }
+            }
+            for (let i = 0; i < this.cartdata1?.cart?.length; i++) {
+              if (this.cartdata1?.cart[i]['cart_status'] == 1) {
+                this.cartList1.push(this.cartdata1?.cart[i])
+                let hi=this.cartList1.reduce((accumulator, current) => accumulator + current.qty, 0);
+                console.log(hi)
+                doc.data.total_quantity=hi   
+              }               
+            }
+            console.log("Updated cart value",doc.data)   
+            this.cartdata1 = doc.data;
+            const dateTime = new Date();
+            //this.mydb.setRemote('http://127.0.0.1:3000');        
+             this.mydb = new TurtleDB('example');
+             this.mydb.update('getlistcart', { data: this.cartdata1 , user: this.permissions?._id,company_id:this.permissions?.company_id?._id,cartinfo:1,created_at:dateTime});
+             setTimeout(()=>{                           // <<<---using ()=> syntax
+              this.getCartItems() 
+              this.toast.success("Cart Updated Successfully!")
+              // this.mydb.sync();
+              // if(this.mydb.sync()){
+              //   alert("synced")
+              // }
+              }, 3000);
+          } );  
+      }
     }, 10000);
      }
   method(data) {
@@ -120,6 +276,8 @@ if(!localStorage.getItem("onetimecall")){
         "item_id": [cart.item._id],
         "company_id": this.permissions?.company_id?._id
       }
+      console.log(data)
+      if(window.navigator.onLine == true){
       this.crudService.update2('cart/deleteItemFromCart', data).pipe(untilDestroyed(this)).subscribe(res => {
         console.log(res)
         this.toast.success(res.message);
@@ -127,7 +285,55 @@ if(!localStorage.getItem("onetimecall")){
       }, error => {
         this.toast.error(error.message);
       })
+    }else{
+      console.log(window.navigator.onLine)
+      this.mydb = new TurtleDB('example');
+      this.mydb.read('getlistcart').then((doc) =>{console.log(doc)              
+            this.cartdata1 = doc.data           
+          this.cartList1 = [];
+          let tempArray =[];
+          for (let i = 0; i < this.cartdata1?.cart?.length; i++) {
+            if( this.cartdata1?.cart[i]['cart_status'] == 1 && cart.item._id == this.cartdata1?.cart[i].item._id && !tempArray.includes(this.cartdata1?.cart[i].item._id)){
+              tempArray.push(this.cartdata1?.cart[i].item._id);
+              // doc.data.cart[i]['cart_status'] =  3
+              //this.cartdata1.cart.pop([i])
+            //  console.log(this.cartdata1.cart.pop([i]))
+             // doc.cart.cart[i]['qty']=this.qut
+            
+
+this.newcd = this.cartdata1.cart.filter((item) => item.item.id !== cart.item._id && item.cart_status !==1);
+console.log(this.newcd)
+            }
+          }
+          this.cartdata1=this.newcd
+          console.log("Updated cart value",this.cartdata1)   
+          for (let i = 0; i < this.cartdata1?.cart?.length; i++) {
+          if (this.cartdata1?.cart[i]['cart_status'] == 1) {
+
+            this.cartList1.push(this.cartdata1?.cart[i])
+            let hi=this.cartList1.reduce((accumulator, current) => accumulator + current.qty, 0);
+            console.log(hi)
+            doc.data.total_quantity=hi   
+          }      
+    
+          
+        }
+
+           const dateTime = new Date();
+           this.mydb = new TurtleDB('example');
+           this.mydb.update('getlistcart', { data: this.cartdata1 , user: this.permissions?._id,company_id:this.permissions?.company_id?._id,cartinfo:1,created_at:dateTime});
+           setTimeout(()=>{                           // <<<---using ()=> syntax
+            this.getCartItems() 
+            this.toast.success("Successfully item deleted from cart!")
+            }, 3000);
+         // this.crudService.getcarttotal(this.cartList1?.length)
+
+         // this.router.navigate(['pages/details'])
+        } );  
+  
     }
+  }    
+  
   }
   modaldismiss() {
     this.machineCubeID = []
@@ -151,6 +357,7 @@ if(!localStorage.getItem("onetimecall")){
           "cart_id": this.cartdata['_id'],
           "item_id": this.selected3,
         }
+        if(window.navigator.onLine == true){
         this.crudService.update2('cart/deleteItemFromCart', data).pipe(untilDestroyed(this)).subscribe(res => {
           console.log(res)
           this.toast.success(res.message);
@@ -159,7 +366,46 @@ if(!localStorage.getItem("onetimecall")){
         }, error => {
           this.toast.error(error.message);
         })
+      }else{
+        console.log(window.navigator.onLine)
+        this.mydb = new TurtleDB('example');
+        this.mydb.read('getlistcart').then((doc) =>{console.log(doc)              
+              this.cartdata1 = doc.data           
+            this.cartList1 = [];
+            let tempArray =[];
+            for (let i = 0; i < this.cartdata1?.cart?.length; i++) {
+              if(this.selected3 == this.cartdata1?.cart[i].item._id  &&  this.cartdata1?.cart[i]['cart_status'] ==1 && !tempArray.includes(this.cartdata1?.cart[i].item._id)){
+                tempArray.push(this.cartdata1?.cart[i].item._id);
+               // doc.data.cart[i]['cart_status'] =  3
+                this.newcd = this.cartdata1.cart.filter((item) => item.item.id !== this.selected3 && item.cart_status !==1);
+                console.log(this.newcd)               
+              }
+            }
+            this.cartdata1 = this.newcd ;
+            console.log("Updated cart value",this.cartdata1)   
+           
+            for (let i = 0; i < this.cartdata1?.cart?.length; i++) {
+            if (this.cartdata1?.cart[i]['cart_status'] == 1) {
+              this.cartList1.push(this.cartdata1?.cart[i])
+              let hi=this.cartList1.reduce((accumulator, current) => accumulator + current.qty, 0);
+              console.log(hi)
+              doc.data.total_quantity=hi 
+            }               
+          }
+     
+             console.log(this.cartList1)
+             const dateTime = new Date();
+             this.mydb = new TurtleDB('example');
+            this.mydb.update('getlistcart', { data: this.cartdata1 , user: this.permissions?._id,company_id:this.permissions?.company_id?._id,cartinfo:1,created_at:dateTime});
+            setTimeout(()=>{                           
+              this.getCartItems() 
+              this.toast.success("Successfully item deleted from cart!")
+              this.selected3 = [];
+              }, 3000);
+          } );  
       }
+    }
+      
     }
   }
 
@@ -167,6 +413,7 @@ if(!localStorage.getItem("onetimecall")){
 
 
   toggle(cart, event: MatCheckboxChange) {
+    this.clickcart=cart
     if (event.checked) {
       this.selected3.push(cart.item._id);
     } else {
@@ -175,7 +422,7 @@ if(!localStorage.getItem("onetimecall")){
         this.selected3.splice(index, 1);
       }
     }
-    console.log(cart.item._id, event.checked);
+    console.log(cart.item._id, event.checked,cart);
   }
 
   exists(cart) {
@@ -392,6 +639,8 @@ Addmore(){
   TakeOrReturnItems: any[] = []
   machinesList = []
   async takeItems(item) {
+    if(window.navigator.onLine == true){
+
     let params: any = {};
     params['company_id']=this.permissions?.company_id?._id
     params['user_id']=this.permissions?._id
@@ -672,11 +921,283 @@ Addmore(){
     // }
   
       })
-   
+    }else{
+      this.mydb = new TurtleDB('example');
+      this.mydb.read('getUserTakenQuantity').then(async (doc) =>{console.log(doc)
+        const res=doc.data
+        if(res?.data.length!=0){
+          this.totalquantity=res['data']
+          this.totalquantity.trasaction_qty
+          console.log(this.totalquantity)
+         this.qtys=0
+         for(let i=0;i<this.cartList?.length;i++){
+          this.qtys +=this.cartList[i]?.qty
+           }
+        console.log(this.qtys)
+        console.log(this.permissions?.item_max_quantity>=this.totalquantity[0]?.trasaction_qty + this.qtys,this.permissions?.item_max_quantity,this.totalquantity[0]?.trasaction_qty + this.qtys)
+            if(this.permissions?.item_max_quantity>=this.totalquantity[0]?.trasaction_qty + this.qtys){
+              this.dooropen=false;
+              this.machineCubeID = []
+              this.machineColumnID =[]
+              this.machineDrawID =[]
+              this.machineCompartmentID = []
+              this.machineStatus = []
+              this.msg=""
+              this.msgg=""
+  
+              this.modalService.open(item,{backdrop:false});
+              let totalMachinesList = await this.formatMachineData()
+              let machinesList = await this.groupbyData(totalMachinesList)
+              console.log(machinesList)
+              //call allDevInfo once
+              // await this.allDeviceInfo()
+              // for loop for all machines lids
+              let totalMachineUsage = []
+              for await (let machine of machinesList) {
+          
+                // Record Total Machine Usage
+                let eachColumnUsage = {}
+                eachColumnUsage['cube_id'] = machine.cube_id
+                eachColumnUsage['column_id'] = machine.column_id
+                eachColumnUsage['bin_id'] = machine.bin_id
+                eachColumnUsage['compartment_id'] = machine.compartment_id
+                // Record Total Machine Usage
+                let maxCompartmentNo = Math.max(...machine.compartment_id)
+                machine['compartment_id'] = maxCompartmentNo
+                console.log('maxCompartmentNo')
+                console.log(maxCompartmentNo)
+                let singleDeviceInfo = await this.singleDeviceInfo(machine)
+                let status = singleDeviceInfo.details.singledevinfo.column[0]['status'][0]
+                this.machineStatus=status
+                console.log('Column : ' + machine.column_id + '' + 'drawer: ' + machine.bin_id + ' ' + 'Compartment: ' + machine.compartment_id)
+                console.log(status)
+                this.machineCubeID = machine.cube_id
+                this.machineColumnID = machine.column_id
+                this.machineDrawID = machine.bin_id
+                this.machineCompartmentID = machine.compartment_id
+                this.machineStatus = status
+                if (status == 'Locked' || status == 'Closed' || status == 'Unlocked' || status == 'Unknown') {
+                  // Lock that Column API, machine._id
+                  if (status == 'Closed' || status == 'Unlocked') {
+                    await this.crudService.post('machine/lockBin', machine).pipe(untilDestroyed(this)).toPromise()
+                    await this.sleep(1000)
+                  }
+          
+                  // unlock Column API, machine._id, machine.column_id, machine.compartment_id
+                  await this.crudService.post('machine/unlockBin', machine).pipe(untilDestroyed(this)).toPromise()
+                  // Record Total Machine Usage
+                  let t0 = performance.now();
+                  await this.sleep(10000)
+                  let apiHitTimes = 0
+                  let machineColumnStatus = false
+                  while (apiHitTimes < 15 && !machineColumnStatus) {
+                    console.log('********************* API Hit Times ************** ' + machineColumnStatus)
+                    console.log(' Machine Status : ' + machineColumnStatus)
+                    let singleDeviceInfo = await this.singleDeviceInfo(machine)
+                    let status = singleDeviceInfo.details.singledevinfo.column[0]['status'][0]
+                    this.machineStatus=status
+                    console.log('inside while loop status bin ' + machine.bin_id +" "+ status)
+                    if (status == 'Closed' || status == 'Locked' || status == 'Unknown') {
+                      await this.sleep(9000)
+                      await this.crudService.post('machine/lockBin', machine).pipe(untilDestroyed(this)).toPromise()
+                      machineColumnStatus = true
+                      await this.TakeOrReturnItems.push(machine)
+                    }
+                    //Drawer current status, (opening, opened, closing, closed)
+                    else if (status !== 'Closed' && status !== 'Locked' && status == 'Unknown') {
+                      console.log('Current Status = ' + status)
+                      // this.msg='Current Status = ' + status
+                      this.machineStatus=status
+                      // ColumnActionStatus = singleDeviceInfo
+                    }
+                    //set delay time
+                    await this.sleep(10000)
+                    if (status == 'Unlocked' && apiHitTimes == 14) {
+                      await this.crudService.post('machine/lockBin', machine).pipe(untilDestroyed(this)).toPromise()
+                    }
+                    apiHitTimes++
+                  }
+                  // if user does not closed after ceratin count of times API hit
+                  if (apiHitTimes == 10 && machineColumnStatus !== true) {
+                    console.log('Application waiting time over for bin ' + machine.bin_id + 'in column ' + machine.column_id)
+          
+                  }
+                  let t1 = performance.now();
+                  eachColumnUsage['column_usage'] = t1 - t0
+                  totalMachineUsage.push(eachColumnUsage)
+                  await this.sleep(5000)
+                }
+                // break for loop if single device info is unknown
+                else {
+                  console.log('Machine status unknown ' + status)
+                  this.msg='Machine status unknown ' + status
+                  console.log('Close all drawers properly and click take now')
+                  this.msg='Close all drawers properly and click take now'
+          
+                  break
+                }
+              }
+              const successTake = await totalMachinesList.filter(array => this.TakeOrReturnItems.some(filter => filter.column_id === array.column_id && filter.bin_id === array.bin_id));
+          
+              console.log(successTake)
+              if (successTake.length == 0) {
+                console.log('Machine status unknown No Item taken')
+                this.msgg='Machine status unknown No Item taken'
+                this.dooropen=true
+              } else if (successTake.length == totalMachinesList.length) {
+                console.log(successTake.length + ' items Taken successfully')
+                this.msgg=successTake.length + ' items Taken successfully'
+                await this.addMachineUsage(totalMachineUsage)
+          
+                await this.updateAfterTakeOrReturn(successTake)
+              } else if (successTake.length < totalMachinesList.length) {
+                console.log(successTake.length + ' items Taken successfully \n' + (totalMachinesList.length - successTake.length) + ' items failed return')
+                this.msgg=successTake.length + ' items Taken successfully \n' 
+                await this.addMachineUsage(totalMachineUsage)
+          
+                await this.updateAfterTakeOrReturn(successTake)
+              }
+            }else{
+              this.toast.error("You have exceeded item maximum quantity taken per day.")
+            }
+        }else{
+         this.qtys=0
+         for(let i=0;i<this.cartList?.length;i++){
+          this.qtys +=this.cartList[i]?.qty
+           }
+           console.log(this.qtys)
+           console.log(this.permissions?.item_max_quantity>= 0 + this.qtys,this.permissions?.item_max_quantity,0 + this.qtys)
+            if(this.permissions?.item_max_quantity>= 0 + this.qtys){
+              this.dooropen=false;
+              this.machineCubeID = []
+              this.machineColumnID =[]
+              this.machineDrawID =[]
+              this.machineCompartmentID = []
+              this.machineStatus = []
+              this.msg=""
+              this.msgg=""
+              this.modalService.open(item,{backdrop:false});
+              let totalMachinesList = await this.formatMachineData()
+              let machinesList = await this.groupbyData(totalMachinesList)
+              console.log(machinesList)
+              //call allDevInfo once
+              // await this.allDeviceInfo()
+              // for loop for all machines lids
+              let totalMachineUsage = []
+              for await (let machine of machinesList) {
+          
+                // Record Total Machine Usage
+                let eachColumnUsage = {}
+                eachColumnUsage['cube_id'] = machine.cube_id
+                eachColumnUsage['column_id'] = machine.column_id
+                eachColumnUsage['bin_id'] = machine.bin_id
+                eachColumnUsage['compartment_id'] = machine.compartment_id
+                // Record Total Machine Usage
+                let maxCompartmentNo = Math.max(...machine.compartment_id)
+                machine['compartment_id'] = maxCompartmentNo
+                console.log('maxCompartmentNo')
+                console.log(maxCompartmentNo)
+                let singleDeviceInfo = await this.singleDeviceInfo(machine)
+                let status = singleDeviceInfo.details.singledevinfo.column[0]['status'][0]
+                this.machineStatus=status
+                console.log('Column : ' + machine.column_id + '' + 'drawer: ' + machine.bin_id + ' ' + 'Compartment: ' + machine.compartment_id)
+                console.log(status)
+                this.machineCubeID = machine.cube_id
+                this.machineColumnID = machine.column_id
+                this.machineDrawID = machine.bin_id
+                this.machineCompartmentID = machine.compartment_id
+                this.machineStatus = status
+                if (status == 'Locked' || status == 'Closed' || status == 'Unlocked' || status == 'Unknown') {
+                  // Lock that Column API, machine._id
+                  if (status == 'Closed' || status == 'Unlocked') {
+                    await this.crudService.post('machine/lockBin', machine).pipe(untilDestroyed(this)).toPromise()
+                    await this.sleep(1000)
+                  }
+          
+                  // unlock Column API, machine._id, machine.column_id, machine.compartment_id
+                  await this.crudService.post('machine/unlockBin', machine).pipe(untilDestroyed(this)).toPromise()
+                  // Record Total Machine Usage
+                  let t0 = performance.now();
+                  await this.sleep(10000)
+                  let apiHitTimes = 0
+                  let machineColumnStatus = false
+                  while (apiHitTimes < 15 && !machineColumnStatus) {
+                    console.log('********************* API Hit Times ************** ' + machineColumnStatus)
+                    console.log(' Machine Status : ' + machineColumnStatus)
+                    let singleDeviceInfo = await this.singleDeviceInfo(machine)
+                    let status = singleDeviceInfo.details.singledevinfo.column[0]['status'][0]
+                    console.log('inside while loop status bin ' + machine.bin_id + status)
+                    this.machineStatus = status
+                    if (status == 'Closed' || status == 'Locked' || status == 'Unknown') {
+                      await this.sleep(9000)
+                      await this.crudService.post('machine/lockBin', machine).pipe(untilDestroyed(this)).toPromise()
+                      machineColumnStatus = true
+                      await this.TakeOrReturnItems.push(machine)
+                    }
+                    //Drawer current status, (opening, opened, closing, closed)
+                    else if (status !== 'Closed' && status !== 'Locked' && status == 'Unknown') {
+                      console.log('Current Status = ' + status)
+                      this.machineStatus = status
+                      this.msg='Current Status = ' + status
+                      // ColumnActionStatus = singleDeviceInfo
+                    }
+                    //set delay time
+                    await this.sleep(10000)
+                    if (status == 'Unlocked' && apiHitTimes == 14) {
+                      await this.crudService.post('machine/lockBin', machine).pipe(untilDestroyed(this)).toPromise()
+                    }
+                    apiHitTimes++
+                  }
+                  // if user does not closed after ceratin count of times API hit
+                  if (apiHitTimes == 10 && machineColumnStatus !== true) {
+                    console.log('Application waiting time over for bin ' + machine.bin_id + 'in column ' + machine.column_id)
+          
+                  }
+                  let t1 = performance.now();
+                  eachColumnUsage['column_usage'] = t1 - t0
+                  totalMachineUsage.push(eachColumnUsage)
+                  await this.sleep(5000)
+                }
+                // break for loop if single device info is unknown
+                else {
+                  console.log('Machine status unknown ' + status)
+                  this.msg='Machine status unknown ' + status
+                  console.log('Close all drawers properly and click take now')
+                  this.msg='Close all drawers properly and click take now'
+          
+                  break
+                }
+              }
+              const successTake = await totalMachinesList.filter(array => this.TakeOrReturnItems.some(filter => filter.column_id === array.column_id && filter.bin_id === array.bin_id));
+          
+              console.log(successTake)
+              if (successTake.length == 0) {
+                console.log('Machine status unknown No Item taken')
+                this.msgg='Machine status unknown No Item taken'
+              } else if (successTake.length == totalMachinesList.length) {
+                console.log(successTake.length + ' Items Taken Successfully')
+                this.msgg=successTake.length + ' Items Taken Successfully'
+                await this.addMachineUsage(totalMachineUsage)
+          
+                await this.updateAfterTakeOrReturn(successTake)
+              } else if (successTake.length < totalMachinesList.length) {
+                console.log(successTake.length + ' Items Taken Successfully \n' + (totalMachinesList.length - successTake.length) + ' items failed return')
+                this.msgg=successTake.length + ' Items Taken Successfully \n'
+                await this.addMachineUsage(totalMachineUsage)
+          
+                await this.updateAfterTakeOrReturn(successTake)
+              }
+            }else{
+              this.toast.error("You have exceeded item maximum quantity taken per day.")
+            }
+        }
+      })
+    }
   }
 
   //Update Cart and Stock Allocation documents after item Take/Return
   async updateAfterTakeOrReturn(successTake: any) {
+    if(window.navigator.onLine == true){
     let data = {
       cart_id: this.cartdata._id,
       take_items: successTake,
@@ -689,9 +1210,51 @@ Addmore(){
         this.dooropen=true
       }
     })
+  }else{
+    this.mydb = new TurtleDB('example');
+    this.mydb.read('getlistcart').then((doc) =>{console.log(doc)              
+          this.cartdata1 = doc.data           
+        this.cartList1 = [];
+        let tempArray =[];
+       
+        for (let i = 0; i < this.cartdata1?.cart?.length; i++) {
+          if(this.clickcart.item._id == this.cartdata1?.cart[i].item._id && !tempArray.includes(this.cartdata1?.cart[i].item._id) &&  doc.data.cart[i]['cart_status'] == 1  ){
+            tempArray.push(this.cartdata1?.cart[i].item._id);
+            doc.cart.cart[i]['cart_status'] =  2
+          //  doc.data.cart[i]['qty']=Number(this.val2)
+          //  console.log(this.val2)
+            
+          }
+        }
+        for (let i = 0; i < this.cartdata1?.cart?.length; i++) {
+          if (this.cartdata1?.cart[i]['cart_status'] == 1) {
+            this.cartList1.push(this.cartdata1?.cart[i])
+            let hi=this.cartList1.reduce((accumulator, current) => accumulator + current.qty, 0);
+            console.log(hi)
+            doc.data.total_quantity=hi   
+          }               
+        }
+        console.log("Updated cart value",doc.data)   
+        this.cartdata1 = doc.data;
+        const dateTime = new Date();
+        //this.mydb.setRemote('http://127.0.0.1:3000');        
+         this.mydb = new TurtleDB('example');
+         this.mydb.update('getlistcart', { data: this.cartdata1 , user: this.permissions?._id,company_id:this.permissions?.company_id?._id,cartinfo:1,created_at:dateTime});
+         setTimeout(()=>{                           // <<<---using ()=> syntax
+          this.getCartItems() 
+          this.toast.success('Items Taken Successfully');
+          // this.mydb.sync();
+          // if(this.mydb.sync()){
+          //   alert("synced")
+          // }
+          }, 3000);
+      } );  
+  }
   }
 
   async addMachineUsage(data) {
+    if(window.navigator.onLine == true){
+
     console.log(data)
     this.crudService.post(`dashboard/machineUsageAdd`, data).pipe().subscribe(async (res) => {
       console.log(res)
@@ -699,6 +1262,9 @@ Addmore(){
         // this.toast.success('machine Usage Added Successfully...');
       }
     })
+  }else{
+    console.log(data)
+  }
   }
 
 

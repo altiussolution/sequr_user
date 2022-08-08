@@ -15,8 +15,12 @@
   </div>
   <div class="row mx-0">
     <div class="as-card " *ngFor="let cart of itemhistorycart;let i=index">
-      <div class="">
+      <div class="" *ngIf="onoff === true">
         <img src="{{cart?.item?.image_path}}" onError="this.src='../../../assets/img/errorimage.png'">
+        <!-- <div class="as-product-img" style="background-image: url({{cart?.item?.image_path}});"></div> -->
+      </div>
+      <div class="" *ngIf="onoff === false">
+        <img [src]="cart.item.image" onError="this.src='../../../assets/img/errorimage.png'">
         <!-- <div class="as-product-img" style="background-image: url({{cart?.item?.image_path}});"></div> -->
       </div>
 

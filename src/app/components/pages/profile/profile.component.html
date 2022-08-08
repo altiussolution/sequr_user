@@ -6,8 +6,11 @@
   </div>
   <div class="m-auto d-flex as-user-bg">
     <div class="as-shadow asbg-1">
-      <div class="as-user">
+      <div class="as-user" *ngIf="onoff === true">
         <img  src="{{profile?.profile_pic}}" class="as-fit" height="200" width="200px" onError="this.src='../../../assets/img/user.png'"> 
+      </div>
+      <div class="as-user" *ngIf="onoff === false">
+        <img   [src]="profilepic" class="as-fit" height="200" width="200px" onError="this.src='../../../assets/img/user.png'"> 
       </div>
       <div class="mx-auto text-center pt-3 mb-4">
         <label class="as-font-36 ">{{profile?.employee_id}}</label>

@@ -6,10 +6,16 @@
                 <div class="image-gallery">
                     <aside class="thumbnails thumb_left">
                         <ul>
-                            <li>
+                            <li  *ngIf="onoff === true">
                                 <a class="selected thumbnail" *ngFor="let data of items.image_path">
                                     <img  src="{{data}}" (click)="showimg(data)">
                       <!-- <div class="thumbnail-image" style="background-image: url({{data}});" (click)="showimg(data)"></div> -->
+                  </a>
+
+                            </li>
+                            <li *ngIf="onoff === false">
+                                <a class="selected thumbnail" >
+                                    <img  [src]="items.image" (click)="showimg(items.image)">
                   </a>
                             </li>
                         </ul>
@@ -67,7 +73,7 @@
                         Machine Name
                     </div>
                     <div>
-                        {{cube?.cube_name}}
+                        {{machine?.cube?.cube_name}}
                     </div>
                 </div>
                 <div class="as-details-txt">
@@ -75,7 +81,7 @@
                         Column ID
                     </div>
                     <div class="text-center">
-                        {{bin?.bin_id}}
+                        {{machine?.bin?.bin_id}}
                     </div>
                 </div>
                 <div class="as-details-txt">
@@ -83,7 +89,7 @@
                         Draw ID
                     </div>
                     <div class="text-center">
-                        {{compartment?.compartment_id}}
+                        {{machine?.compartment?.compartment_id}}
                     </div>
                 </div>
             </div>

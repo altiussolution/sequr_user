@@ -4,6 +4,9 @@ import { CrudService } from 'src/app/services/crud.service';
 import { appModels } from 'src/app/services/shared/enum/enum.util';
 import { ToastrService } from 'ngx-toastr';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import TurtleDB from 'turtledb';
+import { Observable, Observer } from 'rxjs';
+declare const window:any;
 
 
 @Component({
@@ -40,18 +43,80 @@ export class ProductslistComponent implements OnInit {
   kitdatas1: any;
   qtyss: number;
   dooropen: boolean=false;
+  mydb: any;
+  kitting: any=[];
+  base64Image: any=[];
+  kittingnew: any=[];
+  kit1: any=[];
+  kitnewdata: any;
+  onoff: boolean;
+  hlo2: any;
+  hlo:any=[];
+  new: { Cart: any; Kits: (hlo: any) => void; status: boolean; };
+  dateTime: Date;
   constructor(public crud: CrudService, private toast: ToastrService,public modalService: NgbModal) { }
 
   ngOnInit(): void {
     this.permissions=JSON.parse(localStorage.getItem("personal"))
-    let params: any = {};
-    params['company_id']=this.permissions?.company_id?._id
-    this.crud.get1(appModels.KITTINGLIST,{params}).pipe(untilDestroyed(this)).subscribe((res: any) => {
-      console.log(res)
-      this.kit = res.data
-      this.getData({ pageIndex: this.page, pageSize: this.size });
-    })
+
+    if(window.navigator.onLine == true){
+      this.onoff=true
+
+      let params: any = {};
+      params['company_id']=this.permissions?.company_id?._id
+      this.crud.get1(appModels.KITTINGLIST,{params}).pipe(untilDestroyed(this)).subscribe((res: any) => {
+        //console.log(res)
+        this.kit = res.data
+    
+      //  this.hlo2 = this.kit.filter(v => v.kit_data.filter(k => k.item.image_path[0] == this.getBase64Image(k.item.image_path[0])));
+
+        for (let i = 0; i < this.kit.length; i++) {
+   
+          for (let j = 0; j < this.kit[i].kit_data.length; j++) {
+          // //console.log(i,j,this.kit[i].kit_data.length-1)
+         //  //console.log(this.kit[i].kit_data[j].item.image_path[0])itemlis
+
+            // this.kitting=[]
+            this.getBase64ImageFromURL(this.kit[i].kit_data[j].item.image_path[0]).subscribe(base64data => {    
+              ////console.log(base64data);
+              this.base64Image.push( {image:'data:image/jpg;base64,' + base64data,name:this.kit[i].kit_data[j].item.item_name});
+
+              //console.log(this.base64Image)
+    
+          
+            });
+
+  
+      
+    }
+        }
+     setTimeout(() => {
+        const hlo2 = this.kit.filter(v => v.kit_data.filter((k,index) => this.base64Image.map((val,index)=> {val.name == k.item.item_name ? k.item.image_path[0] = val.image:val.image})));
+
+
+    this.mydb = new TurtleDB('example');
+this.mydb.create({ _id: 'kitting', kit: hlo2 });
+     }, 12000); 
+
+
+
+        this.getData({ pageIndex: this.page, pageSize: this.size });
+      })
+    }else{
+      this.onoff=false
+        this.mydb = new TurtleDB('example');
+        this.mydb.read('kitting').then((doc) =>{//console.log(doc)
+            this.data = doc.kit
+            //console.log(this.data)
+             // this.mydb.setRemote('http://127.0.0.1:3000');
+             // this.mydb.sync();
+    
+          } );
+      
+    }
+    
   }
+
   modaldismiss() {
     this.machineCubeID = []
     this.machineColumnID =[]
@@ -63,11 +128,18 @@ export class ProductslistComponent implements OnInit {
     this.ngOnInit()
   }
   addkitcart(_id: any, data,modal) {
+    //console.log(this.hlo2)
+
+    if(window.navigator.onLine == true){
+      // this.mydb = new TurtleDB('example');
+      // this.mydb.create({ _id: 'addkittocartid', data: _id });
     let params: any = {};
     params['company_id']=this.permissions?.company_id?._id
     params['user_id']=this.permissions?._id
     this.crud.get1("log/getUserTakenQuantity",{params}).pipe(untilDestroyed(this)).subscribe(async res => {
-      console.log(res)
+      //console.log(res)
+      // this.mydb = new TurtleDB('example');
+      // this.mydb.create({ _id: 'getUserTakenQuantity', data: res });
       if(res?.data?.length!=0){
         this.totalquantity=res['data']
         this.totalquantity.trasaction_qty
@@ -75,13 +147,13 @@ export class ProductslistComponent implements OnInit {
         this.qtyss=0
         for(let j=0;j<this.kitdatas1?.kit_data?.length;j++){
           this.qtyss +=this.kitdatas1?.kit_data[j]?.kit_item_qty;
-          console.log(this.qtyss)
+          //console.log(this.qtyss)
         }
       if(this.permissions?.item_max_quantity>=this.totalquantity[0]?.trasaction_qty + this.qtyss){
             this.highkitqty=[];
-            console.log(data)
+            //console.log(data)
              this.kitdatas=data
-             console.log(this.kitdatas.kit_data)
+             //console.log(this.kitdatas.kit_data)
              this.kits = this.kitdatas.kit_data.map(m => { 
             if(m.kit_item_qty > m.quantity) { 
              this.highkitqty.push(m?.kit_item_qty+'>'+m?.qty)
@@ -89,14 +161,14 @@ export class ProductslistComponent implements OnInit {
            }
           return true;
              })
-         console.log(this.kits)
+         //console.log(this.kits)
          this.List = this.kits.filter(item => item === false);
-         console.log(this.List)
+         //console.log(this.List)
          if(this.List?.length ==0){
           this.dooropen=false;
            this.modalService.open(modal,{backdrop:false});
             this.crud.post(appModels.ADDKITCART + _id).pipe(untilDestroyed(this)).subscribe(async (res: any) => {
-               console.log(res)
+               //console.log(res)
                if (res != "") {
                  if (res['message'] == "Successfully added into cart!") {
                   //  this.toast.success("Kitting cart added successfully")
@@ -122,13 +194,13 @@ export class ProductslistComponent implements OnInit {
         this.qtyss=0
         for(let j=0;j<this.kitdatas1?.kit_data?.length;j++){
           this.qtyss +=this.kitdatas1?.kit_data[j]?.kit_item_qty;
-          console.log(this.qtyss)
+          //console.log(this.qtyss)
         }
       if(this.permissions?.item_max_quantity>= 0 + this.qtyss){
             this.highkitqty=[];
-            console.log(data)
+            //console.log(data)
              this.kitdatas=data
-             console.log(this.kitdatas.kit_data)
+             //console.log(this.kitdatas.kit_data)
              this.kits = this.kitdatas.kit_data.map(m => { 
             if(m.kit_item_qty > m.quantity) { 
              this.highkitqty.push(m?.kit_item_qty+'>'+m?.qty)
@@ -136,14 +208,14 @@ export class ProductslistComponent implements OnInit {
            }
           return true;
              })
-         console.log(this.kits)
+         //console.log(this.kits)
          this.List = this.kits.filter(item => item === false);
-         console.log(this.List)
+         //console.log(this.List)
          if(this.List?.length ==0){
            this.dooropen=false;
            this.modalService.open(modal,{backdrop:false});
             this.crud.post(appModels.ADDKITCART + _id).pipe(untilDestroyed(this)).subscribe(async (res: any) => {
-               console.log(res)
+               //console.log(res)
                if (res != "") {
                  if (res['message'] == "Successfully added into cart!") {
                   //  this.toast.success("Kitting cart added successfully")
@@ -165,9 +237,98 @@ export class ProductslistComponent implements OnInit {
       }
       
     })
- 
-  }
+    }else{
+      this.mydb = new TurtleDB('example');
+      this.mydb.read('getUserTakenQuantity').then(async (doc) =>{//console.log(doc)
+          const res=doc.data
+         if(res?.data?.length!=0){
+          this.totalquantity=res['data']
+          this.totalquantity.trasaction_qty
+          this.kitdatas1=data
+          this.qtyss=0
+          for(let j=0;j<this.kitdatas1?.kit_data?.length;j++){
+            this.qtyss +=this.kitdatas1?.kit_data[j]?.kit_item_qty;
+            //console.log(this.qtyss)
+          }
+        if(this.permissions?.item_max_quantity>=this.totalquantity[0]?.trasaction_qty + this.qtyss){
+              this.highkitqty=[];
+              //console.log(data)
+               this.kitdatas=data
+               //console.log(this.kitdatas.kit_data)
+               this.kits = this.kitdatas.kit_data.map(m => { 
+              if(m.kit_item_qty > m.quantity) { 
+               this.highkitqty.push(m?.kit_item_qty+'>'+m?.qty)
+                 return false;
+             }
+            return true;
+               })
+           //console.log(this.kits)
+           this.List = this.kits.filter(item => item === false);
+           //console.log(this.List)
+           if(this.List?.length ==0){
+            this.dooropen=false;
+             this.modalService.open(modal,{backdrop:false});
+       //_id
+  // this.mydb.read('addkittocartid').then((doc) =>{//console.log(doc)
+  // })
+  //update itemhistoy
+  await this.itemHistoryoffline(data)
+       
+           }else{
+             // this.toast.error("now choosed the kit item quantity for"+this.highkitqty)
+             this.toast.error("Requested Quantity Was Not Available")
+           }
+            }
+          else{
+            this.toast.error("You have exceeded item maximum quantity taken per day.")
+          }
+         }else{
+      
+        this.kitdatas1=data
+        this.qtyss=0
+        for(let j=0;j<this.kitdatas1?.kit_data?.length;j++){
+          this.qtyss +=this.kitdatas1?.kit_data[j]?.kit_item_qty;
+          //console.log(this.qtyss)
+        }
+      if(this.permissions?.item_max_quantity>= 0 + this.qtyss){
+            this.highkitqty=[];
+            //console.log(data)
+             this.kitdatas=data
+             //console.log(this.kitdatas.kit_data)
+             this.kits = this.kitdatas.kit_data.map(m => { 
+            if(m.kit_item_qty > m.quantity) { 
+             this.highkitqty.push(m?.kit_item_qty+'>'+m?.qty)
+               return false;
+           }
+          return true;
+             })
+         //console.log(this.kits)
+         this.List = this.kits.filter(item => item === false);
+         //console.log(this.List)
+         if(this.List?.length ==0){
+           this.dooropen=false;
+           this.modalService.open(modal,{backdrop:false});
+  //_id
+  // this.mydb.read('addkittocartid').then((doc) =>{//console.log(doc)
+  // })
+  //update itemhistoy
+   await this.itemHistoryoffline(data)
+
+         }else{
+           // this.toast.error("now choosed the kit item quantity for"+this.highkitqty)
+           this.toast.error("Requested Quantity Was Not Available")
+         }
+       
+          }else{
+            this.toast.error("You have exceeded item maximum quantity taken per day.")
+          }
+      }
+    
   
+        } );
+      }
+  
+  }
   async itemHistory(data) {
     this.machineCubeID = []
     this.machineColumnID =[]
@@ -180,13 +341,13 @@ export class ProductslistComponent implements OnInit {
     params['company_id']=this.permissions?.company_id?._id
     params['user_id']=this.permissions?._id
     this.crud.get1(appModels.ITEMLIST,{params}).pipe(untilDestroyed(this)).subscribe(async (res: any) => {
-      console.log(res)
+      //console.log(res)
       this.id = res?.Cart[0]['_id']
       this.itemhistorykit = res['Kits']
       for await (let kit of this.itemhistorykit) {
-        console.log(typeof kit.kit_status + ' ' + kit.kit_status)
-        console.log(typeof kit.kit_id._id + ' ' + kit.kit_id._id)
-        console.log(kit)
+        //console.log(typeof kit.kit_status + ' ' + kit.kit_status)
+        //console.log(typeof kit.kit_id._id + ' ' + kit.kit_id._id)
+        //console.log(kit)
         if (kit.kit_status === 1 && kit.kit_id._id === data._id) {
           await this.takeNowKit.push(kit)
         }
@@ -194,6 +355,143 @@ export class ProductslistComponent implements OnInit {
       await this.takeKit('kit')
     })
   }
+  async itemHistoryoffline(data) {
+    this.machineCubeID = []
+    this.machineColumnID =[]
+    this.machineDrawID = []
+    this.machineCompartmentID =[]
+    this.machineStatus=[]
+    this.msg="";
+    this.msgg="";
+    let params: any = {};
+    this.mydb = new TurtleDB('example');
+    this.mydb.read('getitemlist').then(async (doc) =>{console.log(doc)
+        this.itemhistorykit = doc.data['Kits']
+       // this.id = doc.data.Cart[0]['_id']
+       this.dateTime = new Date();
+
+       for (let k = 0; k < this.itemhistorykit.length; k++) {
+        //console.log(typeof kit.kit_status + ' ' + kit.kit_status)
+          //console.log(typeof kit.kit_id._id + ' ' + kit.kit_id._id)
+          //console.log(kit)
+             console.log(this.itemhistorykit[k].kit_id._id )
+      if(this.itemhistorykit[k].kit_id._id === data._id){
+        for (let i = 0; i < this.itemhistorykit[k].kit_item_details.length; i++) {
+  
+        this.hlo = {cart_id: this.itemhistorykit[k].cart_id,
+  created_at: this.dateTime,
+  // kit_cart_id:  this.itemhistorykit[k].kit_cart_id,
+  kit_id: this.itemhistorykit[k].kit_id,
+  kit_item_details:
+  [{
+  active_status:  this.itemhistorykit[k].kit_item_details[i].active_status,
+  alloted_item_qty_in_kit:  this.itemhistorykit[k].kit_item_details[i].alloted_item_qty_in_kit,
+  bin:  this.itemhistorykit[k].kit_item_details[i].bin,
+  category:  this.itemhistorykit[k].kit_item_details[i].category,
+  company_id:  this.itemhistorykit[k].kit_item_details[i].company_id,
+  compartment: this.itemhistorykit[k].kit_item_details[i].compartment,
+  compartment_number: this.itemhistorykit[k].kit_item_details[i].compartment_number,
+  created_at: this.itemhistorykit[k].kit_item_details[i].created_at,
+  cube:  this.itemhistorykit[k].kit_item_details[i].cube,
+  deleted_at: this.itemhistorykit[k].kit_item_details[i].deleted_at,
+  description:  this.itemhistorykit[k].kit_item_details[i].description,
+  item:  this.itemhistorykit[k].kit_item_details[i].item,
+  po_history: this.itemhistorykit[k].kit_item_details[i].po_history,
+  purchase_order:  this.itemhistorykit[k].kit_item_details[i].purchase_order,
+  quantity:  this.itemhistorykit[k].kit_item_details[i].quantity-this.itemhistorykit[k].kit_item_details[i].alloted_item_qty_in_kit,
+  status:  this.itemhistorykit[k].kit_item_details[i].status,
+  sub_category: this.itemhistorykit[k].kit_item_details[i].sub_category,
+  supplier:  this.itemhistorykit[k].kit_item_details[i].supplier,
+  total_quantity: this.itemhistorykit[k].kit_item_details[i].total_quantity,
+  updated_at:  this.itemhistorykit[k].kit_item_details[i].updated_at,
+  
+  _id:  this.itemhistorykit[k].kit_item_details[i]._id,
+        }],
+  kit_name: this.itemhistorykit[k].kit_name,
+  kit_status: 2,
+  qty: 1,
+  // update_kit_id:  this.itemhistorykit[k].update_kit_id,
+  updated_at: this.dateTime
+        }
+      }
+    
+  
+  
+    }else{
+      for (let i = 0; i < data.kit_data.length; i++) {
+    
+        this.hlo = {cart_id: doc.data['Cart'][0]._id,
+    created_at: this.dateTime,
+    // kit_cart_id:  this.itemhistorykit[k].kit_cart_id,
+    kit_id:data._id,
+    kit_item_details:
+    [{
+    active_status:  data.kit_data[i].active_status,
+    alloted_item_qty_in_kit:  data.kit_data[i].alloted_item_qty_in_kit,
+    bin: data.kit_data[i].bin,
+    category:  data.kit_data[i].category,
+    company_id:  data.kit_data[i].company_id,
+    compartment: data.kit_data[i].compartment,
+    compartment_number:data.kit_data[i].compartment_number,
+    created_at:data.kit_data[i].created_at,
+    cube:  data.kit_data[i].cube,
+    deleted_at: data.kit_data[i].deleted_at,
+    description: data.kit_data[i].description,
+    item:  data.kit_data[i].item,
+    po_history: data.kit_data[i].po_history,
+    purchase_order: data.kit_data[i].purchase_order,
+    quantity: data.kit_data[i].quantity-data.kit_data[i].alloted_item_qty_in_kit,
+    status: data.kit_data[i].status,
+    sub_category: data.kit_data[i].sub_category,
+    supplier: data.kit_data[i].supplier,
+    total_quantity:data.kit_data[i].total_quantity,
+    updated_at: data.kit_data[i].updated_at,
+    
+    _id: data.kit_data[i]._id,
+        }],
+    kit_name: data.kit_name,
+    kit_status: 2,
+    qty: 1,
+    // update_kit_id:  this.itemhistorykit[k].update_kit_id,
+    updated_at: this.dateTime
+        }
+      
+    
+    }
+    
+    
+        }
+      
+
+    
+
+   
+        }
+        console.log(this.hlo)
+            this.itemhistorykit.push(this.hlo)  
+            console.log(this.itemhistorykit)
+      this.new=({
+        Cart: doc.data.Cart,
+        Kits: this.itemhistorykit,
+        status: true,
+      }) 
+console.log(this.new)
+     this.mydb = new TurtleDB('example');
+      this.mydb.update('getitemlist', { data: this.new, user: this.permissions?._id, company_id: this.permissions?.company_id?._id, kitinfo: 2, created_at: this.dateTime });
+      for await (let kit of this.itemhistorykit) {
+        //console.log(typeof kit.kit_status + ' ' + kit.kit_status)
+        //console.log(typeof kit.kit_id._id + ' ' + kit.kit_id._id)
+        //console.log(kit)
+        if (kit.kit_status === 1 && kit.kit_id._id === data._id) {
+          await this.takeNowKit.push(kit)
+        }
+      }
+      
+       await this.takeKit('kit')
+      } );
+  
+  }
+
   getData(obj) {
     let index = 0,
       startingIndex = obj.pageIndex * obj.pageSize,
@@ -203,6 +501,106 @@ export class ProductslistComponent implements OnInit {
       index++;
       return (index > startingIndex && index <= endingIndex) ? true : false;
     });
+    //console.log(this.data)
+    // for (let i = 0; i < this.kit.length; i++) {
+    //   for (let j = 0; j < this.kit[i].kit_data.length; j++) {
+    //     this.getBase64ImageFromURL(this.kit[i].kit_data[j].item.image_path[0]).subscribe(base64data => {    
+    //       this.base64Image = 'data:image/jpg;base64,' + base64data;
+    //       this.kitnewdata = this.kit.filter(v => v.kit_data.filter(k => k.item.image_path[0] = this.base64Image));
+    //       //console.log(this.kitnewdata)
+       
+    //     })
+    //   }
+    // }
+
+
+  }
+  // newmethod(i,j) {
+   
+  //   this.getBase64ImageFromURL(this.data[i].kit_data[j].item.image_path[0]).subscribe(base64data => {    
+  //     //console.log(base64data);
+  //     this.base64Image = 'data:image/jpg;base64,' + base64data;
+  //     //console.log(this.base64Image)
+  
+  //       this.kitting.push({
+  //           active_status:this.data[i].kit_data[j].active_status,
+  //           bin:this.data[i].kit_data[j].bin,
+  //           category:this.data[i].kit_data[j].category,
+  //           company_id:this.data[i].kit_data[j].company_id,
+  //           compartment:this.data[i].kit_data[j].compartment,
+  //           compartment_number:this.data[i].kit_data[j].compartment_number,
+  //           created_at:this.data[i].kit_data[j].created_at,
+  //           cube:this.data[i].kit_data[j].cube,
+  //           deleted_at:this.data[i].kit_data[j].deleted_at,
+  //           description:this.data[i].kit_data[j].description,
+  //           item:{
+  //             image_path:this.data[i].kit_data[j].item.image_path,
+  //             item_name:this.data[i].kit_data[j].item.item_name,
+  //             _id:this.data[i].kit_data[j].item._id,
+  //             image:this.base64Image,
+  //           },
+  //           kit_item_description:this.data[i].kit_data[j].kit_item_description,
+  //           kit_item_id:this.data[i].kit_data[j].kit_item_id,
+  //           kit_item_pack_id:this.data[i].kit_data[j].kit_item_pack_id,
+  //           kit_item_qty:this.data[i].kit_data[j].kit_item_qty,
+  //           po_history:this.data[i].kit_data[j].po_history,
+  //           purchase_order:this.data[i].kit_data[j].purchase_order,
+  //           quantity:this.data[i].kit_data[j].quantity,
+  //           status:this.data[i].kit_data[j].status,
+  //           sub_category:this.data[i].kit_data[j].sub_category,
+  //           supplier:this.data[i].kit_data[j].supplier,
+  //           total_quantity:this.data[i].kit_data[j].total_quantity,
+  //           updated_at:this.data[i].kit_data[j].updated_at,
+  //           _id:this.data[i].kit_data[j]._id,
+  
+  //       })
+  
+  //   });
+  // if(j===this.data[i].kit_data.length-1){
+  //   this.kittingnew.push({
+  //     available_item:this.data[i].available_item,
+  //     kit_name:this.data[i].kit_name,
+  //     kit_data:this.kitting,
+  //     total_qty:this.data[i].total_qty,_id:this.data[i]._id,
+  //   }) 
+  //   //console.log(this.kittingnew)
+
+  //  // this.kitting=[];
+  //  }
+  // }
+  getBase64ImageFromURL(url: string) {
+    // //console.log("its coming")
+    return Observable.create((observer: Observer<string>) => {
+      // create an image object
+      let img = new Image();
+      img.crossOrigin = 'Anonymous';
+      img.src = url;
+      if (!img.complete) {
+          // This will call another method that will create image from url
+          img.onload = () => {
+          observer.next(this.getBase64Image(img));
+          observer.complete();
+        };
+        img.onerror = (err) => {
+           observer.error(err);
+        };
+      } else {
+          observer.next(this.getBase64Image(img));
+          observer.complete();
+      }
+    });
+  }
+  getBase64Image(img: HTMLImageElement) {
+   // We create a HTML canvas object that will create a 2d image
+   var canvas = document.createElement("canvas");
+   canvas.width = img.width;
+   canvas.height = img.height;
+   var ctx = canvas.getContext("2d");
+   // This will draw image    
+   ctx.drawImage(img, 0, 0);
+   // Convert the drawn image to Data URL
+   var dataURL = canvas.toDataURL("image/png");
+  return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
   }
   listview() {
 
@@ -228,14 +626,14 @@ export class ProductslistComponent implements OnInit {
   //************   Arunkumar  ***********************/
   async allDeviceInfo() {
     let response = await this.crud.get('machine/allDeviceInfo').pipe(untilDestroyed(this)).toPromise()
-    console.log(response)
+    //console.log(response)
     return response
   }
 
   async singleDeviceInfo(machine: any) {
 
     let response = await this.crud.post('machine/singleDeviceInfo', machine).pipe(untilDestroyed(this)).toPromise()
-    console.log(response)
+    //console.log(response)
     return response
   }
   // Sleep Function
@@ -246,8 +644,8 @@ export class ProductslistComponent implements OnInit {
   // Format and Clean Objects
   async formatMachineData(item) {
     let machineData: any[] = []
-    console.log('*******  Format Data **********')
-    console.log(this.takeNowKit) 
+    //console.log('*******  Format Data **********')
+    //console.log(this.takeNowKit) 
 
     let i = 0
     this.takeNowKit[0].kit_item_details.forEach(async item => {
@@ -298,10 +696,10 @@ export class ProductslistComponent implements OnInit {
 
   // filter successfully taken items from cartList take now
   // async fiterArray(cartList: any[], successTake: any[]) {
-  //   console.log(cartList)
-  //   console.log(successTake)
+  //   //console.log(cartList)
+  //   //console.log(successTake)
   //   let successTakeItems = await cartList.filter((x: { column_id: any; bin_id: any; }) => !successTake.find((y: { column_id: any; bin_id: any; }) => (y.column_id == x.column_id && y.bin_id == x.bin_id)))
-  //   console.log(successTakeItems)
+  //   //console.log(successTakeItems)
   //   return successTakeItems
   // }
   async fiterArray(array, filter) {
@@ -325,11 +723,11 @@ export class ProductslistComponent implements OnInit {
   machinesList = []
   async takeKit(item: string) {
 
-    console.log(item)
+    //console.log(item)
     let totalMachinesList = await this.formatMachineData(item)
-    console.log(totalMachinesList)
+    //console.log(totalMachinesList)
     let machinesList = await this.groupbyData(totalMachinesList)
-    console.log(machinesList)
+    //console.log(machinesList)
     //call allDevInfo once
     // await this.allDeviceInfo()
     // for loop for all machines lids
@@ -344,12 +742,12 @@ export class ProductslistComponent implements OnInit {
       // Record Total Machine Usage
       let maxCompartmentNo = Math.max(...machine.compartment_id)
       machine['compartment_id'] = maxCompartmentNo
-      console.log('maxCompartmentNo')
-      console.log(maxCompartmentNo)
+      //console.log('maxCompartmentNo')
+      //console.log(maxCompartmentNo)
       let singleDeviceInfo = await this.singleDeviceInfo(machine)
       let status = singleDeviceInfo.details.singledevinfo.column[0]['status'][0]
-      console.log('Column : ' + machine.column_id + '' + 'drawer: ' + machine.bin_id + ' ' + 'Compartment: ' + machine.compartment_id)
-      console.log(status)
+      //console.log('Column : ' + machine.column_id + '' + 'drawer: ' + machine.bin_id + ' ' + 'Compartment: ' + machine.compartment_id)
+      //console.log(status)
       this.machineCubeID = machine.cube_id
       this.machineColumnID = machine.column_id
       this.machineDrawID = machine.bin_id
@@ -370,12 +768,12 @@ export class ProductslistComponent implements OnInit {
         let apiHitTimes = 0
         let machineColumnStatus = false
         while (apiHitTimes < 15 && !machineColumnStatus) {
-          console.log('********************* API Hit Times ************** ' + machineColumnStatus)
-          console.log(' Machine Status : ' + machineColumnStatus)
+          //console.log('********************* API Hit Times ************** ' + machineColumnStatus)
+          //console.log(' Machine Status : ' + machineColumnStatus)
           let singleDeviceInfo = await this.singleDeviceInfo(machine)
           let status = singleDeviceInfo.details.singledevinfo.column[0]['status'][0]
           this.machineStatus=status
-          console.log('inside while loop status bin ' + machine.bin_id +" "+ status)
+          //console.log('inside while loop status bin ' + machine.bin_id +" "+ status)
           if (status == 'Closed' || status == 'Locked' || status == 'Unknown') {
             await this.sleep(9000)
             await this.crud.post('machine/lockBin', machine).pipe(untilDestroyed(this)).toPromise()
@@ -384,7 +782,7 @@ export class ProductslistComponent implements OnInit {
           }
           //Drawer current status, (opening, opened, closing, closed)
           else if (status !== 'Closed' && status !== 'Locked' && status == 'Unknown') {
-            console.log('Current Status = ' + status)
+            //console.log('Current Status = ' + status)
             this.machineStatus=status
             // this.msg='Current Status = ' + status
 
@@ -399,7 +797,7 @@ export class ProductslistComponent implements OnInit {
         }
         // if user does not closed after ceratin count of times API hit
         if (apiHitTimes == 10 && machineColumnStatus !== true) {
-          console.log('Application waiting time over for bin ' + machine.bin_id + 'in column ' + machine.column_id)
+          //console.log('Application waiting time over for bin ' + machine.bin_id + 'in column ' + machine.column_id)
 
         }
         let t1 = performance.now();
@@ -410,9 +808,9 @@ export class ProductslistComponent implements OnInit {
       }
       // break for loop if single device info is unknown
       else {
-        console.log('Machine status unknown ' + status)
+        //console.log('Machine status unknown ' + status)
         this.msg='Machine status unknown ' + status
-        console.log('Close all drawers properly and click take now')
+        //console.log('Close all drawers properly and click take now')
         this.msg='Close all drawers properly and click take now'
         break
       }
@@ -420,18 +818,18 @@ export class ProductslistComponent implements OnInit {
     const successTake = await totalMachinesList.filter(array => this.TakeOrReturnItems.some(filter => filter.column_id === array.column_id && filter.bin_id === array.bin_id));
     // const failedTake = await totalMachinesList.filter(array => successTake.some(filter => JSON.stringify(filter.column_id) !== JSON.stringify(array.column_id) && JSON.stringify(filter.bin_id) !== JSON.stringify(array.bin_id)));
     const failedTake = await totalMachinesList.filter(({ stock_allocation_id: id1 }) => !successTake.some(({ stock_allocation_id: id2 }) => id1 === id2))
-    console.log(successTake)
+    //console.log(successTake)
     if (successTake.length == 0) {
-      console.log('Machine status unknown No Item taken')
+      //console.log('Machine status unknown No Item taken')
       this.msgg='Machine status unknown No Item taken'
       this.dooropen=true
     } else if (successTake.length == totalMachinesList.length) {
-      console.log(successTake.length + ' Items Taken Successfully')
+      //console.log(successTake.length + ' Items Taken Successfully')
       this.msgg=successTake.length + ' Items Taken Successfully'
       await this.addMachineUsage(totalMachineUsage)
       await this.updateAfterTakeOrReturn(successTake, item, failedTake)
     } else if (successTake.length < totalMachinesList.length) {
-      console.log(successTake.length + ' Items Taken Successfully \n' + successTake.length + ' items failed return')
+      //console.log(successTake.length + ' Items Taken Successfully \n' + successTake.length + ' items failed return')
       await this.addMachineUsage(totalMachineUsage)
       await this.updateAfterTakeOrReturn(successTake, item, failedTake)
       this.msgg=successTake.length + ' Items Taken Successfully \n'
@@ -441,6 +839,8 @@ export class ProductslistComponent implements OnInit {
 
   //Update Cart and Stock Allocation documents after item Take/Return
   async updateAfterTakeOrReturn(successTake: any, item, failedTake : any) {
+    if(window.navigator.onLine == true){
+
     let data = {
       cart_id: this.id,
       take_items: successTake,
@@ -453,7 +853,7 @@ export class ProductslistComponent implements OnInit {
 
     }
     this.crud.post(`cart/updateReturnTake`, data).pipe().subscribe(async (res) => {
-      console.log(res)
+      //console.log(res)
       this.dooropen=true
       if (res.status) {
        
@@ -461,15 +861,24 @@ export class ProductslistComponent implements OnInit {
       
       }
     })
+  }else{
+    this.toast.success('Items Taken Successfully');
+
+    }
   }
   async addMachineUsage(data) {
+    if(window.navigator.onLine == true){
+
     console.log(data)
     this.crud.post(`dashboard/machineUsageAdd`, data).pipe().subscribe(async (res) => {
-      console.log(res)
+      //console.log(res)
       if (res) {
         // this.toast.success('machine Usage Added Successfully...');
       }
     })
+  }else{
+    console.log(data)
+  }
   }
 
 
@@ -505,3 +914,6 @@ export class ProductslistComponent implements OnInit {
 
   ngOnDestroy() { }
 }
+
+
+

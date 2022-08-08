@@ -9,7 +9,8 @@ import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { CrudService } from 'src/app/services/crud.service';
 import { appModels } from 'src/app/services/shared/enum/enum.util';
 import { ToastrService } from 'ngx-toastr';
-
+import TurtleDB from 'turtledb';
+declare const window:any;
 import { MatPaginatorIntl } from '@angular/material/paginator';
 declare var google
 @Component({
@@ -43,6 +44,13 @@ export class HomeComponent implements OnInit {
   unsub: Subscription;
 category: any=[];
 selectcat:any=[];
+  mydb: any;
+  fulldata: any=[];
+  category_id: any=[];
+  filtered: any=[];
+  categories: any;
+  subcatside: any;
+  onoff: boolean;
   constructor(public crud:CrudService,public router:Router,public fb:FormBuilder,private toast: ToastrService) { 
     this.permissions=JSON.parse(localStorage.getItem("personal"))
 
@@ -52,14 +60,35 @@ selectcat:any=[];
     // this.categoryName=localStorage.getItem("categname")
     this.coloumidss = localStorage.getItem('coloumid')
     this.home();
+    window.addEventListener('online',()=> this.updateOnlineStatus());
 
+  // if(window.navigator.onLine == true){
+  //     console.log(window.navigator.onLine)
+  //     this.mydb = new TurtleDB('example');
+  //     this.mydb.setRemote('http://13.232.128.227:3000');
+  //     this.mydb.create({ _id: 'sync', data: ' Synced' });
+  //     this.mydb.autoSyncOn([3000])
+
+  //    // this.mydb.sync();
+  //     if(this.mydb.autoSyncOn()){
+  //       alert("synced")
+
+  //     }
+  //   }
+  //   else{
+  //     console.log(window.navigator.onLine)
+  //   }
   }
-
+  updateOnlineStatus(){
+    console.group("hi")
+  }
 home(){
   this.profiledetails = JSON.parse(localStorage.getItem('personal'))
 
    
    if(this.coloumidss !=""){
+    if(window.navigator.onLine == true){
+      this.onoff=true
 
    this.crud.CurrentMessage.subscribe(message=>{
 
@@ -68,8 +97,11 @@ home(){
     this.subcategories=[]
       this.message=JSON.parse(message)
      if(this.message?.length !=0){
+
       let params: any = {};
       this.categoryName=this.message['category']['category_name']
+      // this.mydb = new TurtleDB('example');
+      // this.mydb.create({ _id: 'categoryName', data:this.categoryName });
       localStorage.setItem("catname",this.message['category']['category_name'])
       localStorage.setItem("catid",this.message['category']['_id'])
       params['column_ids'] = this.coloumidss;
@@ -77,26 +109,13 @@ home(){
       params['company_id'] = this.profiledetails?.company_id?._id
       this.crud.get1(appModels.SUBCATEGORY,{params}).pipe(untilDestroyed(this)).subscribe((res:any) => {
         localStorage.setItem("allow","data")
-     
         console.log(res)
      if(res){
       this.subcategories=res['data']
-        
       this.getData({pageIndex: this.page, pageSize: this.size});
      }
-      
- 
       })
-      //  this.selectcat=this.message
-       console.log(this.selectcat)
-      //  localStorage.setItem("categoryid",JSON.stringify(this.subcategories))
-      //  this.subcategories=this.message
-     
-
-     
-     }
- 
-    
+    }
     }
 //     else{
 //        this.subcategories=[]
@@ -130,6 +149,27 @@ home(){
 //     }
   
   })
+}else{
+  this.onoff=false
+  this.crud.CurrentMessage.subscribe(message=>{
+    this.message=JSON.parse(message)
+    this.categoryName=this.message['category']['category_name']
+
+    console.log(this.message,this.message.sub_category[0]._id)
+    this.mydb = new TurtleDB('example');
+
+    this.mydb.read('catsidebar').then((doc) =>{console.log(doc)
+      for (let i = 0; i < doc.subcategory?.length; i++) {
+        console.log(doc.subcategory[i].sub_category[0]._id)
+  if(this.message.sub_category[0]._id  == doc.subcategory[i].sub_category[0]._id){
+      this.data = doc.subcategory[i].sub_category
+      console.log(this.data)
+      }
+    }
+  
+      } );
+  }) 
+}
  }
 
 
@@ -173,6 +213,9 @@ setCookie(name,value,) {
       return (index > startingIndex && index <= endingIndex) ? true : false;
     });
     console.log(this.data)
+    // this.mydb = new TurtleDB('example');
+    // this.mydb.create({ _id: 'categories', data: this.data });
+    // console.log(this.data)
   }
   
 
@@ -180,7 +223,7 @@ selectcategory(val:any){
   console.log(val)
     localStorage.removeItem("allow1")
     this.categoryid=localStorage.getItem("categid")
-
+console.log(this.categoryid)
   this.subcategories1=val
   let data1={
     "category_id": val.category_id._id,
