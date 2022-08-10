@@ -43,7 +43,7 @@ export class ProductsComponent implements OnInit {
   newcd: any=[];
   newcart: any;
   new: { cart: any; total_quantity: any; _id: any; };
-  hlo: { allocation: any; cart_status: number; item: { image_path: any; item_name: any; _id: any; image: any[]; }; item_details: any; qty: number;  };
+  hlo: { allocation: any; cart_status: number; item: { image_path: any; item_name: any; _id: any;  }; item_details: any; qty: number;  };
   constructor(public crud:CrudService,public router:Router,private toast: ToastrService,public route:ActivatedRoute) {
     
    }
@@ -230,17 +230,17 @@ params['company_id']=this.permissions?.company_id?._id
               
         this.newcart=this.cartdata1.cart
         console.log(this.newcart)
-        const checkid = this.newcart.some(item => item.item._id === this.machine.item)
+        const checkid = this.newcart.some(item => item.item._id === this.machine.item && item.cart_status === 1)
 
-        const checkstatus = this.newcart.some(item => item.cart_status === 1)
-        console.log(checkid,checkstatus)
-        if(checkid == true && checkstatus == true){
+       // const checkstatus = this.newcart.some(item => item.cart_status === 1) && checkstatus == true
+        console.log(checkid)
+        if(checkid == true){
 
 //console.log(this.machine.item)
           let mechine_id=this.machine.item
         
      const newcartdata =	this.newcart.filter(function (newcart) {
-      return newcart.item._id == mechine_id && newcart.cart_status == 1  ?  newcart.qty = Number(1)+Number(newcart.qty) : newcart.qty = Number(1)+Number(newcart.qty)  ;
+      return newcart.item._id == mechine_id && newcart.cart_status == 1  ?  newcart.qty = Number(1)+Number(newcart.qty) : newcart  ;
 
   })
                  console.log(newcartdata)
@@ -264,7 +264,7 @@ params['company_id']=this.permissions?.company_id?._id
         })
       const dateTime = new Date();
       this.mydb = new TurtleDB('example');
-     this.mydb.update('getlistcart', { data: this.new , user: this.permissions?._id,company_id:this.permissions?.company_id?._id,cartinfo:2,created_at:dateTime});
+     this.mydb.update('getlistcart', { data: this.new , user: this.permissions?._id,company_id:this.permissions?.company_id?._id,cartinfo:2,updatestatus:2,created_at:dateTime});
      this.toast.success("cart added successfully")
 
 
@@ -276,7 +276,7 @@ params['company_id']=this.permissions?.company_id?._id
               image_path:this.items.image_path,
               item_name:this.items.item_name,
               _id:this.machine.item,
-              image:[],
+             // image:[],
             },
             item_details:this.machine,
            
@@ -300,7 +300,7 @@ params['company_id']=this.permissions?.company_id?._id
           _id:doc.data._id
         })
           this.mydb = new TurtleDB('example');
-           this.mydb.update('getlistcart', { data: this.new , user: this.permissions?._id,company_id:this.permissions?.company_id?._id,cartinfo:2,created_at:dateTime});
+           this.mydb.update('getlistcart', { data: this.new , user: this.permissions?._id,company_id:this.permissions?.company_id?._id,cartinfo:2,updatestatus:1,created_at:dateTime});
            this.toast.success("cart added successfully")
 
         }

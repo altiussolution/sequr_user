@@ -84,7 +84,7 @@ export class MycartComponent implements OnInit {
             image_path:this.cart[i].item.image_path,
             item_name:this.cart[i].item.item_name,
             _id:this.cart[i].item._id,
-            image:[],
+          // image:[],
           },
           item_details:this.cart[i].item_details,
           qty:this.cart[i].qty,_id:this.cart[i]._id,
@@ -103,7 +103,7 @@ export class MycartComponent implements OnInit {
             image_path:this.cart[i].item.image_path,
             item_name:this.cart[i].item.item_name,
             _id:this.cart[i].item._id,
-            image:this.base64Image,
+         // image:this.base64Image,
           },
           item_details:this.cart[i].item_details,
          
@@ -243,7 +243,7 @@ export class MycartComponent implements OnInit {
             const dateTime = new Date();
             //this.mydb.setRemote('http://127.0.0.1:3000');        
              this.mydb = new TurtleDB('example');
-             this.mydb.update('getlistcart', { data: this.cartdata1 , user: this.permissions?._id,company_id:this.permissions?.company_id?._id,cartinfo:2,created_at:dateTime});
+             this.mydb.update('getlistcart', { data: this.cartdata1 , user: this.permissions?._id,company_id:this.permissions?.company_id?._id,cartinfo:2,updatestatus:2,created_at:dateTime});
              setTimeout(()=>{                           // <<<---using ()=> syntax
               this.getCartItems() 
               this.toast.success("Cart Updated Successfully!")
@@ -293,8 +293,8 @@ if(!localStorage.getItem("onetimecall")){
           this.cartList1 = [];
           let tempArray =[];
           for (let i = 0; i < this.cartdata1?.cart?.length; i++) {
-            if( this.cartdata1?.cart[i]['cart_status'] == 1 && cart.item._id == this.cartdata1?.cart[i].item._id && !tempArray.includes(this.cartdata1?.cart[i].item._id)){
-              tempArray.push(this.cartdata1?.cart[i].item._id);
+            if( this.cartdata1?.cart[i]['cart_status'] == 1 && cart.item._id == this.cartdata1?.cart[i].item._id){
+             // tempArray.push(this.cartdata1?.cart[i].item._id);  && !tempArray.includes(this.cartdata1?.cart[i].item._id)
               // doc.data.cart[i]['cart_status'] =  3
               //this.cartdata1.cart.pop([i])
             //  console.log(this.cartdata1.cart.pop([i]))
@@ -318,10 +318,10 @@ console.log(this.newcd)
     
           
         }
-
+        console.log( this.cartdata1 )
            const dateTime = new Date();
            this.mydb = new TurtleDB('example');
-           this.mydb.update('getlistcart', { data: this.cartdata1 , user: this.permissions?._id,company_id:this.permissions?.company_id?._id,cartinfo:2,created_at:dateTime});
+           this.mydb.update('getlistcart', { data: this.cartdata1 , user: this.permissions?._id,company_id:this.permissions?.company_id?._id,cartinfo:2,updatestatus:3,created_at:dateTime});
            setTimeout(()=>{                           // <<<---using ()=> syntax
             this.getCartItems() 
             this.toast.success("Successfully item deleted from cart!")
@@ -374,10 +374,11 @@ console.log(this.newcd)
             this.cartList1 = [];
             let tempArray =[];
             for (let i = 0; i < this.cartdata1?.cart?.length; i++) {
-              if(this.selected3 == this.cartdata1?.cart[i].item._id  &&  this.cartdata1?.cart[i]['cart_status'] ==1 && !tempArray.includes(this.cartdata1?.cart[i].item._id)){
-                tempArray.push(this.cartdata1?.cart[i].item._id);
+              console.log(this.selected3,this.selected3[i] == this.cartdata1?.cart[i].item._id )
+              if(this.selected3[i] == this.cartdata1?.cart[i].item._id  &&  this.cartdata1?.cart[i]['cart_status'] == 1 ){
+              //  tempArray.push(this.cartdata1?.cart[i].item._id);
                // doc.data.cart[i]['cart_status'] =  3
-                this.newcd = this.cartdata1.cart.filter((item) => item.item.id !== this.selected3 && item.cart_status !==1);
+                this.newcd = this.cartdata1.cart.filter((item) => item.item.id !== this.selected3 && item.cart_status !== 1);
                 console.log(this.newcd)               
               }
             }
@@ -396,7 +397,7 @@ console.log(this.newcd)
              console.log(this.cartList1)
              const dateTime = new Date();
              this.mydb = new TurtleDB('example');
-            this.mydb.update('getlistcart', { data: this.cartdata1 , user: this.permissions?._id,company_id:this.permissions?.company_id?._id,cartinfo:2,created_at:dateTime});
+            this.mydb.update('getlistcart', { data: this.cartdata1 , user: this.permissions?._id,company_id:this.permissions?.company_id?._id,cartinfo:2,updatestatus:3,created_at:dateTime});
             setTimeout(()=>{                           
               this.getCartItems() 
               this.toast.success("Successfully item deleted from cart!")
@@ -1221,6 +1222,7 @@ Addmore(){
           if(this.clickcart.item._id == this.cartdata1?.cart[i].item._id && !tempArray.includes(this.cartdata1?.cart[i].item._id) &&  doc.data.cart[i]['cart_status'] == 1  ){
             tempArray.push(this.cartdata1?.cart[i].item._id);
             doc.cart.cart[i]['cart_status'] =  2
+            doc.cart.cart[i]['item_details'].quantity=Number(doc.cart.cart[i]['item_details'].quantity)-Number(this.clickcart.item_details.quantity)
           //  doc.data.cart[i]['qty']=Number(this.val2)
           //  console.log(this.val2)
             
@@ -1239,7 +1241,7 @@ Addmore(){
         const dateTime = new Date();
         //this.mydb.setRemote('http://127.0.0.1:3000');        
          this.mydb = new TurtleDB('example');
-         this.mydb.update('getlistcart', { data: this.cartdata1 , user: this.permissions?._id,company_id:this.permissions?.company_id?._id,cartinfo:2,created_at:dateTime});
+         this.mydb.update('getlistcart', { data: this.cartdata1 , user: this.permissions?._id,company_id:this.permissions?.company_id?._id,cartinfo:2,updatestatus:2,created_at:dateTime});
          setTimeout(()=>{                           // <<<---using ()=> syntax
           this.getCartItems() 
           this.toast.success('Items Taken Successfully');

@@ -99,7 +99,7 @@ export class ItemhistoryComponent implements OnInit {
                 image_path: this.itemhistorycart[i].item.image_path,
                 item_name: this.itemhistorycart[i].item.item_name,
                 _id: this.itemhistorycart[i].item._id,
-                image: [],
+               // image: [],
               },
               item_details: this.itemhistorycart[i].item_details,
               qty: this.itemhistorycart[i].qty, _id: this.itemhistorycart[i]._id,
@@ -118,7 +118,7 @@ export class ItemhistoryComponent implements OnInit {
                 image_path: this.itemhistorycart[i].item.image_path,
                 item_name: this.itemhistorycart[i].item.item_name,
                 _id: this.itemhistorycart[i].item._id,
-                image: this.base64Image,
+               // image: this.base64Image,
               },
               item_details: this.itemhistorycart[i].item_details,
 
@@ -530,6 +530,37 @@ export class ItemhistoryComponent implements OnInit {
       // this.modalService.open(modal,{backdrop:false});
      
       this.returnItem("kit", modal)
+      console.log(this.arrayvalue1)
+      this.dateTime = new Date();
+      this.mydb = new TurtleDB('example');
+      this.mydb.read('getitemlist').then(async (doc) =>{console.log(doc)
+          this.itemhistorykit = doc.data['Kits']       
+         for (let k = 0; k < this.itemhistorykit.length; k++) {
+          console.log(this.itemhistorykit[k].kit_name , this.arrayvalue1[0].kit_name, this.itemhistorykit[k].updated_at ===this.arrayvalue1[0].updated_at, this.arrayvalue1[0].kit_status=== 2 )  
+
+        if(this.itemhistorykit[k].kit_name === this.arrayvalue1[0].kit_name && this.arrayvalue1[0].kit_status=== 2 && this.itemhistorykit[k].updated_at ===this.arrayvalue1[0].updated_at){
+          for (let i = 0; i < this.itemhistorykit[k].kit_item_details.length; i++) {
+            this.itemhistorykit[k].kit_item_details[i].quantity=  this.itemhistorykit[k].kit_item_details[i].quantity+this.itemhistorykit[k].kit_item_details[i].alloted_item_qty_in_kit
+            this.itemhistorykit[k].kit_status= 3
+       
+        }
+    
+      }
+          }
+         console.log(this.itemhistorykit)
+        this.kitnew=({
+          Cart: doc.data.Cart,
+          Kits: this.itemhistorykit,
+          status: true,
+        }) 
+  console.log(this.kitnew)
+       this.mydb = new TurtleDB('example');
+        this.mydb.update('getitemlist', { data: this.kitnew, user: this.permissions?._id, company_id: this.permissions?.company_id?._id, kitinfo: 2,updatestatus:2, created_at: this.dateTime });
+        this.toast.success('Items Returned Successfully');
+
+        
+        } );
+
     }
 
   }
@@ -697,9 +728,10 @@ export class ItemhistoryComponent implements OnInit {
           this.cartdata1 = doc.data
           let tempArray =[];
           for (let i = 0; i < this.cartdata1?.cart?.length; i++) {
-            if(this.arrayvalue.item._id == this.cartdata1?.cart[i].item._id && !tempArray.includes(this.cartdata1?.cart[i].item._id) &&  doc.cart.cart[i]['cart_status'] == 2  ){
-              tempArray.push(this.cartdata1?.cart[i].item._id);
+            if(this.arrayvalue.item._id == this.cartdata1?.cart[i].item._id  &&  doc.cart.cart[i]['cart_status'] == 2  ){
+             // tempArray.push(this.cartdata1?.cart[i].item._id); !tempArray.includes(this.cartdata1?.cart[i].item._id
               doc.cart.cart[i]['cart_status'] =  3
+              doc.cart.cart[i]['item_details'].quantity=Number(doc.cart.cart[i]['item_details'].quantity)+Number(this.array[i].item_details.quantity)
               //doc.cart.cart[i]['qty']=Number(1)          
             }
           }
@@ -708,7 +740,7 @@ export class ItemhistoryComponent implements OnInit {
           const dateTime = new Date();
       
           this.mydb = new TurtleDB('example');
-          this.mydb.update('getlistcart', { data: this.cartdata1 , user: this.permissions?._id,company_id:this.permissions?.company_id?._id,cartinfo:2,created_at:dateTime});
+          this.mydb.update('getlistcart', { data: this.cartdata1 , user: this.permissions?._id,company_id:this.permissions?.company_id?._id,cartinfo:2,updatestatus:2,created_at:dateTime});
           this.toast.success('Items Returned Successfully');
 
           // this.newcart = this.cartdata1.cart
@@ -797,7 +829,7 @@ export class ItemhistoryComponent implements OnInit {
           }) 
     console.log(this.kitnew)
          this.mydb = new TurtleDB('example');
-          this.mydb.update('getitemlist', { data: this.kitnew, user: this.permissions?._id, company_id: this.permissions?.company_id?._id, kitinfo: 1, created_at: this.dateTime });
+          this.mydb.update('getitemlist', { data: this.kitnew, user: this.permissions?._id, company_id: this.permissions?.company_id?._id, kitinfo: 2,updatestatus:2, created_at: this.dateTime });
           this.toast.success('Items Returned Successfully');
 
           

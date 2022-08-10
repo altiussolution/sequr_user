@@ -77,14 +77,14 @@ getprofile(){
     console.log(this.profile)
     console.log(this.profile['language_prefered']['language'])
     this.mydb = new TurtleDB('example');
-   // this.mydb.setRemote('http://13.232.128.227:3000');
+    this.mydb.setRemote('http://13.232.128.227:3000');
     this.mydb.create({ _id: 'profile', users: res.data });
     //alert("sync")
-      // this.mydb.sync();
-      // if(this.mydb.sync()){
-      //   alert("syncedon")
+      this.mydb.sync();
+      if(this.mydb.sync()){
+        alert("syncedon")
 
-      // }
+      }
     const img=this.profile.profile_pic
     console.log(img)
     this.getBase64ImageFromURL(img).subscribe(base64data => {    

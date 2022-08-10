@@ -295,9 +295,24 @@ categories: any = [];
     
           }
           //console.log(this.productdetailsimage)
-
-          this.mydb = new TurtleDB('example');
+setTimeout(() => {
+  this.mydb = new TurtleDB('example');
           this.mydb.create({ _id: 'detailpage', data: this.productdetailsimage });
+
+},   3000
+
+);
+setTimeout(() => {
+  if( this.mydb.create({ _id: 'detailpage', data: this.productdetailsimage })){
+    this.mydb = new TurtleDB('example');
+    this.mydb.update('detailpage', { data:this.productdetailsimage});
+  
+  }
+},4000);
+
+
+
+        
           //console.log(this.productdetails)
       })
     }
@@ -471,7 +486,7 @@ categories: any = [];
                 setTimeout(()=>{                           // <<<---using ()=> syntax
                   this.mydb.read('getitem').then((doc) =>{//console.log(doc)
                   })
-                              }, 3000);
+                              }, 5000);
             
                 //console.log({ _id: 'getitem', data:this.itemset })
                 //console.log(this.itemset)
@@ -611,8 +626,10 @@ categories: any = [];
           this.itemhistorykit.push(this.kitdata[i])
         }
       }
+      console.log(this.itemhistorykit)
       this.mydb = new TurtleDB('example');
       this.mydb.create({ _id: 'itemhistorykit', data: this.itemhistorykit });
+      this.mydb.update('itemhistorykit', {data: this.itemhistorykit})
       if(this.itemhistorykit==undefined){
          this.itemhistorykit=[]
       }
@@ -641,7 +658,7 @@ categories: any = [];
             image_path:this.cart[i].item.image_path,
             item_name:this.cart[i].item.item_name,
             _id:this.cart[i].item._id,
-            image:[],
+           // image:[],
           },
           item_details:this.cart[i].item_details,
           qty:this.cart[i].qty,_id:this.cart[i]._id,
@@ -661,7 +678,7 @@ categories: any = [];
             image_path:this.cart[i].item.image_path,
             item_name:this.cart[i].item.item_name,
             _id:this.cart[i].item._id,
-            image:this.base64Image,
+           // image:this.base64Image,
           },
           item_details:this.cart[i].item_details,
          
@@ -781,6 +798,7 @@ this.searchdata=[]
   return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
   }
   logout() {
+    if(window.navigator.onLine == true){
 
     this.dooropens = [];
     this.dooropenss = [];
@@ -795,7 +813,21 @@ this.searchdata=[]
       })
     })
 
-
+  }else{
+    
+    this.dooropens = [];
+    this.dooropenss = [];
+    this.crud.get('machine/wasfullopen').pipe(untilDestroyed(this)).subscribe((res: any) => {
+      //console.log(res)
+      this.dooropens = res?.details?.alldevinfo?.Count[0].wasfullopen[0]
+      //console.log(this.dooropens)
+      this.crud.get('machine/isfullopen').pipe(untilDestroyed(this)).subscribe((res: any) => {
+        //console.log(res)
+        this.dooropenss = res?.details?.alldevinfo?.Count[0].isfullopen[0]
+        this.alerts()
+      })
+    })
+  }
   }
 
 alerts(){

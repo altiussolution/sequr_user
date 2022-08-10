@@ -42,10 +42,22 @@
                     <div class="as-font-24">{{machine?.quantity}}</div>
                 </div>
                 <!-- <img  src="{{items?.image_path}}" > -->
-                <div class="img-sec">
+                <div class="img-sec" *ngIf="onoff === true">
                     <lib-ngx-image-zoom *ngIf="img"
                         [thumbImage]=mainimage
                         [fullImage]=mainimage
+                        [magnification]="1"
+                        [enableScrollZoom]="true"
+                        [enableLens]="true"
+                        [lensWidth]="200"
+                     
+                    ></lib-ngx-image-zoom>
+
+                </div>  
+                <div class="img-sec" *ngIf="onoff === false">
+                    <lib-ngx-image-zoom *ngIf="img"
+                        [thumbImage]="items.image"
+                        [fullImage]="items.image"
                         [magnification]="1"
                         [enableScrollZoom]="true"
                         [enableLens]="true"

@@ -7,7 +7,7 @@ import { CrudService } from 'src/app/services/crud.service';
 import { appModels } from 'src/app/services/shared/enum/enum.util';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import TurtleDB from 'turtledb';
-declare const window:any;
+declare const window: any;
 
 @Component({
   selector: 'app-details',
@@ -49,20 +49,20 @@ export class DetailsComponent implements OnInit {
   msgg: string;
   mainimage: any;
   img: boolean = true;
-permissions:any;
-  totalquantity: any=[];
-  dooropen:boolean=false;
+  permissions: any;
+  totalquantity: any = [];
+  dooropen: boolean = false;
   mydb: any;
-  cart: any=[];
-  cartList2: any=[];
+  cart: any = [];
+  cartList2: any = [];
   onoff: boolean;
-  cartnew: any=[];
-  newcd: any=[];
+  cartnew: any = [];
+  newcd: any = [];
   fcd: any;
-  samearray: any=[];
-  hlo: any=[]
+  samearray: any = [];
+  hlo: any = []
   newcart: any;
-  newcartdata: any=[];
+  newcartdata: any = [];
   new: { cart: any; total_quantity: any; _id: any; };
   constructor(public router: Router, private toast: ToastrService, private fb: FormBuilder, public crud: CrudService,
     public modalService: NgbModal) {
@@ -70,87 +70,88 @@ permissions:any;
 
   }
   ngOnInit(): void {
-    this.permissions=JSON.parse(localStorage.getItem("personal"))
-    if(window.navigator.onLine == true){
-      this.onoff=true
-    this.crud.CurrentMessage3.subscribe((message: any) => {
-      console.log(message)
-      //console.log(localStorage.getItem("_id"))
-      if (message != "" && !localStorage.getItem("hlo")) {
-        
-        let params: any = {};
-        params['company_id']=this.permissions?.company_id?._id
+    this.permissions = JSON.parse(localStorage.getItem("personal"))
+    if (window.navigator.onLine == true) {
+      this.onoff = true
+      this.crud.CurrentMessage3.subscribe((message: any) => {
+        console.log(message)
+        //console.log(localStorage.getItem("_id"))
+        if (message != "" && !localStorage.getItem("hlo")) {
+
+          let params: any = {};
+          params['company_id'] = this.permissions?.company_id?._id
+          this.message = message
+          console.log(this.message)
+          this.crud.get1(appModels.DETAILS + this.message, { params }).pipe(untilDestroyed(this)).subscribe((res: any) => {
+            console.log(res)
+            this.status = res.status
+            localStorage.setItem("hlo", "data")
+            this.items = res.items
+            this.videoSource = this.items.video_path
+            this.mainimage = this.items.image_path[0]
+            console.log(this.items.video_path)
+            this.machine = res.machine
+            this.it = this.machine.item
+            this.qty = this.machine.quantity
+            console.log(this.it)
+            this.cube = this.machine.cube
+            this.bin = this.machine.bin
+            this.compartment = this.machine.compartment
+
+          })
+        }
+        else {
+
+          let params: any = {};
+          params['company_id'] = this.permissions?.company_id?._id
+          this.crud.get1(appModels.DETAILS + localStorage.getItem("ids"), { params }).pipe(untilDestroyed(this)).subscribe((res: any) => {
+            console.log(res)
+            this.status = res.status
+            localStorage.setItem("hlo", "data")
+            this.items = res.items
+            this.videoSource = this.items.video_path
+            this.mainimage = this.items.image_path[0]
+            console.log(this.items.video_path)
+            this.machine = res.machine
+            this.it = this.machine.item
+            this.qty = this.machine.quantity
+            console.log(this.it)
+            this.cube = this.machine.cube
+            this.bin = this.machine.bin
+            this.compartment = this.machine.compartment
+
+          })
+        }
+      })
+    } else {
+      this.onoff = false
+      this.crud.CurrentMessage3.subscribe((message: any) => {
+        console.log(message)
         this.message = message
-        console.log(this.message)
-        this.crud.get1(appModels.DETAILS + this.message,{params}).pipe(untilDestroyed(this)).subscribe((res: any) => {
-          console.log(res)
-          this.status = res.status
-          localStorage.setItem("hlo", "data")
-          this.items = res.items
-          this.videoSource = this.items.video_path
-          this.mainimage = this.items.image_path[0]
-          console.log(this.items.video_path)
-          this.machine = res.machine
-          this.it = this.machine.item
-          this.qty = this.machine.quantity
-          console.log(this.it)
-          this.cube = this.machine.cube
-          this.bin = this.machine.bin
-          this.compartment = this.machine.compartment
-
-        })
-      }
-      else {
-
-        let params: any = {};
-        params['company_id']=this.permissions?.company_id?._id
-        this.crud.get1(appModels.DETAILS + localStorage.getItem("ids"),{params}).pipe(untilDestroyed(this)).subscribe((res: any) => {
-          console.log(res)
-          this.status = res.status
-          localStorage.setItem("hlo", "data")
-          this.items = res.items
-          this.videoSource = this.items.video_path
-          this.mainimage = this.items.image_path[0]
-          console.log(this.items.video_path)
-          this.machine = res.machine
-          this.it = this.machine.item
-          this.qty = this.machine.quantity
-          console.log(this.it)
-          this.cube = this.machine.cube
-          this.bin = this.machine.bin
-          this.compartment = this.machine.compartment
-
-        })
-      }
-    })
-  }else{
-    this.onoff=false
-    this.crud.CurrentMessage3.subscribe((message: any) => {
-      console.log(message)
-      this.message = message
-    this.mydb = new TurtleDB('example');
-    this.mydb.read('detailpage').then((doc) =>{console.log(doc)
-      for (let i = 0; i < doc.data?.length; i++) {
-        console.log("oi",doc.data[i].productdetails.items._id,this.message)
-        if(this.message == doc.data[i].productdetails.items._id ){
-          this.items = doc.data[i].productdetails.items
-          this.machine = doc.data[i].productdetails.machine
-          this.videoSource = this.items.video_path
-          this.mainimage = this.items.image_path[0]
-          this.qty = this.machine.quantity
-          console.log(this.items,this.machine)
+        this.mydb = new TurtleDB('example');
+        this.mydb.read('detailpage').then((doc) => {
+          console.log(doc)
+          for (let i = 0; i < doc.data?.length; i++) {
+            console.log("oi", doc.data[i].productdetails.items._id, this.message)
+            if (this.message == doc.data[i].productdetails.items._id) {
+              this.items = doc.data[i].productdetails.items
+              this.machine = doc.data[i].productdetails.machine
+              this.videoSource = this.items.video_path
+              this.mainimage = this.items.image_path[0]
+              this.qty = this.machine.quantity
+              console.log(this.items, this.machine)
+            }
           }
-         }
-    })
-   
-      } );
+        })
 
-// this.mydb.read('machine').then((doc) =>{console.log(doc)
-//   this.machine = doc.data
-//   console.log(this.items)
+      });
 
-// } );
-}
+      // this.mydb.read('machine').then((doc) =>{console.log(doc)
+      //   this.machine = doc.data
+      //   console.log(this.items)
+
+      // } );
+    }
 
   }
   changing(event) {
@@ -166,459 +167,500 @@ permissions:any;
   }
   modaldismiss() {
     this.machineCubeID = []
-    this.machineColumnID =[]
+    this.machineColumnID = []
     this.machineDrawID = []
-    this.machineCompartmentID =[]
-    this.machineStatus=[]
-    this.msg="";
-    this.msgg="";
+    this.machineCompartmentID = []
+    this.machineStatus = []
+    this.msg = "";
+    this.msgg = "";
     this.ngOnInit()
   }
   async addtocart(item?) {
-    if(window.navigator.onLine == true){
-        if (this.qut && this.qut > 0) {
-          let cart = {
-            "item": this.machine.item,
-            "total_quantity": Number(this.qut),
-            "company_id":this.permissions?.company_id?._id
-          }
-console.log(this.machine)
-          this.crud.post(appModels.ADDTOCART, cart).subscribe(async res => {
-            console.log(res)
-    
-            if (res['message'] == "Successfully added into cart!") {
-              let params: any = {};
-              params['user_id']=this.permissions?._id
-              params['company_id']=this.permissions?.company_id?._id
-
-              this.crud.get1(appModels.listCart,{params}).pipe(untilDestroyed(this)).subscribe(async res => {
-                console.log(res)
-                if (res) {
-                  if (!item) {
-                    this.toast.success("cart added successfully")
-                    this.cartList1 = [];
-                    this.crud.get1(appModels.listCart,{params}).pipe(untilDestroyed(this)).subscribe(async res => {
-    
-                      this.cartdata1 = res[0]
-                      console.log(this.cartdata1.cart)
-                      for (let i = 0; i < this.cartdata1?.cart?.length; i++) {
-                        if (this.cartdata1?.cart[i]['cart_status'] == 1) {
-                          this.cartList1.push(this.cartdata1?.cart[i])
-                        }
-                      }
-                      console.log(this.cartList1)
-                      this.crud.getcarttotal(this.cartList1?.length)
-                      this.router.navigate(['pages/details'])
-    
-                    })
-                  }
-                  if (item) {
-                    // /log/getUserTakenQuantity?user_id&item_id
-                    let params: any = {};
-                    params['company_id']=this.permissions?.company_id?._id
-                    params['user_id']=this.permissions?._id
-                    this.crud.get1("log/getUserTakenQuantity",{params}).pipe(untilDestroyed(this)).subscribe(async res => {
-                      console.log(res)
-                      if(res?.data?.length!=0){
-                        this.totalquantity=res['data']
-                        this.totalquantity.trasaction_qty
-                       
-                          if(this.permissions?.item_max_quantity>=this.totalquantity[0]?.trasaction_qty + this.qut){
-                            this.dooropen=false;
-                            this.modalService.open(item, { backdrop: false, keyboard : false });
-                            this.cartList = [];
-                            this.crud.get1(appModels.listCart,{params}).pipe(untilDestroyed(this)).subscribe(async res => {
-                              console.log(res)
-                              this.toast.success("Door open Sucessfully")
-                              this.cartdata = res[0]
-                              for (let i = 0; i < this.cartdata?.cart?.length; i++) {
-                                if (this.cartdata?.cart[i]['cart_status'] == 1 && this.cartdata?.cart[i]['item']['_id'] == this.machine.item) {
-                                  this.cartList.push(this.cartdata?.cart[i])
-                                }
-                              }
-                              console.log(this.cartList)
-                              await this.takeItem(item)
-                              this.crud.getcarttotal(this.cartList?.length)
-                            }, error => {
-                              this.toast.error(error.message);
-                            })
-                          }else{
-                           this.toast.error("You have exceeded item maximum quantity taken per day.")
-                          }
-  
-                      }else{
-                       
-                       if(this.permissions?.item_max_quantity>= 0 + this.qut){
-                             this.dooropen=false;
-                            this.modalService.open(item, { backdrop: false , keyboard : false});
-                            this.cartList = [];
-                            this.crud.get1(appModels.listCart,{params}).pipe(untilDestroyed(this)).subscribe(async res => {
-                              console.log(res)
-                              this.toast.success("Door open Sucessfully")
-                              this.cartdata = res[0]
-                              for (let i = 0; i < this.cartdata?.cart?.length; i++) {
-                                if (this.cartdata?.cart[i]['cart_status'] == 1 && this.cartdata?.cart[i]['item']['_id'] == this.machine.item) {
-                                  this.cartList.push(this.cartdata?.cart[i])
-                                }
-                              }
-                              console.log(this.cartList)
-                              await this.takeItem(item)
-                              this.crud.getcarttotal(this.cartList?.length)
-                            }, error => {
-                              this.toast.error(error.message);
-                            })
-                          }else{
-                           this.toast.error("You have exceeded item maximum quantity taken per day.")
-                          }
-  
-                      }
-                    
-                    })
-
-                  }
-                  //Arunkumar
-    
-                }
-    
-              }, error => {
-                this.toast.error(error.message);
-              })
-    
-            } else if (res['message'] == "Stock Not Yet Allocated") {
-              this.toast.error(res['message'])
-            }
-            //this.toast.success("cart added successfully")
-    
-          })
-        
-        } else {
-          this.toast.error("Please Enter Valid QTY")
+    if (window.navigator.onLine == true) {
+      if (this.qut && this.qut > 0) {
+        let cart = {
+          "item": this.machine.item,
+          "total_quantity": Number(this.qut),
+          "company_id": this.permissions?.company_id?._id
         }
-        
+        console.log(this.machine)
+        this.crud.post(appModels.ADDTOCART, cart).subscribe(async res => {
+          console.log(res)
+
+          if (res['message'] == "Successfully added into cart!") {
+            let params: any = {};
+            params['user_id'] = this.permissions?._id
+            params['company_id'] = this.permissions?.company_id?._id
+
+            this.crud.get1(appModels.listCart, { params }).pipe(untilDestroyed(this)).subscribe(async res => {
+              console.log(res)
+              if (res) {
+                if (!item) {
+                  this.toast.success("cart added successfully")
+                  this.cartList1 = [];
+                  this.crud.get1(appModels.listCart, { params }).pipe(untilDestroyed(this)).subscribe(async res => {
+
+                    this.cartdata1 = res[0]
+                    console.log(this.cartdata1.cart)
+                    for (let i = 0; i < this.cartdata1?.cart?.length; i++) {
+                      if (this.cartdata1?.cart[i]['cart_status'] == 1) {
+                        this.cartList1.push(this.cartdata1?.cart[i])
+                      }
+                    }
+                    console.log(this.cartList1)
+                    this.crud.getcarttotal(this.cartList1?.length)
+                    this.router.navigate(['pages/details'])
+
+                  })
+                }
+                if (item) {
+                  // /log/getUserTakenQuantity?user_id&item_id
+                  let params: any = {};
+                  params['company_id'] = this.permissions?.company_id?._id
+                  params['user_id'] = this.permissions?._id
+                  this.crud.get1("log/getUserTakenQuantity", { params }).pipe(untilDestroyed(this)).subscribe(async res => {
+                    console.log(res)
+                    if (res?.data?.length != 0) {
+                      this.totalquantity = res['data']
+                      this.totalquantity.trasaction_qty
+
+                      if (this.permissions?.item_max_quantity >= this.totalquantity[0]?.trasaction_qty + this.qut) {
+                        this.dooropen = false;
+                        this.modalService.open(item, { backdrop: false, keyboard: false });
+                        this.cartList = [];
+                        this.crud.get1(appModels.listCart, { params }).pipe(untilDestroyed(this)).subscribe(async res => {
+                          console.log(res)
+                          this.toast.success("Door open Sucessfully")
+                          this.cartdata = res[0]
+                          for (let i = 0; i < this.cartdata?.cart?.length; i++) {
+                            if (this.cartdata?.cart[i]['cart_status'] == 1 && this.cartdata?.cart[i]['item']['_id'] == this.machine.item) {
+                              this.cartList.push(this.cartdata?.cart[i])
+                            }
+                          }
+                          console.log(this.cartList)
+                          await this.takeItem(item)
+                          this.crud.getcarttotal(this.cartList?.length)
+                        }, error => {
+                          this.toast.error(error.message);
+                        })
+                      } else {
+                        this.toast.error("You have exceeded item maximum quantity taken per day.")
+                      }
+
+                    } else {
+
+                      if (this.permissions?.item_max_quantity >= 0 + this.qut) {
+                        this.dooropen = false;
+                        this.modalService.open(item, { backdrop: false, keyboard: false });
+                        this.cartList = [];
+                        this.crud.get1(appModels.listCart, { params }).pipe(untilDestroyed(this)).subscribe(async res => {
+                          console.log(res)
+                          this.toast.success("Door open Sucessfully")
+                          this.cartdata = res[0]
+                          for (let i = 0; i < this.cartdata?.cart?.length; i++) {
+                            if (this.cartdata?.cart[i]['cart_status'] == 1 && this.cartdata?.cart[i]['item']['_id'] == this.machine.item) {
+                              this.cartList.push(this.cartdata?.cart[i])
+                            }
+                          }
+                          console.log(this.cartList)
+                          await this.takeItem(item)
+                          this.crud.getcarttotal(this.cartList?.length)
+                        }, error => {
+                          this.toast.error(error.message);
+                        })
+                      } else {
+                        this.toast.error("You have exceeded item maximum quantity taken per day.")
+                      }
+
+                    }
+
+                  })
+
+                }
+                //Arunkumar
+
+              }
+
+            }, error => {
+              this.toast.error(error.message);
+            })
+
+          } else if (res['message'] == "Stock Not Yet Allocated") {
+            this.toast.error(res['message'])
+          }
+          //this.toast.success("cart added successfully")
+
+        })
+
+      } else {
+        this.toast.error("Please Enter Valid QTY")
       }
-      //offline
-      else{
-        if (this.qut && this.qut > 0) {
-          //addtocart
-          if (!item) {         
-            this.mydb = new TurtleDB('example');
-            this.mydb.read('getlistcart').then((doc) =>{console.log(doc)              
-                  this.cartdata1 = doc.data           
-                this.cartList1 = [];
-                let tempArray =[];
-            
-                this.newcart=this.cartdata1.cart
-                console.log(this.newcart)
-                const checkid = this.newcart.some(item => item.item._id === this.machine.item)
-  
-                const checkstatus = this.newcart.some(item => item.cart_status === 1)
-                console.log(checkid,checkstatus)
-                if(checkid == true && checkstatus == true){
 
-//console.log(this.machine.item)
-                  let mechine_id=this.machine.item
-                  let  qut=this.qut
-             const newcartdata =	this.newcart.filter(function (newcart) {
-              return newcart.item._id == mechine_id && newcart.cart_status == 1  ?  newcart.qty = Number(qut)+Number(newcart.qty) : newcart.qty = Number(qut)+Number(newcart.qty)  ;
+    }
+    //offline
+    else {
+      if (this.qut && this.qut > 0) {
+        //addtocart
+        if (!item) {
+          this.mydb = new TurtleDB('example');
+          this.mydb.read('getlistcart').then((doc) => {
+            console.log(doc)
+            this.cartdata1 = doc.data
+            this.cartList1 = [];
+            let tempArray = [];
 
-          })
-                         console.log(newcartdata)
+            this.newcart = this.cartdata1.cart
+            console.log(this.newcart)
+            const checkid = this.newcart.some(item => item.item._id === this.machine.item && item.cart_status === 1)
+
+            //const checkstatus = this.newcart.some(item => item.cart_status === 1) && checkstatus == true
+            console.log(checkid)
+            if (checkid == true) {
+
+              //console.log(this.machine.item)
+              let mechine_id = this.machine.item
+              let qut = this.qut
+              const newcartdata = this.newcart.filter(function (newcart) {
+                return newcart.item._id == mechine_id && newcart.cart_status == 1 ? newcart.qty = Number(qut) + Number(newcart.qty) : newcart;
+
+              })
+              console.log(newcartdata)
               //  if(newcartdata){
               //   this.newcd = this.cartdata1.cart.filter((item) => item.item.id !== mechine_id && item.cart_status ==1);
               //   console.log(this.newcd)
               //  }
-            
-                 for (let i = 0; i < this.cartdata1?.cart?.length; i++) {
-                  if (this.cartdata1?.cart[i]['cart_status'] == 1) {
-                    this.cartList1.push(this.cartdata1?.cart[i])
-                    let hi=this.cartList1.reduce((accumulator, current) => accumulator + current.qty, 0);
-                    console.log(hi)
-                    doc.data.total_quantity=hi
-  
-                  }               
+
+              for (let i = 0; i < this.cartdata1?.cart?.length; i++) {
+                if (this.cartdata1?.cart[i]['cart_status'] == 1) {
+                  this.cartList1.push(this.cartdata1?.cart[i])
+                  let hi = this.cartList1.reduce((accumulator, current) => accumulator + current.qty, 0);
+                  console.log(hi)
+                  doc.data.total_quantity = hi
+
                 }
-                this.new=({
-                  cart:newcartdata,
-                  total_quantity:doc.data.total_quantity,
-                  _id:doc.data._id
-                })
-console.log(this.new)
+              }
+              this.new = ({
+                cart: newcartdata,
+                total_quantity: doc.data.total_quantity,
+                _id: doc.data._id
+              })
+              console.log(this.new)
               const dateTime = new Date();
               this.mydb = new TurtleDB('example');
-             this.mydb.update('getlistcart', { data: this.new , user: this.permissions?._id,company_id:this.permissions?.company_id?._id,cartinfo:2,created_at:dateTime});
-             this.toast.success("cart added successfully")
+              this.mydb.update('getlistcart', { data: this.new, user: this.permissions?._id, company_id: this.permissions?.company_id?._id, cartinfo: 2,updatestatus:2, created_at: dateTime });
+              this.toast.success("cart added successfully")
 
 
-                }else {
-                  const dateTime = new Date();
-                  this.hlo=  {allocation:this.machine._id,
-                    cart_status:1,
-                    item:{
-                      image_path:this.items.image_path,
-                      item_name:this.items.item_name,
-                      _id:this.machine.item,
-                      image:[],
-                    },
-                    item_details:this.machine,
-                   
-                    qty:Number(this.qut),
-                  }
-                 // console.log(this.hlo)
-                  this.newcart.push(this.hlo)     
-                //  console.log(this.newcart)
-            
-                for (let i = 0; i < this.cartdata1?.cart?.length; i++) {
-                  if (this.cartdata1?.cart[i]['cart_status'] == 1) {
-                    this.cartList1.push(this.cartdata1?.cart[i])
-                    let hi=this.cartList1.reduce((accumulator, current) => accumulator + current.qty, 0);
-                    console.log(hi)
-                    doc.data.total_quantity=hi  
-                  }               
-                }
-                this.new=({
-                  cart:this.newcart,
-                  total_quantity:doc.data.total_quantity,
-                  _id:doc.data._id
-                })
-               console.log(this.new) 
-                  this.mydb = new TurtleDB('example');
-                   this.mydb.update('getlistcart', { data: this.new , user: this.permissions?._id,company_id:this.permissions?.company_id?._id,cartinfo:2,created_at:dateTime});
-                   this.toast.success("cart added successfully")
+            } else {
+              const dateTime = new Date();
+              this.hlo = {
+                allocation: this.machine._id,
+                cart_status: 1,
+                item: {
+                  image_path: this.items.image_path,
+                  item_name: this.items.item_name,
+                  _id: this.machine.item,
+                //  image: [],
+                },
+                item_details: this.machine,
 
-                }
-             
-           
-
-             
-
-                 console.log(this.cartList1)
-                
-                this.crud.getcarttotal(this.cartList1?.length)
-                this.router.navigate(['pages/details'])
-              } );        
-          }
-          //takenow
-          if (item) {
-            this.mydb = new TurtleDB('example');
-            this.mydb.read('getUserTakenQuantity').then(async (doc) =>{console.log(doc)
-              const res=doc.data
-              if(res?.data?.length!=0){
-                this.totalquantity=res['data']    
-                console.log(this.permissions?.item_max_quantity>=this.totalquantity[0]?.trasaction_qty + this.qut,this.permissions?.item_max_quantity,this.totalquantity[0]?.trasaction_qty + this.qut)           
-                  if(this.permissions?.item_max_quantity>=this.totalquantity[0]?.trasaction_qty + this.qut){
-                    this.dooropen=false;
-                    this.modalService.open(item, { backdrop: false, keyboard : false });
-                    // this.cartList = [];
-                    // this.crud.get1(appModels.listCart,{params}).pipe(untilDestroyed(this)).subscribe(async res => {
-                    //   console.log(res)
-                    //   this.toast.success("Door open Sucessfully")
-                    //   this.cartdata = res[0]
-                    //   for (let i = 0; i < this.cartdata?.cart?.length; i++) {
-                    //     if (this.cartdata?.cart[i]['cart_status'] == 1 && this.cartdata?.cart[i]['item']['_id'] == this.machine.item) {
-                    //       this.cartList.push(this.cartdata?.cart[i])
-                    //     }
-                    //   }
-                    //   console.log(this.cartList)
-                    //   await this.takeItem(item)
-                    //   this.crud.getcarttotal(this.cartList?.length)
-                    // }, error => {
-                    //   this.toast.error(error.message);
-                    // })
-                    this.mydb = new TurtleDB('example');
-                    this.mydb.read('getlistcart').then((doc) =>{console.log(doc)              
-                          this.cartdata1 = doc.data           
-                        this.cartList1 = [];
-                        let tempArray =[];
-                        this.toast.success("Door open Sucessfully")
-                        this.newcart=this.cartdata1.cart
-                        console.log(this.newcart)
-                        const checkid = this.newcart.some(item => item.item._id === this.machine.item)
-          
-                        const checkstatus = this.newcart.some(item => item.cart_status === 2)
-                        console.log(checkid,checkstatus)
-                        if(checkid == true && checkstatus == true){
-        
-        //console.log(this.machine.item)
-                          let mechine_id=this.machine.item
-                          let  qut=this.qut
-                     const newcartdata =	this.newcart.filter(function (newcart) {
-                      return newcart.item._id == mechine_id && newcart.cart_status == 2  ?  newcart.qty = Number(qut)+Number(newcart.qty) : newcart.qty = Number(qut)+Number(newcart.qty)  ;
-        
-                  })
-                                 console.log(newcartdata)
-                      //  if(newcartdata){
-                      //   this.newcd = this.cartdata1.cart.filter((item) => item.item.id !== mechine_id && item.cart_status ==1);
-                      //   console.log(this.newcd)
-                      //  }
-                     
-                         for (let i = 0; i < this.cartdata1?.cart?.length; i++) {
-                          if (this.cartdata1?.cart[i]['cart_status'] == 1) {
-                            this.cartList1.push(this.cartdata1?.cart[i])
-                            let hi=this.cartList1.reduce((accumulator, current) => accumulator + current.qty, 0);
-                            console.log(hi)
-                            doc.data.total_quantity=hi            
-                          }               
-                        }
-                        this.new=({
-                          cart:newcartdata,
-                          total_quantity:doc.data.total_quantity,
-                          _id:doc.data._id
-                        })
-                      const dateTime = new Date();
-                      this.mydb = new TurtleDB('example');
-                     this.mydb.update('getlistcart', { data: this.new , user: this.permissions?._id,company_id:this.permissions?.company_id?._id,cartinfo:2,created_at:dateTime});
-        
-        
-                        }else {
-                          const dateTime = new Date();
-                          this.hlo=  {allocation:this.machine._id,
-                            cart_status:2,
-                            item:{
-                              image_path:this.items.image_path,
-                              item_name:this.items.item_name,
-                              _id:this.machine.item,
-                              image:[],
-                            },
-                            item_details:this.machine,
-                           
-                            qty:Number(this.qut),
-                          }
-                         // console.log(this.hlo)
-                          this.newcart.push(this.hlo)     
-                        //  console.log(this.newcart)
-                       
-                        for (let i = 0; i < this.cartdata1?.cart?.length; i++) {
-                          if (this.cartdata1?.cart[i]['cart_status'] == 1) {
-                            this.cartList1.push(this.cartdata1?.cart[i])
-let hi=this.cartList1.reduce((accumulator, current) => accumulator + current.qty, 0);
-                            console.log(hi)
-                            doc.data.total_quantity=hi             
-                          }               
-                        }
-                        this.new=({
-                          cart:this.newcart,
-                          total_quantity:doc.data.total_quantity,
-                          _id:doc.data._id
-                        })
-                          this.mydb = new TurtleDB('example');
-                           this.mydb.update('getlistcart', { data: this.new , user: this.permissions?._id,company_id:this.permissions?.company_id?._id,cartinfo:2,created_at:dateTime});
-                           this.toast.success("Door open Sucessfully")
-
-                        }
-                     
-                         console.log(this.cartList1)
-                        
-                        this.crud.getcarttotal(this.cartList1?.length)
-                      } );        
-                    
-                    await this.takeItem(item)
-                  }else{
-                   this.toast.error("You have exceeded item maximum quantity taken per day.")
-                  }
-
-              }else{
-               console.log(this.permissions?.item_max_quantity>= 0 + this.qut,this.permissions?.item_max_quantity, 0 + this.qut)
-               if(this.permissions?.item_max_quantity>= 0 + this.qut){
-                     this.dooropen=false;
-                    this.modalService.open(item, { backdrop: false , keyboard : false});
-                    this.mydb = new TurtleDB('example');
-                    this.mydb.read('getlistcart').then((doc) =>{console.log(doc)              
-                          this.cartdata1 = doc.data           
-                        this.cartList1 = [];
-                        let tempArray =[];
-                        this.toast.success("Door open Sucessfully")
-                        this.newcart=this.cartdata1.cart
-                        console.log(this.newcart)
-                        const checkid = this.newcart.some(item => item.item._id === this.machine.item)
-          
-                        const checkstatus = this.newcart.some(item => item.cart_status === 2)
-                        console.log(checkid,checkstatus)
-                        if(checkid == true && checkstatus == true){
-        
-                          let mechine_id=this.machine.item
-                          let  qut=this.qut
-                     const newcartdata =	this.newcart.filter(function (newcart) {
-                      return newcart.item._id == mechine_id && newcart.cart_status == 2  ?  newcart.qty = Number(qut)+Number(newcart.qty) : newcart.qty = Number(qut)+Number(newcart.qty)  ;
-        
-                  })
-                                 console.log(newcartdata)
-                      
-                      this.new=({
-                        cart:newcartdata,
-                        total_quantity:doc.data.total_quantity,
-                        _id:doc.data._id
-                      })
-                         for (let i = 0; i < this.cartdata1?.cart?.length; i++) {
-                          if (this.cartdata1?.cart[i]['cart_status'] == 1) {
-                            this.cartList1.push(this.cartdata1?.cart[i])
-                            doc.data.total_quantity=this.cartdata1?.cart[i].qty
-          
-                          }               
-                        }
-                      const dateTime = new Date();
-                      this.mydb = new TurtleDB('example');
-                     this.mydb.update('getlistcart', { data: this.new , user: this.permissions?._id,company_id:this.permissions?.company_id?._id,cartinfo:2,created_at:dateTime});
-        
-        
-                        }else {
-                          const dateTime = new Date();
-                          this.hlo=  {allocation:this.machine._id,
-                            cart_status:2,
-                            item:{
-                              image_path:this.items.image_path,
-                              item_name:this.items.item_name,
-                              _id:this.machine.item,
-                              image:[],
-                            },
-                            item_details:this.machine,
-                           
-                            qty:Number(this.qut),
-                          }
-                         // console.log(this.hlo)
-                          this.newcart.push(this.hlo)     
-                        //  console.log(this.newcart)
-                        this.new=({
-                          cart:this.newcart,
-                          total_quantity:doc.data.total_quantity,
-                          _id:doc.data._id
-                        })
-                        for (let i = 0; i < this.cartdata1?.cart?.length; i++) {
-                          if (this.cartdata1?.cart[i]['cart_status'] == 1) {
-                            this.cartList1.push(this.cartdata1?.cart[i])
-                            doc.data.total_quantity=this.cartdata1?.cart[i].qty
-          
-                          }               
-                        }
-                          this.mydb = new TurtleDB('example');
-                           this.mydb.update('getlistcart', { data: this.new , user: this.permissions?._id,company_id:this.permissions?.company_id?._id,cartinfo:2,created_at:dateTime});
-                           this.toast.success("Door open Sucessfully")
-
-                        }
-                     
-                         console.log(this.cartList1)
-                        
-                        this.crud.getcarttotal(this.cartList1?.length)
-                      } );        
-                    await this.takeItem(item)
-                  }else{
-                   this.toast.error("You have exceeded item maximum quantity taken per day.")
-                  }
-
+                qty: Number(this.qut),
               }
-            })
+              // console.log(this.hlo)
+              this.newcart.push(this.hlo)
+              //  console.log(this.newcart)
+
+              for (let i = 0; i < this.cartdata1?.cart?.length; i++) {
+                if (this.cartdata1?.cart[i]['cart_status'] == 1) {
+                  this.cartList1.push(this.cartdata1?.cart[i])
+                  let hi = this.cartList1.reduce((accumulator, current) => accumulator + current.qty, 0);
+                  console.log(hi)
+                  doc.data.total_quantity = hi
+                }
+              }
+              this.new = ({
+                cart: this.newcart,
+                total_quantity: doc.data.total_quantity,
+                _id: doc.data._id
+              })
+              console.log(this.new)
+              this.mydb = new TurtleDB('example');
+              this.mydb.update('getlistcart', { data: this.new, user: this.permissions?._id, company_id: this.permissions?.company_id?._id, cartinfo: 2,updatestatus:1, created_at: dateTime });
+              this.toast.success("cart added successfully")
+
+            }
 
 
-          }
 
-        } else {
-          this.toast.error("Please Enter Valid QTY")
+
+
+            console.log(this.cartList1)
+
+            this.crud.getcarttotal(this.cartList1?.length)
+            this.router.navigate(['pages/details'])
+          });
+        }
+        //takenow
+        if (item) {
+          this.mydb = new TurtleDB('example');
+          this.mydb.read('getUserTakenQuantity').then(async (doc) => {
+            console.log(doc)
+            const res = doc.data
+            if (res?.data?.length != 0) {
+              this.totalquantity = res['data']
+              console.log(this.permissions?.item_max_quantity >= this.totalquantity[0]?.trasaction_qty + this.qut, this.permissions?.item_max_quantity, this.totalquantity[0]?.trasaction_qty + this.qut)
+              if (this.permissions?.item_max_quantity >= this.totalquantity[0]?.trasaction_qty + this.qut) {
+                this.dooropen = false;
+                this.modalService.open(item, { backdrop: false, keyboard: false });
+                // this.cartList = [];
+                // this.crud.get1(appModels.listCart,{params}).pipe(untilDestroyed(this)).subscribe(async res => {
+                //   console.log(res)
+                //   this.toast.success("Door open Sucessfully")
+                //   this.cartdata = res[0]
+                //   for (let i = 0; i < this.cartdata?.cart?.length; i++) {
+                //     if (this.cartdata?.cart[i]['cart_status'] == 1 && this.cartdata?.cart[i]['item']['_id'] == this.machine.item) {
+                //       this.cartList.push(this.cartdata?.cart[i])
+                //     }
+                //   }
+                //   console.log(this.cartList)
+                //   await this.takeItem(item)
+                //   this.crud.getcarttotal(this.cartList?.length)
+                // }, error => {
+                //   this.toast.error(error.message);
+                // })
+                this.mydb = new TurtleDB('example');
+                this.mydb.read('getlistcart').then((doc) => {
+                  console.log(doc)
+                  this.cartdata1 = doc.data
+                  this.cartList1 = [];
+                  let tempArray = [];
+                  this.newcart = this.cartdata1.cart
+                  console.log(this.newcart)
+                  const checkid = this.newcart.some(item => item.item._id === this.machine.item && item.cart_status === 2)
+
+                 // const checkstatus = this.newcart.some(item => item.cart_status === 2) && checkstatus == true
+                  console.log(checkid)
+                  if (checkid == true) {
+
+                    let mechine_id = this.machine.item
+                    let qut = this.qut
+                    const newcartdata = this.newcart.filter(function (newcart) {
+                      return newcart.item._id == mechine_id && newcart.cart_status == 2 ? (newcart.item_details.quantity = Number(newcart.item_details.quantity) - Number(qut)) && (newcart.qty = Number(qut) + Number(newcart.qty)) : newcart;
+
+                    })
+                    console.log(newcartdata)
+
+                    this.new = ({
+                      cart: newcartdata,
+                      total_quantity: doc.data.total_quantity,
+                      _id: doc.data._id
+                    })
+                    for (let i = 0; i < this.cartdata1?.cart?.length; i++) {
+                      if (this.cartdata1?.cart[i]['cart_status'] == 1) {
+                        this.cartList1.push(this.cartdata1?.cart[i])
+                        doc.data.total_quantity = this.cartdata1?.cart[i].qty
+
+                      }
+                    }
+                    const dateTime = new Date();
+                    this.mydb = new TurtleDB('example');
+                    this.mydb.update('getlistcart', { data: this.new, user: this.permissions?._id, company_id: this.permissions?.company_id?._id, cartinfo: 2,updatestatus:2, created_at: dateTime });
+                    this.toast.success("Door open Sucessfully")
+
+
+                  } else {
+                    const dateTime = new Date();
+                    this.hlo = {
+                      allocation: this.machine._id,
+                      cart_status: 2,
+                      item: {
+                        image_path: this.items.image_path,
+                        item_name: this.items.item_name,
+                        _id: this.machine.item,
+                      //  image: [],
+                      },
+                      item_details: {
+                        active_status: this.machine.active_status,
+                        bin: this.machine.bin,
+                        category: this.machine.category,
+                        company_id: this.machine.company_id,
+                        compartment: this.machine.compartment,
+                        compartment_number: this.machine.compartment_number,
+                        created_at: this.machine.created_at,
+                        cube: this.machine.cube,
+                        deleted_at: this.machine.deleted_at,
+                        description: this.machine.description,
+                        item: this.machine.item,
+                        po_history: this.machine.po_history,
+                        purchase_order: this.machine.purchase_order,
+                        quantity: Number(this.machine.quantity) - Number(this.qut),
+                        status: this.machine.status,
+                        sub_category: this.machine.sub_category,
+                        supplier: this.machine.supplier,
+                        total_quantity: this.machine.total_quantity,
+                        updated_at: this.machine.updated_at,
+
+                        _id: this.machine._id,
+                      },
+
+                      qty: Number(this.qut),
+                    }
+                    console.log(this.hlo)
+                    this.newcart.push(this.hlo)
+                    console.log(this.newcart)
+                    this.new = ({
+                      cart: this.newcart,
+                      total_quantity: doc.data.total_quantity,
+                      _id: doc.data._id
+                    })
+                    for (let i = 0; i < this.cartdata1?.cart?.length; i++) {
+                      if (this.cartdata1?.cart[i]['cart_status'] == 1) {
+                        this.cartList1.push(this.cartdata1?.cart[i])
+                        doc.data.total_quantity = this.cartdata1?.cart[i].qty
+
+                      }
+                    }
+                    this.mydb = new TurtleDB('example');
+                    this.mydb.update('getlistcart', { data: this.new, user: this.permissions?._id, company_id: this.permissions?.company_id?._id, cartinfo: 2,updatestatus:1, created_at: dateTime });
+                    this.toast.success("Door open Sucessfully")
+
+                  }
+
+                  console.log(this.cartList1)
+
+                  this.crud.getcarttotal(this.cartList1?.length)
+                });                await this.takeItem(item)
+              } else {
+                this.toast.error("You have exceeded item maximum quantity taken per day.")
+              }
+
+            } else {
+              console.log(this.permissions?.item_max_quantity >= 0 + this.qut, this.permissions?.item_max_quantity, 0 + this.qut)
+              if (this.permissions?.item_max_quantity >= 0 + this.qut) {
+                this.dooropen = false;
+                this.modalService.open(item, { backdrop: false, keyboard: false });
+                this.mydb = new TurtleDB('example');
+                this.mydb.read('getlistcart').then((doc) => {
+                  console.log(doc)
+                  this.cartdata1 = doc.data
+                  this.cartList1 = [];
+                  let tempArray = [];
+                  this.newcart = this.cartdata1.cart
+                  console.log(this.newcart)
+                  const checkid = this.newcart.some(item => item.item._id === this.machine.item &&  item.cart_status === 2)
+
+                  //const checkstatus = this.newcart.some(item => item.cart_status === 2)
+                  console.log(checkid)
+                  if (checkid == true ) {
+
+                    let mechine_id = this.machine.item
+                    let qut = this.qut
+                    const newcartdata = this.newcart.filter(function (newcart) {
+                      return newcart.item._id == mechine_id && newcart.cart_status == 2 ? (newcart.item_details.quantity = Number(newcart.item_details.quantity) - Number(qut)) && (newcart.qty = Number(qut) + Number(newcart.qty)) : newcart;
+
+                    })
+                    console.log(newcartdata)
+
+                    this.new = ({
+                      cart: newcartdata,
+                      total_quantity: doc.data.total_quantity,
+                      _id: doc.data._id
+                    })
+                    for (let i = 0; i < this.cartdata1?.cart?.length; i++) {
+                      if (this.cartdata1?.cart[i]['cart_status'] == 1) {
+                        this.cartList1.push(this.cartdata1?.cart[i])
+                        doc.data.total_quantity = this.cartdata1?.cart[i].qty
+
+                      }
+                    }
+                    const dateTime = new Date();
+                    this.mydb = new TurtleDB('example');
+                    this.mydb.update('getlistcart', { data: this.new, user: this.permissions?._id, company_id: this.permissions?.company_id?._id, cartinfo: 2,updatestatus:2, created_at: dateTime });
+                    this.toast.success("Door open Sucessfully")
+
+
+                  } else {
+                    const dateTime = new Date();
+                    this.hlo = {
+                      allocation: this.machine._id,
+                      cart_status: 2,
+                      item: {
+                        image_path: this.items.image_path,
+                        item_name: this.items.item_name,
+                        _id: this.machine.item,
+                       // image: [],
+                      },
+                      item_details: {
+                        active_status: this.machine.active_status,
+                        bin: this.machine.bin,
+                        category: this.machine.category,
+                        company_id: this.machine.company_id,
+                        compartment: this.machine.compartment,
+                        compartment_number: this.machine.compartment_number,
+                        created_at: this.machine.created_at,
+                        cube: this.machine.cube,
+                        deleted_at: this.machine.deleted_at,
+                        description: this.machine.description,
+                        item: this.machine.item,
+                        po_history: this.machine.po_history,
+                        purchase_order: this.machine.purchase_order,
+                        quantity: Number(this.machine.quantity) - Number(this.qut),
+                        status: this.machine.status,
+                        sub_category: this.machine.sub_category,
+                        supplier: this.machine.supplier,
+                        total_quantity: this.machine.total_quantity,
+                        updated_at: this.machine.updated_at,
+
+                        _id: this.machine._id,
+                      },
+
+                      qty: Number(this.qut),
+                    }
+                    console.log(this.hlo)
+                    this.newcart.push(this.hlo)
+                    console.log(this.newcart)
+                    this.new = ({
+                      cart: this.newcart,
+                      total_quantity: doc.data.total_quantity,
+                      _id: doc.data._id
+                    })
+                    for (let i = 0; i < this.cartdata1?.cart?.length; i++) {
+                      if (this.cartdata1?.cart[i]['cart_status'] == 1) {
+                        this.cartList1.push(this.cartdata1?.cart[i])
+                        doc.data.total_quantity = this.cartdata1?.cart[i].qty
+
+                      }
+                    }
+                    this.mydb = new TurtleDB('example');
+                    this.mydb.update('getlistcart', { data: this.new, user: this.permissions?._id, company_id: this.permissions?.company_id?._id, cartinfo: 2,updatestatus:1, created_at: dateTime });
+                    this.toast.success("Door open Sucessfully")
+
+                  }
+
+                  console.log(this.cartList1)
+
+                  this.crud.getcarttotal(this.cartList1?.length)
+                });
+                await this.takeItem(item)
+              } else {
+                this.toast.error("You have exceeded item maximum quantity taken per day.")
+              }
+
+            }
+          })
+
+
         }
 
+      } else {
+        this.toast.error("Please Enter Valid QTY")
       }
-        
-      
-    
-    
+
+    }
+
+
+
+
   }
   cartList
   cartdata
@@ -800,7 +842,7 @@ let hi=this.cartList1.reduce((accumulator, current) => accumulator + current.qty
           console.log(' Machine Status : ' + machineColumnStatus)
           let singleDeviceInfo = await this.singleDeviceInfo(machine)
           let status = singleDeviceInfo.details.singledevinfo.column[0]['status'][0]
-          this.machineStatus=status
+          this.machineStatus = status
           console.log('inside while loop status bin ' + machine.bin_id + status)
           if (status == 'Closed' || status == 'Locked' || status == 'Unknown') {
             await this.sleep(9000)
@@ -847,7 +889,7 @@ let hi=this.cartList1.reduce((accumulator, current) => accumulator + current.qty
     if (successTake.length == 0) {
       console.log('Machine status unknown No Item taken')
       this.msgg = 'Machine status unknown No Item taken'
-      this.dooropen=true
+      this.dooropen = true
     } else if (successTake.length == totalMachinesList.length) {
       console.log(successTake.length + ' Items Taken Successfully')
       this.msgg = successTake.length + ' Items Taken Successfully'
@@ -864,38 +906,38 @@ let hi=this.cartList1.reduce((accumulator, current) => accumulator + current.qty
 
   //Update Cart and Stock Allocation documents after item Take/Return
   async updateAfterTakeOrReturn(successTake: any, item?) {
-    if(window.navigator.onLine == true){
+    if (window.navigator.onLine == true) {
 
-    let data = {
-      cart_id: this.cartdata._id,
-      take_items: successTake,
-      cart_status: 2
-    }
-    this.crud.post(`cart/updateReturnTake`, data).pipe().subscribe(async (res) => {
-      console.log(res)
-      if (res) {
-        this.toast.success('Item Taken Successfully...');
-        this.dooropen=true
-
+      let data = {
+        cart_id: this.cartdata._id,
+        take_items: successTake,
+        cart_status: 2
       }
-    })
-  }else{
+      this.crud.post(`cart/updateReturnTake`, data).pipe().subscribe(async (res) => {
+        console.log(res)
+        if (res) {
+          this.toast.success('Item Taken Successfully...');
+          this.dooropen = true
 
-  }
+        }
+      })
+    } else {
+
+    }
   }
   async addMachineUsage(data) {
-    if(window.navigator.onLine == true){
+    if (window.navigator.onLine == true) {
 
-    console.log(data)
-    this.crud.post(`dashboard/machineUsageAdd`, data).pipe().subscribe(async (res) => {
-      console.log(res)
-      if (res) {
-        // this.toast.success('machine Usage Added Successfully...');
-      }
-    })
-  }else{
-    console.log(data)
-  }
+      console.log(data)
+      this.crud.post(`dashboard/machineUsageAdd`, data).pipe().subscribe(async (res) => {
+        console.log(res)
+        if (res) {
+          // this.toast.success('machine Usage Added Successfully...');
+        }
+      })
+    } else {
+      console.log(data)
+    }
   }
 
 

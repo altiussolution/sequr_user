@@ -68,17 +68,12 @@ export class ProductslistComponent implements OnInit {
         //console.log(res)
         this.kit = res.data
     
-      //  this.hlo2 = this.kit.filter(v => v.kit_data.filter(k => k.item.image_path[0] == this.getBase64Image(k.item.image_path[0])));
 
         for (let i = 0; i < this.kit.length; i++) {
    
           for (let j = 0; j < this.kit[i].kit_data.length; j++) {
-          // //console.log(i,j,this.kit[i].kit_data.length-1)
-         //  //console.log(this.kit[i].kit_data[j].item.image_path[0])itemlis
-
-            // this.kitting=[]
+     
             this.getBase64ImageFromURL(this.kit[i].kit_data[j].item.image_path[0]).subscribe(base64data => {    
-              ////console.log(base64data);
               this.base64Image.push( {image:'data:image/jpg;base64,' + base64data,name:this.kit[i].kit_data[j].item.item_name});
 
               //console.log(this.base64Image)
@@ -364,6 +359,7 @@ this.mydb.create({ _id: 'kitting', kit: hlo2 });
     this.msg="";
     this.msgg="";
     let params: any = {};
+    console.log(data)
     this.mydb = new TurtleDB('example');
     this.mydb.read('getitemlist').then(async (doc) =>{console.log(doc)
         this.itemhistorykit = doc.data['Kits']
@@ -427,7 +423,7 @@ this.mydb.create({ _id: 'kitting', kit: hlo2 });
     kit_item_details:
     [{
     active_status:  data.kit_data[i].active_status,
-    alloted_item_qty_in_kit:  data.kit_data[i].alloted_item_qty_in_kit,
+    alloted_item_qty_in_kit:  data.kit_data[i].kit_item_qty,
     bin: data.kit_data[i].bin,
     category:  data.kit_data[i].category,
     company_id:  data.kit_data[i].company_id,
@@ -440,7 +436,7 @@ this.mydb.create({ _id: 'kitting', kit: hlo2 });
     item:  data.kit_data[i].item,
     po_history: data.kit_data[i].po_history,
     purchase_order: data.kit_data[i].purchase_order,
-    quantity: data.kit_data[i].quantity-data.kit_data[i].alloted_item_qty_in_kit,
+    quantity: data.kit_data[i].quantity-data.kit_data[i].kit_item_qty,
     status: data.kit_data[i].status,
     sub_category: data.kit_data[i].sub_category,
     supplier: data.kit_data[i].supplier,
@@ -477,7 +473,7 @@ this.mydb.create({ _id: 'kitting', kit: hlo2 });
       }) 
 console.log(this.new)
      this.mydb = new TurtleDB('example');
-      this.mydb.update('getitemlist', { data: this.new, user: this.permissions?._id, company_id: this.permissions?.company_id?._id, kitinfo: 2, created_at: this.dateTime });
+      this.mydb.update('getitemlist', { data: this.new, user: this.permissions?._id, company_id: this.permissions?.company_id?._id, kitinfo: 2,updatestatus :1, created_at: this.dateTime });
       for await (let kit of this.itemhistorykit) {
         //console.log(typeof kit.kit_status + ' ' + kit.kit_status)
         //console.log(typeof kit.kit_id._id + ' ' + kit.kit_id._id)
