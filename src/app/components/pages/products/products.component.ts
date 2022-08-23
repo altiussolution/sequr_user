@@ -212,6 +212,7 @@ params['company_id']=this.permissions?.company_id?._id
         console.log("oi",doc.data[i].productdetails.items._id,it)
         if(it == doc.data[i].productdetails.items._id ){
           this.machine = doc.data[i].productdetails.machine
+          this.items = doc.data[i].productdetails.items
           this.qty = this.machine.quantity
           console.log(this.qty)
           }
@@ -276,7 +277,7 @@ params['company_id']=this.permissions?.company_id?._id
               image_path:this.items.image_path,
               item_name:this.items.item_name,
               _id:this.machine.item,
-             // image:[],
+             // image:"",
             },
             item_details:this.machine,
            

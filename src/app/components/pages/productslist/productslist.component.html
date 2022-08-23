@@ -4,7 +4,7 @@
       Kitting
     </div>
     <div class="row as-color-1">
-      <div class=" as-font-14">
+      <div class=" as-font-14" *ngIf="onoff === true">
           <mat-paginator [length]="kit.length"
           [pageSize]="size"
           [pageIndex]="page"
@@ -12,6 +12,14 @@
           (page)="getData($event)">
           </mat-paginator>
       </div>
+      <div class=" as-font-14"  *ngIf="onoff === false">
+        <mat-paginator [length]="kit.length"
+        [pageSize]="size"
+        [pageIndex]="page"
+        [pageSizeOptions]="[4, 8, 12]"
+        (page)="getData($event)">
+        </mat-paginator>
+    </div>
       <div class="mr-3 pointer  as-g-active view-active d-none" (click)="gridview()">
           <i class="fa fa-th" aria-hidden="true"></i>
       </div>

@@ -88,6 +88,7 @@ home(){
    
    if(this.coloumidss !=""){
     if(window.navigator.onLine == true){
+      console.log(window.navigator.onLine)
       this.onoff=true
 
    this.crud.CurrentMessage.subscribe(message=>{
@@ -150,6 +151,7 @@ home(){
   
   })
 }else{
+  console.log(window.navigator.onLine)
   this.onoff=false
   this.crud.CurrentMessage.subscribe(message=>{
     this.message=JSON.parse(message)

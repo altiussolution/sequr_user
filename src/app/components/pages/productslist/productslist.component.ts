@@ -54,6 +54,7 @@ export class ProductslistComponent implements OnInit {
   hlo:any=[];
   new: { Cart: any; Kits: (hlo: any) => void; status: boolean; };
   dateTime: Date;
+  kit_item_details: any=[];
   constructor(public crud: CrudService, private toast: ToastrService,public modalService: NgbModal) { }
 
   ngOnInit(): void {
@@ -91,7 +92,12 @@ export class ProductslistComponent implements OnInit {
 
     this.mydb = new TurtleDB('example');
 this.mydb.create({ _id: 'kitting', kit: hlo2 });
-     }, 12000); 
+if(this.mydb.create({ _id: 'kitting', kit: hlo2 })){
+  this.mydb.update( 'kitting', {kit: hlo2 });
+
+}
+
+     }, 6000); 
 
 
 
@@ -99,15 +105,8 @@ this.mydb.create({ _id: 'kitting', kit: hlo2 });
       })
     }else{
       this.onoff=false
-        this.mydb = new TurtleDB('example');
-        this.mydb.read('kitting').then((doc) =>{//console.log(doc)
-            this.data = doc.kit
-            //console.log(this.data)
-             // this.mydb.setRemote('http://127.0.0.1:3000');
-             // this.mydb.sync();
-    
-          } );
-      
+      this.getData({ pageIndex: this.page, pageSize: this.size });
+
     }
     
   }
@@ -371,89 +370,98 @@ this.mydb.create({ _id: 'kitting', kit: hlo2 });
           //console.log(typeof kit.kit_id._id + ' ' + kit.kit_id._id)
           //console.log(kit)
              console.log(this.itemhistorykit[k].kit_id._id )
+                this.kit_item_details=[]
       if(this.itemhistorykit[k].kit_id._id === data._id){
         for (let i = 0; i < this.itemhistorykit[k].kit_item_details.length; i++) {
-  
-        this.hlo = {cart_id: this.itemhistorykit[k].cart_id,
-  created_at: this.dateTime,
-  // kit_cart_id:  this.itemhistorykit[k].kit_cart_id,
-  kit_id: this.itemhistorykit[k].kit_id,
-  kit_item_details:
-  [{
-  active_status:  this.itemhistorykit[k].kit_item_details[i].active_status,
-  alloted_item_qty_in_kit:  this.itemhistorykit[k].kit_item_details[i].alloted_item_qty_in_kit,
-  bin:  this.itemhistorykit[k].kit_item_details[i].bin,
-  category:  this.itemhistorykit[k].kit_item_details[i].category,
-  company_id:  this.itemhistorykit[k].kit_item_details[i].company_id,
-  compartment: this.itemhistorykit[k].kit_item_details[i].compartment,
-  compartment_number: this.itemhistorykit[k].kit_item_details[i].compartment_number,
-  created_at: this.itemhistorykit[k].kit_item_details[i].created_at,
-  cube:  this.itemhistorykit[k].kit_item_details[i].cube,
-  deleted_at: this.itemhistorykit[k].kit_item_details[i].deleted_at,
-  description:  this.itemhistorykit[k].kit_item_details[i].description,
-  item:  this.itemhistorykit[k].kit_item_details[i].item,
-  po_history: this.itemhistorykit[k].kit_item_details[i].po_history,
-  purchase_order:  this.itemhistorykit[k].kit_item_details[i].purchase_order,
-  quantity:  this.itemhistorykit[k].kit_item_details[i].quantity-this.itemhistorykit[k].kit_item_details[i].alloted_item_qty_in_kit,
-  status:  this.itemhistorykit[k].kit_item_details[i].status,
-  sub_category: this.itemhistorykit[k].kit_item_details[i].sub_category,
-  supplier:  this.itemhistorykit[k].kit_item_details[i].supplier,
-  total_quantity: this.itemhistorykit[k].kit_item_details[i].total_quantity,
-  updated_at:  this.itemhistorykit[k].kit_item_details[i].updated_at,
-  
-  _id:  this.itemhistorykit[k].kit_item_details[i]._id,
-        }],
-  kit_name: this.itemhistorykit[k].kit_name,
-  kit_status: 2,
-  qty: 1,
-  // update_kit_id:  this.itemhistorykit[k].update_kit_id,
-  updated_at: this.dateTime
-        }
+          this.kit_item_details.push({
+            active_status:  this.itemhistorykit[k].kit_item_details[i].active_status,
+            alloted_item_qty_in_kit:  this.itemhistorykit[k].kit_item_details[i].alloted_item_qty_in_kit,
+            bin:  this.itemhistorykit[k].kit_item_details[i].bin,
+            category:  this.itemhistorykit[k].kit_item_details[i].category,
+            company_id:  this.itemhistorykit[k].kit_item_details[i].company_id,
+            compartment: this.itemhistorykit[k].kit_item_details[i].compartment,
+            compartment_number: this.itemhistorykit[k].kit_item_details[i].compartment_number,
+            created_at: this.itemhistorykit[k].kit_item_details[i].created_at,
+            cube:  this.itemhistorykit[k].kit_item_details[i].cube,
+            deleted_at: this.itemhistorykit[k].kit_item_details[i].deleted_at,
+            description:  this.itemhistorykit[k].kit_item_details[i].description,
+            item:  this.itemhistorykit[k].kit_item_details[i].item,
+            po_history: this.itemhistorykit[k].kit_item_details[i].po_history,
+            purchase_order:  this.itemhistorykit[k].kit_item_details[i].purchase_order,
+            quantity:  this.itemhistorykit[k].kit_item_details[i].quantity-this.itemhistorykit[k].kit_item_details[i].alloted_item_qty_in_kit,
+            status:  this.itemhistorykit[k].kit_item_details[i].status,
+            sub_category: this.itemhistorykit[k].kit_item_details[i].sub_category,
+            supplier:  this.itemhistorykit[k].kit_item_details[i].supplier,
+            total_quantity: this.itemhistorykit[k].kit_item_details[i].total_quantity,
+            updated_at:  this.itemhistorykit[k].kit_item_details[i].updated_at,
+            
+            _id:  this.itemhistorykit[k].kit_item_details[i]._id,
+            
+          })
+        
       }
-    
+      this.hlo = {cart_id: this.itemhistorykit[k].cart_id,
+        created_at: this.dateTime,
+        // kit_cart_id:  this.itemhistorykit[k].kit_cart_id,
+        kit_id: this.itemhistorykit[k].kit_id,
+        kit_item_details:this.kit_item_details,
+        kit_name: this.itemhistorykit[k].kit_name,
+        kit_status: 2,
+        qty: 1,
+        // update_kit_id:  this.itemhistorykit[k].update_kit_id,
+        updated_at: this.dateTime
+              }
   
   
     }else{
+      this.kit_item_details=[]
+
       for (let i = 0; i < data.kit_data.length; i++) {
+    this.kit_item_details.push({
+      active_status:  data.kit_data[i].active_status,
+      alloted_item_qty_in_kit:  data.kit_data[i].kit_item_qty,
+      bin: data.kit_data[i].bin,
+      category:  data.kit_data[i].category,
+      company_id:  data.kit_data[i].company_id,
+      compartment: data.kit_data[i].compartment,
+      compartment_number:data.kit_data[i].compartment_number,
+      created_at:data.kit_data[i].created_at,
+      cube:  data.kit_data[i].cube,
+      deleted_at: data.kit_data[i].deleted_at,
+      description: data.kit_data[i].description,
+      item:  data.kit_data[i].item,
+      po_history: data.kit_data[i].po_history,
+      purchase_order: data.kit_data[i].purchase_order,
+      quantity: data.kit_data[i].quantity-data.kit_data[i].kit_item_qty,
+      status: data.kit_data[i].status,
+      sub_category: data.kit_data[i].sub_category,
+      supplier: data.kit_data[i].supplier,
+      total_quantity:data.kit_data[i].total_quantity,
+      updated_at: data.kit_data[i].updated_at,
+      
+      _id: data.kit_data[i]._id,
+          
+    }
+
+    )
+    console.log(this.kit_item_details)
+      
+      
     
-        this.hlo = {cart_id: doc.data['Cart'][0]._id,
+    }
+    this.hlo = {cart_id: doc.data['Cart'][0]._id,
     created_at: this.dateTime,
     // kit_cart_id:  this.itemhistorykit[k].kit_cart_id,
     kit_id:data._id,
-    kit_item_details:
-    [{
-    active_status:  data.kit_data[i].active_status,
-    alloted_item_qty_in_kit:  data.kit_data[i].kit_item_qty,
-    bin: data.kit_data[i].bin,
-    category:  data.kit_data[i].category,
-    company_id:  data.kit_data[i].company_id,
-    compartment: data.kit_data[i].compartment,
-    compartment_number:data.kit_data[i].compartment_number,
-    created_at:data.kit_data[i].created_at,
-    cube:  data.kit_data[i].cube,
-    deleted_at: data.kit_data[i].deleted_at,
-    description: data.kit_data[i].description,
-    item:  data.kit_data[i].item,
-    po_history: data.kit_data[i].po_history,
-    purchase_order: data.kit_data[i].purchase_order,
-    quantity: data.kit_data[i].quantity-data.kit_data[i].kit_item_qty,
-    status: data.kit_data[i].status,
-    sub_category: data.kit_data[i].sub_category,
-    supplier: data.kit_data[i].supplier,
-    total_quantity:data.kit_data[i].total_quantity,
-    updated_at: data.kit_data[i].updated_at,
+    kit_item_details:this.kit_item_details,
     
-    _id: data.kit_data[i]._id,
-        }],
+   
     kit_name: data.kit_name,
     kit_status: 2,
     qty: 1,
     // update_kit_id:  this.itemhistorykit[k].update_kit_id,
     updated_at: this.dateTime
         }
-      
-    
-    }
     
     
         }
@@ -489,25 +497,33 @@ console.log(this.new)
   }
 
   getData(obj) {
+
     let index = 0,
       startingIndex = obj.pageIndex * obj.pageSize,
       endingIndex = startingIndex + obj.pageSize;
+      if(window.navigator.onLine == true){
 
     this.data = this.kit.filter(() => {
       index++;
       return (index > startingIndex && index <= endingIndex) ? true : false;
     });
-    //console.log(this.data)
-    // for (let i = 0; i < this.kit.length; i++) {
-    //   for (let j = 0; j < this.kit[i].kit_data.length; j++) {
-    //     this.getBase64ImageFromURL(this.kit[i].kit_data[j].item.image_path[0]).subscribe(base64data => {    
-    //       this.base64Image = 'data:image/jpg;base64,' + base64data;
-    //       this.kitnewdata = this.kit.filter(v => v.kit_data.filter(k => k.item.image_path[0] = this.base64Image));
-    //       //console.log(this.kitnewdata)
-       
-    //     })
-    //   }
-    // }
+    console.log(this.data)
+
+  }else{
+    this.onoff=false
+  
+      this.mydb = new TurtleDB('example');
+      this.mydb.read('kitting').then((doc) =>{//console.log(doc)
+        this.kit=doc.kit
+          this.data = doc.kit.filter(() => {
+            index++;
+            return (index > startingIndex && index <= endingIndex) ? true : false;
+         
+          });
+          console.log(this.data)
+        } );
+    
+  }
 
 
   }

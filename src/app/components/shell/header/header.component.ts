@@ -101,6 +101,8 @@ categories: any = [];
   itemset1: any=[];
   productdetailsimage: any=[];
   subcat: any=[];
+  base64Image1: any=[];
+  base64Image2: any=[];
   constructor(public router: Router, public crud: CrudService, private cookie: CookieService, private toast: ToastrService) {
     this.permissions = JSON.parse(localStorage.getItem("personal"))
     this.profiledetails = JSON.parse(localStorage.getItem('personal'))
@@ -219,96 +221,144 @@ categories: any = [];
             ...{ productdetails: details }
             
           })
-          for (let i = 0; i < this.productdetails.length; i++) {
-            //console.log(this.productdetails[i].productdetails.items.image_path[0])
-                  if(this.productdetails[i].productdetails.items.image_path[0] == undefined){
-            this.productdetailsimage.push({
-              productdetails:{  items:{
-                active_status:this.productdetails[i].productdetails.items.active_status,
-              auto_purchase_order:this.productdetails[i].productdetails.items.auto_purchase_order,
-              calibration_month:this.productdetails[i].productdetails.items.calibration_month,
-              category_id:this.productdetails[i].productdetails.items.category_id,
-              company_id:this.productdetails[i].productdetails.items.company_id,
-              createdAt:this.productdetails[i].productdetails.items.createdAt,
-              created_at:this.productdetails[i].productdetails.items.created_at,
-              deleted_at:this.productdetails[i].productdetails.items.deleted_at,
-              description:this.productdetails[i].productdetails.items.description,
-              generate_po_for:this.productdetails[i].productdetails.items.generate_po_for,
-              generate_po_on:this.productdetails[i].productdetails.items.generate_po_on,
-              image_path:this.productdetails[i].productdetails.items.image_path,
-              in_stock:this.productdetails[i].productdetails.items.in_stock,
-              is_active:this.productdetails[i].productdetails.items.is_active,
-              is_auto_po_generated:this.productdetails[i].productdetails.items.is_auto_po_generated,
-              is_gages:this.productdetails[i].productdetails.items.is_gages,
-              is_item:this.productdetails[i].productdetails.items.is_item,
-              item_name:this.productdetails[i].productdetails.items.item_name,
-              item_number:this.productdetails[i].productdetails.items.item_number,
-              returnable:this.productdetails[i].productdetails.items.returnable,
-              sub_category_id:this.productdetails[i].productdetails.items.sub_category_id,
-              supplier:this.productdetails[i].productdetails.items.supplier,
-              updated_at:this.productdetails[i].productdetails.items.updated_at,
-              _id:this.productdetails[i].productdetails.items._id,
-              image:[],
-              },machine:this.productdetails[i].productdetails.machine
-            }
-              })
-            //console.log(this.productdetailsimage)
-          }
-        this.getBase64ImageFromURL(this.productdetails[i].productdetails.items.image_path[0]).subscribe(base64data => {    
-         // //console.log(base64data);
-          this.base64Image = 'data:image/jpg;base64,' + base64data;
-          ////console.log(this.base64Image)        
-
-          this.productdetailsimage.push({
-            productdetails:{  items:{
-              active_status:this.productdetails[i].productdetails.items.active_status,
-            auto_purchase_order:this.productdetails[i].productdetails.items.auto_purchase_order,
-            calibration_month:this.productdetails[i].productdetails.items.calibration_month,
-            category_id:this.productdetails[i].productdetails.items.category_id,
-            company_id:this.productdetails[i].productdetails.items.company_id,
-            createdAt:this.productdetails[i].productdetails.items.createdAt,
-            created_at:this.productdetails[i].productdetails.items.created_at,
-            deleted_at:this.productdetails[i].productdetails.items.deleted_at,
-            description:this.productdetails[i].productdetails.items.description,
-            generate_po_for:this.productdetails[i].productdetails.items.generate_po_for,
-            generate_po_on:this.productdetails[i].productdetails.items.generate_po_on,
-            image_path:this.productdetails[i].productdetails.items.image_path,
-            in_stock:this.productdetails[i].productdetails.items.in_stock,
-            is_active:this.productdetails[i].productdetails.items.is_active,
-            is_auto_po_generated:this.productdetails[i].productdetails.items.is_auto_po_generated,
-            is_gages:this.productdetails[i].productdetails.items.is_gages,
-            is_item:this.productdetails[i].productdetails.items.is_item,
-            item_name:this.productdetails[i].productdetails.items.item_name,
-            item_number:this.productdetails[i].productdetails.items.item_number,
-            returnable:this.productdetails[i].productdetails.items.returnable,
-            sub_category_id:this.productdetails[i].productdetails.items.sub_category_id,
-            supplier:this.productdetails[i].productdetails.items.supplier,
-            updated_at:this.productdetails[i].productdetails.items.updated_at,
-            _id:this.productdetails[i].productdetails.items._id,
-            image:[this.base64Image],
-            },machine:this.productdetails[i].productdetails.machine
-          }
-            })
-          
-        });
+           for (let i = 0; i < this.productdetails.length; i++) {
+          this.getBase64ImageFromURL(this.productdetails[i].productdetails.items.image_path[0]).subscribe(base64data => {    
+            this.base64Image1.push( {image:'data:image/jpg;base64,' + base64data,name:this.productdetails[i].productdetails.items.item_name});
+          });
+          this.getBase64ImageFromURL(this.productdetails[i].productdetails.items.image_path[1]).subscribe(base64data => {    
+            this.base64Image2.push( {image:'data:image/jpg;base64,' + base64data,name:this.productdetails[i].productdetails.items.item_name});
     
+            console.log(this.base64Image2)
     
-          }
-          //console.log(this.productdetailsimage)
-setTimeout(() => {
-  this.mydb = new TurtleDB('example');
-          this.mydb.create({ _id: 'detailpage', data: this.productdetailsimage });
-
-},   3000
-
-);
-setTimeout(() => {
-  if( this.mydb.create({ _id: 'detailpage', data: this.productdetailsimage })){
-    this.mydb = new TurtleDB('example');
-    this.mydb.update('detailpage', { data:this.productdetailsimage});
-  
+        
+          });
   }
-},4000);
+      
+   setTimeout(() => {
+     const hlo2 = this.productdetails.filter(v => this.base64Image1.map((val,index)=> {val.name == v.productdetails.items.item_name ? v.productdetails.items.image_path[0] = val.image:val.image}));
+      //const hlo2 = this.cart.filter(v =>v);
+    const hlo1=hlo2.filter(v=> this.base64Image2.map((val,index)=> {val.name == v.productdetails.items.item_name ? v.productdetails.items.image_path[1] = val.image:val.image}))
+console.log(hlo2)
+console.log(hlo1)
+this.productdetailsimage=hlo1
+console.log(this.productdetailsimage)
+this.mydb = new TurtleDB('example');
+        this.mydb.create({ _id: 'detailpage', data: this.productdetailsimage });
+
+   }, 4000); 
+   setTimeout(() => {
+    if( this.mydb.create({ _id: 'detailpage', data: this.productdetailsimage })){
+      this.mydb = new TurtleDB('example');
+      this.mydb.update('detailpage', { data:this.productdetailsimage});
+    
+    }
+  },5000);
+//   for (let i = 0; i < this.productdetails.length; i++) {
+//    // for (let j = 0; j < this.productdetails[i].productdetails.items.image_path.length; j++) {
+
+
+//       this.getBase64ImageFromURL(this.productdetails[i].productdetails.items.image_path[1]).subscribe(base64data => {    
+//         this.base64Image2.push( {image:'data:image/jpg;base64,' + base64data,name:this.productdetails[i].productdetails.items.item_name});
+
+//         console.log(this.base64Image2)
+
+    
+//       });
+//    // }
+
+
+// }
+// setTimeout(() => {
+//   const hlo2 = this.productdetails.filter((v,index) => this.base64Image1.map((val,index)=> {val.name == v.productdetails.items.item_name ? v.productdetails.items.image_path[index] = val.image:val.image}));
+//    //const hlo2 = this.cart.filter(v =>v);
+
+// console.log(hlo2)
+
+
+// }, 4000); 
+        //   for (let i = 0; i < this.productdetails.length; i++) {
+        //     //console.log(this.productdetails[i].productdetails.items.image_path[0])
+        //           if(this.productdetails[i].productdetails.items.image_path[0] == undefined){
+        //     this.productdetailsimage.push({
+        //       productdetails:{  items:{
+        //         active_status:this.productdetails[i].productdetails.items.active_status,
+        //       auto_purchase_order:this.productdetails[i].productdetails.items.auto_purchase_order,
+        //       calibration_month:this.productdetails[i].productdetails.items.calibration_month,
+        //       category_id:this.productdetails[i].productdetails.items.category_id,
+        //       company_id:this.productdetails[i].productdetails.items.company_id,
+        //       createdAt:this.productdetails[i].productdetails.items.createdAt,
+        //       created_at:this.productdetails[i].productdetails.items.created_at,
+        //       deleted_at:this.productdetails[i].productdetails.items.deleted_at,
+        //       description:this.productdetails[i].productdetails.items.description,
+        //       generate_po_for:this.productdetails[i].productdetails.items.generate_po_for,
+        //       generate_po_on:this.productdetails[i].productdetails.items.generate_po_on,
+        //       image_path:this.productdetails[i].productdetails.items.image_path,
+        //       in_stock:this.productdetails[i].productdetails.items.in_stock,
+        //       is_active:this.productdetails[i].productdetails.items.is_active,
+        //       is_auto_po_generated:this.productdetails[i].productdetails.items.is_auto_po_generated,
+        //       is_gages:this.productdetails[i].productdetails.items.is_gages,
+        //       is_item:this.productdetails[i].productdetails.items.is_item,
+        //       item_name:this.productdetails[i].productdetails.items.item_name,
+        //       item_number:this.productdetails[i].productdetails.items.item_number,
+        //       returnable:this.productdetails[i].productdetails.items.returnable,
+        //       sub_category_id:this.productdetails[i].productdetails.items.sub_category_id,
+        //       supplier:this.productdetails[i].productdetails.items.supplier,
+        //       updated_at:this.productdetails[i].productdetails.items.updated_at,
+        //       _id:this.productdetails[i].productdetails.items._id,
+        //       image:"",
+        //       },machine:this.productdetails[i].productdetails.machine
+        //     }
+        //       })
+        //     //console.log(this.productdetailsimage)
+        //   }
+        // this.getBase64ImageFromURL(this.productdetails[i].productdetails.items.image_path[0]).subscribe(base64data => {    
+        //  // //console.log(base64data);
+        //   this.base64Image = 'data:image/jpg;base64,' + base64data;
+        //   ////console.log(this.base64Image)        
+
+        //   this.productdetailsimage.push({
+        //     productdetails:{  items:{
+        //       active_status:this.productdetails[i].productdetails.items.active_status,
+        //     auto_purchase_order:this.productdetails[i].productdetails.items.auto_purchase_order,
+        //     calibration_month:this.productdetails[i].productdetails.items.calibration_month,
+        //     category_id:this.productdetails[i].productdetails.items.category_id,
+        //     company_id:this.productdetails[i].productdetails.items.company_id,
+        //     createdAt:this.productdetails[i].productdetails.items.createdAt,
+        //     created_at:this.productdetails[i].productdetails.items.created_at,
+        //     deleted_at:this.productdetails[i].productdetails.items.deleted_at,
+        //     description:this.productdetails[i].productdetails.items.description,
+        //     generate_po_for:this.productdetails[i].productdetails.items.generate_po_for,
+        //     generate_po_on:this.productdetails[i].productdetails.items.generate_po_on,
+        //     image_path:this.productdetails[i].productdetails.items.image_path,
+        //     in_stock:this.productdetails[i].productdetails.items.in_stock,
+        //     is_active:this.productdetails[i].productdetails.items.is_active,
+        //     is_auto_po_generated:this.productdetails[i].productdetails.items.is_auto_po_generated,
+        //     is_gages:this.productdetails[i].productdetails.items.is_gages,
+        //     is_item:this.productdetails[i].productdetails.items.is_item,
+        //     item_name:this.productdetails[i].productdetails.items.item_name,
+        //     item_number:this.productdetails[i].productdetails.items.item_number,
+        //     returnable:this.productdetails[i].productdetails.items.returnable,
+        //     sub_category_id:this.productdetails[i].productdetails.items.sub_category_id,
+        //     supplier:this.productdetails[i].productdetails.items.supplier,
+        //     updated_at:this.productdetails[i].productdetails.items.updated_at,
+        //     _id:this.productdetails[i].productdetails.items._id,
+        //     image:[this.base64Image],
+        //     },machine:this.productdetails[i].productdetails.machine
+        //   }
+        //     })
+          
+        // });
+    
+    
+        //   }
+// setTimeout(() => {
+//   this.mydb = new TurtleDB('example');
+//           this.mydb.create({ _id: 'detailpage', data: this.productdetailsimage });
+
+// },   3000
+
+// );
+
 
 
 
@@ -350,7 +400,7 @@ setTimeout(() => {
                         sub_category_code:this.categories[i].sub_category[0].sub_category_code,
                         sub_category_name: this.categories[i].sub_category[0].sub_category_name,
                         updated_at: this.categories[i].sub_category[0].updated_at,
-                        image:[],
+                        image:"",
                         _id:this.categories[i].sub_category[0]._id,
                         } ]
                        })
@@ -378,8 +428,13 @@ setTimeout(() => {
             } ]
            })
             console.log(this.subcat)
-            this.mydb = new TurtleDB('example');
+            
+            
+            setTimeout(() => {
+              this.mydb = new TurtleDB('example');
             this.mydb.create({ _id: 'catsidebar', subcategory: this.subcat });
+        // this.mydb.update('catsidebar', {data: this.subcat });
+            }, 3000); 
           });
       
       
@@ -407,86 +462,109 @@ setTimeout(() => {
                   
                 })
                 for (let i = 0; i < this.itemset.length; i++) {
-                  //console.log(this.itemset[i].item[0].image_path[0], this.itemset.length)
-                        if(this.itemset[i].item[0].image_path[0] == undefined){
-                  this.itemsetimage.push({
-                    item:[{
-                      active_status:this.itemset[i].item[0].active_status,
-                    auto_purchase_order:this.itemset[i].item[0].auto_purchase_order,
-                    calibration_month:this.itemset[i].item[0].calibration_month,
-                    category_id:this.itemset[i].item[0].category_id,
-                    company_id:this.itemset[i].item[0].company_id,
-                    createdAt:this.itemset[i].item[0].createdAt,
-                    created_at:this.itemset[i].item[0].created_at,
-                    deleted_at:this.itemset[i].item[0].deleted_at,
-                    description:this.itemset[i].item[0].description,
-                    generate_po_for:this.itemset[i].item[0].generate_po_for,
-                    generate_po_on:this.itemset[i].item[0].generate_po_on,
-                    image_path:this.itemset[i].item[0].image_path,
-                    in_stock:this.itemset[i].item[0].in_stock,
-                    is_active:this.itemset[i].item[0].is_active,
-                    is_auto_po_generated:this.itemset[i].item[0].is_auto_po_generated,
-                    is_gages:this.itemset[i].item[0].is_gages,
-                    is_item:this.itemset[i].item[0].is_item,
-                    item_name:this.itemset[i].item[0].item_name,
-                    item_number:this.itemset[i].item[0].item_number,
-                    returnable:this.itemset[i].item[0].returnable,
-                    sub_category_id:this.itemset[i].item[0].sub_category_id,
-                    supplier:this.itemset[i].item[0].supplier,
-                    updated_at:this.itemset[i].item[0].updated_at,
-                    _id:this.itemset[i].item[0]._id,
-                    image:[],
-                    }]
-                    })
-                  //console.log(this.itemsetimage)
-                }
-              this.getBase64ImageFromURL(this.itemset[i].item[0].image_path[0]).subscribe(base64data => {    
-               // //console.log(base64data);
-                this.base64Image = 'data:image/jpg;base64,' + base64data;
-                ////console.log(this.base64Image)        
-
-                  this.itemsetimage.push({
-                    item:[{
-                    active_status:this.itemset[i].item[0].active_status,
-                    auto_purchase_order:this.itemset[i].item[0].auto_purchase_order,
-                    calibration_month:this.itemset[i].item[0].calibration_month,
-                    category_id:this.itemset[i].item[0].category_id,
-                    company_id:this.itemset[i].item[0].company_id,
-                    createdAt:this.itemset[i].item[0].createdAt,
-                    created_at:this.itemset[i].item[0].created_at,
-                    deleted_at:this.itemset[i].item[0].deleted_at,
-                    description:this.itemset[i].item[0].description,
-                    generate_po_for:this.itemset[i].item[0].generate_po_for,
-                    generate_po_on:this.itemset[i].item[0].generate_po_on,
-                    image_path:this.itemset[i].item[0].image_path,
-                    in_stock:this.itemset[i].item[0].in_stock,
-                    is_active:this.itemset[i].item[0].is_active,
-                    is_auto_po_generated:this.itemset[i].item[0].is_auto_po_generated,
-                    is_gages:this.itemset[i].item[0].is_gages,
-                    is_item:this.itemset[i].item[0].is_item,
-                    item_name:this.itemset[i].item[0].item_name,
-                    item_number:this.itemset[i].item[0].item_number,
-                    returnable:this.itemset[i].item[0].returnable,
-                    sub_category_id:this.itemset[i].item[0].sub_category_id,
-                    supplier:this.itemset[i].item[0].supplier,
-                    updated_at:this.itemset[i].item[0].updated_at,
-                    _id:this.itemset[i].item[0]._id,
-                    image:[this.base64Image],
-                    }]
-                  })
-                  //console.log(this.itemsetimage)
+ 
+   
+                  this.getBase64ImageFromURL(this.itemset[i].item[0].image_path[0]).subscribe(base64data => {    
+                    this.base64Image1.push( {image:'data:image/jpg;base64,' + base64data,name:this.itemset[i].item[0].item_name});
+        
+                    //console.log(this.base64Image)
+          
                 
-              });
+                  });
+            
+          }
+              
+           setTimeout(() => {
+             const hlo2 = this.itemset.filter(v => this.base64Image1.map((val,index)=> {val.name == v.item[0].item_name ? v.item[0].image_path[0] = val.image:val.image}));
+              //const hlo2 = this.cart.filter(v =>v);
+         
+        console.log(hlo2)
+        this.mydb = new TurtleDB('example');
+        this.mydb.create({ _id: 'getitem', data:hlo2 });
+        this.mydb.update('getitem', {data:hlo2 });
+           }, 5000); 
+             
+              //   for (let i = 0; i < this.itemset.length; i++) {
+              //     //console.log(this.itemset[i].item[0].image_path[0], this.itemset.length)
+              //           if(this.itemset[i].item[0].image_path[0] == undefined){
+              //     this.itemsetimage.push({
+              //       item:[{
+              //         active_status:this.itemset[i].item[0].active_status,
+              //       auto_purchase_order:this.itemset[i].item[0].auto_purchase_order,
+              //       calibration_month:this.itemset[i].item[0].calibration_month,
+              //       category_id:this.itemset[i].item[0].category_id,
+              //       company_id:this.itemset[i].item[0].company_id,
+              //       createdAt:this.itemset[i].item[0].createdAt,
+              //       created_at:this.itemset[i].item[0].created_at,
+              //       deleted_at:this.itemset[i].item[0].deleted_at,
+              //       description:this.itemset[i].item[0].description,
+              //       generate_po_for:this.itemset[i].item[0].generate_po_for,
+              //       generate_po_on:this.itemset[i].item[0].generate_po_on,
+              //       image_path:this.itemset[i].item[0].image_path,
+              //       in_stock:this.itemset[i].item[0].in_stock,
+              //       is_active:this.itemset[i].item[0].is_active,
+              //       is_auto_po_generated:this.itemset[i].item[0].is_auto_po_generated,
+              //       is_gages:this.itemset[i].item[0].is_gages,
+              //       is_item:this.itemset[i].item[0].is_item,
+              //       item_name:this.itemset[i].item[0].item_name,
+              //       item_number:this.itemset[i].item[0].item_number,
+              //       returnable:this.itemset[i].item[0].returnable,
+              //       sub_category_id:this.itemset[i].item[0].sub_category_id,
+              //       supplier:this.itemset[i].item[0].supplier,
+              //       updated_at:this.itemset[i].item[0].updated_at,
+              //       _id:this.itemset[i].item[0]._id,
+              //       image:"",
+              //       }]
+              //       })
+              //     //console.log(this.itemsetimage)
+              //   }
+              // this.getBase64ImageFromURL(this.itemset[i].item[0].image_path[0]).subscribe(base64data => {    
+              //  // //console.log(base64data);
+              //   this.base64Image = 'data:image/jpg;base64,' + base64data;
+              //   ////console.log(this.base64Image)        
+
+              //     this.itemsetimage.push({
+              //       item:[{
+              //       active_status:this.itemset[i].item[0].active_status,
+              //       auto_purchase_order:this.itemset[i].item[0].auto_purchase_order,
+              //       calibration_month:this.itemset[i].item[0].calibration_month,
+              //       category_id:this.itemset[i].item[0].category_id,
+              //       company_id:this.itemset[i].item[0].company_id,
+              //       createdAt:this.itemset[i].item[0].createdAt,
+              //       created_at:this.itemset[i].item[0].created_at,
+              //       deleted_at:this.itemset[i].item[0].deleted_at,
+              //       description:this.itemset[i].item[0].description,
+              //       generate_po_for:this.itemset[i].item[0].generate_po_for,
+              //       generate_po_on:this.itemset[i].item[0].generate_po_on,
+              //       image_path:this.itemset[i].item[0].image_path,
+              //       in_stock:this.itemset[i].item[0].in_stock,
+              //       is_active:this.itemset[i].item[0].is_active,
+              //       is_auto_po_generated:this.itemset[i].item[0].is_auto_po_generated,
+              //       is_gages:this.itemset[i].item[0].is_gages,
+              //       is_item:this.itemset[i].item[0].is_item,
+              //       item_name:this.itemset[i].item[0].item_name,
+              //       item_number:this.itemset[i].item[0].item_number,
+              //       returnable:this.itemset[i].item[0].returnable,
+              //       sub_category_id:this.itemset[i].item[0].sub_category_id,
+              //       supplier:this.itemset[i].item[0].supplier,
+              //       updated_at:this.itemset[i].item[0].updated_at,
+              //       _id:this.itemset[i].item[0]._id,
+              //       image:[this.base64Image],
+              //       }]
+              //     })
+              //     //console.log(this.itemsetimage)
+                
+              // });
           
           
-                }
+              //   }
           
-                this.mydb = new TurtleDB('example');
-                this.mydb.create({ _id: 'getitem', data:this.itemsetimage });
-                setTimeout(()=>{                           // <<<---using ()=> syntax
-                  this.mydb.read('getitem').then((doc) =>{//console.log(doc)
-                  })
-                              }, 5000);
+                // this.mydb = new TurtleDB('example');
+                // this.mydb.create({ _id: 'getitem', data:this.itemsetimage });
+                // setTimeout(()=>{                           // <<<---using ()=> syntax
+                //   this.mydb.read('getitem').then((doc) =>{//console.log(doc)
+                //   })
+                //               }, 5000);
             
                 //console.log({ _id: 'getitem', data:this.itemset })
                 //console.log(this.itemset)
@@ -619,6 +697,11 @@ setTimeout(() => {
     params['user_id'] = this.profiledetails._id
     this.crud.get1(appModels.ITEMLIST, { params }).pipe(untilDestroyed(this)).subscribe((res: any) => {
       //console.log(res)
+      this.mydb = new TurtleDB('example');
+      this.mydb.create({ _id: 'getitemlist', data: res });
+     // this.mydb = new TurtleDB('example');
+      // this.mydb.update('getitemlist', { data: res , user: this.permissions?._id,company_id:this.permissions?.company_id?._id});
+
       this.kitdata=[]
       this.kitdata = res['Kits']
       for (let i = 0; i < this.kitdata?.length; i++) {
@@ -646,88 +729,120 @@ setTimeout(() => {
       }
 
       this.crud.getcarttotal(this.cartList?.length)
-      //console.log(this.cartList?.length)
       this.cart=res[0].cart
       for (let i = 0; i < this.cart.length; i++) {
+ 
+   
+          this.getBase64ImageFromURL(this.cart[i].item.image_path[0]).subscribe(base64data => {    
+            this.base64Image1.push( {image:'data:image/jpg;base64,' + base64data,name:this.cart[i].item.item_name});
 
-              if(this.cart[i].item.image_path[0] == undefined){
-        this.cartnew.push({
-
-          allocation:this.cart[i].allocation,
-          cart_status:this.cart[i].cart_status,item:{
-            image_path:this.cart[i].item.image_path,
-            item_name:this.cart[i].item.item_name,
-            _id:this.cart[i].item._id,
-           // image:[],
-          },
-          item_details:this.cart[i].item_details,
-          qty:this.cart[i].qty,_id:this.cart[i]._id,
-        })
-       // //console.log(this.cartnew)
-      }
-    this.getBase64ImageFromURL(this.cart[i].item.image_path[0]).subscribe(base64data => {    
-    // //console.log(base64data);
-      this.base64Image = 'data:image/jpg;base64,' + base64data;
-     // //console.log(this.base64Image)
-
-        this.cartnew.push(
-          {
-            allocation:this.cart[i].allocation,
-            cart_status:this.cart[i].cart_status,
-          item:{
-            image_path:this.cart[i].item.image_path,
-            item_name:this.cart[i].item.item_name,
-            _id:this.cart[i].item._id,
-           // image:this.base64Image,
-          },
-          item_details:this.cart[i].item_details,
-         
-          qty:this.cart[i].qty,_id:this.cart[i]._id,
+            //console.log(this.base64Image)
+  
         
-        })
-      //  //console.log(this.cartnew)
+          });
+
+
+    
+  }
+      
+   setTimeout(() => {
+     const hlo2 = this.cart.filter(v => this.base64Image1.map((val,index)=> {val.name == v.item.item_name ? v.item.image_path[0] = val.image:val.image}));
+      //const hlo2 = this.cart.filter(v =>v);
+ 
+console.log(hlo2)
         this.new=({
-          cart:this.cartnew,
+          cart:hlo2,
           total_quantity:res[0].total_quantity,
           _id:res[0]._id
         })
       
-      //   let cart=[{
-      //     cart:this.cartnew,
-      //     total_quantity:res[0].total_quantity,
-      //     _id:res[0]._id,
-         
-      //  }]
-      //  //console.log(cart)
-    //    const dateTime = new Date();
-
-    //   const data1={
-    //     cart:this.cartnew,
-    //     total_quantity:res[0].total_quantity,
-    //     _id:res[0]._id,
-    //     "user_id":this.permissions?._id,
-    //   "company_id":this.permissions?.company_id?._id,
-    //    //"cart_info":1,
-    //   // "created_at":dateTime
-    //   }
-    //  //  let data1=[hlo, {"user_id":this.permissions?._id}]
-
-    //     // this.array.push([hlo,""])
-    //    //console.log(data1)
-
-        //console.log(this.new)
-        if(this.new){
-        this.mydb = new TurtleDB('example');
+     console.log(this.new)
+     this.mydb = new TurtleDB('example');
       this.mydb.create({_id: 'getlistcart',  data: this.new , user:this.permissions?._id,company_id:this.permissions?.company_id?._id});
-        //console.log('getlistcart', { data: this.new , user_id:this.permissions?._id,company_id:this.permissions?.company_id?._id})
-        }
-       // //console.log({ _id: 'getlistcart', cart: this.new, user_id: this.permissions?._id,company_id:this.permissions?.company_id?._id})
-       // this.mydb.create({ _id: 'getlistcart', cart: this.new });
-        //this.mydb.mergeUpdate('getlistcart', { user_id: this.permissions?._id,company_id:this.permissions?.company_id?._id });
- 
-    });
+   
+   }, 3000); 
+      //console.log(this.cartList?.length)
+    //   this.cart=res[0].cart
+    //   for (let i = 0; i < this.cart.length; i++) {
 
-      }
+    //           if(this.cart[i].item.image_path[0] == undefined){
+    //     this.cartnew.push({
+
+    //       allocation:this.cart[i].allocation,
+    //       cart_status:this.cart[i].cart_status,item:{
+    //         image_path:this.cart[i].item.image_path,
+    //         item_name:this.cart[i].item.item_name,
+    //         _id:this.cart[i].item._id,
+    //        // image:"",
+    //       },
+    //       item_details:this.cart[i].item_details,
+    //       qty:this.cart[i].qty,_id:this.cart[i]._id,
+    //     })
+    //    // //console.log(this.cartnew)
+    //   }
+    // this.getBase64ImageFromURL(this.cart[i].item.image_path[0]).subscribe(base64data => {    
+    // // //console.log(base64data);
+    //   this.base64Image = 'data:image/jpg;base64,' + base64data;
+    //  // //console.log(this.base64Image)
+
+    //     this.cartnew.push(
+    //       {
+    //         allocation:this.cart[i].allocation,
+    //         cart_status:this.cart[i].cart_status,
+    //       item:{
+    //         image_path:this.cart[i].item.image_path,
+    //         item_name:this.cart[i].item.item_name,
+    //         _id:this.cart[i].item._id,
+    //        // image:this.base64Image,
+    //       },
+    //       item_details:this.cart[i].item_details,
+         
+    //       qty:this.cart[i].qty,_id:this.cart[i]._id,
+        
+    //     })
+    //   //  //console.log(this.cartnew)
+    //     this.new=({
+    //       cart:this.cartnew,
+    //       total_quantity:res[0].total_quantity,
+    //       _id:res[0]._id
+    //     })
+      
+    //   //   let cart=[{
+    //   //     cart:this.cartnew,
+    //   //     total_quantity:res[0].total_quantity,
+    //   //     _id:res[0]._id,
+         
+    //   //  }]
+    //   //  //console.log(cart)
+    // //    const dateTime = new Date();
+
+    // //   const data1={
+    // //     cart:this.cartnew,
+    // //     total_quantity:res[0].total_quantity,
+    // //     _id:res[0]._id,
+    // //     "user_id":this.permissions?._id,
+    // //   "company_id":this.permissions?.company_id?._id,
+    // //    //"cart_info":1,
+    // //   // "created_at":dateTime
+    // //   }
+    // //  //  let data1=[hlo, {"user_id":this.permissions?._id}]
+
+    // //     // this.array.push([hlo,""])
+    // //    //console.log(data1)
+
+    //     //console.log(this.new)
+    //     if(this.new){
+    //     this.mydb = new TurtleDB('example');
+    //   this.mydb.create({_id: 'getlistcart',  data: this.new , user:this.permissions?._id,company_id:this.permissions?.company_id?._id});
+    //     //console.log('getlistcart', { data: this.new , user_id:this.permissions?._id,company_id:this.permissions?.company_id?._id})
+    //     }
+    //    // //console.log({ _id: 'getlistcart', cart: this.new, user_id: this.permissions?._id,company_id:this.permissions?.company_id?._id})
+    //    // this.mydb.create({ _id: 'getlistcart', cart: this.new });
+    //     //this.mydb.mergeUpdate('getlistcart', { user_id: this.permissions?._id,company_id:this.permissions?.company_id?._id });
+ 
+   // });
+
+   //   }
      // //console.log(this.new)
 
       // this.mydb = new TurtleDB('example');

@@ -15,14 +15,13 @@
   </div>
   <div class="row mx-0">
     <div class="as-card " *ngFor="let cart of itemhistorycart;let i=index">
-      <div class="" *ngIf="onoff === true">
-        <img src="{{cart?.item?.image_path}}" onError="this.src='../../../assets/img/errorimage.png'">
+      <div class="" >
+        <img src="{{cart?.item?.image_path[0]}}" onError="this.src='../../../assets/img/errorimage.png'">
         <!-- <div class="as-product-img" style="background-image: url({{cart?.item?.image_path}});"></div> -->
       </div>
-      <div class="" *ngIf="onoff === false">
+      <!-- <div class="" *ngIf="onoff === false">
         <img [src]="cart.item.image" onError="this.src='../../../assets/img/errorimage.png'">
-        <!-- <div class="as-product-img" style="background-image: url({{cart?.item?.image_path}});"></div> -->
-      </div>
+      </div> -->
 
       <div class="mb-3 text-left as-bold as-color-4 title-b">{{cart?.item?.item_name}}(QTY: {{cart?.qty}})</div>
       <div class="row  mx-0">

@@ -360,7 +360,7 @@ export class DetailsComponent implements OnInit {
                   image_path: this.items.image_path,
                   item_name: this.items.item_name,
                   _id: this.machine.item,
-                //  image: [],
+                //  image: "",
                 },
                 item_details: this.machine,
 
@@ -477,7 +477,7 @@ export class DetailsComponent implements OnInit {
                         image_path: this.items.image_path,
                         item_name: this.items.item_name,
                         _id: this.machine.item,
-                      //  image: [],
+                      //  image: "",
                       },
                       item_details: {
                         active_status: this.machine.active_status,
@@ -588,7 +588,7 @@ export class DetailsComponent implements OnInit {
                         image_path: this.items.image_path,
                         item_name: this.items.item_name,
                         _id: this.machine.item,
-                       // image: [],
+                       // image: "",
                       },
                       item_details: {
                         active_status: this.machine.active_status,

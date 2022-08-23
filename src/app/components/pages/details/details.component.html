@@ -6,18 +6,18 @@
                 <div class="image-gallery">
                     <aside class="thumbnails thumb_left">
                         <ul>
-                            <li  *ngIf="onoff === true">
+                            <li>
                                 <a class="selected thumbnail" *ngFor="let data of items.image_path">
                                     <img  src="{{data}}" (click)="showimg(data)">
                       <!-- <div class="thumbnail-image" style="background-image: url({{data}});" (click)="showimg(data)"></div> -->
                   </a>
 
                             </li>
-                            <li *ngIf="onoff === false">
+                            <!-- <li *ngIf="onoff === false">
                                 <a class="selected thumbnail" >
                                     <img  [src]="items.image" (click)="showimg(items.image)">
                   </a>
-                            </li>
+                            </li> -->
                         </ul>
                         
                         <!-- <a class="thumbnail">
@@ -42,7 +42,7 @@
                     <div class="as-font-24">{{machine?.quantity}}</div>
                 </div>
                 <!-- <img  src="{{items?.image_path}}" > -->
-                <div class="img-sec" *ngIf="onoff === true">
+                <div class="img-sec">
                     <lib-ngx-image-zoom *ngIf="img"
                         [thumbImage]=mainimage
                         [fullImage]=mainimage
@@ -54,7 +54,7 @@
                     ></lib-ngx-image-zoom>
 
                 </div>  
-                <div class="img-sec" *ngIf="onoff === false">
+                <!-- <div class="img-sec" *ngIf="onoff === false">
                     <lib-ngx-image-zoom *ngIf="img"
                         [thumbImage]="items.image"
                         [fullImage]="items.image"
@@ -65,7 +65,7 @@
                      
                     ></lib-ngx-image-zoom>
 
-                </div>  
+                </div>   -->
                     <video  id="video" controls  *ngIf="!img"
                     #videoPlayer  [src]="videoSource" type="video/mp4" data-setup='{ "aspectRatio":"640:267", "playbackRates": [1, 1.5, 2] }'>
                        </video>
