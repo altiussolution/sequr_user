@@ -21,6 +21,8 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 //import { NgxSpinnerModule } from "ngx-spinner/ngx-spinner";
 import { CustomPaginator } from '../app/custompagination';
 import { MatPaginatorIntl } from '@angular/material/paginator';
+import {ConnectionServiceModule} from 'ng-connection-service';  
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -44,7 +46,9 @@ import { MatPaginatorIntl } from '@angular/material/paginator';
     }), // ToastrModule added
     MatSelectModule,
     AutocompleteLibModule,
-    NgbModule
+    NgbModule,
+    ConnectionServiceModule  
+
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },CookieService,CrudService,

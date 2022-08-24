@@ -11,6 +11,8 @@ import { appModels } from 'src/app/services/shared/enum/enum.util';
 import { ToastrService } from 'ngx-toastr';
 import TurtleDB from 'turtledb';
 declare const window:any;
+import { ConnectionService } from 'ng-connection-service';  
+
 import { MatPaginatorIntl } from '@angular/material/paginator';
 declare var google
 @Component({
@@ -51,9 +53,24 @@ selectcat:any=[];
   categories: any;
   subcatside: any;
   onoff: boolean;
-  constructor(public crud:CrudService,public router:Router,public fb:FormBuilder,private toast: ToastrService) { 
-    this.permissions=JSON.parse(localStorage.getItem("personal"))
+  isConnected = true;  
+  status: string;
 
+  constructor(public crud:CrudService,public router:Router,private connectionService: ConnectionService, public fb:FormBuilder,private toast: ToastrService) { 
+    this.permissions=JSON.parse(localStorage.getItem("personal"))
+    this.connectionService.monitor().subscribe(isConnected => {  
+      this.isConnected = isConnected;  
+      console.log(isConnected)   
+      if (this.isConnected) {
+        this.status = "ONLINE";
+      }
+      else {
+        this.status = "OFFLINE";
+      //  alert("Sorry, we currently do not have Internet access.");
+
+      }
+      console.log(this.status)
+    }) 
   }
 
   ngOnInit() {
@@ -61,34 +78,28 @@ selectcat:any=[];
     this.coloumidss = localStorage.getItem('coloumid')
     this.home();
     window.addEventListener('online',()=> this.updateOnlineStatus());
+    // var online = navigator.onLine;
 
-  // if(window.navigator.onLine == true){
-  //     console.log(window.navigator.onLine)
-  //     this.mydb = new TurtleDB('example');
-  //     this.mydb.setRemote('http://13.232.128.227:3000');
-  //     this.mydb.create({ _id: 'sync', data: ' Synced' });
-  //     this.mydb.autoSyncOn([3000])
+    // if (online == false) {
+    
+    //     alert("Sorry, we currently do not have Internet access.");
+    
+    // }
 
-  //    // this.mydb.sync();
-  //     if(this.mydb.autoSyncOn()){
-  //       alert("synced")
-
-  //     }
-  //   }
-  //   else{
-  //     console.log(window.navigator.onLine)
-  //   }
   }
   updateOnlineStatus(){
     console.group("hi")
   }
 home(){
+  console.log("oi")
   this.profiledetails = JSON.parse(localStorage.getItem('personal'))
 
    
    if(this.coloumidss !=""){
-    if(window.navigator.onLine == true){
-      console.log(window.navigator.onLine)
+  // if(window.navigator.onLine == true){
+
+   // if (this.isConnected ) {
+      console.log(this.isConnected)
       this.onoff=true
 
    this.crud.CurrentMessage.subscribe(message=>{
@@ -108,6 +119,7 @@ home(){
       params['column_ids'] = this.coloumidss;
       params["category_id"] = this.message['category']['_id'];
       params['company_id'] = this.profiledetails?.company_id?._id
+      if(window.navigator.onLine == true){
       this.crud.get1(appModels.SUBCATEGORY,{params}).pipe(untilDestroyed(this)).subscribe((res:any) => {
         localStorage.setItem("allow","data")
         console.log(res)
@@ -116,6 +128,33 @@ home(){
       this.getData({pageIndex: this.page, pageSize: this.size});
      }
       })
+    }else{
+      console.log(window.navigator.onLine)
+      this.onoff=false
+     
+      this.crud.CurrentMessage.subscribe(message=>{
+        if(message !="" ){  
+          console.log(message)
+        this.message=JSON.parse(message)
+        this.categoryName=this.message['category']['category_name']
+    
+        console.log(this.message,this.message.sub_category[0]._id)
+        this.mydb = new TurtleDB('example');
+    
+        this.mydb.read('catsidebar').then((doc) =>{console.log(doc)
+          for (let i = 0; i < doc.subcategory?.length; i++) {
+            console.log(doc.subcategory[i].sub_category[0]._id)
+      if(this.message.sub_category[0]._id  == doc.subcategory[i].sub_category[0]._id){
+          this.data = doc.subcategory[i].sub_category
+          console.log(this.data)
+          }
+        }
+      
+          } );
+        }
+      }) 
+    }
+    
     }
     }
 //     else{
@@ -150,28 +189,34 @@ home(){
 //     }
   
   })
-}else{
-  console.log(window.navigator.onLine)
-  this.onoff=false
-  this.crud.CurrentMessage.subscribe(message=>{
-    this.message=JSON.parse(message)
-    this.categoryName=this.message['category']['category_name']
+// }else{
+//    // alert("Sorry, we currently do not have Internet access.");
+//   console.log(window.navigator.onLine)
+//   this.onoff=false
+ 
+//   this.crud.CurrentMessage.subscribe(message=>{
+//     if(message !="" ){  
+//       console.log(message)
+//     this.message=JSON.parse(message)
+//     this.categoryName=this.message['category']['category_name']
 
-    console.log(this.message,this.message.sub_category[0]._id)
-    this.mydb = new TurtleDB('example');
+//     console.log(this.message,this.message.sub_category[0]._id)
+//     this.mydb = new TurtleDB('example');
 
-    this.mydb.read('catsidebar').then((doc) =>{console.log(doc)
-      for (let i = 0; i < doc.subcategory?.length; i++) {
-        console.log(doc.subcategory[i].sub_category[0]._id)
-  if(this.message.sub_category[0]._id  == doc.subcategory[i].sub_category[0]._id){
-      this.data = doc.subcategory[i].sub_category
-      console.log(this.data)
-      }
-    }
+//     this.mydb.read('catsidebar').then((doc) =>{console.log(doc)
+//       for (let i = 0; i < doc.subcategory?.length; i++) {
+//         console.log(doc.subcategory[i].sub_category[0]._id)
+//   if(this.message.sub_category[0]._id  == doc.subcategory[i].sub_category[0]._id){
+//       this.data = doc.subcategory[i].sub_category
+//       console.log(this.data)
+//       }
+//     }
   
-      } );
-  }) 
-}
+//       } );
+//     }
+//   }) 
+// }
+
  }
 
 
@@ -206,6 +251,8 @@ setCookie(name,value,) {
 }
  
   getData(obj) {
+    if(window.navigator.onLine == true){
+
     let index=0,
         startingIndex=obj.pageIndex * obj.pageSize,
         endingIndex=startingIndex + obj.pageSize;
@@ -215,9 +262,10 @@ setCookie(name,value,) {
       return (index > startingIndex && index <= endingIndex) ? true : false;
     });
     console.log(this.data)
-    // this.mydb = new TurtleDB('example');
-    // this.mydb.create({ _id: 'categories', data: this.data });
-    // console.log(this.data)
+  }else{
+    
+  }
+  
   }
   
 

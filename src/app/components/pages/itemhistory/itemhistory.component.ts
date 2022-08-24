@@ -86,26 +86,7 @@ export class ItemhistoryComponent implements OnInit {
           this.kitdata = res['Kits']
         }
 
-        for (let i = 0; i < this.kitdata.length; i++) {
-   
-          for (let j = 0; j < this.kitdata[i].kit_item_details.length; j++) {
-     
-            this.getBase64ImageFromURL(this.kitdata[i].kit_item_details[j].item.image_path[0]).subscribe(base64data => {    
-              this.base64Image1.push( {image:'data:image/jpg;base64,' + base64data,name:this.kitdata[i].kit_item_details[j].item.item_name});
-          
-            });
-    }
-        }
-     setTimeout(() => {
-        const hlo2 = this.kitdata.filter(v => v.kit_item_details.filter((k,index) => this.base64Image1.map((val,index)=> {val.name == k.item.item_name ? k.item.image_path[0] = val.image:val.image})));
-console.log(hlo2)
 
-  //   this.mydb = new TurtleDB('example');
-  // this.mydb.update( 'itemhistorykit', {kit: hlo2 });
-
-
-
-     }, 3000); 
 
         for (let i = 0; i < this.cartdata?.length; i++) {
           if (this.cartdata[i]['cart_status'] == 2) {
@@ -113,24 +94,24 @@ console.log(hlo2)
             console.log(this.itemhistorycart)
           }
         }
-        for (let i = 0; i < this.itemhistorycart.length; i++) {
-          this.getBase64ImageFromURL(this.itemhistorycart[i].item.image_path[0]).subscribe(base64data => {    
-            this.base64Image1.push( {image:'data:image/jpg;base64,' + base64data,name:this.itemhistorycart[i].item.item_name});        
-          });
+//         for (let i = 0; i < this.itemhistorycart.length; i++) {
+//           this.getBase64ImageFromURL(this.itemhistorycart[i].item.image_path[0]).subscribe(base64data => {    
+//             this.base64Image1.push( {image:'data:image/jpg;base64,' + base64data,name:this.itemhistorycart[i].item.item_name});        
+//           });
 
 
     
-  }
+//   }
       
-   setTimeout(() => {
-     const hlo2 = this.itemhistorycart.filter(v => this.base64Image1.map((val,index)=> {val.name == v.item.item_name ? v.item.image_path[0] = val.image:val.image}));
-      //const hlo2 = this.cart.filter(v =>v);
+//    setTimeout(() => {
+//      const hlo2 = this.itemhistorycart.filter(v => this.base64Image1.map((val,index)=> {val.name == v.item.item_name ? v.item.image_path[0] = val.image:val.image}));
+//       //const hlo2 = this.cart.filter(v =>v);
  
-console.log(hlo2)
-this.mydb = new TurtleDB('example');
-this.mydb.create({ _id: 'getitemhistory', data: hlo2 });
-this.mydb.update('getitemhistory', {data:hlo2})
-   }, 3000); 
+// console.log(hlo2)
+// this.mydb = new TurtleDB('example');
+// this.mydb.create({ _id: 'getitemhistory', data: hlo2 });
+// this.mydb.update('getitemhistory', {data:hlo2})
+//    }, 3000); 
         // for (let i = 0; i < this.itemhistorycart.length; i++) {
         //   console.log(this.itemhistorycart[i].item.image_path[0], this.itemhistorycart[i].item._id)
         //   if (this.itemhistorycart[i].item.image_path[0] == undefined) {
@@ -799,88 +780,42 @@ this.mydb.update('getitemhistory', {data:hlo2})
       })
     } else {
       if (item == 'cart') {
-
         this.mydb = new TurtleDB('example');
         this.mydb.read('getlistcart').then((doc) => {
           console.log(doc)
           this.cartdata1 = doc.data
           let tempArray =[];
           for (let i = 0; i < this.cartdata1?.cart?.length; i++) {
-            if(this.arrayvalue.item._id == this.cartdata1?.cart[i].item._id  &&  doc.cart.cart[i]['cart_status'] == 2  ){
+            console.log(this.array[i],this.finalqty, doc.data.cart[i].qty,this.arrayvalue.qty == doc.data.cart[i].qty)
+           if(this.arrayvalue.qty == doc.data.cart[i].qty){
+            if(this.arrayvalue[0].item._id == this.cartdata1?.cart[i].item._id  &&  doc.data.cart[i]['cart_status'] == 2  ){
              // tempArray.push(this.cartdata1?.cart[i].item._id); !tempArray.includes(this.cartdata1?.cart[i].item._id
-              doc.cart.cart[i]['cart_status'] =  3
-              doc.cart.cart[i]['item_details'].quantity=Number(doc.cart.cart[i]['item_details'].quantity)+Number(this.array[i].item_details.quantity)
-              //doc.cart.cart[i]['qty']=Number(1)          
+             console.log(doc.data.cart[i].item_details.quantity)
+             doc.data.cart[i]['cart_status'] =  3
+             doc.data.cart[i].item_details.quantity=Number(doc.data.cart[i].item_details.quantity)+Number(this.arrayvalue[0].qty)
+              //doc.cart.cart[i]['qty']=Number(1)    
+              doc.data.cart[i].qty=doc.data.cart[i].qty-Number(this.arrayvalue[0].qty) 
             }
+          }else{
+            if(this.arrayvalue[0].item._id == this.cartdata1?.cart[i].item._id  &&  doc.data.cart[i]['cart_status'] == 2  ){
+              // tempArray.push(this.cartdata1?.cart[i].item._id); !tempArray.includes(this.cartdata1?.cart[i].item._id
+              console.log(doc.data.cart[i].item_details.quantity)
+             // doc.data.cart[i]['cart_status'] =  2
+              doc.data.cart[i].item_details.quantity=Number(doc.data.cart[i].item_details.quantity)+Number(this.arrayvalue[0].qty)
+               //doc.cart.cart[i]['qty']=Number(1)    
+               doc.data.cart[i].qty=doc.data.cart[i].qty-Number(this.arrayvalue[0].qty) 
+             }
           }
-          console.log("Updated cart value",doc.cart)   
-          this.cartdata1 = doc.cart         
+          }
+          console.log("Updated cart value",doc.data)   
+          this.cartdata1 = doc.data         
           const dateTime = new Date();
       
           this.mydb = new TurtleDB('example');
           this.mydb.update('getlistcart', { data: this.cartdata1 , user: this.permissions?._id,company_id:this.permissions?.company_id?._id,cartinfo:2,updatestatus:2,created_at:dateTime});
           this.toast.success('Items Returned Successfully');
-
-          // this.newcart = this.cartdata1.cart
-          // console.log(this.newcart)
-          // const checkid = this.newcart.some(item => item.item._id === this.arrayvalue[0].item.id)
-
-          // const checkstatus = this.newcart.some(item => item.cart_status === 3)
-          // console.log(checkid, checkstatus)
-          // if (checkid == true && checkstatus == true) {
-
-          //   //console.log(this.machine.item)
-          //   let mechine_id = this.arrayvalue[0].item.id
-
-          //   const newcartdata = this.newcart.filter(function (newcart) {
-          //     return newcart.item._id == mechine_id && newcart.cart_status == 3 ? newcart.qty = Number(1) + Number(newcart.qty) : newcart.qty = Number(1) + Number(newcart.qty);
-
-          //   })
-          //   console.log(newcartdata)
-
-          //   this.new = ({
-          //     cart: newcartdata,
-          //     total_quantity: doc.data.total_quantity,
-          //     _id: doc.data._id
-          //   })
-          //   console.log(this.new)
-          //   const dateTime = new Date();
-          //   this.mydb = new TurtleDB('example');
-          //   this.mydb.update('getlistcart', { data: this.new, user: this.permissions?._id, company_id: this.permissions?.company_id?._id, cartinfo: 1, created_at: dateTime });
-
-
-          // } else {
-
-          //   const dateTime = new Date();
-          //   this.hlo = {
-          //     allocation: this.arrayvalue[0].allocation,
-          //     cart_status: 3,
-          //     item: {
-          //       image_path: this.arrayvalue[0].image_path,
-          //       item_name: this.arrayvalue[0].item_name,
-          //       _id: this.arrayvalue[0].item,
-          //       image: [],
-          //     },
-          //     item_details: this.arrayvalue[0].item_details,
-
-          //     qty: Number(1),
-          //   }
-          //   // console.log(this.hlo)
-          //   this.newcart.push(this.hlo)
-          //   //  console.log(this.newcart)
-
-
-          //   this.new = ({
-          //     cart: this.newcart,
-          //     total_quantity: doc.data.total_quantity,
-          //     _id: doc.data._id
-          //   })
-          //   console.log(this.new)
-          //   this.mydb = new TurtleDB('example');
-          //   this.mydb.update('getlistcart', { data: this.new, user: this.permissions?._id, company_id: this.permissions?.company_id?._id, cartinfo: 2, created_at: dateTime });
-
-          // }
         })
+    
       } else {
         console.log(this.arrayvalue1)
         this.dateTime = new Date();

@@ -10,6 +10,8 @@ import { ToastrService } from 'ngx-toastr';
 import {  VERSION } from '@angular/core';
 import TurtleDB from 'turtledb';
 import { Observable, Observer } from 'rxjs';
+import { ConnectionService } from 'ng-connection-service';  
+
 declare const window:any;
 @Component({
   selector: 'app-header',
@@ -103,7 +105,24 @@ categories: any = [];
   subcat: any=[];
   base64Image1: any=[];
   base64Image2: any=[];
-  constructor(public router: Router, public crud: CrudService, private cookie: CookieService, private toast: ToastrService) {
+  isConnected = true;  
+  status: string;
+  itemhistorykit1: any=[];
+  cartdata1: any;
+  itemhistorycart: any=[];
+
+  constructor(public router: Router, public crud: CrudService, private cookie: CookieService,private connectionService: ConnectionService, private toast: ToastrService) {
+    this.connectionService.monitor().subscribe(isConnected => {  
+      this.isConnected = isConnected;  
+      console.log(isConnected)   
+      if (this.isConnected) {
+        this.status = "ONLINE";
+      }
+      else {
+        this.status = "OFFLINE";
+      }
+      console.log(this.status)
+    }) 
     this.permissions = JSON.parse(localStorage.getItem("personal"))
     this.profiledetails = JSON.parse(localStorage.getItem('personal'))
     let params: any = {};
@@ -381,64 +400,83 @@ this.mydb = new TurtleDB('example');
               ...{ sub_category: subCategory }
             })
             console.log(this.categories)
-
             for (let i = 0; i < this.categories.length; i++) {
-              //console.log(this.categories[i].sub_category[0].image_path)
-                    if(this.categories[i].sub_category[0].image_path == undefined){
-                      this.subcat.push({
-                        category:this.categories[i].category,
-                        sub_category:[{
-                        active_status: this.categories[i].sub_category[0].active_status,
-                        category_id: this.categories[i].sub_category[0].category_id,
-                        company_id: this.categories[i].sub_category[0].company_id,
-                        createdAt: this.categories[i].sub_category[0].createdAt,
-                        created_at:this.categories[i].sub_category[0].created_at,
-                        deleted_at:this.categories[i].sub_category[0].deleted_at,
-                        description: this.categories[i].sub_category[0].description,
-                        image_path: this.categories[i].sub_category[0].image_path,
-                        is_active: this.categories[i].sub_category[0].is_active,
-                        sub_category_code:this.categories[i].sub_category[0].sub_category_code,
-                        sub_category_name: this.categories[i].sub_category[0].sub_category_name,
-                        updated_at: this.categories[i].sub_category[0].updated_at,
-                        image:"",
-                        _id:this.categories[i].sub_category[0]._id,
-                        } ]
-                       })
+ 
+   
+              this.getBase64ImageFromURL(this.categories[i].sub_category[0].image_path).subscribe(base64data => {    
+                this.base64Image1.push( {image:'data:image/jpg;base64,' + base64data,name:this.categories[i].sub_category[0].sub_category_name});
+    
+                //console.log(this.base64Image)
+      
             
-            }
-          this.getBase64ImageFromURL(this.categories[i].sub_category[0].image_path).subscribe(base64data => {    
-            this.base64Image = 'data:image/jpg;base64,' + base64data;
-           this.subcat.push({
-            category:this.categories[i].category,
-            sub_category:[{
-            active_status: this.categories[i].sub_category[0].active_status,
-            category_id: this.categories[i].sub_category[0].category_id,
-            company_id: this.categories[i].sub_category[0].company_id,
-            createdAt: this.categories[i].sub_category[0].createdAt,
-            created_at:this.categories[i].sub_category[0].created_at,
-            deleted_at:this.categories[i].sub_category[0].deleted_at,
-            description: this.categories[i].sub_category[0].description,
-            image_path: this.categories[i].sub_category[0].image_path,
-            is_active: this.categories[i].sub_category[0].is_active,
-            sub_category_code:this.categories[i].sub_category[0].sub_category_code,
-            sub_category_name: this.categories[i].sub_category[0].sub_category_name,
-            updated_at: this.categories[i].sub_category[0].updated_at,
-            image: this.base64Image,
-            _id:this.categories[i].sub_category[0]._id,
-            } ]
-           })
-            console.log(this.subcat)
+              });
+        
+      }
+      setTimeout(() => {
+        const hlo2 = this.categories.filter(v => this.base64Image1.map((val,index)=> {val.name == v.sub_category[0].sub_category_name ? v.sub_category[0].image_path = val.image:val.image}));
+         //const hlo2 = this.cart.filter(v =>v);
+    
+   console.log(hlo2)
+   this.mydb = new TurtleDB('example');
+   this.mydb.create({ _id: 'catsidebar', subcategory: hlo2});
+      }, 3000); 
+        //     for (let i = 0; i < this.categories.length; i++) {
+        //       //console.log(this.categories[i].sub_category[0].image_path)
+        //             if(this.categories[i].sub_category[0].image_path == undefined){
+        //               this.subcat.push({
+        //                 category:this.categories[i].category,
+        //                 sub_category:[{
+        //                 active_status: this.categories[i].sub_category[0].active_status,
+        //                 category_id: this.categories[i].sub_category[0].category_id,
+        //                 company_id: this.categories[i].sub_category[0].company_id,
+        //                 createdAt: this.categories[i].sub_category[0].createdAt,
+        //                 created_at:this.categories[i].sub_category[0].created_at,
+        //                 deleted_at:this.categories[i].sub_category[0].deleted_at,
+        //                 description: this.categories[i].sub_category[0].description,
+        //                 image_path: this.categories[i].sub_category[0].image_path,
+        //                 is_active: this.categories[i].sub_category[0].is_active,
+        //                 sub_category_code:this.categories[i].sub_category[0].sub_category_code,
+        //                 sub_category_name: this.categories[i].sub_category[0].sub_category_name,
+        //                 updated_at: this.categories[i].sub_category[0].updated_at,
+        //                 image:"",
+        //                 _id:this.categories[i].sub_category[0]._id,
+        //                 } ]
+        //                })
+            
+        //     }
+        //   this.getBase64ImageFromURL(this.categories[i].sub_category[0].image_path).subscribe(base64data => {    
+        //     this.base64Image = 'data:image/jpg;base64,' + base64data;
+        //    this.subcat.push({
+        //     category:this.categories[i].category,
+        //     sub_category:[{
+        //     active_status: this.categories[i].sub_category[0].active_status,
+        //     category_id: this.categories[i].sub_category[0].category_id,
+        //     company_id: this.categories[i].sub_category[0].company_id,
+        //     createdAt: this.categories[i].sub_category[0].createdAt,
+        //     created_at:this.categories[i].sub_category[0].created_at,
+        //     deleted_at:this.categories[i].sub_category[0].deleted_at,
+        //     description: this.categories[i].sub_category[0].description,
+        //     image_path: this.categories[i].sub_category[0].image_path,
+        //     is_active: this.categories[i].sub_category[0].is_active,
+        //     sub_category_code:this.categories[i].sub_category[0].sub_category_code,
+        //     sub_category_name: this.categories[i].sub_category[0].sub_category_name,
+        //     updated_at: this.categories[i].sub_category[0].updated_at,
+        //     image: this.base64Image,
+        //     _id:this.categories[i].sub_category[0]._id,
+        //     } ]
+        //    })
+        //     console.log(this.subcat)
             
             
-            setTimeout(() => {
-              this.mydb = new TurtleDB('example');
-            this.mydb.create({ _id: 'catsidebar', subcategory: this.subcat });
-        // this.mydb.update('catsidebar', {data: this.subcat });
-            }, 3000); 
-          });
+        //     setTimeout(() => {
+        //       this.mydb = new TurtleDB('example');
+        //     this.mydb.create({ _id: 'catsidebar', subcategory: this.subcat });
+        // // this.mydb.update('catsidebar', {data: this.subcat });
+        //     }, 3000); 
+        //   });
       
       
-            }
+        //     }
    
             if(!localStorage.getItem("firsttime")){
               localStorage.setItem("firsttime","data")
@@ -704,18 +742,71 @@ this.mydb = new TurtleDB('example');
 
       this.kitdata=[]
       this.kitdata = res['Kits']
+      for (let i = 0; i < this.kitdata.length; i++) {
+   
+        for (let j = 0; j < this.kitdata[i].kit_item_details.length; j++) {
+   
+          this.getBase64ImageFromURL(this.kitdata[i].kit_item_details[j].item.image_path[0]).subscribe(base64data => {    
+            this.base64Image1.push( {image:'data:image/jpg;base64,' + base64data,name:this.kitdata[i].kit_item_details[j].item.item_name});
+        
+          });
+  }
+      }
+   setTimeout(() => {
+      const hlo2 = this.kitdata.filter(v => v.kit_item_details.filter((k,index) => this.base64Image1.map((val,index)=> {val.name == k.item.item_name ? k.item.image_path[0] = val.image:val.image})));
+console.log(hlo2)
+
+//   this.mydb = new TurtleDB('example');
+// this.mydb.update( 'itemhistorykit', {kit: hlo2 });
+for (let i = 0; i < hlo2.length; i++) {
+  if (hlo2[i]['kit_status'] == 2) {
+    this.itemhistorykit1.push(hlo2[i])
+  }
+}
+console.log(this.itemhistorykit1)
+this.mydb = new TurtleDB('example');
+this.mydb.create({ _id: 'itemhistorykit', data: this.itemhistorykit1 });
+this.mydb.update('itemhistorykit', {data: this.itemhistorykit1})
+
+
+   }, 3000); 
       for (let i = 0; i < this.kitdata?.length; i++) {
         if (this.kitdata[i]['kit_status'] == 2) {
           this.itemhistorykit.push(this.kitdata[i])
         }
       }
       console.log(this.itemhistorykit)
-      this.mydb = new TurtleDB('example');
-      this.mydb.create({ _id: 'itemhistorykit', data: this.itemhistorykit });
-      this.mydb.update('itemhistorykit', {data: this.itemhistorykit})
+      // this.mydb = new TurtleDB('example');
+      // this.mydb.create({ _id: 'itemhistorykit', data: this.itemhistorykit });
+      // this.mydb.update('itemhistorykit', {data: this.itemhistorykit})
       if(this.itemhistorykit==undefined){
          this.itemhistorykit=[]
       }
+      this.cartdata1 = res['Cart'][0]['cart']
+      for (let i = 0; i < this.cartdata1?.length; i++) {
+        if (this.cartdata1[i]['cart_status'] == 2) {
+          this.itemhistorycart.push(this.cartdata1[i])
+          console.log(this.itemhistorycart)
+        }
+      }
+      for (let i = 0; i < this.itemhistorycart.length; i++) {
+        this.getBase64ImageFromURL(this.itemhistorycart[i].item.image_path[0]).subscribe(base64data => {    
+          this.base64Image1.push( {image:'data:image/jpg;base64,' + base64data,name:this.itemhistorycart[i].item.item_name});        
+        });
+
+
+  
+}
+    
+ setTimeout(() => {
+   const hlo2 = this.itemhistorycart.filter(v => this.base64Image1.map((val,index)=> {val.name == v.item.item_name ? v.item.image_path[0] = val.image:val.image}));
+    //const hlo2 = this.cart.filter(v =>v);
+
+console.log(hlo2)
+this.mydb = new TurtleDB('example');
+this.mydb.create({ _id: 'getitemhistory', data: hlo2 });
+this.mydb.update('getitemhistory', {data:hlo2})
+ }, 3000); 
     })
     this.crud.get1(appModels.listCart, { params }).pipe(untilDestroyed(this)).subscribe(res => {
       //console.log(res)
@@ -860,6 +951,8 @@ console.log(hlo2)
   }
 
   setval(val: any) {
+   // if (this.isConnected ) {
+
     console.log(val)
     this.myform.reset();
     
@@ -874,9 +967,14 @@ this.searchdata=[]
       // localStorage.setItem('categname', val.category['category_name'])
 
       this.crud.changemessage(JSON.stringify(val))
-  
+      if(window.navigator.onLine == true){
+
       this.router.navigate(['pages/home'])
-    
+    }else{
+     
+    console.log("off")
+        this.router.navigate(['pages/home'])
+    }
   }
   getBase64ImageFromURL(url: string) {
    // //console.log("its coming")
