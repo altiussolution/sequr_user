@@ -6,7 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import TurtleDB from 'turtledb';
 import { Observable, Observer } from 'rxjs';
-declare const window:any;
+declare const window: any;
 
 
 @Component({
@@ -34,307 +34,297 @@ export class ProductslistComponent implements OnInit {
   machineStatus: any;
   msg: string;
   msgg: string;
-  kitdatas: any=[];
+  kitdatas: any = [];
   kits: any;
   List: any;
-  highkitqty: any=[];
-  permissions:any=[];
-  totalquantity: any=[];
+  highkitqty: any = [];
+  permissions: any = [];
+  totalquantity: any = [];
   kitdatas1: any;
   qtyss: number;
-  dooropen: boolean=false;
+  dooropen: boolean = false;
   mydb: any;
-  kitting: any=[];
-  base64Image: any=[];
-  kittingnew: any=[];
-  kit1: any=[];
+  kitting: any = [];
+  base64Image: any = [];
+  kittingnew: any = [];
+  kit1: any = [];
   kitnewdata: any;
   onoff: boolean;
   hlo2: any;
-  hlo:any=[];
+  hlo: any = [];
   new: { Cart: any; Kits: (hlo: any) => void; status: boolean; };
   dateTime: Date;
-  kit_item_details: any=[];
-  constructor(public crud: CrudService, private toast: ToastrService,public modalService: NgbModal) { }
+  kit_item_details: any = [];
+  takenowdata: any;
+  constructor(public crud: CrudService, private toast: ToastrService, public modalService: NgbModal) { }
 
   ngOnInit(): void {
-    this.permissions=JSON.parse(localStorage.getItem("personal"))
+    this.permissions = JSON.parse(localStorage.getItem("personal"))
 
-    if(window.navigator.onLine == true){
-      this.onoff=true
+    if (window.navigator.onLine == true) {
+      this.onoff = true
 
       let params: any = {};
-      params['company_id']=this.permissions?.company_id?._id
-      this.crud.get1(appModels.KITTINGLIST,{params}).pipe(untilDestroyed(this)).subscribe((res: any) => {
+      params['company_id'] = this.permissions?.company_id?._id
+      this.crud.get1(appModels.KITTINGLIST, { params }).pipe(untilDestroyed(this)).subscribe((res: any) => {
         //console.log(res)
         this.kit = res.data
-    
+
 
         for (let i = 0; i < this.kit.length; i++) {
-   
+
           for (let j = 0; j < this.kit[i].kit_data.length; j++) {
-     
-            this.getBase64ImageFromURL(this.kit[i].kit_data[j].item.image_path[0]).subscribe(base64data => {    
-              this.base64Image.push( {image:'data:image/jpg;base64,' + base64data,name:this.kit[i].kit_data[j].item.item_name});
 
-              //console.log(this.base64Image)
-    
-          
+            this.getBase64ImageFromURL(this.kit[i].kit_data[j].item.image_path[0]).subscribe(base64data => {
+              this.base64Image.push({ image: 'data:image/jpg;base64,' + base64data, name: this.kit[i].kit_data[j].item.item_name });
             });
-
-  
-      
-    }
+          }
         }
-     setTimeout(() => {
-        const hlo2 = this.kit.filter(v => v.kit_data.filter((k,index) => this.base64Image.map((val,index)=> {val.name == k.item.item_name ? k.item.image_path[0] = val.image:val.image})));
-
-
-    this.mydb = new TurtleDB('example');
-this.mydb.create({ _id: 'kitting', kit: hlo2 });
-if(this.mydb.create({ _id: 'kitting', kit: hlo2 })){
-  this.mydb.update( 'kitting', {kit: hlo2 });
-
-}
-
-     }, 6000); 
+        setTimeout(() => {
+          const hlo2 = this.kit.filter(v => v.kit_data.filter((k, index) => this.base64Image.map((val, index) => { val.name == k.item.item_name ? k.item.image_path[0] = val.image : val.image })));
+          this.mydb = new TurtleDB('example');
+          //this.mydb.create({ _id: 'kitting', kit: hlo2 });
+         // if (this.mydb.create({ _id: 'kitting', kit: hlo2 })) {
+            this.mydb.update('kitting', { kit: hlo2 });
+         // }
+        }, 6000);
 
 
 
         this.getData({ pageIndex: this.page, pageSize: this.size });
       })
-    }else{
-      this.onoff=false
+    } else {
+      this.onoff = false
       this.getData({ pageIndex: this.page, pageSize: this.size });
 
     }
-    
+
   }
 
   modaldismiss() {
     this.machineCubeID = []
-    this.machineColumnID =[]
+    this.machineColumnID = []
     this.machineDrawID = []
-    this.machineCompartmentID =[]
-    this.machineStatus=[]
-    this.msg="";
-    this.msgg="";
+    this.machineCompartmentID = []
+    this.machineStatus = []
+    this.msg = "";
+    this.msgg = "";
     this.ngOnInit()
   }
-  addkitcart(_id: any, data,modal) {
+  addkitcart(_id: any, data, modal) {
     //console.log(this.hlo2)
 
-    if(window.navigator.onLine == true){
+    if (window.navigator.onLine == true) {
       // this.mydb = new TurtleDB('example');
       // this.mydb.create({ _id: 'addkittocartid', data: _id });
-    let params: any = {};
-    params['company_id']=this.permissions?.company_id?._id
-    params['user_id']=this.permissions?._id
-    this.crud.get1("log/getUserTakenQuantity",{params}).pipe(untilDestroyed(this)).subscribe(async res => {
-      //console.log(res)
-      // this.mydb = new TurtleDB('example');
-      // this.mydb.create({ _id: 'getUserTakenQuantity', data: res });
-      if(res?.data?.length!=0){
-        this.totalquantity=res['data']
-        this.totalquantity.trasaction_qty
-        this.kitdatas1=data
-        this.qtyss=0
-        for(let j=0;j<this.kitdatas1?.kit_data?.length;j++){
-          this.qtyss +=this.kitdatas1?.kit_data[j]?.kit_item_qty;
-          //console.log(this.qtyss)
-        }
-      if(this.permissions?.item_max_quantity>=this.totalquantity[0]?.trasaction_qty + this.qtyss){
-            this.highkitqty=[];
-            //console.log(data)
-             this.kitdatas=data
-             //console.log(this.kitdatas.kit_data)
-             this.kits = this.kitdatas.kit_data.map(m => { 
-            if(m.kit_item_qty > m.quantity) { 
-             this.highkitqty.push(m?.kit_item_qty+'>'+m?.qty)
-               return false;
-           }
-          return true;
-             })
-         //console.log(this.kits)
-         this.List = this.kits.filter(item => item === false);
-         //console.log(this.List)
-         if(this.List?.length ==0){
-          this.dooropen=false;
-           this.modalService.open(modal,{backdrop:false});
-            this.crud.post(appModels.ADDKITCART + _id).pipe(untilDestroyed(this)).subscribe(async (res: any) => {
-               //console.log(res)
-               if (res != "") {
-                 if (res['message'] == "Successfully added into cart!") {
-                  //  this.toast.success("Kitting cart added successfully")
-                   await this.itemHistory(data)
-         
-                 }
-               }
-             }, error => {
-              //  this.toast.error("Kitting cart added Unsuccessfully")
-             })
-         }else{
-           // this.toast.error("now choosed the kit item quantity for"+this.highkitqty)
-           this.toast.error("Requested Quantity Was Not Available")
-         }
-       
-          }
-          else{
-            this.toast.error("You have exceeded item maximum quantity taken per day.")
-          }
-      }else{
-      
-        this.kitdatas1=data
-        this.qtyss=0
-        for(let j=0;j<this.kitdatas1?.kit_data?.length;j++){
-          this.qtyss +=this.kitdatas1?.kit_data[j]?.kit_item_qty;
-          //console.log(this.qtyss)
-        }
-      if(this.permissions?.item_max_quantity>= 0 + this.qtyss){
-            this.highkitqty=[];
-            //console.log(data)
-             this.kitdatas=data
-             //console.log(this.kitdatas.kit_data)
-             this.kits = this.kitdatas.kit_data.map(m => { 
-            if(m.kit_item_qty > m.quantity) { 
-             this.highkitqty.push(m?.kit_item_qty+'>'+m?.qty)
-               return false;
-           }
-          return true;
-             })
-         //console.log(this.kits)
-         this.List = this.kits.filter(item => item === false);
-         //console.log(this.List)
-         if(this.List?.length ==0){
-           this.dooropen=false;
-           this.modalService.open(modal,{backdrop:false});
-            this.crud.post(appModels.ADDKITCART + _id).pipe(untilDestroyed(this)).subscribe(async (res: any) => {
-               //console.log(res)
-               if (res != "") {
-                 if (res['message'] == "Successfully added into cart!") {
-                  //  this.toast.success("Kitting cart added successfully")
-                   await this.itemHistory(data)
-         
-                 }
-               }
-             }, error => {
-              //  this.toast.error("Kitting cart added Unsuccessfully")
-             })
-         }else{
-           // this.toast.error("now choosed the kit item quantity for"+this.highkitqty)
-           this.toast.error("Requested Quantity Was Not Available")
-         }
-       
-          }else{
-            this.toast.error("You have exceeded item maximum quantity taken per day.")
-          }
-      }
-      
-    })
-    }else{
-      this.mydb = new TurtleDB('example');
-      this.mydb.read('getUserTakenQuantity').then(async (doc) =>{//console.log(doc)
-          const res=doc.data
-         if(res?.data?.length!=0){
-          this.totalquantity=res['data']
+      let params: any = {};
+      params['company_id'] = this.permissions?.company_id?._id
+      params['user_id'] = this.permissions?._id
+      this.crud.get1("log/getUserTakenQuantity", { params }).pipe(untilDestroyed(this)).subscribe(async res => {
+        //console.log(res)
+        // this.mydb = new TurtleDB('example');
+        // this.mydb.create({ _id: 'getUserTakenQuantity', data: res });
+        if (res?.data?.length != 0) {
+          this.totalquantity = res['data']
           this.totalquantity.trasaction_qty
-          this.kitdatas1=data
-          this.qtyss=0
-          for(let j=0;j<this.kitdatas1?.kit_data?.length;j++){
-            this.qtyss +=this.kitdatas1?.kit_data[j]?.kit_item_qty;
+          this.kitdatas1 = data
+          this.qtyss = 0
+          for (let j = 0; j < this.kitdatas1?.kit_data?.length; j++) {
+            this.qtyss += this.kitdatas1?.kit_data[j]?.kit_item_qty;
             //console.log(this.qtyss)
           }
-        if(this.permissions?.item_max_quantity>=this.totalquantity[0]?.trasaction_qty + this.qtyss){
-              this.highkitqty=[];
-              //console.log(data)
-               this.kitdatas=data
-               //console.log(this.kitdatas.kit_data)
-               this.kits = this.kitdatas.kit_data.map(m => { 
-              if(m.kit_item_qty > m.quantity) { 
-               this.highkitqty.push(m?.kit_item_qty+'>'+m?.qty)
-                 return false;
-             }
-            return true;
-               })
-           //console.log(this.kits)
-           this.List = this.kits.filter(item => item === false);
-           //console.log(this.List)
-           if(this.List?.length ==0){
-            this.dooropen=false;
-             this.modalService.open(modal,{backdrop:false});
-       //_id
-  // this.mydb.read('addkittocartid').then((doc) =>{//console.log(doc)
-  // })
-  //update itemhistoy
-  await this.itemHistoryoffline(data)
-       
-           }else{
-             // this.toast.error("now choosed the kit item quantity for"+this.highkitqty)
-             this.toast.error("Requested Quantity Was Not Available")
-           }
-            }
-          else{
-            this.toast.error("You have exceeded item maximum quantity taken per day.")
-          }
-         }else{
-      
-        this.kitdatas1=data
-        this.qtyss=0
-        for(let j=0;j<this.kitdatas1?.kit_data?.length;j++){
-          this.qtyss +=this.kitdatas1?.kit_data[j]?.kit_item_qty;
-          //console.log(this.qtyss)
-        }
-      if(this.permissions?.item_max_quantity>= 0 + this.qtyss){
-            this.highkitqty=[];
+          if (this.permissions?.item_max_quantity >= this.totalquantity[0]?.trasaction_qty + this.qtyss) {
+            this.highkitqty = [];
             //console.log(data)
-             this.kitdatas=data
-             //console.log(this.kitdatas.kit_data)
-             this.kits = this.kitdatas.kit_data.map(m => { 
-            if(m.kit_item_qty > m.quantity) { 
-             this.highkitqty.push(m?.kit_item_qty+'>'+m?.qty)
-               return false;
-           }
-          return true;
-             })
-         //console.log(this.kits)
-         this.List = this.kits.filter(item => item === false);
-         //console.log(this.List)
-         if(this.List?.length ==0){
-           this.dooropen=false;
-           this.modalService.open(modal,{backdrop:false});
-  //_id
-  // this.mydb.read('addkittocartid').then((doc) =>{//console.log(doc)
-  // })
-  //update itemhistoy
-   await this.itemHistoryoffline(data)
+            this.kitdatas = data
+            //console.log(this.kitdatas.kit_data)
+            this.kits = this.kitdatas.kit_data.map(m => {
+              if (m.kit_item_qty > m.quantity) {
+                this.highkitqty.push(m?.kit_item_qty + '>' + m?.qty)
+                return false;
+              }
+              return true;
+            })
+            //console.log(this.kits)
+            this.List = this.kits.filter(item => item === false);
+            //console.log(this.List)
+            if (this.List?.length == 0) {
+              this.dooropen = false;
+              this.modalService.open(modal, { backdrop: false });
+              this.crud.post(appModels.ADDKITCART + _id).pipe(untilDestroyed(this)).subscribe(async (res: any) => {
+                //console.log(res)
+                if (res != "") {
+                  if (res['message'] == "Successfully added into cart!") {
+                    //  this.toast.success("Kitting cart added successfully")
+                    await this.itemHistory(data)
 
-         }else{
-           // this.toast.error("now choosed the kit item quantity for"+this.highkitqty)
-           this.toast.error("Requested Quantity Was Not Available")
-         }
-       
-          }else{
+                  }
+                }
+              }, error => {
+                //  this.toast.error("Kitting cart added Unsuccessfully")
+              })
+            } else {
+              // this.toast.error("now choosed the kit item quantity for"+this.highkitqty)
+              this.toast.error("Requested Quantity Was Not Available")
+            }
+
+          }
+          else {
             this.toast.error("You have exceeded item maximum quantity taken per day.")
           }
-      }
-    
-  
-        } );
-      }
-  
+        } else {
+
+          this.kitdatas1 = data
+          this.qtyss = 0
+          for (let j = 0; j < this.kitdatas1?.kit_data?.length; j++) {
+            this.qtyss += this.kitdatas1?.kit_data[j]?.kit_item_qty;
+            //console.log(this.qtyss)
+          }
+          if (this.permissions?.item_max_quantity >= 0 + this.qtyss) {
+            this.highkitqty = [];
+            //console.log(data)
+            this.kitdatas = data
+            //console.log(this.kitdatas.kit_data)
+            this.kits = this.kitdatas.kit_data.map(m => {
+              if (m.kit_item_qty > m.quantity) {
+                this.highkitqty.push(m?.kit_item_qty + '>' + m?.qty)
+                return false;
+              }
+              return true;
+            })
+            //console.log(this.kits)
+            this.List = this.kits.filter(item => item === false);
+            //console.log(this.List)
+            if (this.List?.length == 0) {
+              this.dooropen = false;
+              this.modalService.open(modal, { backdrop: false });
+              this.crud.post(appModels.ADDKITCART + _id).pipe(untilDestroyed(this)).subscribe(async (res: any) => {
+                //console.log(res)
+                if (res != "") {
+                  if (res['message'] == "Successfully added into cart!") {
+                    //  this.toast.success("Kitting cart added successfully")
+                    await this.itemHistory(data)
+
+                  }
+                }
+              }, error => {
+                //  this.toast.error("Kitting cart added Unsuccessfully")
+              })
+            } else {
+              // this.toast.error("now choosed the kit item quantity for"+this.highkitqty)
+              this.toast.error("Requested Quantity Was Not Available")
+            }
+
+          } else {
+            this.toast.error("You have exceeded item maximum quantity taken per day.")
+          }
+        }
+
+      })
+    } else {
+      this.mydb = new TurtleDB('example');
+      this.mydb.read('getUserTakenQuantity').then(async (doc) => {//console.log(doc)
+        const res = doc.data
+        if (res?.data?.length != 0) {
+          this.totalquantity = res['data']
+          this.totalquantity.trasaction_qty
+          this.kitdatas1 = data
+          this.qtyss = 0
+          for (let j = 0; j < this.kitdatas1?.kit_data?.length; j++) {
+            this.qtyss += this.kitdatas1?.kit_data[j]?.kit_item_qty;
+            //console.log(this.qtyss)
+          }
+          if (this.permissions?.item_max_quantity >= this.totalquantity[0]?.trasaction_qty + this.qtyss) {
+            this.highkitqty = [];
+            //console.log(data)
+            this.kitdatas = data
+            //console.log(this.kitdatas.kit_data)
+            this.kits = this.kitdatas.kit_data.map(m => {
+              if (m.kit_item_qty > m.quantity) {
+                this.highkitqty.push(m?.kit_item_qty + '>' + m?.qty)
+                return false;
+              }
+              return true;
+            })
+            //console.log(this.kits)
+            this.List = this.kits.filter(item => item === false);
+            //console.log(this.List)
+            if (this.List?.length == 0) {
+              this.dooropen = false;
+              this.modalService.open(modal, { backdrop: false });
+              //_id
+              // this.mydb.read('addkittocartid').then((doc) =>{//console.log(doc)
+              // })
+              //update itemhistoy
+              await this.itemHistoryoffline(data)
+
+            } else {
+              // this.toast.error("now choosed the kit item quantity for"+this.highkitqty)
+              this.toast.error("Requested Quantity Was Not Available")
+            }
+          }
+          else {
+            this.toast.error("You have exceeded item maximum quantity taken per day.")
+          }
+        } else {
+
+          this.kitdatas1 = data
+          this.qtyss = 0
+          for (let j = 0; j < this.kitdatas1?.kit_data?.length; j++) {
+            this.qtyss += this.kitdatas1?.kit_data[j]?.kit_item_qty;
+            //console.log(this.qtyss)
+          }
+          if (this.permissions?.item_max_quantity >= 0 + this.qtyss) {
+            this.highkitqty = [];
+            //console.log(data)
+            this.kitdatas = data
+            //console.log(this.kitdatas.kit_data)
+            this.kits = this.kitdatas.kit_data.map(m => {
+              if (m.kit_item_qty > m.quantity) {
+                this.highkitqty.push(m?.kit_item_qty + '>' + m?.qty)
+                return false;
+              }
+              return true;
+            })
+            //console.log(this.kits)
+            this.List = this.kits.filter(item => item === false);
+            //console.log(this.List)
+            if (this.List?.length == 0) {
+              this.dooropen = false;
+              this.modalService.open(modal, { backdrop: false });
+              //_id
+              // this.mydb.read('addkittocartid').then((doc) =>{//console.log(doc)
+              // })
+              //update itemhistoy
+              await this.itemHistoryoffline(data)
+
+            } else {
+              // this.toast.error("now choosed the kit item quantity for"+this.highkitqty)
+              this.toast.error("Requested Quantity Was Not Available")
+            }
+
+          } else {
+            this.toast.error("You have exceeded item maximum quantity taken per day.")
+          }
+        }
+
+
+      });
+    }
+
   }
   async itemHistory(data) {
     this.machineCubeID = []
-    this.machineColumnID =[]
+    this.machineColumnID = []
     this.machineDrawID = []
-    this.machineCompartmentID =[]
-    this.machineStatus=[]
-    this.msg="";
-    this.msgg="";
+    this.machineCompartmentID = []
+    this.machineStatus = []
+    this.msg = "";
+    this.msgg = "";
     let params: any = {};
-    params['company_id']=this.permissions?.company_id?._id
-    params['user_id']=this.permissions?._id
-    this.crud.get1(appModels.ITEMLIST,{params}).pipe(untilDestroyed(this)).subscribe(async (res: any) => {
+    params['company_id'] = this.permissions?.company_id?._id
+    params['user_id'] = this.permissions?._id
+    this.crud.get1(appModels.ITEMLIST, { params }).pipe(untilDestroyed(this)).subscribe(async (res: any) => {
       //console.log(res)
       this.id = res?.Cart[0]['_id']
       this.itemhistorykit = res['Kits']
@@ -351,137 +341,141 @@ if(this.mydb.create({ _id: 'kitting', kit: hlo2 })){
   }
   async itemHistoryoffline(data) {
     this.machineCubeID = []
-    this.machineColumnID =[]
+    this.machineColumnID = []
     this.machineDrawID = []
-    this.machineCompartmentID =[]
-    this.machineStatus=[]
-    this.msg="";
-    this.msgg="";
+    this.machineCompartmentID = []
+    this.machineStatus = []
+    this.msg = "";
+    this.msgg = "";
     let params: any = {};
     console.log(data)
+    this.takenowdata=data
     this.mydb = new TurtleDB('example');
-    this.mydb.read('getitemlist').then(async (doc) =>{console.log(doc)
-        this.itemhistorykit = doc.data['Kits']
-       // this.id = doc.data.Cart[0]['_id']
-       this.dateTime = new Date();
+    this.mydb.read('getitemlist').then(async (doc) => {
+      console.log(doc)
+      this.itemhistorykit = doc.data['Kits']
+      // this.id = doc.data.Cart[0]['_id']
+      this.dateTime = new Date();
 
-       for (let k = 0; k < this.itemhistorykit.length; k++) {
+      for (let k = 0; k < this.itemhistorykit.length; k++) {
         //console.log(typeof kit.kit_status + ' ' + kit.kit_status)
-          //console.log(typeof kit.kit_id._id + ' ' + kit.kit_id._id)
-          //console.log(kit)
-             console.log(this.itemhistorykit[k].kit_id._id )
-                this.kit_item_details=[]
-      if(this.itemhistorykit[k].kit_id._id === data._id){
-        for (let i = 0; i < this.itemhistorykit[k].kit_item_details.length; i++) {
-          this.kit_item_details.push({
-            active_status:  this.itemhistorykit[k].kit_item_details[i].active_status,
-            alloted_item_qty_in_kit:  this.itemhistorykit[k].kit_item_details[i].alloted_item_qty_in_kit,
-            bin:  this.itemhistorykit[k].kit_item_details[i].bin,
-            category:  this.itemhistorykit[k].kit_item_details[i].category,
-            company_id:  this.itemhistorykit[k].kit_item_details[i].company_id,
-            compartment: this.itemhistorykit[k].kit_item_details[i].compartment,
-            compartment_number: this.itemhistorykit[k].kit_item_details[i].compartment_number,
-            created_at: this.itemhistorykit[k].kit_item_details[i].created_at,
-            cube:  this.itemhistorykit[k].kit_item_details[i].cube,
-            deleted_at: this.itemhistorykit[k].kit_item_details[i].deleted_at,
-            description:  this.itemhistorykit[k].kit_item_details[i].description,
-            item:  this.itemhistorykit[k].kit_item_details[i].item,
-            po_history: this.itemhistorykit[k].kit_item_details[i].po_history,
-            purchase_order:  this.itemhistorykit[k].kit_item_details[i].purchase_order,
-            quantity:  this.itemhistorykit[k].kit_item_details[i].quantity-this.itemhistorykit[k].kit_item_details[i].alloted_item_qty_in_kit,
-            status:  this.itemhistorykit[k].kit_item_details[i].status,
-            sub_category: this.itemhistorykit[k].kit_item_details[i].sub_category,
-            supplier:  this.itemhistorykit[k].kit_item_details[i].supplier,
-            total_quantity: this.itemhistorykit[k].kit_item_details[i].total_quantity,
-            updated_at:  this.itemhistorykit[k].kit_item_details[i].updated_at,
-            
-            _id:  this.itemhistorykit[k].kit_item_details[i]._id,
-            
-          })
-        
+        //console.log(typeof kit.kit_id._id + ' ' + kit.kit_id._id)
+        //console.log(kit)
+        console.log(this.itemhistorykit[k].kit_id._id)
+        this.kit_item_details = []
+        if (this.itemhistorykit[k].kit_id._id === data._id) {
+          for (let i = 0; i < this.itemhistorykit[k].kit_item_details.length; i++) {
+            this.kit_item_details.push({
+              active_status: this.itemhistorykit[k].kit_item_details[i].active_status,
+              alloted_item_qty_in_kit: this.itemhistorykit[k].kit_item_details[i].alloted_item_qty_in_kit,
+              bin: this.itemhistorykit[k].kit_item_details[i].bin,
+              category: this.itemhistorykit[k].kit_item_details[i].category,
+              company_id: this.itemhistorykit[k].kit_item_details[i].company_id,
+              compartment: this.itemhistorykit[k].kit_item_details[i].compartment,
+              compartment_number: this.itemhistorykit[k].kit_item_details[i].compartment_number,
+              created_at: this.itemhistorykit[k].kit_item_details[i].created_at,
+              cube: this.itemhistorykit[k].kit_item_details[i].cube,
+              deleted_at: this.itemhistorykit[k].kit_item_details[i].deleted_at,
+              description: this.itemhistorykit[k].kit_item_details[i].description,
+              item: this.itemhistorykit[k].kit_item_details[i].item,
+              po_history: this.itemhistorykit[k].kit_item_details[i].po_history,
+              purchase_order: this.itemhistorykit[k].kit_item_details[i].purchase_order,
+              quantity: this.itemhistorykit[k].kit_item_details[i].quantity - this.itemhistorykit[k].kit_item_details[i].alloted_item_qty_in_kit,
+              status: this.itemhistorykit[k].kit_item_details[i].status,
+              sub_category: this.itemhistorykit[k].kit_item_details[i].sub_category,
+              supplier: this.itemhistorykit[k].kit_item_details[i].supplier,
+              total_quantity: this.itemhistorykit[k].kit_item_details[i].total_quantity,
+              updated_at: this.itemhistorykit[k].kit_item_details[i].updated_at,
+
+              _id: this.itemhistorykit[k].kit_item_details[i]._id,
+
+            })
+
+          }
+          this.hlo = {
+            cart_id: this.itemhistorykit[k].cart_id,
+            created_at: this.dateTime,
+            // kit_cart_id:  this.itemhistorykit[k].kit_cart_id,
+            kit_id: this.itemhistorykit[k].kit_id,
+            kit_item_details: this.kit_item_details,
+            kit_name: this.itemhistorykit[k].kit_name,
+            kit_status: 2,
+            qty: 1,
+            // update_kit_id:  this.itemhistorykit[k].update_kit_id,
+            updated_at: this.dateTime
+          }
+
+
+        } else {
+          this.kit_item_details = []
+
+          for (let i = 0; i < data.kit_data.length; i++) {
+            this.kit_item_details.push({
+              active_status: data.kit_data[i].active_status,
+              alloted_item_qty_in_kit: data.kit_data[i].kit_item_qty,
+              bin: data.kit_data[i].bin,
+              category: data.kit_data[i].category,
+              company_id: data.kit_data[i].company_id,
+              compartment: data.kit_data[i].compartment,
+              compartment_number: data.kit_data[i].compartment_number,
+              created_at: data.kit_data[i].created_at,
+              cube: data.kit_data[i].cube,
+              deleted_at: data.kit_data[i].deleted_at,
+              description: data.kit_data[i].description,
+              item: data.kit_data[i].item,
+              po_history: data.kit_data[i].po_history,
+              purchase_order: data.kit_data[i].purchase_order,
+              quantity: data.kit_data[i].quantity - data.kit_data[i].kit_item_qty,
+              status: data.kit_data[i].status,
+              sub_category: data.kit_data[i].sub_category,
+              supplier: data.kit_data[i].supplier,
+              total_quantity: data.kit_data[i].total_quantity,
+              updated_at: data.kit_data[i].updated_at,
+
+              _id: data.kit_data[i]._id,
+
+            }
+
+            )
+            console.log(this.kit_item_details)
+
+
+
+          }
+          this.hlo = {
+            cart_id: doc.data['Cart'][0]._id,
+            created_at: this.dateTime,
+            // kit_cart_id:  this.itemhistorykit[k].kit_cart_id,
+            kit_id: data._id,
+            kit_item_details: this.kit_item_details,
+
+
+            kit_name: data.kit_name,
+            kit_status: 2,
+            qty: 1,
+            // update_kit_id:  this.itemhistorykit[k].update_kit_id,
+            updated_at: this.dateTime
+          }
+
+
+        }
+
+
+
+
+
       }
-      this.hlo = {cart_id: this.itemhistorykit[k].cart_id,
-        created_at: this.dateTime,
-        // kit_cart_id:  this.itemhistorykit[k].kit_cart_id,
-        kit_id: this.itemhistorykit[k].kit_id,
-        kit_item_details:this.kit_item_details,
-        kit_name: this.itemhistorykit[k].kit_name,
-        kit_status: 2,
-        qty: 1,
-        // update_kit_id:  this.itemhistorykit[k].update_kit_id,
-        updated_at: this.dateTime
-              }
-  
-  
-    }else{
-      this.kit_item_details=[]
-
-      for (let i = 0; i < data.kit_data.length; i++) {
-    this.kit_item_details.push({
-      active_status:  data.kit_data[i].active_status,
-      alloted_item_qty_in_kit:  data.kit_data[i].kit_item_qty,
-      bin: data.kit_data[i].bin,
-      category:  data.kit_data[i].category,
-      company_id:  data.kit_data[i].company_id,
-      compartment: data.kit_data[i].compartment,
-      compartment_number:data.kit_data[i].compartment_number,
-      created_at:data.kit_data[i].created_at,
-      cube:  data.kit_data[i].cube,
-      deleted_at: data.kit_data[i].deleted_at,
-      description: data.kit_data[i].description,
-      item:  data.kit_data[i].item,
-      po_history: data.kit_data[i].po_history,
-      purchase_order: data.kit_data[i].purchase_order,
-      quantity: data.kit_data[i].quantity-data.kit_data[i].kit_item_qty,
-      status: data.kit_data[i].status,
-      sub_category: data.kit_data[i].sub_category,
-      supplier: data.kit_data[i].supplier,
-      total_quantity:data.kit_data[i].total_quantity,
-      updated_at: data.kit_data[i].updated_at,
-      
-      _id: data.kit_data[i]._id,
-          
-    }
-
-    )
-    console.log(this.kit_item_details)
-      
-      
-    
-    }
-    this.hlo = {cart_id: doc.data['Cart'][0]._id,
-    created_at: this.dateTime,
-    // kit_cart_id:  this.itemhistorykit[k].kit_cart_id,
-    kit_id:data._id,
-    kit_item_details:this.kit_item_details,
-    
-   
-    kit_name: data.kit_name,
-    kit_status: 2,
-    qty: 1,
-    // update_kit_id:  this.itemhistorykit[k].update_kit_id,
-    updated_at: this.dateTime
-        }
-    
-    
-        }
-      
-
-    
-
-   
-        }
-        console.log(this.hlo)
-            this.itemhistorykit.push(this.hlo)  
-            console.log(this.itemhistorykit)
-      this.new=({
+      console.log(this.hlo)
+      this.itemhistorykit.push(this.hlo)
+      console.log(this.itemhistorykit)
+      this.new = ({
         Cart: doc.data.Cart,
         Kits: this.itemhistorykit,
         status: true,
-      }) 
-console.log(this.new)
-     this.mydb = new TurtleDB('example');
-      this.mydb.update('getitemlist', { data: this.new, user: this.permissions?._id, company_id: this.permissions?.company_id?._id, kitinfo: 2,updatestatus :1, created_at: this.dateTime });
+      })
+      console.log(this.new)
+      this.mydb = new TurtleDB('example');
+      this.mydb.update('getitemlist', { data: this.new, user: this.permissions?._id, company_id: this.permissions?.company_id?._id, kitinfo: 2, updatestatus: 1, created_at: this.dateTime });
       for await (let kit of this.itemhistorykit) {
         //console.log(typeof kit.kit_status + ' ' + kit.kit_status)
         //console.log(typeof kit.kit_id._id + ' ' + kit.kit_id._id)
@@ -490,10 +484,10 @@ console.log(this.new)
           await this.takeNowKit.push(kit)
         }
       }
-      
-       await this.takeKit('kit')
-      } );
-  
+
+      await this.takeKit('kit')
+    });
+
   }
 
   getData(obj) {
@@ -501,85 +495,33 @@ console.log(this.new)
     let index = 0,
       startingIndex = obj.pageIndex * obj.pageSize,
       endingIndex = startingIndex + obj.pageSize;
-      if(window.navigator.onLine == true){
+    if (window.navigator.onLine == true) {
 
-    this.data = this.kit.filter(() => {
-      index++;
-      return (index > startingIndex && index <= endingIndex) ? true : false;
-    });
-    console.log(this.data)
+      this.data = this.kit.filter(() => {
+        index++;
+        return (index > startingIndex && index <= endingIndex) ? true : false;
+      });
+      console.log(this.data)
 
-  }else{
-    this.onoff=false
-  
+    } else {
+      this.onoff = false
+
       this.mydb = new TurtleDB('example');
-      this.mydb.read('kitting').then((doc) =>{//console.log(doc)
-        this.kit=doc.kit
-          this.data = doc.kit.filter(() => {
-            index++;
-            return (index > startingIndex && index <= endingIndex) ? true : false;
-         
-          });
-          console.log(this.data)
-        } );
-    
-  }
+      this.mydb.read('kitting').then((doc) => {//console.log(doc)
+        this.kit = doc.kit
+        this.data = doc.kit.filter(() => {
+          index++;
+          return (index > startingIndex && index <= endingIndex) ? true : false;
+
+        });
+        console.log(this.data)
+      });
+
+    }
 
 
   }
-  // newmethod(i,j) {
-   
-  //   this.getBase64ImageFromURL(this.data[i].kit_data[j].item.image_path[0]).subscribe(base64data => {    
-  //     //console.log(base64data);
-  //     this.base64Image = 'data:image/jpg;base64,' + base64data;
-  //     //console.log(this.base64Image)
-  
-  //       this.kitting.push({
-  //           active_status:this.data[i].kit_data[j].active_status,
-  //           bin:this.data[i].kit_data[j].bin,
-  //           category:this.data[i].kit_data[j].category,
-  //           company_id:this.data[i].kit_data[j].company_id,
-  //           compartment:this.data[i].kit_data[j].compartment,
-  //           compartment_number:this.data[i].kit_data[j].compartment_number,
-  //           created_at:this.data[i].kit_data[j].created_at,
-  //           cube:this.data[i].kit_data[j].cube,
-  //           deleted_at:this.data[i].kit_data[j].deleted_at,
-  //           description:this.data[i].kit_data[j].description,
-  //           item:{
-  //             image_path:this.data[i].kit_data[j].item.image_path,
-  //             item_name:this.data[i].kit_data[j].item.item_name,
-  //             _id:this.data[i].kit_data[j].item._id,
-  //             image:this.base64Image,
-  //           },
-  //           kit_item_description:this.data[i].kit_data[j].kit_item_description,
-  //           kit_item_id:this.data[i].kit_data[j].kit_item_id,
-  //           kit_item_pack_id:this.data[i].kit_data[j].kit_item_pack_id,
-  //           kit_item_qty:this.data[i].kit_data[j].kit_item_qty,
-  //           po_history:this.data[i].kit_data[j].po_history,
-  //           purchase_order:this.data[i].kit_data[j].purchase_order,
-  //           quantity:this.data[i].kit_data[j].quantity,
-  //           status:this.data[i].kit_data[j].status,
-  //           sub_category:this.data[i].kit_data[j].sub_category,
-  //           supplier:this.data[i].kit_data[j].supplier,
-  //           total_quantity:this.data[i].kit_data[j].total_quantity,
-  //           updated_at:this.data[i].kit_data[j].updated_at,
-  //           _id:this.data[i].kit_data[j]._id,
-  
-  //       })
-  
-  //   });
-  // if(j===this.data[i].kit_data.length-1){
-  //   this.kittingnew.push({
-  //     available_item:this.data[i].available_item,
-  //     kit_name:this.data[i].kit_name,
-  //     kit_data:this.kitting,
-  //     total_qty:this.data[i].total_qty,_id:this.data[i]._id,
-  //   }) 
-  //   //console.log(this.kittingnew)
 
-  //  // this.kitting=[];
-  //  }
-  // }
   getBase64ImageFromURL(url: string) {
     // //console.log("its coming")
     return Observable.create((observer: Observer<string>) => {
@@ -588,31 +530,31 @@ console.log(this.new)
       img.crossOrigin = 'Anonymous';
       img.src = url;
       if (!img.complete) {
-          // This will call another method that will create image from url
-          img.onload = () => {
+        // This will call another method that will create image from url
+        img.onload = () => {
           observer.next(this.getBase64Image(img));
           observer.complete();
         };
         img.onerror = (err) => {
-           observer.error(err);
+          observer.error(err);
         };
       } else {
-          observer.next(this.getBase64Image(img));
-          observer.complete();
+        observer.next(this.getBase64Image(img));
+        observer.complete();
       }
     });
   }
   getBase64Image(img: HTMLImageElement) {
-   // We create a HTML canvas object that will create a 2d image
-   var canvas = document.createElement("canvas");
-   canvas.width = img.width;
-   canvas.height = img.height;
-   var ctx = canvas.getContext("2d");
-   // This will draw image    
-   ctx.drawImage(img, 0, 0);
-   // Convert the drawn image to Data URL
-   var dataURL = canvas.toDataURL("image/png");
-  return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+    // We create a HTML canvas object that will create a 2d image
+    var canvas = document.createElement("canvas");
+    canvas.width = img.width;
+    canvas.height = img.height;
+    var ctx = canvas.getContext("2d");
+    // This will draw image    
+    ctx.drawImage(img, 0, 0);
+    // Convert the drawn image to Data URL
+    var dataURL = canvas.toDataURL("image/png");
+    return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
   }
   listview() {
 
@@ -661,21 +603,21 @@ console.log(this.new)
 
     let i = 0
     this.takeNowKit[0].kit_item_details.forEach(async item => {
-      if(item.alloted_item_qty_in_kit > 0){
-      let eachItemForMachines = {}
-      eachItemForMachines['cart_id'] = this.takeNowKit[0].cart_id
-      eachItemForMachines['kit_id'] = this.takeNowKit[0].kit_id._id
-      eachItemForMachines['kit_cart_id'] = this.takeNowKit[0].kit_cart_id
-      eachItemForMachines['item_id'] = item.item._id
-      eachItemForMachines['kit_qty'] = this.takeNowKit[0].qty
-      eachItemForMachines['qty'] = this.takeNowKit[0].kit_id.kit_data[i].qty
-      // eachItemForMachines['qty'] = 1
-      eachItemForMachines['stock_allocation_id'] = item._id
-      eachItemForMachines['cube_id'] = item.cube.cube_id
-      eachItemForMachines['column_id'] = item.bin.bin_id
-      eachItemForMachines['bin_id'] = item.compartment.compartment_id
-      eachItemForMachines['compartment_id'] = item.compartment_number
-      await machineData.push(eachItemForMachines)
+      if (item.alloted_item_qty_in_kit > 0) {
+        let eachItemForMachines = {}
+        eachItemForMachines['cart_id'] = this.takeNowKit[0].cart_id
+        eachItemForMachines['kit_id'] = this.takeNowKit[0].kit_id._id
+        eachItemForMachines['kit_cart_id'] = this.takeNowKit[0].kit_cart_id
+        eachItemForMachines['item_id'] = item.item._id
+        eachItemForMachines['kit_qty'] = this.takeNowKit[0].qty
+        eachItemForMachines['qty'] = this.takeNowKit[0].kit_id.kit_data[i].qty
+        // eachItemForMachines['qty'] = 1
+        eachItemForMachines['stock_allocation_id'] = item._id
+        eachItemForMachines['cube_id'] = item.cube.cube_id
+        eachItemForMachines['column_id'] = item.bin.bin_id
+        eachItemForMachines['bin_id'] = item.compartment.compartment_id
+        eachItemForMachines['compartment_id'] = item.compartment_number
+        await machineData.push(eachItemForMachines)
       }
       i++
     })
@@ -764,7 +706,7 @@ console.log(this.new)
       this.machineColumnID = machine.column_id
       this.machineDrawID = machine.bin_id
       this.machineCompartmentID = machine.compartment_id
-      this.machineStatus=status
+      this.machineStatus = status
       if (status == 'Locked' || status == 'Closed' || status == 'Unlocked' || status == 'Unknown') {
         // Lock that Column API, machine._id
         if (status == 'Closed' || status == 'Unlocked') {
@@ -784,7 +726,7 @@ console.log(this.new)
           //console.log(' Machine Status : ' + machineColumnStatus)
           let singleDeviceInfo = await this.singleDeviceInfo(machine)
           let status = singleDeviceInfo.details.singledevinfo.column[0]['status'][0]
-          this.machineStatus=status
+          this.machineStatus = status
           //console.log('inside while loop status bin ' + machine.bin_id +" "+ status)
           if (status == 'Closed' || status == 'Locked' || status == 'Unknown') {
             await this.sleep(9000)
@@ -795,7 +737,7 @@ console.log(this.new)
           //Drawer current status, (opening, opened, closing, closed)
           else if (status !== 'Closed' && status !== 'Locked' && status == 'Unknown') {
             //console.log('Current Status = ' + status)
-            this.machineStatus=status
+            this.machineStatus = status
             // this.msg='Current Status = ' + status
 
             // ColumnActionStatus = singleDeviceInfo
@@ -821,9 +763,9 @@ console.log(this.new)
       // break for loop if single device info is unknown
       else {
         //console.log('Machine status unknown ' + status)
-        this.msg='Machine status unknown ' + status
+        this.msg = 'Machine status unknown ' + status
         //console.log('Close all drawers properly and click take now')
-        this.msg='Close all drawers properly and click take now'
+        this.msg = 'Close all drawers properly and click take now'
         break
       }
     }
@@ -833,64 +775,195 @@ console.log(this.new)
     //console.log(successTake)
     if (successTake.length == 0) {
       //console.log('Machine status unknown No Item taken')
-      this.msgg='Machine status unknown No Item taken'
-      this.dooropen=true
+      this.msgg = 'Machine status unknown No Item taken'
+      this.dooropen = true
     } else if (successTake.length == totalMachinesList.length) {
       //console.log(successTake.length + ' Items Taken Successfully')
-      this.msgg=successTake.length + ' Items Taken Successfully'
+      this.msgg = successTake.length + ' Items Taken Successfully'
       await this.addMachineUsage(totalMachineUsage)
       await this.updateAfterTakeOrReturn(successTake, item, failedTake)
     } else if (successTake.length < totalMachinesList.length) {
       //console.log(successTake.length + ' Items Taken Successfully \n' + successTake.length + ' items failed return')
       await this.addMachineUsage(totalMachineUsage)
       await this.updateAfterTakeOrReturn(successTake, item, failedTake)
-      this.msgg=successTake.length + ' Items Taken Successfully \n'
+      this.msgg = successTake.length + ' Items Taken Successfully \n'
 
     }
   }
 
   //Update Cart and Stock Allocation documents after item Take/Return
-  async updateAfterTakeOrReturn(successTake: any, item, failedTake : any) {
-    if(window.navigator.onLine == true){
+  async updateAfterTakeOrReturn(successTake: any, item, failedTake: any) {
+    if (window.navigator.onLine == true) {
 
-    let data = {
-      cart_id: this.id,
-      take_items: successTake,
-      untaken_or_returned_items : failedTake
-    }
-    if (item == 'cart') {
-      data['cart_status'] = 2
-    } else {
-      data['kit_status'] = 2
-
-    }
-    this.crud.post(`cart/updateReturnTake`, data).pipe().subscribe(async (res) => {
-      //console.log(res)
-      this.dooropen=true
-      if (res.status) {
-       
-        this.toast.success('Items Taken Successfully');
-      
+      let data = {
+        cart_id: this.id,
+        take_items: successTake,
+        untaken_or_returned_items: failedTake
       }
-    })
-  }else{
-    this.toast.success('Items Taken Successfully');
+      if (item == 'cart') {
+        data['cart_status'] = 2
+      } else {
+        data['kit_status'] = 2
+
+      }
+      this.crud.post(`cart/updateReturnTake`, data).pipe().subscribe(async (res) => {
+        //console.log(res)
+        this.dooropen = true
+        if (res.status) {
+
+          this.toast.success('Items Taken Successfully');
+
+        }
+      })
+    } else {
+      if( this.msgg != 'Machine status unknown No Item taken'){
+
+      this.mydb = new TurtleDB('example');
+      this.mydb.read('getitemlist').then(async (doc) => {
+        console.log(doc)
+        this.itemhistorykit = doc.data['Kits']
+        // this.id = doc.data.Cart[0]['_id']
+        this.dateTime = new Date();
+  
+        for (let k = 0; k < this.itemhistorykit.length; k++) {
+          //console.log(typeof kit.kit_status + ' ' + kit.kit_status)
+          //console.log(typeof kit.kit_id._id + ' ' + kit.kit_id._id)
+          //console.log(kit)
+          console.log(this.itemhistorykit[k].kit_id._id)
+          this.kit_item_details = []
+          if (this.itemhistorykit[k].kit_id._id === this.takenowdata._id) {
+            for (let i = 0; i < this.itemhistorykit[k].kit_item_details.length; i++) {
+              this.kit_item_details.push({
+                active_status: this.itemhistorykit[k].kit_item_details[i].active_status,
+                alloted_item_qty_in_kit: this.itemhistorykit[k].kit_item_details[i].alloted_item_qty_in_kit,
+                bin: this.itemhistorykit[k].kit_item_details[i].bin,
+                category: this.itemhistorykit[k].kit_item_details[i].category,
+                company_id: this.itemhistorykit[k].kit_item_details[i].company_id,
+                compartment: this.itemhistorykit[k].kit_item_details[i].compartment,
+                compartment_number: this.itemhistorykit[k].kit_item_details[i].compartment_number,
+                created_at: this.itemhistorykit[k].kit_item_details[i].created_at,
+                cube: this.itemhistorykit[k].kit_item_details[i].cube,
+                deleted_at: this.itemhistorykit[k].kit_item_details[i].deleted_at,
+                description: this.itemhistorykit[k].kit_item_details[i].description,
+                item: this.itemhistorykit[k].kit_item_details[i].item,
+                po_history: this.itemhistorykit[k].kit_item_details[i].po_history,
+                purchase_order: this.itemhistorykit[k].kit_item_details[i].purchase_order,
+                quantity: this.itemhistorykit[k].kit_item_details[i].quantity - this.itemhistorykit[k].kit_item_details[i].alloted_item_qty_in_kit,
+                status: this.itemhistorykit[k].kit_item_details[i].status,
+                sub_category: this.itemhistorykit[k].kit_item_details[i].sub_category,
+                supplier: this.itemhistorykit[k].kit_item_details[i].supplier,
+                total_quantity: this.itemhistorykit[k].kit_item_details[i].total_quantity,
+                updated_at: this.itemhistorykit[k].kit_item_details[i].updated_at,
+  
+                _id: this.itemhistorykit[k].kit_item_details[i]._id,
+  
+              })
+  
+            }
+            this.hlo = {
+              cart_id: this.itemhistorykit[k].cart_id,
+              created_at: this.dateTime,
+              // kit_cart_id:  this.itemhistorykit[k].kit_cart_id,
+              kit_id: this.itemhistorykit[k].kit_id,
+              kit_item_details: this.kit_item_details,
+              kit_name: this.itemhistorykit[k].kit_name,
+              kit_status: 2,
+              qty: 1,
+              // update_kit_id:  this.itemhistorykit[k].update_kit_id,
+              updated_at: this.dateTime
+            }
+  
+  
+          } else {
+            this.kit_item_details = []
+  
+            for (let i = 0; i < this.takenowdata.kit_data.length; i++) {
+              this.kit_item_details.push({
+                active_status: this.takenowdata.kit_data[i].active_status,
+                alloted_item_qty_in_kit: this.takenowdata.kit_data[i].kit_item_qty,
+                bin: this.takenowdata.kit_data[i].bin,
+                category: this.takenowdata.kit_data[i].category,
+                company_id: this.takenowdata.kit_data[i].company_id,
+                compartment: this.takenowdata.kit_data[i].compartment,
+                compartment_number: this.takenowdata.kit_data[i].compartment_number,
+                created_at: this.takenowdata.kit_data[i].created_at,
+                cube: this.takenowdata.kit_data[i].cube,
+                deleted_at: this.takenowdata.kit_data[i].deleted_at,
+                description: this.takenowdata.kit_data[i].description,
+                item: this.takenowdata.kit_data[i].item,
+                po_history: this.takenowdata.kit_data[i].po_history,
+                purchase_order: this.takenowdata.kit_data[i].purchase_order,
+                quantity: this.takenowdata.kit_data[i].quantity - this.takenowdata.kit_data[i].kit_item_qty,
+                status: this.takenowdata.kit_data[i].status,
+                sub_category: this.takenowdata.kit_data[i].sub_category,
+                supplier: this.takenowdata.kit_data[i].supplier,
+                total_quantity: this.takenowdata.kit_data[i].total_quantity,
+                updated_at: this.takenowdata.kit_data[i].updated_at,
+  
+                _id: this.takenowdata.kit_data[i]._id,
+  
+              }
+  
+              )
+              console.log(this.kit_item_details)
+  
+  
+  
+            }
+            this.hlo = {
+              cart_id: doc.data['Cart'][0]._id,
+              created_at: this.dateTime,
+              // kit_cart_id:  this.itemhistorykit[k].kit_cart_id,
+              kit_id: this.takenowdata._id,
+              kit_item_details: this.kit_item_details,
+  
+  
+              kit_name: this.takenowdata.kit_name,
+              kit_status: 2,
+              qty: 1,
+              // update_kit_id:  this.itemhistorykit[k].update_kit_id,
+              updated_at: this.dateTime
+            }
+  
+  
+          }
+  
+  
+  
+  
+  
+        }
+        console.log(this.hlo)
+        this.itemhistorykit.push(this.hlo)
+        console.log(this.itemhistorykit)
+        this.new = ({
+          Cart: doc.data.Cart,
+          Kits: this.itemhistorykit,
+          status: true,
+        })
+        console.log(this.new)
+        this.mydb = new TurtleDB('example');
+        this.mydb.update('getitemlist', { data: this.new, user: this.permissions?._id, company_id: this.permissions?.company_id?._id, kitinfo: 2, updatestatus: 1, created_at: this.dateTime });
+        this.toast.success('Items Taken Successfully');
+
+      });
 
     }
+  }
   }
   async addMachineUsage(data) {
-    if(window.navigator.onLine == true){
+    if (window.navigator.onLine == true) {
 
-    console.log(data)
-    this.crud.post(`dashboard/machineUsageAdd`, data).pipe().subscribe(async (res) => {
-      //console.log(res)
-      if (res) {
-        // this.toast.success('machine Usage Added Successfully...');
-      }
-    })
-  }else{
-    console.log(data)
-  }
+      console.log(data)
+      this.crud.post(`dashboard/machineUsageAdd`, data).pipe().subscribe(async (res) => {
+        //console.log(res)
+        if (res) {
+          // this.toast.success('machine Usage Added Successfully...');
+        }
+      })
+    } else {
+      console.log(data)
+    }
   }
 
 

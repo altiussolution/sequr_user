@@ -58,26 +58,26 @@ selectcat:any=[];
 
   constructor(public crud:CrudService,public router:Router,private connectionService: ConnectionService, public fb:FormBuilder,private toast: ToastrService) { 
     this.permissions=JSON.parse(localStorage.getItem("personal"))
-    this.connectionService.monitor().subscribe(isConnected => {  
-      this.isConnected = isConnected;  
-      console.log(isConnected)   
-      if (this.isConnected) {
-        this.status = "ONLINE";
-      }
-      else {
-        this.status = "OFFLINE";
-      //  alert("Sorry, we currently do not have Internet access.");
+    // this.connectionService.monitor().subscribe(isConnected => {  
+    //   this.isConnected = isConnected;  
+    //   console.log(isConnected)   
+    //   if (this.isConnected) {
+    //     this.status = "ONLINE";
+    //   }
+    //   else {
+    //     this.status = "OFFLINE";
+    //   //  alert("Sorry, we currently do not have Internet access.");
 
-      }
-      console.log(this.status)
-    }) 
+    //   }
+    //   console.log(this.status)
+    // }) 
   }
 
   ngOnInit() {
     // this.categoryName=localStorage.getItem("categname")
     this.coloumidss = localStorage.getItem('coloumid')
     this.home();
-    window.addEventListener('online',()=> this.updateOnlineStatus());
+  //  window.addEventListener('online',()=> this.updateOnlineStatus());
     // var online = navigator.onLine;
 
     // if (online == false) {
@@ -87,9 +87,9 @@ selectcat:any=[];
     // }
 
   }
-  updateOnlineStatus(){
-    console.group("hi")
-  }
+  // updateOnlineStatus(){
+  //   console.group("hi")
+  // }
 home(){
   console.log("oi")
   this.profiledetails = JSON.parse(localStorage.getItem('personal'))
@@ -129,30 +129,32 @@ home(){
      }
       })
     }else{
-      console.log(window.navigator.onLine)
+      this.getData({pageIndex: this.page, pageSize: this.size});
+
+   //   console.log(window.navigator.onLine)
       this.onoff=false
      
-      this.crud.CurrentMessage.subscribe(message=>{
-        if(message !="" ){  
-          console.log(message)
-        this.message=JSON.parse(message)
-        this.categoryName=this.message['category']['category_name']
+      // this.crud.CurrentMessage.subscribe(message=>{
+      //   if(message !="" ){  
+      //     console.log(message)
+      //   this.message=JSON.parse(message)
+      //   this.categoryName=this.message['category']['category_name']
     
-        console.log(this.message,this.message.sub_category[0]._id)
-        this.mydb = new TurtleDB('example');
+      //   console.log(this.message,this.message.sub_category[0]._id)
+      //   this.mydb = new TurtleDB('example');
     
-        this.mydb.read('catsidebar').then((doc) =>{console.log(doc)
-          for (let i = 0; i < doc.subcategory?.length; i++) {
-            console.log(doc.subcategory[i].sub_category[0]._id)
-      if(this.message.sub_category[0]._id  == doc.subcategory[i].sub_category[0]._id){
-          this.data = doc.subcategory[i].sub_category
-          console.log(this.data)
-          }
-        }
+      //   this.mydb.read('catsidebar').then((doc) =>{console.log(doc)
+      //     for (let i = 0; i < doc.subcategory?.length; i++) {
+      //       console.log(doc.subcategory[i].sub_category[0]._id)
+      // if(this.message.sub_category[0]._id  == doc.subcategory[i].sub_category[0]._id){
+      //     this.data = doc.subcategory[i].sub_category
+      //     console.log(this.data)
+      //     }
+      //   }
       
-          } );
-        }
-      }) 
+      //     } );
+      //   }
+      // }) 
     }
     
     }
@@ -251,11 +253,11 @@ setCookie(name,value,) {
 }
  
   getData(obj) {
-    if(window.navigator.onLine == true){
 
     let index=0,
         startingIndex=obj.pageIndex * obj.pageSize,
         endingIndex=startingIndex + obj.pageSize;
+        if(window.navigator.onLine == true){
 
     this.data = this.subcategories.filter(() => {
       index++;
@@ -263,7 +265,31 @@ setCookie(name,value,) {
     });
     console.log(this.data)
   }else{
+    this.crud.CurrentMessage.subscribe(message=>{
+      if(message !="" ){  
+        console.log(message)
+      this.message=JSON.parse(message)
+      this.categoryName=this.message['category']['category_name']
+  
+      console.log(this.message,this.message.sub_category[0]._id)
+      this.mydb = new TurtleDB('example');
+  
+      this.mydb.read('catsidebar').then((doc) =>{console.log(doc)
+        for (let i = 0; i < doc.subcategory?.length; i++) {
+          console.log(doc.subcategory[i].sub_category[0]._id)
+    if(this.message.sub_category[0]._id  == doc.subcategory[i].sub_category[0]._id){
+        this.subcategories = doc.subcategory[i].sub_category
+        this.data = this.subcategories.filter(() => {
+          index++;
+          return (index > startingIndex && index <= endingIndex) ? true : false;
+        });
+        console.log(this.data)
+        }
+      }
     
+        } );
+      }
+    }) 
   }
   
   }

@@ -529,7 +529,8 @@ export class DetailsComponent implements OnInit {
                   console.log(this.cartList1)
 
                   this.crud.getcarttotal(this.cartList1?.length)
-                });                await this.takeItem(item)
+                });              
+                  await this.takeItem(item)
               } else {
                 this.toast.error("You have exceeded item maximum quantity taken per day.")
               }
@@ -922,6 +923,110 @@ export class DetailsComponent implements OnInit {
         }
       })
     } else {
+      if( this.msgg != 'Machine status unknown No Item taken'){
+        this.mydb = new TurtleDB('example');
+        this.mydb.read('getlistcart').then((doc) => {
+          console.log(doc)
+          this.cartdata1 = doc.data
+          this.cartList1 = [];
+          let tempArray = [];
+          this.newcart = this.cartdata1.cart
+          console.log(this.newcart)
+          const checkid = this.newcart.some(item => item.item._id === this.machine.item &&  item.cart_status === 2)
+
+          //const checkstatus = this.newcart.some(item => item.cart_status === 2)
+          console.log(checkid)
+          if (checkid == true ) {
+
+            let mechine_id = this.machine.item
+            let qut = this.qut
+            const newcartdata = this.newcart.filter(function (newcart) {
+              return newcart.item._id == mechine_id && newcart.cart_status == 2 ? (newcart.item_details.quantity = Number(newcart.item_details.quantity) - Number(qut)) && (newcart.qty = Number(qut) + Number(newcart.qty)) : newcart;
+
+            })
+            console.log(newcartdata)
+
+            this.new = ({
+              cart: newcartdata,
+              total_quantity: doc.data.total_quantity,
+              _id: doc.data._id
+            })
+            for (let i = 0; i < this.cartdata1?.cart?.length; i++) {
+              if (this.cartdata1?.cart[i]['cart_status'] == 1) {
+                this.cartList1.push(this.cartdata1?.cart[i])
+                doc.data.total_quantity = this.cartdata1?.cart[i].qty
+
+              }
+            }
+            const dateTime = new Date();
+            this.mydb = new TurtleDB('example');
+            this.mydb.update('getlistcart', { data: this.new, user: this.permissions?._id, company_id: this.permissions?.company_id?._id, cartinfo: 2,updatestatus:2, created_at: dateTime });
+
+
+          } else {
+            const dateTime = new Date();
+            this.hlo = {
+              allocation: this.machine._id,
+              cart_status: 2,
+              item: {
+                image_path: this.items.image_path,
+                item_name: this.items.item_name,
+                _id: this.machine.item,
+               // image: "",
+              },
+              item_details: {
+                active_status: this.machine.active_status,
+                bin: this.machine.bin,
+                category: this.machine.category,
+                company_id: this.machine.company_id,
+                compartment: this.machine.compartment,
+                compartment_number: this.machine.compartment_number,
+                created_at: this.machine.created_at,
+                cube: this.machine.cube,
+                deleted_at: this.machine.deleted_at,
+                description: this.machine.description,
+                item: this.machine.item,
+                po_history: this.machine.po_history,
+                purchase_order: this.machine.purchase_order,
+                quantity: Number(this.machine.quantity) - Number(this.qut),
+                status: this.machine.status,
+                sub_category: this.machine.sub_category,
+                supplier: this.machine.supplier,
+                total_quantity: this.machine.total_quantity,
+                updated_at: this.machine.updated_at,
+
+                _id: this.machine._id,
+              },
+
+              qty: Number(this.qut),
+            }
+            console.log(this.hlo)
+            this.newcart.push(this.hlo)
+            console.log(this.newcart)
+            this.new = ({
+              cart: this.newcart,
+              total_quantity: doc.data.total_quantity,
+              _id: doc.data._id
+            })
+            for (let i = 0; i < this.cartdata1?.cart?.length; i++) {
+              if (this.cartdata1?.cart[i]['cart_status'] == 1) {
+                this.cartList1.push(this.cartdata1?.cart[i])
+                doc.data.total_quantity = this.cartdata1?.cart[i].qty
+
+              }
+            }
+            this.mydb = new TurtleDB('example');
+            this.mydb.update('getlistcart', { data: this.new, user: this.permissions?._id, company_id: this.permissions?.company_id?._id, cartinfo: 2,updatestatus:1, created_at: dateTime });
+           // this.toast.success("Door open Sucessfully")
+
+          }
+          this.toast.success('Item Taken Successfully...');
+          this.dooropen = true
+          console.log(this.cartList1)
+
+          this.crud.getcarttotal(this.cartList1?.length)
+        });
+      }
 
     }
   }

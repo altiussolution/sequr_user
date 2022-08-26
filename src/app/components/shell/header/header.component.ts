@@ -110,19 +110,23 @@ categories: any = [];
   itemhistorykit1: any=[];
   cartdata1: any;
   itemhistorycart: any=[];
+  kitdata1: any;
+  cartdatanew: { cart: any; updated_at: any; _id: any; };
+  resdata: { Cart: { cart: any; updated_at: any; _id: any; }[]; Kits: any; status: any; };
+  kit: any;
 
   constructor(public router: Router, public crud: CrudService, private cookie: CookieService,private connectionService: ConnectionService, private toast: ToastrService) {
-    this.connectionService.monitor().subscribe(isConnected => {  
-      this.isConnected = isConnected;  
-      console.log(isConnected)   
-      if (this.isConnected) {
-        this.status = "ONLINE";
-      }
-      else {
-        this.status = "OFFLINE";
-      }
-      console.log(this.status)
-    }) 
+    // this.connectionService.monitor().subscribe(isConnected => {  
+    //   this.isConnected = isConnected;  
+    //   console.log(isConnected)   
+    //   if (this.isConnected) {
+    //     this.status = "ONLINE";
+    //   }
+    //   else {
+    //     this.status = "OFFLINE";
+    //   }
+    //   console.log(this.status)
+    // }) 
     this.permissions = JSON.parse(localStorage.getItem("personal"))
     this.profiledetails = JSON.parse(localStorage.getItem('personal'))
     let params: any = {};
@@ -148,18 +152,7 @@ categories: any = [];
     //   body.classList.add('activemenu');
     //   assidebar.classList.add('sidebar');
     // }
-    // if(window.navigator.onLine == true){
-    //   console.log(window.navigator.onLine)
-    //   this.mydb = new TurtleDB('example');
-    //   this.mydb.setRemote('http://13.232.128.227:3000');
-    //   this.mydb.create({ _id: 'sync', data: ' Synced' });
 
-    //   this.mydb.sync();
-    //   if(this.mydb.sync()){
-    //     alert("synced")
-
-    //   }
-    // }
     this.profiledetails = JSON.parse(localStorage.getItem('personal'))
     //console.log(this.profiledetails)
     let params: any = {};
@@ -264,125 +257,14 @@ console.log(this.productdetailsimage)
 this.mydb = new TurtleDB('example');
         this.mydb.create({ _id: 'detailpage', data: this.productdetailsimage });
 
-   }, 4000); 
+   }, 3000); 
    setTimeout(() => {
     if( this.mydb.create({ _id: 'detailpage', data: this.productdetailsimage })){
       this.mydb = new TurtleDB('example');
       this.mydb.update('detailpage', { data:this.productdetailsimage});
     
     }
-  },5000);
-//   for (let i = 0; i < this.productdetails.length; i++) {
-//    // for (let j = 0; j < this.productdetails[i].productdetails.items.image_path.length; j++) {
-
-
-//       this.getBase64ImageFromURL(this.productdetails[i].productdetails.items.image_path[1]).subscribe(base64data => {    
-//         this.base64Image2.push( {image:'data:image/jpg;base64,' + base64data,name:this.productdetails[i].productdetails.items.item_name});
-
-//         console.log(this.base64Image2)
-
-    
-//       });
-//    // }
-
-
-// }
-// setTimeout(() => {
-//   const hlo2 = this.productdetails.filter((v,index) => this.base64Image1.map((val,index)=> {val.name == v.productdetails.items.item_name ? v.productdetails.items.image_path[index] = val.image:val.image}));
-//    //const hlo2 = this.cart.filter(v =>v);
-
-// console.log(hlo2)
-
-
-// }, 4000); 
-        //   for (let i = 0; i < this.productdetails.length; i++) {
-        //     //console.log(this.productdetails[i].productdetails.items.image_path[0])
-        //           if(this.productdetails[i].productdetails.items.image_path[0] == undefined){
-        //     this.productdetailsimage.push({
-        //       productdetails:{  items:{
-        //         active_status:this.productdetails[i].productdetails.items.active_status,
-        //       auto_purchase_order:this.productdetails[i].productdetails.items.auto_purchase_order,
-        //       calibration_month:this.productdetails[i].productdetails.items.calibration_month,
-        //       category_id:this.productdetails[i].productdetails.items.category_id,
-        //       company_id:this.productdetails[i].productdetails.items.company_id,
-        //       createdAt:this.productdetails[i].productdetails.items.createdAt,
-        //       created_at:this.productdetails[i].productdetails.items.created_at,
-        //       deleted_at:this.productdetails[i].productdetails.items.deleted_at,
-        //       description:this.productdetails[i].productdetails.items.description,
-        //       generate_po_for:this.productdetails[i].productdetails.items.generate_po_for,
-        //       generate_po_on:this.productdetails[i].productdetails.items.generate_po_on,
-        //       image_path:this.productdetails[i].productdetails.items.image_path,
-        //       in_stock:this.productdetails[i].productdetails.items.in_stock,
-        //       is_active:this.productdetails[i].productdetails.items.is_active,
-        //       is_auto_po_generated:this.productdetails[i].productdetails.items.is_auto_po_generated,
-        //       is_gages:this.productdetails[i].productdetails.items.is_gages,
-        //       is_item:this.productdetails[i].productdetails.items.is_item,
-        //       item_name:this.productdetails[i].productdetails.items.item_name,
-        //       item_number:this.productdetails[i].productdetails.items.item_number,
-        //       returnable:this.productdetails[i].productdetails.items.returnable,
-        //       sub_category_id:this.productdetails[i].productdetails.items.sub_category_id,
-        //       supplier:this.productdetails[i].productdetails.items.supplier,
-        //       updated_at:this.productdetails[i].productdetails.items.updated_at,
-        //       _id:this.productdetails[i].productdetails.items._id,
-        //       image:"",
-        //       },machine:this.productdetails[i].productdetails.machine
-        //     }
-        //       })
-        //     //console.log(this.productdetailsimage)
-        //   }
-        // this.getBase64ImageFromURL(this.productdetails[i].productdetails.items.image_path[0]).subscribe(base64data => {    
-        //  // //console.log(base64data);
-        //   this.base64Image = 'data:image/jpg;base64,' + base64data;
-        //   ////console.log(this.base64Image)        
-
-        //   this.productdetailsimage.push({
-        //     productdetails:{  items:{
-        //       active_status:this.productdetails[i].productdetails.items.active_status,
-        //     auto_purchase_order:this.productdetails[i].productdetails.items.auto_purchase_order,
-        //     calibration_month:this.productdetails[i].productdetails.items.calibration_month,
-        //     category_id:this.productdetails[i].productdetails.items.category_id,
-        //     company_id:this.productdetails[i].productdetails.items.company_id,
-        //     createdAt:this.productdetails[i].productdetails.items.createdAt,
-        //     created_at:this.productdetails[i].productdetails.items.created_at,
-        //     deleted_at:this.productdetails[i].productdetails.items.deleted_at,
-        //     description:this.productdetails[i].productdetails.items.description,
-        //     generate_po_for:this.productdetails[i].productdetails.items.generate_po_for,
-        //     generate_po_on:this.productdetails[i].productdetails.items.generate_po_on,
-        //     image_path:this.productdetails[i].productdetails.items.image_path,
-        //     in_stock:this.productdetails[i].productdetails.items.in_stock,
-        //     is_active:this.productdetails[i].productdetails.items.is_active,
-        //     is_auto_po_generated:this.productdetails[i].productdetails.items.is_auto_po_generated,
-        //     is_gages:this.productdetails[i].productdetails.items.is_gages,
-        //     is_item:this.productdetails[i].productdetails.items.is_item,
-        //     item_name:this.productdetails[i].productdetails.items.item_name,
-        //     item_number:this.productdetails[i].productdetails.items.item_number,
-        //     returnable:this.productdetails[i].productdetails.items.returnable,
-        //     sub_category_id:this.productdetails[i].productdetails.items.sub_category_id,
-        //     supplier:this.productdetails[i].productdetails.items.supplier,
-        //     updated_at:this.productdetails[i].productdetails.items.updated_at,
-        //     _id:this.productdetails[i].productdetails.items._id,
-        //     image:[this.base64Image],
-        //     },machine:this.productdetails[i].productdetails.machine
-        //   }
-        //     })
-          
-        // });
-    
-    
-        //   }
-// setTimeout(() => {
-//   this.mydb = new TurtleDB('example');
-//           this.mydb.create({ _id: 'detailpage', data: this.productdetailsimage });
-
-// },   3000
-
-// );
-
-
-
-
-        
-          //console.log(this.productdetails)
+  },4000);
       })
     }
         for await(let cat of this.category) {
@@ -419,65 +301,9 @@ this.mydb = new TurtleDB('example');
    console.log(hlo2)
    this.mydb = new TurtleDB('example');
    this.mydb.create({ _id: 'catsidebar', subcategory: hlo2});
+         //  this.mydb.update('catsidebar', {subcategory:hlo2 });
+
       }, 3000); 
-        //     for (let i = 0; i < this.categories.length; i++) {
-        //       //console.log(this.categories[i].sub_category[0].image_path)
-        //             if(this.categories[i].sub_category[0].image_path == undefined){
-        //               this.subcat.push({
-        //                 category:this.categories[i].category,
-        //                 sub_category:[{
-        //                 active_status: this.categories[i].sub_category[0].active_status,
-        //                 category_id: this.categories[i].sub_category[0].category_id,
-        //                 company_id: this.categories[i].sub_category[0].company_id,
-        //                 createdAt: this.categories[i].sub_category[0].createdAt,
-        //                 created_at:this.categories[i].sub_category[0].created_at,
-        //                 deleted_at:this.categories[i].sub_category[0].deleted_at,
-        //                 description: this.categories[i].sub_category[0].description,
-        //                 image_path: this.categories[i].sub_category[0].image_path,
-        //                 is_active: this.categories[i].sub_category[0].is_active,
-        //                 sub_category_code:this.categories[i].sub_category[0].sub_category_code,
-        //                 sub_category_name: this.categories[i].sub_category[0].sub_category_name,
-        //                 updated_at: this.categories[i].sub_category[0].updated_at,
-        //                 image:"",
-        //                 _id:this.categories[i].sub_category[0]._id,
-        //                 } ]
-        //                })
-            
-        //     }
-        //   this.getBase64ImageFromURL(this.categories[i].sub_category[0].image_path).subscribe(base64data => {    
-        //     this.base64Image = 'data:image/jpg;base64,' + base64data;
-        //    this.subcat.push({
-        //     category:this.categories[i].category,
-        //     sub_category:[{
-        //     active_status: this.categories[i].sub_category[0].active_status,
-        //     category_id: this.categories[i].sub_category[0].category_id,
-        //     company_id: this.categories[i].sub_category[0].company_id,
-        //     createdAt: this.categories[i].sub_category[0].createdAt,
-        //     created_at:this.categories[i].sub_category[0].created_at,
-        //     deleted_at:this.categories[i].sub_category[0].deleted_at,
-        //     description: this.categories[i].sub_category[0].description,
-        //     image_path: this.categories[i].sub_category[0].image_path,
-        //     is_active: this.categories[i].sub_category[0].is_active,
-        //     sub_category_code:this.categories[i].sub_category[0].sub_category_code,
-        //     sub_category_name: this.categories[i].sub_category[0].sub_category_name,
-        //     updated_at: this.categories[i].sub_category[0].updated_at,
-        //     image: this.base64Image,
-        //     _id:this.categories[i].sub_category[0]._id,
-        //     } ]
-        //    })
-        //     console.log(this.subcat)
-            
-            
-        //     setTimeout(() => {
-        //       this.mydb = new TurtleDB('example');
-        //     this.mydb.create({ _id: 'catsidebar', subcategory: this.subcat });
-        // // this.mydb.update('catsidebar', {data: this.subcat });
-        //     }, 3000); 
-        //   });
-      
-      
-        //     }
-   
             if(!localStorage.getItem("firsttime")){
               localStorage.setItem("firsttime","data")
               //console.log(this.categories)
@@ -522,155 +348,14 @@ this.mydb = new TurtleDB('example');
         this.mydb.update('getitem', {data:hlo2 });
            }, 5000); 
              
-              //   for (let i = 0; i < this.itemset.length; i++) {
-              //     //console.log(this.itemset[i].item[0].image_path[0], this.itemset.length)
-              //           if(this.itemset[i].item[0].image_path[0] == undefined){
-              //     this.itemsetimage.push({
-              //       item:[{
-              //         active_status:this.itemset[i].item[0].active_status,
-              //       auto_purchase_order:this.itemset[i].item[0].auto_purchase_order,
-              //       calibration_month:this.itemset[i].item[0].calibration_month,
-              //       category_id:this.itemset[i].item[0].category_id,
-              //       company_id:this.itemset[i].item[0].company_id,
-              //       createdAt:this.itemset[i].item[0].createdAt,
-              //       created_at:this.itemset[i].item[0].created_at,
-              //       deleted_at:this.itemset[i].item[0].deleted_at,
-              //       description:this.itemset[i].item[0].description,
-              //       generate_po_for:this.itemset[i].item[0].generate_po_for,
-              //       generate_po_on:this.itemset[i].item[0].generate_po_on,
-              //       image_path:this.itemset[i].item[0].image_path,
-              //       in_stock:this.itemset[i].item[0].in_stock,
-              //       is_active:this.itemset[i].item[0].is_active,
-              //       is_auto_po_generated:this.itemset[i].item[0].is_auto_po_generated,
-              //       is_gages:this.itemset[i].item[0].is_gages,
-              //       is_item:this.itemset[i].item[0].is_item,
-              //       item_name:this.itemset[i].item[0].item_name,
-              //       item_number:this.itemset[i].item[0].item_number,
-              //       returnable:this.itemset[i].item[0].returnable,
-              //       sub_category_id:this.itemset[i].item[0].sub_category_id,
-              //       supplier:this.itemset[i].item[0].supplier,
-              //       updated_at:this.itemset[i].item[0].updated_at,
-              //       _id:this.itemset[i].item[0]._id,
-              //       image:"",
-              //       }]
-              //       })
-              //     //console.log(this.itemsetimage)
-              //   }
-              // this.getBase64ImageFromURL(this.itemset[i].item[0].image_path[0]).subscribe(base64data => {    
-              //  // //console.log(base64data);
-              //   this.base64Image = 'data:image/jpg;base64,' + base64data;
-              //   ////console.log(this.base64Image)        
 
-              //     this.itemsetimage.push({
-              //       item:[{
-              //       active_status:this.itemset[i].item[0].active_status,
-              //       auto_purchase_order:this.itemset[i].item[0].auto_purchase_order,
-              //       calibration_month:this.itemset[i].item[0].calibration_month,
-              //       category_id:this.itemset[i].item[0].category_id,
-              //       company_id:this.itemset[i].item[0].company_id,
-              //       createdAt:this.itemset[i].item[0].createdAt,
-              //       created_at:this.itemset[i].item[0].created_at,
-              //       deleted_at:this.itemset[i].item[0].deleted_at,
-              //       description:this.itemset[i].item[0].description,
-              //       generate_po_for:this.itemset[i].item[0].generate_po_for,
-              //       generate_po_on:this.itemset[i].item[0].generate_po_on,
-              //       image_path:this.itemset[i].item[0].image_path,
-              //       in_stock:this.itemset[i].item[0].in_stock,
-              //       is_active:this.itemset[i].item[0].is_active,
-              //       is_auto_po_generated:this.itemset[i].item[0].is_auto_po_generated,
-              //       is_gages:this.itemset[i].item[0].is_gages,
-              //       is_item:this.itemset[i].item[0].is_item,
-              //       item_name:this.itemset[i].item[0].item_name,
-              //       item_number:this.itemset[i].item[0].item_number,
-              //       returnable:this.itemset[i].item[0].returnable,
-              //       sub_category_id:this.itemset[i].item[0].sub_category_id,
-              //       supplier:this.itemset[i].item[0].supplier,
-              //       updated_at:this.itemset[i].item[0].updated_at,
-              //       _id:this.itemset[i].item[0]._id,
-              //       image:[this.base64Image],
-              //       }]
-              //     })
-              //     //console.log(this.itemsetimage)
-                
-              // });
-          
-          
-              //   }
-          
-                // this.mydb = new TurtleDB('example');
-                // this.mydb.create({ _id: 'getitem', data:this.itemsetimage });
-                // setTimeout(()=>{                           // <<<---using ()=> syntax
-                //   this.mydb.read('getitem').then((doc) =>{//console.log(doc)
-                //   })
-                //               }, 5000);
-            
-                //console.log({ _id: 'getitem', data:this.itemset })
-                //console.log(this.itemset)
        
               })
             }
-     
-          
-          })
-          // i++
-          // if(i == this.category.length-1){
-          //   this.sortingfunc();
-          // }
          
-
-          
+          })
         
         }
-    
-
-    // let das= this.sortRecursive(this.categories)
-
-    //  let das= this.categories.sort(this.dynamicSort("category_name"));
-    
-     
-        // let da=this.categories.sort((a, b) => (a.category.category_name > b.category.category_name) ? 1 : -1)
-
-        // //console.log(da);
-        
-        
-        // this.categories.sort((one, two) => (one.category.category_name > two.category.category_name ? -1 : 1));
-        // //console.log(this.categories)
-        // const sortedArr = this.sortPipe.transform(this.categories, "desc", "category_name");
-        // //console.log(JSON.stringify(sortedArr) )
-        // params['column_ids'] = this.d;
-        // params["category_id"] = this.category[0]._id;
-        // params['company_id'] = this.profiledetails?.company_id?._id
-        // this.crud.get1(appModels.SUBCATEGORY, { params }).pipe(untilDestroyed(this)).subscribe((res: any) => {
-        //   //console.log(res)
-        //   this.subcatlengths.push(res['data'])
-        //   localStorage.removeItem("allow")
-        //   this.crud.changemessage(JSON.stringify(this.subcatlengths[0]))
-        //   //console.log(this.subcatlength)
-        //   localStorage.setItem("categname", this.category[0]?.category_name)
-        //   //console.log(this.category)
-        //   this.router.navigate(['pages/home'])
-        // 
-
-
-      // }
-
-
-
-
-
-      // if(this.subcatlength.length){
-      //   localStorage.removeItem("allow") 
-      //   this.crud.changemessage(JSON.stringify(this.subcatlength[0]))
-      //   //console.log(this.subcatlength)
-      //   localStorage.setItem("categname",this.category[0]?.category_name)
-      //   //console.log(this.category)
-      //   this.selectedItem = this.category[0];
-      //     this.router.navigate(['pages/home'])
-      // }
-
-      // if(this.subcatlength?.length !=0){
-      //   this.pagemove()
-      // }
 
     })
   }else{
@@ -729,21 +414,29 @@ this.mydb = new TurtleDB('example');
 
   }
   method() {
+    if(window.navigator.onLine == true){
     this.cartList = [];
     let params: any = {};
     params['company_id'] = this.profiledetails?.company_id?._id
     params['user_id'] = this.profiledetails._id
     this.crud.get1(appModels.ITEMLIST, { params }).pipe(untilDestroyed(this)).subscribe((res: any) => {
       //console.log(res)
-      this.mydb = new TurtleDB('example');
-      this.mydb.create({ _id: 'getitemlist', data: res });
-     // this.mydb = new TurtleDB('example');
-      // this.mydb.update('getitemlist', { data: res , user: this.permissions?._id,company_id:this.permissions?.company_id?._id});
+      if (res['status'] == true) {
+        this.cartdata = res['Cart'][0]['cart']
+        this.kitdata = res['Kits']
+      }
+      for (let i = 0; i < this.kitdata?.length; i++) {
+        if (this.kitdata[i]['kit_status'] == 2) {
+          this.itemhistorykit.push(this.kitdata[i])
+        }
+      }
+      console.log(this.itemhistorykit)
 
-      this.kitdata=[]
-      this.kitdata = res['Kits']
+      if(this.itemhistorykit==undefined){
+         this.itemhistorykit=[]
+      }
       for (let i = 0; i < this.kitdata.length; i++) {
-   
+     
         for (let j = 0; j < this.kitdata[i].kit_item_details.length; j++) {
    
           this.getBase64ImageFromURL(this.kitdata[i].kit_item_details[j].item.image_path[0]).subscribe(base64data => {    
@@ -753,60 +446,45 @@ this.mydb = new TurtleDB('example');
   }
       }
    setTimeout(() => {
-      const hlo2 = this.kitdata.filter(v => v.kit_item_details.filter((k,index) => this.base64Image1.map((val,index)=> {val.name == k.item.item_name ? k.item.image_path[0] = val.image:val.image})));
-console.log(hlo2)
+    this.kitdata1 = this.kitdata.filter(v => v.kit_item_details.filter((k,index) => this.base64Image1.map((val,index)=> {val.name == k.item.item_name ? k.item.image_path[0] = val.image:val.image})));
+//console.log(this.kitdata1)
 
-//   this.mydb = new TurtleDB('example');
-// this.mydb.update( 'itemhistorykit', {kit: hlo2 });
-for (let i = 0; i < hlo2.length; i++) {
-  if (hlo2[i]['kit_status'] == 2) {
-    this.itemhistorykit1.push(hlo2[i])
-  }
-}
-console.log(this.itemhistorykit1)
+   }, 4000); 
+   for (let i = 0; i <  this.cartdata.length; i++) {
+    this.getBase64ImageFromURL(this.cartdata[i].item.image_path[0]).subscribe(base64data => {    
+      this.base64Image1.push( {image:'data:image/jpg;base64,' + base64data,name:this.cartdata[i].item.item_name});
+     // console.log(this.base64Image1)
+    });
+   }
+   setTimeout(() => {
+    const hlo2 = this.cartdata.filter(v => this.base64Image1.map((val,index)=> {val.name == v.item.item_name ? v.item.image_path[0] = val.image:val.image}));
+
+//console.log(hlo2)
+      this.cartdatanew=({
+         cart:hlo2,
+         updated_at:res['Cart'][0].updated_at,
+         _id:res['Cart'][0]._id
+       })
+     
+   // console.log(hlo)
+ 
+  }, 3000); 
+
+setTimeout(() => {
+this.resdata=({
+  Cart:[this.cartdatanew],
+  Kits: this.kitdata1,
+  status:res['status']
+})
+console.log(this.resdata)
 this.mydb = new TurtleDB('example');
-this.mydb.create({ _id: 'itemhistorykit', data: this.itemhistorykit1 });
-this.mydb.update('itemhistorykit', {data: this.itemhistorykit1})
+this.mydb.create({ _id: 'getitemlist', data: this.resdata });
+this.mydb.update('getitemlist', { data: this.resdata , user: this.permissions?._id,company_id:this.permissions?.company_id?._id});
 
-
-   }, 3000); 
-      for (let i = 0; i < this.kitdata?.length; i++) {
-        if (this.kitdata[i]['kit_status'] == 2) {
-          this.itemhistorykit.push(this.kitdata[i])
-        }
-      }
-      console.log(this.itemhistorykit)
-      // this.mydb = new TurtleDB('example');
-      // this.mydb.create({ _id: 'itemhistorykit', data: this.itemhistorykit });
-      // this.mydb.update('itemhistorykit', {data: this.itemhistorykit})
-      if(this.itemhistorykit==undefined){
-         this.itemhistorykit=[]
-      }
-      this.cartdata1 = res['Cart'][0]['cart']
-      for (let i = 0; i < this.cartdata1?.length; i++) {
-        if (this.cartdata1[i]['cart_status'] == 2) {
-          this.itemhistorycart.push(this.cartdata1[i])
-          console.log(this.itemhistorycart)
-        }
-      }
-      for (let i = 0; i < this.itemhistorycart.length; i++) {
-        this.getBase64ImageFromURL(this.itemhistorycart[i].item.image_path[0]).subscribe(base64data => {    
-          this.base64Image1.push( {image:'data:image/jpg;base64,' + base64data,name:this.itemhistorycart[i].item.item_name});        
-        });
-
-
-  
-}
+}, 5000);
     
- setTimeout(() => {
-   const hlo2 = this.itemhistorycart.filter(v => this.base64Image1.map((val,index)=> {val.name == v.item.item_name ? v.item.image_path[0] = val.image:val.image}));
-    //const hlo2 = this.cart.filter(v =>v);
+      //this.kitdata=[]
 
-console.log(hlo2)
-this.mydb = new TurtleDB('example');
-this.mydb.create({ _id: 'getitemhistory', data: hlo2 });
-this.mydb.update('getitemhistory', {data:hlo2})
- }, 3000); 
     })
     this.crud.get1(appModels.listCart, { params }).pipe(untilDestroyed(this)).subscribe(res => {
       //console.log(res)
@@ -822,23 +500,14 @@ this.mydb.update('getitemhistory', {data:hlo2})
       this.crud.getcarttotal(this.cartList?.length)
       this.cart=res[0].cart
       for (let i = 0; i < this.cart.length; i++) {
- 
-   
           this.getBase64ImageFromURL(this.cart[i].item.image_path[0]).subscribe(base64data => {    
             this.base64Image1.push( {image:'data:image/jpg;base64,' + base64data,name:this.cart[i].item.item_name});
-
-            //console.log(this.base64Image)
-  
         
           });
-
-
-    
   }
       
    setTimeout(() => {
      const hlo2 = this.cart.filter(v => this.base64Image1.map((val,index)=> {val.name == v.item.item_name ? v.item.image_path[0] = val.image:val.image}));
-      //const hlo2 = this.cart.filter(v =>v);
  
 console.log(hlo2)
         this.new=({
@@ -850,95 +519,10 @@ console.log(hlo2)
      console.log(this.new)
      this.mydb = new TurtleDB('example');
       this.mydb.create({_id: 'getlistcart',  data: this.new , user:this.permissions?._id,company_id:this.permissions?.company_id?._id});
-   
+      //this.mydb.update('getlistcart', { data:this.new , user: this.permissions?._id,company_id:this.permissions?.company_id?._id});
+
    }, 3000); 
-      //console.log(this.cartList?.length)
-    //   this.cart=res[0].cart
-    //   for (let i = 0; i < this.cart.length; i++) {
-
-    //           if(this.cart[i].item.image_path[0] == undefined){
-    //     this.cartnew.push({
-
-    //       allocation:this.cart[i].allocation,
-    //       cart_status:this.cart[i].cart_status,item:{
-    //         image_path:this.cart[i].item.image_path,
-    //         item_name:this.cart[i].item.item_name,
-    //         _id:this.cart[i].item._id,
-    //        // image:"",
-    //       },
-    //       item_details:this.cart[i].item_details,
-    //       qty:this.cart[i].qty,_id:this.cart[i]._id,
-    //     })
-    //    // //console.log(this.cartnew)
-    //   }
-    // this.getBase64ImageFromURL(this.cart[i].item.image_path[0]).subscribe(base64data => {    
-    // // //console.log(base64data);
-    //   this.base64Image = 'data:image/jpg;base64,' + base64data;
-    //  // //console.log(this.base64Image)
-
-    //     this.cartnew.push(
-    //       {
-    //         allocation:this.cart[i].allocation,
-    //         cart_status:this.cart[i].cart_status,
-    //       item:{
-    //         image_path:this.cart[i].item.image_path,
-    //         item_name:this.cart[i].item.item_name,
-    //         _id:this.cart[i].item._id,
-    //        // image:this.base64Image,
-    //       },
-    //       item_details:this.cart[i].item_details,
-         
-    //       qty:this.cart[i].qty,_id:this.cart[i]._id,
-        
-    //     })
-    //   //  //console.log(this.cartnew)
-    //     this.new=({
-    //       cart:this.cartnew,
-    //       total_quantity:res[0].total_quantity,
-    //       _id:res[0]._id
-    //     })
-      
-    //   //   let cart=[{
-    //   //     cart:this.cartnew,
-    //   //     total_quantity:res[0].total_quantity,
-    //   //     _id:res[0]._id,
-         
-    //   //  }]
-    //   //  //console.log(cart)
-    // //    const dateTime = new Date();
-
-    // //   const data1={
-    // //     cart:this.cartnew,
-    // //     total_quantity:res[0].total_quantity,
-    // //     _id:res[0]._id,
-    // //     "user_id":this.permissions?._id,
-    // //   "company_id":this.permissions?.company_id?._id,
-    // //    //"cart_info":1,
-    // //   // "created_at":dateTime
-    // //   }
-    // //  //  let data1=[hlo, {"user_id":this.permissions?._id}]
-
-    // //     // this.array.push([hlo,""])
-    // //    //console.log(data1)
-
-    //     //console.log(this.new)
-    //     if(this.new){
-    //     this.mydb = new TurtleDB('example');
-    //   this.mydb.create({_id: 'getlistcart',  data: this.new , user:this.permissions?._id,company_id:this.permissions?.company_id?._id});
-    //     //console.log('getlistcart', { data: this.new , user_id:this.permissions?._id,company_id:this.permissions?.company_id?._id})
-    //     }
-    //    // //console.log({ _id: 'getlistcart', cart: this.new, user_id: this.permissions?._id,company_id:this.permissions?.company_id?._id})
-    //    // this.mydb.create({ _id: 'getlistcart', cart: this.new });
-    //     //this.mydb.mergeUpdate('getlistcart', { user_id: this.permissions?._id,company_id:this.permissions?.company_id?._id });
- 
-   // });
-
-   //   }
-     // //console.log(this.new)
-
-      // this.mydb = new TurtleDB('example');
-      // this.mydb.create({ _id: 'getlistcart', cart: res[0] }); 
-
+    
 
     })
     params['company_id']=this.permissions?.company_id?._id
@@ -948,6 +532,49 @@ console.log(hlo2)
       this.mydb = new TurtleDB('example');
       this.mydb.create({ _id: 'getUserTakenQuantity', data: res });
     })
+
+    params['company_id'] = this.permissions?.company_id?._id
+    this.crud.get1(appModels.KITTINGLIST, { params }).pipe(untilDestroyed(this)).subscribe((res: any) => {
+      console.log(res)
+      this.kit = res.data
+
+
+      for (let i = 0; i < this.kit.length; i++) {
+
+        for (let j = 0; j < this.kit[i].kit_data.length; j++) {
+
+          this.getBase64ImageFromURL(this.kit[i].kit_data[j].item.image_path[0]).subscribe(base64data => {
+            this.base64Image1.push({ image: 'data:image/jpg;base64,' + base64data, name: this.kit[i].kit_data[j].item.item_name });
+          });
+        }
+      }
+      setTimeout(() => {
+        const hlo2 = this.kit.filter(v => v.kit_data.filter((k, index) => this.base64Image1.map((val, index) => { val.name == k.item.item_name ? k.item.image_path[0] = val.image : val.image })));
+        this.mydb = new TurtleDB('example');
+        this.mydb.create({ _id: 'kitting', kit: hlo2 });
+         // this.mydb.update('kitting', { kit: hlo2 });
+        
+      }, 4000);
+    })
+  }else{
+    this.mydb = new TurtleDB('example');
+    this.mydb.read('getitemlist').then((doc) => {
+    console.log(doc)
+   // this.itemhistorycart = []
+      this.kitdata=doc.data.Kits
+      for (let i = 0; i < this.kitdata?.length; i++) {
+        if (this.kitdata[i]['kit_status'] == 2) {
+          this.itemhistorykit.push(this.kitdata[i])
+        }
+      }
+      console.log(this.itemhistorykit)
+  
+      if(this.itemhistorykit==undefined){
+         this.itemhistorykit=[]
+      }
+  });
+
+  }
   }
 
   setval(val: any) {

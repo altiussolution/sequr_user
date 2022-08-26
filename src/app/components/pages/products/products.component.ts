@@ -118,29 +118,39 @@ params['company_id']=this.permissions?.company_id?._id
     })
   }else{
     this.onoff=false
-    this.crud.CurrentMessage1.subscribe(message=>{
-      this.message=JSON.parse(message)  
-      this.mydb = new TurtleDB('example');
-       this.mydb.read('getitem').then((doc) =>{console.log(doc)
-      for (let i = 0; i < doc.data?.length; i++) {
-       if(this.message.category_id  == doc.data[i].item[0].category_id._id && this.message._id== doc.data[i].item[0].sub_category_id._id){
-        this.data = doc.data[i].item
-        console.log(this.data)
-         }
-        }
-    }) 
-      } );
+    this.getData({pageIndex: this.page, pageSize: this.size});
+
   }
   }
   getData(obj) {
     let index=0,
         startingIndex=obj.pageIndex * obj.pageSize,
         endingIndex=startingIndex + obj.pageSize;
+        if(window.navigator.onLine == true){
 
         this.data = this.items.filter(() => {
         index++;
         return (index > startingIndex && index <= endingIndex) ? true : false;
         }); 
+      }else{
+        
+    this.crud.CurrentMessage1.subscribe(message=>{
+      this.message=JSON.parse(message)  
+      this.mydb = new TurtleDB('example');
+       this.mydb.read('getitem').then((doc) =>{console.log(doc)
+      for (let i = 0; i < doc.data?.length; i++) {
+       if(this.message.category_id  == doc.data[i].item[0].category_id._id && this.message._id== doc.data[i].item[0].sub_category_id._id){
+        this.items = doc.data[i].item
+        this.data = this.items.filter(() => {
+          index++;
+          return (index > startingIndex && index <= endingIndex) ? true : false;
+          }); 
+        console.log(this.data)
+         }
+        }
+    }) 
+      } );
+      }
   }
   listview(){
     
