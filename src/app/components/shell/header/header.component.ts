@@ -114,6 +114,7 @@ categories: any = [];
   cartdatanew: { cart: any; updated_at: any; _id: any; };
   resdata: { Cart: { cart: any; updated_at: any; _id: any; }[]; Kits: any; status: any; };
   kit: any;
+  date: any;
 
   constructor(public router: Router, public crud: CrudService, private cookie: CookieService,private connectionService: ConnectionService, private toast: ToastrService) {
     // this.connectionService.monitor().subscribe(isConnected => {  
@@ -301,7 +302,7 @@ this.mydb = new TurtleDB('example');
    console.log(hlo2)
    this.mydb = new TurtleDB('example');
    this.mydb.create({ _id: 'catsidebar', subcategory: hlo2});
-         //  this.mydb.update('catsidebar', {subcategory:hlo2 });
+           this.mydb.update('catsidebar', {subcategory:hlo2 });
 
       }, 3000); 
             if(!localStorage.getItem("firsttime")){
@@ -424,7 +425,12 @@ this.mydb = new TurtleDB('example');
       if (res['status'] == true) {
         this.cartdata = res['Cart'][0]['cart']
         this.kitdata = res['Kits']
+        this.date = res['Cart'][0]['updated_at']
+        this.mydb = new TurtleDB('example');
+        this.mydb.create({ _id: 'date', data: this.date });
+        this.mydb.update('date', { data: this.date });
       }
+    
       for (let i = 0; i < this.kitdata?.length; i++) {
         if (this.kitdata[i]['kit_status'] == 2) {
           this.itemhistorykit.push(this.kitdata[i])
@@ -477,9 +483,10 @@ this.resdata=({
   status:res['status']
 })
 console.log(this.resdata)
+
 this.mydb = new TurtleDB('example');
 this.mydb.create({ _id: 'getitemlist', data: this.resdata });
-//this.mydb.update('getitemlist', { data: this.resdata , user: this.permissions?._id,company_id:this.permissions?.company_id?._id});
+this.mydb.update('getitemlist', { data: this.resdata , user: this.permissions?._id,company_id:this.permissions?.company_id?._id});
 
 }, 5000);
     
@@ -519,7 +526,7 @@ console.log(hlo2)
      console.log(this.new)
      this.mydb = new TurtleDB('example');
       this.mydb.create({_id: 'getlistcart',  data: this.new , user:this.permissions?._id,company_id:this.permissions?.company_id?._id});
-      //this.mydb.update('getlistcart', { data:this.new , user: this.permissions?._id,company_id:this.permissions?.company_id?._id});
+      this.mydb.update('getlistcart', { data:this.new , user: this.permissions?._id,company_id:this.permissions?.company_id?._id});
 
    }, 3000); 
     

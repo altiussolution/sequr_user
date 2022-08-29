@@ -921,99 +921,99 @@ Addmore(){
       })
     }else{
 
-      this.mydb = new TurtleDB('example');
-      this.mydb.read('getlistcart').then((doc) => {
-        console.log(doc)
-        this.cartdata1 = doc.data
-        this.cartList = [];
-        let tempArray = [];
-        console.log(this.newcart)
+      // this.mydb = new TurtleDB('example');
+      // this.mydb.read('getlistcart').then((doc) => {
+      //   console.log(doc)
+      //   this.cartdata1 = doc.data
+      //   this.cartList = [];
+      //   let tempArray = [];
+      //   console.log(this.newcart)
      
-        this.newcart = this.cartdata1.cart
-        const checkid = this.newcart.some(item => item.item._id === this.clickcart.item._id &&  item.cart_status === 2)
+      //   this.newcart = this.cartdata1.cart
+      //   const checkid = this.newcart.some(item => item.item._id === this.clickcart.item._id &&  item.cart_status === 2)
 
-       // const checkstatus = this.newcart.some(item => item.cart_status === 2)
-        console.log(checkid)
-        if (checkid == true ) {
-          for (let i = 0; i < this.cartdata1?.cart?.length; i++) {
-            if( this.cartdata1?.cart[i]['cart_status'] == 1 &&  this.clickcart.item._id == this.cartdata1?.cart[i].item._id){          
-             this.cartdata1?.cart.splice(i, 1);
+      //  // const checkstatus = this.newcart.some(item => item.cart_status === 2)
+      //   console.log(checkid)
+      //   if (checkid == true ) {
+      //     for (let i = 0; i < this.cartdata1?.cart?.length; i++) {
+      //       if( this.cartdata1?.cart[i]['cart_status'] == 1 &&  this.clickcart.item._id == this.cartdata1?.cart[i].item._id){          
+      //        this.cartdata1?.cart.splice(i, 1);
   
   
-            }
-          }
-          this.newcart = this.cartdata1.cart
-          let mechine_id = this.clickcart.item._id
-          let qut = this.clickcart.qty
-          const newcartdata = this.newcart.filter(function (newcart) {
-            return newcart.item._id == mechine_id && newcart.cart_status == 2 ? (newcart.item_details.quantity = Number(newcart.item_details.quantity) - Number(qut)) && (newcart.qty =Number(newcart.qty)+Number(qut) ) : newcart;
+      //       }
+      //     }
+      //     this.newcart = this.cartdata1.cart
+      //     let mechine_id = this.clickcart.item._id
+      //     let qut = this.clickcart.qty
+      //     const newcartdata = this.newcart.filter(function (newcart) {
+      //       return newcart.item._id == mechine_id && newcart.cart_status == 2 ? (newcart.item_details.quantity = Number(newcart.item_details.quantity) - Number(qut)) && (newcart.qty =Number(newcart.qty)+Number(qut) ) : newcart;
 
-          })
-          console.log(newcartdata)
-          this.cartdata1.cart=newcartdata
+      //     })
+      //     console.log(newcartdata)
+      //     this.cartdata1.cart=newcartdata
     
-          for (let i = 0; i < this.cartdata1?.cart?.length; i++) {
-            if (this.cartdata1?.cart[i]['cart_status'] == 1) {
-              this.cartList.push(this.cartdata1?.cart[i])
-            //  doc.data.total_quantity = this.cartdata1?.cart[i].qty
-              let hi=this.cartList.reduce((accumulator, current) => accumulator + current.qty, 0);
-              console.log(hi)
-              doc.data.total_quantity=hi 
-            }
-          }
-          this.new = ({
-            cart: newcartdata,
-            total_quantity: doc.data.total_quantity,
-            _id: doc.data._id
-          })
-          console.log(this.new)
-          const dateTime = new Date();
-          this.mydb = new TurtleDB('example');
-          this.mydb.update('getlistcart', { data: this.new, user: this.permissions?._id, company_id: this.permissions?.company_id?._id, cartinfo: 2,updatestatus:2, created_at: dateTime });
+      //     for (let i = 0; i < this.cartdata1?.cart?.length; i++) {
+      //       if (this.cartdata1?.cart[i]['cart_status'] == 1) {
+      //         this.cartList.push(this.cartdata1?.cart[i])
+      //       //  doc.data.total_quantity = this.cartdata1?.cart[i].qty
+      //         let hi=this.cartList.reduce((accumulator, current) => accumulator + current.qty, 0);
+      //         console.log(hi)
+      //         doc.data.total_quantity=hi 
+      //       }
+      //     }
+      //     this.new = ({
+      //       cart: newcartdata,
+      //       total_quantity: doc.data.total_quantity,
+      //       _id: doc.data._id
+      //     })
+      //     console.log(this.new)
+      //     const dateTime = new Date();
+      //     this.mydb = new TurtleDB('example');
+      //     this.mydb.update('getlistcart', { data: this.new, user: this.permissions?._id, company_id: this.permissions?.company_id?._id, cartinfo: 2,updatestatus:2, created_at: dateTime });
 
-          setTimeout(()=>{                           // <<<---using ()=> syntax
-            this.getCartItems() 
-            this.toast.success('Items Taken Successfully');
+      //     setTimeout(()=>{                           // <<<---using ()=> syntax
+      //       this.getCartItems() 
+      //       this.toast.success('Items Taken Successfully');
            
-            }, 3000);
-        } else {
+      //       }, 3000);
+      //   } else {
        
          
-          for (let i = 0; i < this.cartdata1?.cart?.length; i++) {
-            if(this.clickcart.item._id == this.cartdata1?.cart[i].item._id &&  doc.data.cart[i]['cart_status'] == 1  ){
-              //tempArray.push(this.cartdata1?.cart[i].item._id);
-              doc.cart.cart[i]['cart_status'] =  2
-              doc.cart.cart[i]['item_details'].quantity=Number(doc.cart.cart[i]['item_details'].quantity)-Number(this.clickcart.item_details.quantity)
-            //  doc.data.cart[i]['qty']=Number(this.val2)
-            //  console.log(this.val2)
+      //     for (let i = 0; i < this.cartdata1?.cart?.length; i++) {
+      //       if(this.clickcart.item._id == this.cartdata1?.cart[i].item._id &&  doc.data.cart[i]['cart_status'] == 1  ){
+      //         //tempArray.push(this.cartdata1?.cart[i].item._id);
+      //         doc.cart.cart[i]['cart_status'] =  2
+      //         doc.cart.cart[i]['item_details'].quantity=Number(doc.cart.cart[i]['item_details'].quantity)-Number(this.clickcart.item_details.quantity)
+      //       //  doc.data.cart[i]['qty']=Number(this.val2)
+      //       //  console.log(this.val2)
               
-            }
-          }
+      //       }
+      //     }
   
-          for (let i = 0; i < this.cartdata1?.cart?.length; i++) {
-            if (this.cartdata1?.cart[i]['cart_status'] == 1) {
-              this.cartList1.push(this.cartdata1?.cart[i])
-              //doc.data.total_quantity = this.cartdata1?.cart[i].qty
-              let hi=this.cartList.reduce((accumulator, current) => accumulator + current.qty, 0);
-              console.log(hi)
-              doc.data.total_quantity=hi 
-            }
-          }
-          console.log("Updated cart value",doc.data)   
-          this.cartdata1 = doc.data;
-          const dateTime = new Date();
-          //this.mydb.setRemote('http://127.0.0.1:3000');        
-           this.mydb = new TurtleDB('example');
-           this.mydb.update('getlistcart', { data: this.cartdata1 , user: this.permissions?._id,company_id:this.permissions?.company_id?._id,cartinfo:2,updatestatus:2,created_at:dateTime});
-           setTimeout(()=>{                           // <<<---using ()=> syntax
-            this.getCartItems() 
-            this.toast.success('Items Taken Successfully');
+      //     for (let i = 0; i < this.cartdata1?.cart?.length; i++) {
+      //       if (this.cartdata1?.cart[i]['cart_status'] == 1) {
+      //         this.cartList1.push(this.cartdata1?.cart[i])
+      //         //doc.data.total_quantity = this.cartdata1?.cart[i].qty
+      //         let hi=this.cartList.reduce((accumulator, current) => accumulator + current.qty, 0);
+      //         console.log(hi)
+      //         doc.data.total_quantity=hi 
+      //       }
+      //     }
+      //     console.log("Updated cart value",doc.data)   
+      //     this.cartdata1 = doc.data;
+      //     const dateTime = new Date();
+      //     //this.mydb.setRemote('http://127.0.0.1:3000');        
+      //      this.mydb = new TurtleDB('example');
+      //      this.mydb.update('getlistcart', { data: this.cartdata1 , user: this.permissions?._id,company_id:this.permissions?.company_id?._id,cartinfo:2,updatestatus:2,created_at:dateTime});
+      //      setTimeout(()=>{                           // <<<---using ()=> syntax
+      //       this.getCartItems() 
+      //       this.toast.success('Items Taken Successfully');
            
-            }, 3000);
+      //       }, 3000);
      
-        }
+      //   }
 
-      });
+      // });
 
       this.mydb = new TurtleDB('example');
       this.mydb.read('getUserTakenQuantity').then(async (doc) =>{console.log(doc)
@@ -1358,7 +1358,8 @@ Addmore(){
           setTimeout(()=>{                           // <<<---using ()=> syntax
             this.getCartItems() 
             this.toast.success('Items Taken Successfully');
-           
+            this.dooropen=true
+
             }, 3000);
         } else {
        
@@ -1392,7 +1393,8 @@ Addmore(){
            setTimeout(()=>{                           // <<<---using ()=> syntax
             this.getCartItems() 
             this.toast.success('Items Taken Successfully');
-           
+            this.dooropen=true
+
             }, 3000);
      
         }

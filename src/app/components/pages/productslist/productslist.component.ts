@@ -251,8 +251,8 @@ export class ProductslistComponent implements OnInit {
             this.List = this.kits.filter(item => item === false);
             //console.log(this.List)
             if (this.List?.length == 0) {
-              //this.dooropen = false;
-              this.dooropen = true;
+              this.dooropen = false;
+              //this.dooropen = true;
 
               this.modalService.open(modal, { backdrop: false });
               //_id
@@ -293,8 +293,8 @@ export class ProductslistComponent implements OnInit {
             this.List = this.kits.filter(item => item === false);
             //console.log(this.List)
             if (this.List?.length == 0) {
-             // this.dooropen = false;
-             this.dooropen = true;
+              this.dooropen = false;
+            // this.dooropen = true;
 
               this.modalService.open(modal, { backdrop: false });
               //_id
@@ -359,49 +359,21 @@ export class ProductslistComponent implements OnInit {
     this.mydb.read('getitemlist').then(async (doc) => {
       console.log(doc)
       this.itemhistorykit = doc.data['Kits']
-    //   this.mydb.read('detailpage').then((doc) => {
-    //     console.log(doc)
-    //     this.product=doc.data
-   
-    
-    //   for (let k = 0; k < this.itemhistorykit.length; k++) {  
-    //     for (let i = 0; i < this.itemhistorykit[k].kit_item_details.length; i++) {
+ 
+  //               for (let k = 0; k < this.itemhistorykit.length; k++) {
+  //           for (let i = 0; i < this.itemhistorykit[k].kit_item_details.length; i++) {
 
-    //       for (let j = 0; j < data.kit_data.length; j++) {
-    //         if(data.kit_data[j].item._id === this.itemhistorykit[k].kit_item_details[i].item._id){
-    //           this.itemhistorykit[k].kit_item_details[i].quantity = this.itemhistorykit[k].kit_item_details[i].quantity - this.itemhistorykit[k].kit_item_details[i].alloted_item_qty_in_kit
-    //           console.log(this.itemhistorykit[k].kit_item_details[i].quantity)
-    //       for (let l = 0; l < this.product?.length; l++) {
-         
-    //            if (data.kit_data[j].item._id ===this.product[l].productdetails.machine.item) {
-    //              this.product[l].productdetails.machine.quantity=this.itemhistorykit[k].kit_item_details[i].quantity
-    //              console.log(doc.data[l].productdetails.machine.quantity,this.itemhistorykit[k].kit_item_details[i].quantity)
-    //                this.mydb = new TurtleDB('example');
-    //                this.mydb.update('detailpage', {data:this.product });
-    //             }
-             
-    //          }
-    //       }
-      
-    //   }
-  
-    // }
-    //     } 
-    //   }); 
-                for (let k = 0; k < this.itemhistorykit.length; k++) {
-            for (let i = 0; i < this.itemhistorykit[k].kit_item_details.length; i++) {
+  //       for (let j = 0; j < data.kit_data.length; j++) {
+  //         console.log(this.itemhistorykit[k].kit_item_details[i].item._id == data.kit_data[j].item._id,this.itemhistorykit[k].kit_item_details[i].item._id , data.kit_data[j].item._id)
+  //       if(this.itemhistorykit[k].kit_item_details[i].item._id == data.kit_data[j].item._id){
+  //         this.itemhistorykit[k].kit_item_details[i].quantity = this.itemhistorykit[k].kit_item_details[i].quantity - this.itemhistorykit[k].kit_item_details[i].alloted_item_qty_in_kit
 
-        for (let j = 0; j < data.kit_data.length; j++) {
-          console.log(this.itemhistorykit[k].kit_item_details[i].item._id == data.kit_data[j].item._id,this.itemhistorykit[k].kit_item_details[i].item._id , data.kit_data[j].item._id)
-        if(this.itemhistorykit[k].kit_item_details[i].item._id == data.kit_data[j].item._id){
-          this.itemhistorykit[k].kit_item_details[i].quantity = this.itemhistorykit[k].kit_item_details[i].quantity - this.itemhistorykit[k].kit_item_details[i].alloted_item_qty_in_kit
-
-          console.log(this.itemhistorykit[k].kit_item_details[i].quantity,data.kit_data[j].quantity, this.itemhistorykit[k].kit_item_details[i].alloted_item_qty_in_kit)
-        }
-      }
-    }
-  }
-      this.dateTime = new Date();
+  //         console.log(this.itemhistorykit[k].kit_item_details[i].quantity,data.kit_data[j].quantity, this.itemhistorykit[k].kit_item_details[i].alloted_item_qty_in_kit)
+  //       }
+  //     }
+  //   }
+  // }
+    //  this.dateTime = new Date();
 
       for (let k = 0; k < this.itemhistorykit.length; k++) {
         //console.log(typeof kit.kit_status + ' ' + kit.kit_status)
@@ -448,7 +420,7 @@ export class ProductslistComponent implements OnInit {
             kit_id: this.itemhistorykit[k].kit_id,
             kit_item_details: this.kit_item_details,
             kit_name: this.itemhistorykit[k].kit_name,
-            kit_status: 2,
+            kit_status: 1,
             qty: 1,
             // update_kit_id:  this.itemhistorykit[k].update_kit_id,
             updated_at: this.dateTime
@@ -475,7 +447,7 @@ export class ProductslistComponent implements OnInit {
               item: data.kit_data[i].item,
               po_history: data.kit_data[i].po_history,
               purchase_order: data.kit_data[i].purchase_order,
-              quantity: data.kit_data[i].quantity - data.kit_data[i].kit_item_qty,
+              quantity: data.kit_data[i].quantity ,
               status: data.kit_data[i].status,
               sub_category: data.kit_data[i].sub_category,
               supplier: data.kit_data[i].supplier,
@@ -501,7 +473,7 @@ export class ProductslistComponent implements OnInit {
 
 
             kit_name: data.kit_name,
-            kit_status: 2,
+            kit_status: 1,
             qty: 1,
             // update_kit_id:  this.itemhistorykit[k].update_kit_id,
             updated_at: this.dateTime
@@ -518,44 +490,45 @@ export class ProductslistComponent implements OnInit {
       console.log(this.hlo)
       this.itemhistorykit.push(this.hlo)
       console.log(this.itemhistorykit)
-      if(this.itemhistorykit != []){
-        this.mydb = new TurtleDB('example');
-        this.mydb.read('kitting').then((doc) => {//console.log(doc)
-          this.kit = doc.kit
-          for (let i = 0; i <  this.kit.length; i++) {
-            for (let k = 0; k < this.kit[i].kit_data.length; k++) {
+      // if(this.itemhistorykit != []){
+      //   this.mydb = new TurtleDB('example');
+      //   this.mydb.read('kitting').then((doc) => {//console.log(doc)
+      //     this.kit = doc.kit
+      //     for (let i = 0; i <  this.kit.length; i++) {
+      //       for (let k = 0; k < this.kit[i].kit_data.length; k++) {
 
-          for (let j = 0; j < data.kit_data.length; j++) {
-            if(this.kit[i].kit_data[k].item._id == data.kit_data[j].item._id){
-              this.kit[i].kit_data[k].quantity=data.kit_data[j].quantity-data.kit_data[j].kit_item_qty
+      //     for (let j = 0; j < data.kit_data.length; j++) {
+      //       if(this.kit[i].kit_data[k].item._id == data.kit_data[j].item._id){
+      //         this.kit[i].kit_data[k].quantity=data.kit_data[j].quantity-data.kit_data[j].kit_item_qty
 
-          }
-        }
-        }
-        }
-        console.log(this.kit)
-        this.mydb.update('kitting', { kit: this.kit });
-        console.log(       'kitting', { kit: this.kit }      )
-        });
+      //     }
+      //   }
+      //   }
+      //   }
+      //   console.log(this.kit)
+      //   this.mydb.update('kitting', { kit: this.kit });
+      //   console.log(       'kitting', { kit: this.kit }      )
+      //   });
       
 
   
      
-      }
-      this.new = ({
-        Cart: doc.data.Cart,
-        Kits: this.itemhistorykit,
-        status: true,
-      })
-      console.log(this.new)
-      this.mydb = new TurtleDB('example');
-      this.mydb.update('getitemlist', { data: this.new, user: this.permissions?._id, company_id: this.permissions?.company_id?._id, kitinfo: 2, updatestatus: 1, created_at: this.dateTime });
+      // }
+      // this.new = ({
+      //   Cart: doc.data.Cart,
+      //   Kits: this.itemhistorykit,
+      //   status: true,
+      // })
+      // console.log(this.new)
+     // this.mydb = new TurtleDB('example');
+    //  this.mydb.update('getitemlist', { data: this.new, user: this.permissions?._id, company_id: this.permissions?.company_id?._id, kitinfo: 2, updatestatus: 1, created_at: this.dateTime });
       for await (let kit of this.itemhistorykit) {
         //console.log(typeof kit.kit_status + ' ' + kit.kit_status)
         //console.log(typeof kit.kit_id._id + ' ' + kit.kit_id._id)
         //console.log(kit)
         if (kit.kit_status === 1 && kit.kit_id._id === data._id) {
           await this.takeNowKit.push(kit)
+          console.log(this.takeNowKit)
         }
       }
 
@@ -898,7 +871,20 @@ export class ProductslistComponent implements OnInit {
         this.itemhistorykit = doc.data['Kits']
         // this.id = doc.data.Cart[0]['_id']
         this.dateTime = new Date();
-  
+   
+        for (let k = 0; k < this.itemhistorykit.length; k++) {
+          for (let i = 0; i < this.itemhistorykit[k].kit_item_details.length; i++) {
+
+      for (let j = 0; j < this.takenowdata.kit_data.length; j++) {
+        console.log(this.itemhistorykit[k].kit_item_details[i].item._id == this.takenowdata.kit_data[j].item._id,this.itemhistorykit[k].kit_item_details[i].item._id , this.takenowdata.kit_data[j].item._id)
+      if(this.itemhistorykit[k].kit_item_details[i].item._id == this.takenowdata.kit_data[j].item._id){
+        this.itemhistorykit[k].kit_item_details[i].quantity = this.itemhistorykit[k].kit_item_details[i].quantity - this.itemhistorykit[k].kit_item_details[i].alloted_item_qty_in_kit
+
+        console.log(this.itemhistorykit[k].kit_item_details[i].quantity,this.takenowdata.kit_data[j].quantity, this.itemhistorykit[k].kit_item_details[i].alloted_item_qty_in_kit)
+      }
+    }
+  }
+}
         for (let k = 0; k < this.itemhistorykit.length; k++) {
           //console.log(typeof kit.kit_status + ' ' + kit.kit_status)
           //console.log(typeof kit.kit_id._id + ' ' + kit.kit_id._id)
@@ -922,7 +908,7 @@ export class ProductslistComponent implements OnInit {
                 item: this.itemhistorykit[k].kit_item_details[i].item,
                 po_history: this.itemhistorykit[k].kit_item_details[i].po_history,
                 purchase_order: this.itemhistorykit[k].kit_item_details[i].purchase_order,
-                quantity: this.itemhistorykit[k].kit_item_details[i].quantity - this.itemhistorykit[k].kit_item_details[i].alloted_item_qty_in_kit,
+                quantity: this.itemhistorykit[k].kit_item_details[i].quantity ,
                 status: this.itemhistorykit[k].kit_item_details[i].status,
                 sub_category: this.itemhistorykit[k].kit_item_details[i].sub_category,
                 supplier: this.itemhistorykit[k].kit_item_details[i].supplier,
@@ -1010,6 +996,27 @@ export class ProductslistComponent implements OnInit {
         console.log(this.hlo)
         this.itemhistorykit.push(this.hlo)
         console.log(this.itemhistorykit)
+        if(this.itemhistorykit != []){
+          this.mydb = new TurtleDB('example');
+          this.mydb.read('kitting').then((doc) => {//console.log(doc)
+            this.kit = doc.kit
+            for (let i = 0; i <  this.kit.length; i++) {
+              for (let k = 0; k < this.kit[i].kit_data.length; k++) {
+  
+            for (let j = 0; j < this.takenowdata.kit_data.length; j++) {
+              if(this.kit[i].kit_data[k].item._id == this.takenowdata.kit_data[j].item._id){
+                this.kit[i].kit_data[k].quantity=this.takenowdata.kit_data[j].quantity-this.takenowdata.kit_data[j].kit_item_qty
+  
+            }
+          }
+          }
+          }
+          console.log(this.kit)
+          this.mydb.update('kitting', { kit: this.kit });
+          console.log(       'kitting', { kit: this.kit }      )
+          });
+        
+        }
         this.new = ({
           Cart: doc.data.Cart,
           Kits: this.itemhistorykit,
@@ -1019,9 +1026,10 @@ export class ProductslistComponent implements OnInit {
         this.mydb = new TurtleDB('example');
         this.mydb.update('getitemlist', { data: this.new, user: this.permissions?._id, company_id: this.permissions?.company_id?._id, kitinfo: 2, updatestatus: 1, created_at: this.dateTime });
         this.toast.success('Items Taken Successfully');
+        this.dooropen = true
 
       });
-
+    
     }
   }
   }

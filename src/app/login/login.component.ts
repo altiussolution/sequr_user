@@ -7,6 +7,7 @@ import { untilDestroyed } from 'ngx-take-until-destroy';
 import { ToastrService } from 'ngx-toastr';
 import { CrudService } from '../services/crud.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import TurtleDB from 'turtledb';
 declare var google
 @Component({
   selector: 'app-login',
@@ -20,6 +21,7 @@ export class LoginComponent implements OnInit {
   @ViewChild('closebutton') closebutton;
   profiledetails: any=[];
   language: any=[];
+  mydb: any;
   changeType(input_field_password){
     if(input_field_password.type=="password")
     {input_field_password.type = "text";}
@@ -44,6 +46,22 @@ export class LoginComponent implements OnInit {
      }
   ngOnInit(): void {
     this.method()
+
+    if(window.navigator.onLine == true){
+      console.log(window.navigator.onLine)
+      this.mydb = new TurtleDB('example');
+      this.mydb.setRemote('http://13.232.128.227:3000');
+      this.mydb.create({ _id: 'sync', data: ' Synced' });
+     // alert("synced")
+      this.mydb.sync();
+      // if(this.mydb.sync()){
+      //   alert("synced")
+
+      // }
+    }
+    else{
+      console.log(window.navigator.onLine)
+    }
   
   }
   method() {

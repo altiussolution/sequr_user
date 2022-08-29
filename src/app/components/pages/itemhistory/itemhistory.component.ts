@@ -161,7 +161,7 @@ setTimeout(() => {
           this.id = res['Cart'][0]['_id']
           this.date = res['Cart'][0]['updated_at']
           this.mydb = new TurtleDB('example');
-          this.mydb.create({ _id: 'date', data: this.date });
+          //this.mydb.create({ _id: 'date', data: this.date });
           this.mydb.update('date', { data: this.date });
 
         }
@@ -557,41 +557,41 @@ setTimeout(() => {
         }
         // this.modalService.open(modal,{backdrop:false});
         this.returnItem("cart", modal)
-        this.mydb = new TurtleDB('example');
-        this.mydb.read('getlistcart').then((doc) => {
-          console.log(doc)
-          this.cartdata1 = doc.data
-          let tempArray =[];
-          for (let i = 0; i < this.cartdata1?.cart?.length; i++) {
-            for (let j = 0; j < this.arrayvalue?.length; j++) {
-              console.log(this.arrayvalue[j].qty == doc.data.cart[i].qty)
-           if(this.arrayvalue[j].qty == doc.data.cart[i].qty){
+        // this.mydb = new TurtleDB('example');
+        // this.mydb.read('getlistcart').then((doc) => {
+        //   console.log(doc)
+        //   this.cartdata1 = doc.data
+        //   let tempArray =[];
+        //   for (let i = 0; i < this.cartdata1?.cart?.length; i++) {
+        //     for (let j = 0; j < this.arrayvalue?.length; j++) {
+        //       console.log(this.arrayvalue[j].qty == doc.data.cart[i].qty)
+        //    if(this.arrayvalue[j].qty == doc.data.cart[i].qty){
 
-            if(this.arrayvalue[j].item._id == this.cartdata1?.cart[i].item._id  &&  doc.data.cart[i]['cart_status'] == 2  ){
-             // tempArray.push(this.cartdata1?.cart[i].item._id); !tempArray.includes(this.cartdata1?.cart[i].item._id
-             console.log(doc.data.cart[i].item_details.quantity)
-             doc.data.cart[i]['cart_status'] =  3
-             doc.data.cart[i].item_details.quantity=Number(doc.data.cart[i].item_details.quantity)+Number(this.arrayvalue[j].qty)
-              doc.data.cart[i].qty=doc.data.cart[i].qty-Number(this.arrayvalue[j].qty) 
-           }
-          }else{
-            if(this.arrayvalue[j].item._id == this.cartdata1?.cart[i].item._id  &&  doc.data.cart[i]['cart_status'] == 2  ){
-              // tempArray.push(this.cartdata1?.cart[i].item._id); !tempArray.includes(this.cartdata1?.cart[i].item._id
-              console.log(doc.data.cart[i].item_details.quantity)
-              doc.data.cart[i].item_details.quantity=Number(doc.data.cart[i].item_details.quantity)+Number(this.arrayvalue[j].qty)
-               doc.data.cart[i].qty=doc.data.cart[i].qty-Number(this.arrayvalue[j].qty) 
-             }
-          }
-        }
-          }
-          console.log("Updated cart value",doc.data)   
-          this.cartdata1 = doc.data         
-          const dateTime = new Date();
+        //     if(this.arrayvalue[j].item._id == this.cartdata1?.cart[i].item._id  &&  doc.data.cart[i]['cart_status'] == 2  ){
+        //      // tempArray.push(this.cartdata1?.cart[i].item._id); !tempArray.includes(this.cartdata1?.cart[i].item._id
+        //      console.log(doc.data.cart[i].item_details.quantity)
+        //      doc.data.cart[i]['cart_status'] =  3
+        //      doc.data.cart[i].item_details.quantity=Number(doc.data.cart[i].item_details.quantity)+Number(this.arrayvalue[j].qty)
+        //       doc.data.cart[i].qty=doc.data.cart[i].qty-Number(this.arrayvalue[j].qty) 
+        //    }
+        //   }else{
+        //     if(this.arrayvalue[j].item._id == this.cartdata1?.cart[i].item._id  &&  doc.data.cart[i]['cart_status'] == 2  ){
+        //       // tempArray.push(this.cartdata1?.cart[i].item._id); !tempArray.includes(this.cartdata1?.cart[i].item._id
+        //       console.log(doc.data.cart[i].item_details.quantity)
+        //       doc.data.cart[i].item_details.quantity=Number(doc.data.cart[i].item_details.quantity)+Number(this.arrayvalue[j].qty)
+        //        doc.data.cart[i].qty=doc.data.cart[i].qty-Number(this.arrayvalue[j].qty) 
+        //      }
+        //   }
+        // }
+        //   }
+        //   console.log("Updated cart value",doc.data)   
+        //   this.cartdata1 = doc.data         
+        //   const dateTime = new Date();
       
-          this.mydb = new TurtleDB('example');
-          this.mydb.update('getlistcart', { data: this.cartdata1 , user: this.permissions?._id,company_id:this.permissions?.company_id?._id,cartinfo:2,updatestatus:2,created_at:dateTime});
-          this.toast.success('Items Returned Successfully');
-        })
+        //   this.mydb = new TurtleDB('example');
+        //   this.mydb.update('getlistcart', { data: this.cartdata1 , user: this.permissions?._id,company_id:this.permissions?.company_id?._id,cartinfo:2,updatestatus:2,created_at:dateTime});
+        //   this.toast.success('Items Returned Successfully');
+        // })
       } else {
         this.toast.error("Please enter valid quantity")
       }
@@ -602,65 +602,50 @@ setTimeout(() => {
      
       this.returnItem("kit", modal)
       console.log(this.arrayvalue1)
-      this.dateTime = new Date();
-      this.mydb = new TurtleDB('example');
-      this.mydb.read('getitemlist').then(async (doc) =>{console.log(doc)
-          this.itemhistorykit = doc.data['Kits']  
-          this.cart1=doc.data.Cart   
-          // this.mydb.read('detailpage').then((doc) => {
-          //   console.log(doc)
-          //   this.product=doc.data
-       
+  //     this.dateTime = new Date();
+  //     this.mydb = new TurtleDB('example');
+  //     this.mydb.read('getitemlist').then(async (doc) =>{console.log(doc)
+  //         this.itemhistorykit = doc.data['Kits']  
+  //         this.cart1=doc.data.Cart   
+
+  //         for (let k = 0; k < this.itemhistorykit.length; k++) {  
+  //           for (let i = 0; i < this.itemhistorykit[k].kit_item_details.length; i++) {
+
+  //             for (let j = 0; j < this.arrayvalue1[0].kit_item_details.length; j++) {
+  //             if(this.arrayvalue1[0].kit_item_details[j].item._id === this.itemhistorykit[k].kit_item_details[i].item._id){
+  //               this.itemhistorykit[k].kit_item_details[i].quantity=  this.itemhistorykit[k].kit_item_details[i].quantity+this.arrayvalue1[0].kit_item_details[j].alloted_item_qty_in_kit
+  //             console.log(this.itemhistorykit[k].kit_item_details[i].quantity)
         
-          for (let k = 0; k < this.itemhistorykit.length; k++) {  
-            for (let i = 0; i < this.itemhistorykit[k].kit_item_details.length; i++) {
-
-              for (let j = 0; j < this.arrayvalue1[0].kit_item_details.length; j++) {
-              if(this.arrayvalue1[0].kit_item_details[j].item._id === this.itemhistorykit[k].kit_item_details[i].item._id){
-                this.itemhistorykit[k].kit_item_details[i].quantity=  this.itemhistorykit[k].kit_item_details[i].quantity+this.arrayvalue1[0].kit_item_details[j].alloted_item_qty_in_kit
-              console.log(this.itemhistorykit[k].kit_item_details[i].quantity)
-              // for (let l = 0; l < this.product?.length; l++) {
-             
-              //   //   for (let j = 0; j < this.arrayvalue1[0].kit_item_details.length; j++) {
-              //      if (this.arrayvalue1[0].kit_item_details[j].item._id ===this.product[l].productdetails.machine.item) {
-              //        this.product[l].productdetails.machine.quantity=this.itemhistorykit[k].kit_item_details[i].quantity
-              //        console.log(doc.data[l].productdetails.machine.quantity,this.itemhistorykit[k].kit_item_details[i].quantity)
-              //          this.mydb = new TurtleDB('example');
-              //          this.mydb.update('detailpage', {data:this.product });
-              //       }
-              //    //  }
-              //    }
-              }
+  //             }
           
-          }
+  //         }
       
-        }
-            } 
-         // }); 
-         for (let k = 0; k < this.itemhistorykit.length; k++) {
-          console.log(this.itemhistorykit[k].kit_name , this.arrayvalue1[0].kit_name, this.itemhistorykit[k].updated_at ===this.arrayvalue1[0].updated_at, this.arrayvalue1[0].kit_status=== 2 )  
+  //       }
+  //           } 
+  //        for (let k = 0; k < this.itemhistorykit.length; k++) {
+  //         console.log(this.itemhistorykit[k].kit_name , this.arrayvalue1[0].kit_name, this.itemhistorykit[k].updated_at ===this.arrayvalue1[0].updated_at, this.arrayvalue1[0].kit_status=== 2 )  
 
-        if(this.itemhistorykit[k].kit_name === this.arrayvalue1[0].kit_name && this.arrayvalue1[0].kit_status=== 2 && this.itemhistorykit[k].updated_at ===this.arrayvalue1[0].updated_at){
-          for (let i = 0; i < this.itemhistorykit[k].kit_item_details.length; i++) {
-           // this.itemhistorykit[k].kit_item_details[i].quantity=  this.itemhistorykit[k].kit_item_details[i].quantity+this.itemhistorykit[k].kit_item_details[i].alloted_item_qty_in_kit
-            this.itemhistorykit[k].kit_status= 3
+  //       if(this.itemhistorykit[k].kit_name === this.arrayvalue1[0].kit_name && this.arrayvalue1[0].kit_status=== 2 && this.itemhistorykit[k].updated_at ===this.arrayvalue1[0].updated_at){
+  //         for (let i = 0; i < this.itemhistorykit[k].kit_item_details.length; i++) {
+  //          // this.itemhistorykit[k].kit_item_details[i].quantity=  this.itemhistorykit[k].kit_item_details[i].quantity+this.itemhistorykit[k].kit_item_details[i].alloted_item_qty_in_kit
+  //           this.itemhistorykit[k].kit_status= 3
        
-        }
+  //       }
      
-      }
-          }
-         console.log(this.itemhistorykit)
-        this.kitnew=({
-          Cart: this.cart1,
-          Kits: this.itemhistorykit,
-          status: true,
-        }) 
-  console.log(this.kitnew)
-       this.mydb = new TurtleDB('example');
-        this.mydb.update('getitemlist', { data: this.kitnew, user: this.permissions?._id, company_id: this.permissions?.company_id?._id, kitinfo: 2,updatestatus:3, created_at: this.dateTime });
-        this.toast.success('Items Returned Successfully');
+  //     }
+  //         }
+  //        console.log(this.itemhistorykit)
+  //       this.kitnew=({
+  //         Cart: this.cart1,
+  //         Kits: this.itemhistorykit,
+  //         status: true,
+  //       }) 
+  // console.log(this.kitnew)
+  //      this.mydb = new TurtleDB('example');
+  //       this.mydb.update('getitemlist', { data: this.kitnew, user: this.permissions?._id, company_id: this.permissions?.company_id?._id, kitinfo: 2,updatestatus:3, created_at: this.dateTime });
+  //       this.toast.success('Items Returned Successfully');
     
-        } );
+  //       } );
    
     }
 
@@ -668,8 +653,8 @@ setTimeout(() => {
 
   async returnItem(item: string, modal) {
     if (confirm(`Are you sure want to return?`)) {
-     // this.dooropen = false;
-      this.dooropen = true;
+      this.dooropen = false;
+      //this.dooropen = true;
       this.vals = true
       this.machineCubeID = []
       this.machineColumnID = []
@@ -830,26 +815,26 @@ setTimeout(() => {
           this.cartdata1 = doc.data
           let tempArray =[];
           for (let i = 0; i < this.cartdata1?.cart?.length; i++) {
-            console.log(this.array[i],this.finalqty, doc.data.cart[i].qty,this.arrayvalue.qty == doc.data.cart[i].qty)
-           if(this.arrayvalue.qty == doc.data.cart[i].qty){
-            if(this.arrayvalue[0].item._id == this.cartdata1?.cart[i].item._id  &&  doc.data.cart[i]['cart_status'] == 2  ){
+            for (let j = 0; j < this.arrayvalue?.length; j++) {
+              console.log(this.arrayvalue[j].qty == doc.data.cart[i].qty)
+           if(this.arrayvalue[j].qty == doc.data.cart[i].qty){
+
+            if(this.arrayvalue[j].item._id == this.cartdata1?.cart[i].item._id  &&  doc.data.cart[i]['cart_status'] == 2  ){
              // tempArray.push(this.cartdata1?.cart[i].item._id); !tempArray.includes(this.cartdata1?.cart[i].item._id
              console.log(doc.data.cart[i].item_details.quantity)
              doc.data.cart[i]['cart_status'] =  3
-             doc.data.cart[i].item_details.quantity=Number(doc.data.cart[i].item_details.quantity)+Number(this.arrayvalue[0].qty)
-              //doc.cart.cart[i]['qty']=Number(1)    
-              doc.data.cart[i].qty=doc.data.cart[i].qty-Number(this.arrayvalue[0].qty) 
-            }
+             doc.data.cart[i].item_details.quantity=Number(doc.data.cart[i].item_details.quantity)+Number(this.arrayvalue[j].qty)
+              doc.data.cart[i].qty=doc.data.cart[i].qty-Number(this.arrayvalue[j].qty) 
+           }
           }else{
-            if(this.arrayvalue[0].item._id == this.cartdata1?.cart[i].item._id  &&  doc.data.cart[i]['cart_status'] == 2  ){
+            if(this.arrayvalue[j].item._id == this.cartdata1?.cart[i].item._id  &&  doc.data.cart[i]['cart_status'] == 2  ){
               // tempArray.push(this.cartdata1?.cart[i].item._id); !tempArray.includes(this.cartdata1?.cart[i].item._id
               console.log(doc.data.cart[i].item_details.quantity)
-             // doc.data.cart[i]['cart_status'] =  2
-              doc.data.cart[i].item_details.quantity=Number(doc.data.cart[i].item_details.quantity)+Number(this.arrayvalue[0].qty)
-               //doc.cart.cart[i]['qty']=Number(1)    
-               doc.data.cart[i].qty=doc.data.cart[i].qty-Number(this.arrayvalue[0].qty) 
+              doc.data.cart[i].item_details.quantity=Number(doc.data.cart[i].item_details.quantity)+Number(this.arrayvalue[j].qty)
+               doc.data.cart[i].qty=doc.data.cart[i].qty-Number(this.arrayvalue[j].qty) 
              }
           }
+        }
           }
           console.log("Updated cart value",doc.data)   
           this.cartdata1 = doc.data         
@@ -858,6 +843,7 @@ setTimeout(() => {
           this.mydb = new TurtleDB('example');
           this.mydb.update('getlistcart', { data: this.cartdata1 , user: this.permissions?._id,company_id:this.permissions?.company_id?._id,cartinfo:2,updatestatus:2,created_at:dateTime});
           this.toast.success('Items Returned Successfully');
+          this.dooropen = true;
         })
     
       } else {
@@ -865,32 +851,48 @@ setTimeout(() => {
         this.dateTime = new Date();
         this.mydb = new TurtleDB('example');
         this.mydb.read('getitemlist').then(async (doc) =>{console.log(doc)
-            this.itemhistorykit = doc.data['Kits']       
+            this.itemhistorykit = doc.data['Kits']  
+            this.cart1=doc.data.Cart   
+  
+            for (let k = 0; k < this.itemhistorykit.length; k++) {  
+              for (let i = 0; i < this.itemhistorykit[k].kit_item_details.length; i++) {
+  
+                for (let j = 0; j < this.arrayvalue1[0].kit_item_details.length; j++) {
+                if(this.arrayvalue1[0].kit_item_details[j].item._id === this.itemhistorykit[k].kit_item_details[i].item._id){
+                  this.itemhistorykit[k].kit_item_details[i].quantity=  this.itemhistorykit[k].kit_item_details[i].quantity+this.arrayvalue1[0].kit_item_details[j].alloted_item_qty_in_kit
+                console.log(this.itemhistorykit[k].kit_item_details[i].quantity)
+          
+                }
+            
+            }
+        
+          }
+              } 
            for (let k = 0; k < this.itemhistorykit.length; k++) {
             console.log(this.itemhistorykit[k].kit_name , this.arrayvalue1[0].kit_name, this.itemhistorykit[k].updated_at ===this.arrayvalue1[0].updated_at, this.arrayvalue1[0].kit_status=== 2 )  
   
           if(this.itemhistorykit[k].kit_name === this.arrayvalue1[0].kit_name && this.arrayvalue1[0].kit_status=== 2 && this.itemhistorykit[k].updated_at ===this.arrayvalue1[0].updated_at){
             for (let i = 0; i < this.itemhistorykit[k].kit_item_details.length; i++) {
-              this.itemhistorykit[k].kit_item_details[i].quantity=  this.itemhistorykit[k].kit_item_details[i].quantity+this.itemhistorykit[k].kit_item_details[i].alloted_item_qty_in_kit
+             // this.itemhistorykit[k].kit_item_details[i].quantity=  this.itemhistorykit[k].kit_item_details[i].quantity+this.itemhistorykit[k].kit_item_details[i].alloted_item_qty_in_kit
               this.itemhistorykit[k].kit_status= 3
          
           }
-      
+       
         }
             }
            console.log(this.itemhistorykit)
           this.kitnew=({
-            Cart: doc.data.Cart,
+            Cart: this.cart1,
             Kits: this.itemhistorykit,
             status: true,
           }) 
     console.log(this.kitnew)
          this.mydb = new TurtleDB('example');
-          this.mydb.update('getitemlist', { data: this.kitnew, user: this.permissions?._id, company_id: this.permissions?.company_id?._id, kitinfo: 2,updatestatus:2, created_at: this.dateTime });
+          this.mydb.update('getitemlist', { data: this.kitnew, user: this.permissions?._id, company_id: this.permissions?.company_id?._id, kitinfo: 2,updatestatus:3, created_at: this.dateTime });
           this.toast.success('Items Returned Successfully');
-
-          
+          this.dooropen = true;
           } );
+     
   
 
       }
