@@ -479,7 +479,7 @@ this.resdata=({
 console.log(this.resdata)
 this.mydb = new TurtleDB('example');
 this.mydb.create({ _id: 'getitemlist', data: this.resdata });
-this.mydb.update('getitemlist', { data: this.resdata , user: this.permissions?._id,company_id:this.permissions?.company_id?._id});
+//this.mydb.update('getitemlist', { data: this.resdata , user: this.permissions?._id,company_id:this.permissions?.company_id?._id});
 
 }, 5000);
     
@@ -552,7 +552,7 @@ console.log(hlo2)
         const hlo2 = this.kit.filter(v => v.kit_data.filter((k, index) => this.base64Image1.map((val, index) => { val.name == k.item.item_name ? k.item.image_path[0] = val.image : val.image })));
         this.mydb = new TurtleDB('example');
         this.mydb.create({ _id: 'kitting', kit: hlo2 });
-         // this.mydb.update('kitting', { kit: hlo2 });
+          this.mydb.update('kitting', { kit: hlo2 });
         
       }, 4000);
     })

@@ -60,6 +60,9 @@ export class ItemhistoryComponent implements OnInit {
   kitdata1: any;
   cartdatanew: { cart: any; updated_at: any; _id: any; };
   resdata: { Cart: { cart: any; updated_at: any; _id: any; }[]; Kits: any; status: any; };
+  base64Image2: any=[];
+  product: any;
+  cart1: any;
   constructor(public crud: CrudService, private toast: ToastrService, public modalService: NgbModal) { }
   ngOnInit(): void {
 
@@ -82,32 +85,46 @@ export class ItemhistoryComponent implements OnInit {
         if (res['status'] == true) {
           this.cartdata = res['Cart'][0]['cart']
           this.kitdata = res['Kits']
+              this.itemhistorykit = []
+        for (let i = 0; i < this.kitdata?.length; i++) {
+          if (this.kitdata[i]['kit_status'] == 2) {
+            this.itemhistorykit.push(this.kitdata[i])
+          }
         }
+        if (this.itemhistorykit == undefined) {
+          this.itemhistorykit = []
 
-     
+        }
+        console.log(this.itemhistorykit)
+        }
+    
         for (let i = 0; i < this.kitdata.length; i++) {
      
           for (let j = 0; j < this.kitdata[i].kit_item_details.length; j++) {
      
             this.getBase64ImageFromURL(this.kitdata[i].kit_item_details[j].item.image_path[0]).subscribe(base64data => {    
-              this.base64Image1.push( {image:'data:image/jpg;base64,' + base64data,name:this.kitdata[i].kit_item_details[j].item.item_name});
+              this.base64Image1.push( {image:'data:image/jpg;base64,' + base64data,name:this.kitdata[i].kit_item_details[j].item._id});
           
             });
     }
         }
      setTimeout(() => {
-      this.kitdata1 = this.kitdata.filter(v => v.kit_item_details.filter((k,index) => this.base64Image1.map((val,index)=> {val.name == k.item.item_name ? k.item.image_path[0] = val.image:val.image})));
-  console.log(this.kitdata1)
+
+      this.kitdata1 = this.kitdata.filter(v => v.kit_item_details.filter((k,index) => this.base64Image1.map((val,index)=> {val.name == k.item._id ? k.item.image_path[0] = val.image:val.image})));
+           // const hlo2 = this.kitdata.filter(v => v.kit_item_details.filter((k, index) => this.base64Image1.map((val, index) => { val.name == k.item.item_name ? k.item.image_path[0] = val.image : val.image })));
+
+      console.log(this.kitdata1)
+     // console.log(hlo2)
 
      }, 3000); 
      for (let i = 0; i <  this.cartdata.length; i++) {
       this.getBase64ImageFromURL(this.cartdata[i].item.image_path[0]).subscribe(base64data => {    
-        this.base64Image1.push( {image:'data:image/jpg;base64,' + base64data,name:this.cartdata[i].item.item_name});
+        this.base64Image2.push( {image:'data:image/jpg;base64,' + base64data,name:this.cartdata[i].item.item_name});
        // console.log(this.base64Image1)
       });
      }
      setTimeout(() => {
-      const hlo2 = this.cartdata.filter(v => this.base64Image1.map((val,index)=> {val.name == v.item.item_name ? v.item.image_path[0] = val.image:val.image}));
+      const hlo2 = this.cartdata.filter(v => this.base64Image2.map((val,index)=> {val.name == v.item.item_name ? v.item.image_path[0] = val.image:val.image}));
   
  console.log(hlo2)
         this.cartdatanew=({
@@ -145,20 +162,14 @@ setTimeout(() => {
           this.date = res['Cart'][0]['updated_at']
           this.mydb = new TurtleDB('example');
           this.mydb.create({ _id: 'date', data: this.date });
+          this.mydb.update('date', { data: this.date });
+
         }
         // this.itemhistorykit = res['Kits']
 
-        console.log(this.itemhistorykit)
-        this.itemhistorykit = []
-        for (let i = 0; i < this.kitdata?.length; i++) {
-          if (this.kitdata[i]['kit_status'] == 2) {
-            this.itemhistorykit.push(this.kitdata[i])
-          }
-        }
-        if (this.itemhistorykit == undefined) {
-          this.itemhistorykit = []
-
-        }
+        
+      //  this.itemhistorykit = []
+     
       })
     } else {
       this.onoff = false
@@ -174,6 +185,7 @@ setTimeout(() => {
           }
         }
         this.kitdata=doc.data.Kits
+        this.itemhistorykit=[]
         for (let i = 0; i < this.kitdata?.length; i++) {
           if (this.kitdata[i]['kit_status'] == 2) {
             this.itemhistorykit.push(this.kitdata[i])
@@ -551,26 +563,26 @@ setTimeout(() => {
           this.cartdata1 = doc.data
           let tempArray =[];
           for (let i = 0; i < this.cartdata1?.cart?.length; i++) {
-            console.log(this.array[i],this.finalqty, doc.data.cart[i].qty,this.arrayvalue.qty == doc.data.cart[i].qty)
-           if(this.arrayvalue.qty == doc.data.cart[i].qty){
-            if(this.arrayvalue[0].item._id == this.cartdata1?.cart[i].item._id  &&  doc.data.cart[i]['cart_status'] == 2  ){
+            for (let j = 0; j < this.arrayvalue?.length; j++) {
+              console.log(this.arrayvalue[j].qty == doc.data.cart[i].qty)
+           if(this.arrayvalue[j].qty == doc.data.cart[i].qty){
+
+            if(this.arrayvalue[j].item._id == this.cartdata1?.cart[i].item._id  &&  doc.data.cart[i]['cart_status'] == 2  ){
              // tempArray.push(this.cartdata1?.cart[i].item._id); !tempArray.includes(this.cartdata1?.cart[i].item._id
              console.log(doc.data.cart[i].item_details.quantity)
              doc.data.cart[i]['cart_status'] =  3
-             doc.data.cart[i].item_details.quantity=Number(doc.data.cart[i].item_details.quantity)+Number(this.arrayvalue[0].qty)
-              //doc.cart.cart[i]['qty']=Number(1)    
-              doc.data.cart[i].qty=doc.data.cart[i].qty-Number(this.arrayvalue[0].qty) 
-            }
+             doc.data.cart[i].item_details.quantity=Number(doc.data.cart[i].item_details.quantity)+Number(this.arrayvalue[j].qty)
+              doc.data.cart[i].qty=doc.data.cart[i].qty-Number(this.arrayvalue[j].qty) 
+           }
           }else{
-            if(this.arrayvalue[0].item._id == this.cartdata1?.cart[i].item._id  &&  doc.data.cart[i]['cart_status'] == 2  ){
+            if(this.arrayvalue[j].item._id == this.cartdata1?.cart[i].item._id  &&  doc.data.cart[i]['cart_status'] == 2  ){
               // tempArray.push(this.cartdata1?.cart[i].item._id); !tempArray.includes(this.cartdata1?.cart[i].item._id
               console.log(doc.data.cart[i].item_details.quantity)
-             // doc.data.cart[i]['cart_status'] =  2
-              doc.data.cart[i].item_details.quantity=Number(doc.data.cart[i].item_details.quantity)+Number(this.arrayvalue[0].qty)
-               //doc.cart.cart[i]['qty']=Number(1)    
-               doc.data.cart[i].qty=doc.data.cart[i].qty-Number(this.arrayvalue[0].qty) 
+              doc.data.cart[i].item_details.quantity=Number(doc.data.cart[i].item_details.quantity)+Number(this.arrayvalue[j].qty)
+               doc.data.cart[i].qty=doc.data.cart[i].qty-Number(this.arrayvalue[j].qty) 
              }
           }
+        }
           }
           console.log("Updated cart value",doc.data)   
           this.cartdata1 = doc.data         
@@ -593,40 +605,71 @@ setTimeout(() => {
       this.dateTime = new Date();
       this.mydb = new TurtleDB('example');
       this.mydb.read('getitemlist').then(async (doc) =>{console.log(doc)
-          this.itemhistorykit = doc.data['Kits']       
+          this.itemhistorykit = doc.data['Kits']  
+          this.cart1=doc.data.Cart   
+          // this.mydb.read('detailpage').then((doc) => {
+          //   console.log(doc)
+          //   this.product=doc.data
+       
+        
+          for (let k = 0; k < this.itemhistorykit.length; k++) {  
+            for (let i = 0; i < this.itemhistorykit[k].kit_item_details.length; i++) {
+
+              for (let j = 0; j < this.arrayvalue1[0].kit_item_details.length; j++) {
+              if(this.arrayvalue1[0].kit_item_details[j].item._id === this.itemhistorykit[k].kit_item_details[i].item._id){
+                this.itemhistorykit[k].kit_item_details[i].quantity=  this.itemhistorykit[k].kit_item_details[i].quantity+this.arrayvalue1[0].kit_item_details[j].alloted_item_qty_in_kit
+              console.log(this.itemhistorykit[k].kit_item_details[i].quantity)
+              // for (let l = 0; l < this.product?.length; l++) {
+             
+              //   //   for (let j = 0; j < this.arrayvalue1[0].kit_item_details.length; j++) {
+              //      if (this.arrayvalue1[0].kit_item_details[j].item._id ===this.product[l].productdetails.machine.item) {
+              //        this.product[l].productdetails.machine.quantity=this.itemhistorykit[k].kit_item_details[i].quantity
+              //        console.log(doc.data[l].productdetails.machine.quantity,this.itemhistorykit[k].kit_item_details[i].quantity)
+              //          this.mydb = new TurtleDB('example');
+              //          this.mydb.update('detailpage', {data:this.product });
+              //       }
+              //    //  }
+              //    }
+              }
+          
+          }
+      
+        }
+            } 
+         // }); 
          for (let k = 0; k < this.itemhistorykit.length; k++) {
           console.log(this.itemhistorykit[k].kit_name , this.arrayvalue1[0].kit_name, this.itemhistorykit[k].updated_at ===this.arrayvalue1[0].updated_at, this.arrayvalue1[0].kit_status=== 2 )  
 
         if(this.itemhistorykit[k].kit_name === this.arrayvalue1[0].kit_name && this.arrayvalue1[0].kit_status=== 2 && this.itemhistorykit[k].updated_at ===this.arrayvalue1[0].updated_at){
           for (let i = 0; i < this.itemhistorykit[k].kit_item_details.length; i++) {
-            this.itemhistorykit[k].kit_item_details[i].quantity=  this.itemhistorykit[k].kit_item_details[i].quantity+this.itemhistorykit[k].kit_item_details[i].alloted_item_qty_in_kit
+           // this.itemhistorykit[k].kit_item_details[i].quantity=  this.itemhistorykit[k].kit_item_details[i].quantity+this.itemhistorykit[k].kit_item_details[i].alloted_item_qty_in_kit
             this.itemhistorykit[k].kit_status= 3
        
         }
-    
+     
       }
           }
          console.log(this.itemhistorykit)
         this.kitnew=({
-          Cart: doc.data.Cart,
+          Cart: this.cart1,
           Kits: this.itemhistorykit,
           status: true,
         }) 
   console.log(this.kitnew)
        this.mydb = new TurtleDB('example');
-        this.mydb.update('getitemlist', { data: this.kitnew, user: this.permissions?._id, company_id: this.permissions?.company_id?._id, kitinfo: 2,updatestatus:2, created_at: this.dateTime });
+        this.mydb.update('getitemlist', { data: this.kitnew, user: this.permissions?._id, company_id: this.permissions?.company_id?._id, kitinfo: 2,updatestatus:3, created_at: this.dateTime });
         this.toast.success('Items Returned Successfully');
-
-        
+    
         } );
-
+   
     }
 
   }
 
   async returnItem(item: string, modal) {
     if (confirm(`Are you sure want to return?`)) {
-      this.dooropen = false;
+     // this.dooropen = false;
+      this.dooropen = true;
       this.vals = true
       this.machineCubeID = []
       this.machineColumnID = []

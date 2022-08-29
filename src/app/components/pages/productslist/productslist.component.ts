@@ -56,6 +56,7 @@ export class ProductslistComponent implements OnInit {
   dateTime: Date;
   kit_item_details: any = [];
   takenowdata: any;
+  product: any;
   constructor(public crud: CrudService, private toast: ToastrService, public modalService: NgbModal) { }
 
   ngOnInit(): void {
@@ -250,7 +251,9 @@ export class ProductslistComponent implements OnInit {
             this.List = this.kits.filter(item => item === false);
             //console.log(this.List)
             if (this.List?.length == 0) {
-              this.dooropen = false;
+              //this.dooropen = false;
+              this.dooropen = true;
+
               this.modalService.open(modal, { backdrop: false });
               //_id
               // this.mydb.read('addkittocartid').then((doc) =>{//console.log(doc)
@@ -290,7 +293,9 @@ export class ProductslistComponent implements OnInit {
             this.List = this.kits.filter(item => item === false);
             //console.log(this.List)
             if (this.List?.length == 0) {
-              this.dooropen = false;
+             // this.dooropen = false;
+             this.dooropen = true;
+
               this.modalService.open(modal, { backdrop: false });
               //_id
               // this.mydb.read('addkittocartid').then((doc) =>{//console.log(doc)
@@ -354,7 +359,48 @@ export class ProductslistComponent implements OnInit {
     this.mydb.read('getitemlist').then(async (doc) => {
       console.log(doc)
       this.itemhistorykit = doc.data['Kits']
-      // this.id = doc.data.Cart[0]['_id']
+    //   this.mydb.read('detailpage').then((doc) => {
+    //     console.log(doc)
+    //     this.product=doc.data
+   
+    
+    //   for (let k = 0; k < this.itemhistorykit.length; k++) {  
+    //     for (let i = 0; i < this.itemhistorykit[k].kit_item_details.length; i++) {
+
+    //       for (let j = 0; j < data.kit_data.length; j++) {
+    //         if(data.kit_data[j].item._id === this.itemhistorykit[k].kit_item_details[i].item._id){
+    //           this.itemhistorykit[k].kit_item_details[i].quantity = this.itemhistorykit[k].kit_item_details[i].quantity - this.itemhistorykit[k].kit_item_details[i].alloted_item_qty_in_kit
+    //           console.log(this.itemhistorykit[k].kit_item_details[i].quantity)
+    //       for (let l = 0; l < this.product?.length; l++) {
+         
+    //            if (data.kit_data[j].item._id ===this.product[l].productdetails.machine.item) {
+    //              this.product[l].productdetails.machine.quantity=this.itemhistorykit[k].kit_item_details[i].quantity
+    //              console.log(doc.data[l].productdetails.machine.quantity,this.itemhistorykit[k].kit_item_details[i].quantity)
+    //                this.mydb = new TurtleDB('example');
+    //                this.mydb.update('detailpage', {data:this.product });
+    //             }
+             
+    //          }
+    //       }
+      
+    //   }
+  
+    // }
+    //     } 
+    //   }); 
+                for (let k = 0; k < this.itemhistorykit.length; k++) {
+            for (let i = 0; i < this.itemhistorykit[k].kit_item_details.length; i++) {
+
+        for (let j = 0; j < data.kit_data.length; j++) {
+          console.log(this.itemhistorykit[k].kit_item_details[i].item._id == data.kit_data[j].item._id,this.itemhistorykit[k].kit_item_details[i].item._id , data.kit_data[j].item._id)
+        if(this.itemhistorykit[k].kit_item_details[i].item._id == data.kit_data[j].item._id){
+          this.itemhistorykit[k].kit_item_details[i].quantity = this.itemhistorykit[k].kit_item_details[i].quantity - this.itemhistorykit[k].kit_item_details[i].alloted_item_qty_in_kit
+
+          console.log(this.itemhistorykit[k].kit_item_details[i].quantity,data.kit_data[j].quantity, this.itemhistorykit[k].kit_item_details[i].alloted_item_qty_in_kit)
+        }
+      }
+    }
+  }
       this.dateTime = new Date();
 
       for (let k = 0; k < this.itemhistorykit.length; k++) {
@@ -365,6 +411,8 @@ export class ProductslistComponent implements OnInit {
         this.kit_item_details = []
         if (this.itemhistorykit[k].kit_id._id === data._id) {
           for (let i = 0; i < this.itemhistorykit[k].kit_item_details.length; i++) {
+          //  this.itemhistorykit[k].kit_item_details[i].quantity = this.itemhistorykit[k].kit_item_details[i].quantity - this.itemhistorykit[k].kit_item_details[i].alloted_item_qty_in_kit,
+          
             this.kit_item_details.push({
               active_status: this.itemhistorykit[k].kit_item_details[i].active_status,
               alloted_item_qty_in_kit: this.itemhistorykit[k].kit_item_details[i].alloted_item_qty_in_kit,
@@ -380,7 +428,7 @@ export class ProductslistComponent implements OnInit {
               item: this.itemhistorykit[k].kit_item_details[i].item,
               po_history: this.itemhistorykit[k].kit_item_details[i].po_history,
               purchase_order: this.itemhistorykit[k].kit_item_details[i].purchase_order,
-              quantity: this.itemhistorykit[k].kit_item_details[i].quantity - this.itemhistorykit[k].kit_item_details[i].alloted_item_qty_in_kit,
+              quantity: this.itemhistorykit[k].kit_item_details[i].quantity  ,
               status: this.itemhistorykit[k].kit_item_details[i].status,
               sub_category: this.itemhistorykit[k].kit_item_details[i].sub_category,
               supplier: this.itemhistorykit[k].kit_item_details[i].supplier,
@@ -390,8 +438,9 @@ export class ProductslistComponent implements OnInit {
               _id: this.itemhistorykit[k].kit_item_details[i]._id,
 
             })
-
+         
           }
+
           this.hlo = {
             cart_id: this.itemhistorykit[k].cart_id,
             created_at: this.dateTime,
@@ -410,6 +459,7 @@ export class ProductslistComponent implements OnInit {
           this.kit_item_details = []
 
           for (let i = 0; i < data.kit_data.length; i++) {
+
             this.kit_item_details.push({
               active_status: data.kit_data[i].active_status,
               alloted_item_qty_in_kit: data.kit_data[i].kit_item_qty,
@@ -468,6 +518,30 @@ export class ProductslistComponent implements OnInit {
       console.log(this.hlo)
       this.itemhistorykit.push(this.hlo)
       console.log(this.itemhistorykit)
+      if(this.itemhistorykit != []){
+        this.mydb = new TurtleDB('example');
+        this.mydb.read('kitting').then((doc) => {//console.log(doc)
+          this.kit = doc.kit
+          for (let i = 0; i <  this.kit.length; i++) {
+            for (let k = 0; k < this.kit[i].kit_data.length; k++) {
+
+          for (let j = 0; j < data.kit_data.length; j++) {
+            if(this.kit[i].kit_data[k].item._id == data.kit_data[j].item._id){
+              this.kit[i].kit_data[k].quantity=data.kit_data[j].quantity-data.kit_data[j].kit_item_qty
+
+          }
+        }
+        }
+        }
+        console.log(this.kit)
+        this.mydb.update('kitting', { kit: this.kit });
+        console.log(       'kitting', { kit: this.kit }      )
+        });
+      
+
+  
+     
+      }
       this.new = ({
         Cart: doc.data.Cart,
         Kits: this.itemhistorykit,
